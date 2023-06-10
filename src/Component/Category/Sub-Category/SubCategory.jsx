@@ -59,6 +59,8 @@ export const SubCategory = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
     bodyFormData.append("user_id", "21");
     bodyFormData.append("product_id", item.variants[0].product_id);
     bodyFormData.append("product_variant_id", item.variants[0].id);
+    console.log(bodyFormData);
+
     axios
     .post(
       "https://grocery.intelliatech.in/api-firebase/get-products-by-subcategory-id.php",

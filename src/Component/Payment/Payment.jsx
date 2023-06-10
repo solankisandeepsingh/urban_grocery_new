@@ -115,6 +115,31 @@ function Payment() {
                   />
                 </div>
               </div>
+              <div className="mr-6 flex flex-wrap">
+                      <div className="my-1">
+                        <label htmlFor="month" className="sr-only">
+                          Select expiration month
+                        </label>
+                        <select
+                          name="month"
+                          id="month"
+                          className="cursor-pointer rounded border-gray-300 bg-gray-50 py-3 px-2 text-sm shadow-sm outline-none transition focus:ring-2 focus:ring-teal-500"
+                        >
+                          <option value="">Month</option>
+                          <option value="1">01</option>
+                          <option value="2">02</option>
+                          <option value="3">03</option>
+                          <option value="4">04</option>
+                          <option value="5">05</option>
+                          <option value="6">06</option>
+                          <option value="7">07</option>
+                          <option value="8">08</option>
+                          <option value="9">10</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
+                        </select>
+                      </div>
+              </div>
               <div>
                 <NavLink to={`/success`}>
                   <button className="bg-lime w-full rounded-xl p-1">Pay</button>

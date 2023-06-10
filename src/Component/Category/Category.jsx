@@ -27,6 +27,7 @@ export const Category = () => {
       .then((res) => setCategorydata(res.data.data))
       .catch((err) => console.log(err));
   };
+
   useEffect(() => {
     categryData();
   }, []);

@@ -59,8 +59,6 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
   };
 
   const quantityIncrease = () => {
-    alert("helloo");
-    console.log("addItem>>>>>>>>>>>>>>>>>>>>>>>>>>>>", addItem);
     const config = {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
@@ -72,8 +70,8 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
     bodyFormData.append("add_to_cart", "1");
     bodyFormData.append("user_id", "14");
     bodyFormData.append("product_id", +item.product_id);
-    bodyFormData.append("product_variant_id", +item.id);
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>itmemmmmmmamiyt", item);
+    bodyFormData.append("product_variant_id", +item.product_variant_id
+    );
 
     const finditem = addItem.find((data) => data.id == item.id);
 
@@ -87,11 +85,10 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
         config
       )
       .then((res) => {
-        console.log(">>>>>>>>>>>>>>resonse", res);
-        if (addItem.some((cartItem) => cartItem.id === item.id)) {
+        if (addItem.some((cartItem) => cartItem.product_id === item.id)) {
           setAddItem((cart) =>
             cart.map((data) =>
-              data.id === item.id ? { ...data, amount: +data.amount + 1 } : data
+              data.product_id === item.id ? { ...data, amount: +data.amount + 1 } : data
             )
           );
 
@@ -106,10 +103,15 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
   };
 
   const findAddItem = () => {
-    // console.log(">>>>>>>>>>>>item.id cartQuantity",addItem)
+    // console.log("[][][][][][][][][][][][]]",addItem,"addITEM", item, "ITEM")
     let index = addItem.findIndex((i) => +i.id === +item.id);
     return addItem[index].amount;
   };
+  //   let index = addItem.findIndex((i) => +i.product_id === +item.id);
+  //   console.log(addItem[index].amount);
+  //   return addItem[index].amount;
+  // };
+
 
   return (
     <div>

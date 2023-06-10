@@ -19,11 +19,12 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
     };
     var bodyFormdata = new FormData();
     bodyFormdata.append("accesskey", "90336");
-    bodyFormdata.append("product_id", "231 OR slug:onion-1");
+    bodyFormdata.append("get_all_products", "1");
+    bodyFormdata.append("limit", "37");
 
     axios
       .post(
-        "https://grocery.intelliatech.in/api-firebase/get-product-by-id.php",
+        "https://grocery.intelliatech.in/api-firebase/get-all-products.php",
         bodyFormdata,
         config
       )
@@ -44,9 +45,9 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
     var bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", "21");
-    bodyFormData.append("product_id", item.variants[0].product_id);
-    bodyFormData.append("product_variant_id", item.variants[0].id);
+    bodyFormData.append("user_id", "14");
+    bodyFormData.append("product_id", item.id);
+    bodyFormData.append("product_variant_id", item.variants[0].product_id);
     bodyFormData.append("qty", item.amount);
   
     axios

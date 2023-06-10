@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DropdownMenu from "../AccountDropdown/DropdownMenu";
 import { Form, NavLink } from "react-router-dom";
 import {
@@ -9,10 +9,68 @@ import {
   FaRegAddressBook,
   FaWallet,
 } from "react-icons/fa";
+import { HiOfficeBuilding } from "react-icons/hi";
+import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import { AddressForm } from "./AddressForm";
+import axios from "axios";
+import { API_TOKEN } from "../Token/Token";
 
 export const Address = ({ isOpen, setIsOpen }) => {
+  
   const [formOpen, setFormOpen] = useState(false);
+  const [addList, setAddlist] = useState([]);
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${API_TOKEN}`,
+    },
+  };
+
+  const getAddress = () => {
+    const data = new FormData();
+    data.append("accesskey", "90336");
+    data.append("get_addresses", "1");
+    data.append("user_id", "14");
+
+    axios
+      .post(
+        "https://grocery.intelliatech.in/api-firebase/user-addresses.php",
+        data,
+        config
+      )
+      .then((res) => setAddlist(res.data.data))
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getAddress();
+  }, []);
+
+  const handleDelete = (id) => {
+    const deleteData = new FormData();
+    deleteData.append("accesskey", "90336");
+    deleteData.append("delete_address", "1");
+    deleteData.append("id", `${id}`);
+
+    axios
+      .post(
+        "https://grocery.intelliatech.in/api-firebase/user-addresses.php",
+        deleteData,
+        config
+      )
+      .then((res) => {
+        console.log("delete response:", res);
+        getAddress();
+      })
+      .catch((err) => console.log(err));
+  };
+
+
+
+  const handleEdit = (id)=>{
+    
+  }
+
   return (
     <>
       <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2 md:mt-[-22px] bg-white">
@@ -32,7 +90,7 @@ export const Address = ({ isOpen, setIsOpen }) => {
                     My Address
                   </span>
                 </a>
-              </NavLink> 
+              </NavLink>
             </li>
             <li className="border border-light_gray mb-2 shadow-lg ">
               <NavLink to={"/myorder"}>
@@ -90,33 +148,74 @@ export const Address = ({ isOpen, setIsOpen }) => {
                 Add New Address
               </button>
             </div>
-            <div className="border border-light_gray w-[800px] px-3 mt-2"> 
-              <div className="flex flex-row mt-6 ">
-                <span className="cursor-pointer">
-                  <FaMapMarked />
-                </span>
-                <button className="ml-6 mt-[-4px]"> Work</button>
-              </div>
-              <div>
-                <div className="flex flex-row gap-48">
-                  <div className="">
-                    <span className="ml-10 gap-2">Name</span>
-                    <span className="ml-4 gap-2">Address</span>
-                    <span className="ml-4 gap-2">City</span>
-                    <span className="ml-4 gap-2">State</span>
-                  </div>
-                  <div>
-                    <button>edit</button>
-                    <button>delete</button>
-                  </div>
-                </div>
-              </div>
+
+            <div>
+              {addList &&
+                addList.map((item) => {
+                  return (
+                    <>
+                      <div className="border border-light_gray w-[800px] px-3 py-3 mt-2">
+                        <div className="flex ">
+                          <div className="w-[5%]">
+                            {item.type === "Home" ?  (
+                              <FaHome className="inline mr-3" />
+                            ): (
+                              <HiOfficeBuilding className="inline mr-3" />
+                            )}
+                          </div>
+                          <div className="w-[85%] flec flex-col">
+                            <div>{item.type === "Home" ? "Home" : "work"}</div>
+                            <div className="pt-[10px]">
+                              <span className="gap-2">{item.name} -</span>
+                              <span className="">{item.address},  </span>
+                              <span className="">{item.area_name},  </span>
+                              <span className="">{item.city_name}, </span>
+                              {/* <span className="">{item.landmark}, </span> */}
+                              <span className="">{item.pincode}, </span>
+                              <span className="">{item.country} </span>
+                            </div>
+                          </div>
+                          <div className="w-[10%] flex gap-4 items-center">
+                            <button onClick={() => handleEdit(item.id)} className="text-[21px] font-normal">
+                              <AiOutlineEdit  />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(item.id)}
+                              className="text-red text-[21px] font-normal"
+                            >
+                              <AiOutlineDelete />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })}
             </div>
-           
           </div>
         </div>
       </div>
-      <div>{formOpen && <AddressForm />}</div>
+      <div>
+        {formOpen && 
+        
+        <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
+        <div className="bg-white rounded p-8">
+          
+          {/* <h2 className="text-lg font-bold mb-4">Modal Title</h2> */}
+          {/* <p className="mb-4">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+            tincidunt condimentum lectus, ut commodo metus cursus vitae.
+          </p> */}
+          <AddressForm setFormOpen={setFormOpen} getAddress={getAddress}/>
+          {/* <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={closeModal}
+          >
+            Close Modal
+          </button> */}
+        </div>
+      </div>}
+      </div>
     </>
   );
 };
