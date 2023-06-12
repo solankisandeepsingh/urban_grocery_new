@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 export const AddressForm = ({
   addList,
@@ -37,8 +38,9 @@ export const AddressForm = ({
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    // console.log(name,value)
+    console.log(name, value);
     setAddressData({ ...addressData, [name]: value });
+
     // setAddList("new");
     // console.log(addList)
   };
@@ -76,9 +78,8 @@ export const AddressForm = ({
       .then((res) => {
         console.log(res, "hi");
         getAddress();
-        setFormOpen(false)
+        setFormOpen(false);
       })
-
 
       .catch((err) => console.log(err));
     setAddressData({
@@ -131,95 +132,147 @@ export const AddressForm = ({
 
   return (
     <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
-        <div className="bg-white rounded p-8">
-        
-        
-    <div className="flex justify-center items-center relative">
-      <div className="container my-4 px-4 lg:px-20 opacity-70">
-        <div className="w-full p-8 my-4 md:px-12  lg:pl-20 lg:pr-40 mr-auto rounded-2xl shadow-2xl">
-          <div className="flex justify-between">
-            <h1 className="font-bold uppercase text-3xl">Address : </h1>
-            <button onClick={() => setFormOpen(false)}>x</button>
-          </div>
-          <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 mt-5">
-              <input
-                className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
-                type="text"
-                placeholder=" Name*"
-                name="name"
-                value={addressData.name}
-                onChange={handleInputChange}
-              />
-              <textarea
-                className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
-                placeholder="Address*"
-                type="text"
-                name="address"
-                value={addressData.address}
-                onChange={handleInputChange}
-              />
+      <div className="bg-white rounded top-[5%] left-[5%]">
+        <div className="flex justify-center items-center relative">
+          <div className="container relative  opacity-70">
+            <button
+              className="absolute top-[5%] right-[5%]"
+              onClick={() => setFormOpen(false)}
+            >
+              <AiOutlineCloseCircle className="text-red text-2xl" />
+            </button>
+            <div className="w-full p-8 my-4 md:px-12  lg:pl-20 lg:pr-40 mr-auto rounded-2xl shadow-2xl">
+              <div className="flex justify-between">
+                <h1 className="font-bold uppercase text-3xl">Address : </h1>
+              </div>
+              <form onSubmit={handleSubmit}>
+                <div className="grid grid-cols-1 gap-5 md:grid-cols-2 mt-5">
+                  <input
+                    className="w-full border-red-800 bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg  focus:shadow-outline "
+                    type="text"
+                    placeholder=" Name*"
+                    name="name"
+                    value={addressData.name}
+                    onChange={handleInputChange}
+                  />
+                  <textarea
+                    className="w-full bg-gray-100 border-gray-400 text-gray-900 mt-2 p-3 rounded-lg  focus:shadow-outline"
+                    placeholder="Address*"
+                    type="text"
+                    name="address"
+                    value={addressData.address}
+                    onChange={handleInputChange}
+                  />
 
-              <input
-                className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
-                placeholder="Pincode*"
-                type="number"
-                name="pincode"
-                value={addressData.pincode}
-                onChange={handleInputChange}
-              />
-              <input
-                className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+                  <input
+                    className="w-full border-gray-400 bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg  focus:shadow-outline"
+                    placeholder="Pincode*"
+                    type="number"
+                    name="pincode"
+                    value={addressData.pincode}
+                    onChange={handleInputChange}
+                  />
+                  {/* <input
+                className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg  focus:shadow-outline"
                 placeholder="type"
                 type="text"
                 name="type"
                 value={addressData.type}
                 onChange={handleInputChange}
-              />
-            </div>
-            <div className="mr-6 flex flex-wrap">
-              <div className="my-1">
-               
-                <select value={cityDropdown} onChange={handleDropdown1Change}>
-                  <option value="">City</option>
-                  {cities.map((item) => {
-                    return (
-                      <>
-                        <option value={item.id}>{item.name}</option>
-                      </>
-                    );
-                  })}
-                </select>
+              /> */}
+                  {/* <input
+                className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg  focus:shadow-outline"
+                placeholder="type"
+                type="radio"
+                name="type"
+                value={addressData.type}
+                onChange={handleInputChange}
+              /> */}
 
-                <select
-                  value={areaDropdown}
-                  onChange={handleDropdown2Change}
-                  disabled={!cityDropdown}
-                >
-                  <option value="">Area</option>
-                  {areas.map((item) => {
-                    return (
-                      <>
-                        <option value={item.id}>{item.name}</option>
-                      </>
-                    );
-                  })}
-                </select>
-              </div>
-            </div>
-            <div className="my-2 w-1/2 lg:w-1/4">
-              <button
-                className="uppercase text-sm font-bold tracking-wide bg-lime text-gray-100 p-3 rounded-lg w-full 
+                  <label>
+                    <input
+                      type="radio"
+                      name="type"
+                      value="Home"
+                      checked={addressData.type === "Home"}
+                      onChange={handleInputChange}
+                    />
+                    Home
+                  </label>
+
+                  <label>
+                    <input
+                      type="radio"
+                      name="type"
+                      value="Work"
+                      checked={addressData.type === "Work"}
+                      onChange={handleInputChange}
+                    />
+                    Work
+                  </label>
+
+                  <label class="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg cursor-pointer">
+  <input type="radio" class="form-radio" name="myRadioButtonGroup" value="option1" />
+  <span class="ml-2">Option 1</span>
+</label>
+
+
+                  {/* <label>
+        <input
+          type="radio"
+          name="myRadioButtonGroup"
+          value="option3"
+          checked={addressData.type === 'option3'}
+          onChange={handleInputChange}
+        />
+        Option 3
+      </label> */}
+                </div>
+                <div className="mr-6 flex flex-wrap">
+                  <div className="my-1">
+                    <select
+                      value={cityDropdown}
+                      onChange={handleDropdown1Change}
+                    >
+                      <option value="">City</option>
+                      {cities.map((item) => {
+                        return (
+                          <>
+                            <option value={item.id}>{item.name}</option>
+                          </>
+                        );
+                      })}
+                    </select>
+
+                    <select
+                      value={areaDropdown}
+                      onChange={handleDropdown2Change}
+                      disabled={!cityDropdown}
+                    >
+                      <option value="">Area</option>
+                      {areas.map((item) => {
+                        return (
+                          <>
+                            <option value={item.id}>{item.name}</option>
+                          </>
+                        );
+                      })}
+                    </select>
+                  </div>
+                </div>
+                <div className="mx-auto mt-8 w-1/2 lg:w-1/4">
+                  <button
+                    className="uppercase text-sm font-bold tracking-wide bg-lime text-gray-100 p-3 rounded-lg w-full 
                   focus:outline-none focus:shadow-outline"
-              >
-                Save Address
-              </button>
+                  >
+                    Save Address
+                  </button>
+                </div>
+              </form>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
-        </div>
-      </div>
   );
 };

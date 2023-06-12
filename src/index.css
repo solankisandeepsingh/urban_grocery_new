@@ -9,16 +9,21 @@
 
 @font-face {
   font-family: "Roboto";
-  src: url("C:\Sandeep Singh Solanki\Urban_Grocer_Latest\urban_grocery_new\src\fonts\Roboto\Roboto-Regular.ttf");
+  src: url("./fonts/Roboto/Roboto-Regular.ttf");
 }
 @font-face {
   font-family: "Roboto";
   font-weight: 500;
-  src: url("C:\Sandeep Singh Solanki\Urban_Grocer_Latest\urban_grocery_new\src\fonts\Roboto\Roboto-Medium.ttf");
+  src: url("./fonts/Roboto/Roboto-Medium.ttf");
 }
 @font-face {
   font-family: "Roboto";
   font-weight: 700;
-  src: url("C:\Sandeep Singh Solanki\Urban_Grocer_Latest\urban_grocery_new\src\fonts\Roboto\Roboto-Bold.ttf");
+  src: url("./fonts/Roboto/Roboto-Bold.ttf");
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

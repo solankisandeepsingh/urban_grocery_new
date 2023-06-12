@@ -107,6 +107,7 @@ function Form({ back, setFormdata, formData }) {
             {addList.map((item) => {
               return (
                 <label>
+                  <div className="border flex border-light_gray  px-3 py-3 mt-2 gap-1">
                   <input
                     type="radio"
                     name="options"
@@ -114,7 +115,8 @@ function Form({ back, setFormdata, formData }) {
                     checked={selectedOption === item.id}
                     onChange={handleOptionChange}
                   />
-                  <div className="flex ">
+
+                  <div className="flex gap-2">
                     <div className="w-[5%]">
                       {item.type === "Home" ? (
                         <FaHome className="inline mr-3" />
@@ -123,9 +125,9 @@ function Form({ back, setFormdata, formData }) {
                       )}
                     </div>
                     <div className="w-[85%] flec flex-col">
-                      <div>{item.type === "Home" ? "Home" : "work"}</div>
-                      <div className="pt-[10px]">
-                        <span className="gap-2">{item.name} -</span>
+                      <div className="font-medium ">{item.type === "Home" ? "Home" : "Work"}</div>
+                      <div className="pt-[10px] text-[#8d9191] ">
+                        <span className="gap-2 ">{item.name} -</span>
                         <span className="">{item.address}, </span>
                         <span className="">{item.area_name}, </span>
                         <span className="">{item.city_name}, </span>
@@ -134,6 +136,7 @@ function Form({ back, setFormdata, formData }) {
                       </div>
                     </div>
                     <div className="w-[10%] flex gap-4 items-center"></div>
+                  </div>
                   </div>
                 </label>
               );
