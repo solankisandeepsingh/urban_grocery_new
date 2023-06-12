@@ -2,8 +2,12 @@ import React, { useEffect, useState } from "react";
 import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 
-export const AddressForm = ({ addList, setAddList, getAddress, setFormOpen }) => {
-  
+export const AddressForm = ({
+  addList,
+  setAddList,
+  getAddress,
+  setFormOpen,
+}) => {
   const [addressData, setAddressData] = useState({
     name: "",
     address: "",
@@ -12,8 +16,8 @@ export const AddressForm = ({ addList, setAddList, getAddress, setFormOpen }) =>
     pincode: "",
   });
 
-  const [cities,setCities] = useState([])
-  const [areas,setAreas] = useState([])
+  const [cities, setCities] = useState([]);
+  const [areas, setAreas] = useState([]);
   const [cityDropdown, setCityDropdown] = useState("");
   const [areaDropdown, setAreaDropdown] = useState("");
   const [initialRender, setIntialrender] = useState(true);
@@ -22,12 +26,12 @@ export const AddressForm = ({ addList, setAddList, getAddress, setFormOpen }) =>
   const handleDropdown1Change = (event) => {
     const selectedValue = event.target.value;
     setCityDropdown(selectedValue);
-    console.log(selectedValue)
+    console.log(selectedValue);
   };
 
   const handleDropdown2Change = (event) => {
     const selectedValue = event.target.value;
-    console.log(selectedValue)
+    console.log(selectedValue);
     setAreaDropdown(selectedValue);
   };
 
@@ -38,15 +42,13 @@ export const AddressForm = ({ addList, setAddList, getAddress, setFormOpen }) =>
     // setAddList("new");
     // console.log(addList)
   };
-  
+
   const config = {
     headers: {
       Authorization: `Bearer ${API_TOKEN}`,
     },
   };
   const handleSubmit = (event) => {
-
-
     event.preventDefault();
     console.log(cityDropdown);
     // setAddList([...addList, addressData]);
@@ -66,68 +68,71 @@ export const AddressForm = ({ addList, setAddList, getAddress, setFormOpen }) =>
     data.append("state", "Gujrat");
     data.append("country", "India");
     axios
-    .post(
-      "https://grocery.intelliatech.in/api-firebase/user-addresses.php",
-      data,
+      .post(
+        "https://grocery.intelliatech.in/api-firebase/user-addresses.php",
+        data,
         config
       )
-      .then((res) => {console.log(res, "hi")
-      getAddress()})
+      .then((res) => {
+        console.log(res, "hi");
+        getAddress();
+      })
       .catch((err) => console.log(err));
-      setAddressData({
-        name: "",
-        address: "",
-        type: "",
-        city: "",
-        pincode: "",
-      });
+    setAddressData({
+      name: "",
+      address: "",
+      type: "",
+      city: "",
+      pincode: "",
+    });
+  };
 
-      
-    };
-    
-
-
-    useEffect(()=>{
+  useEffect(() => {
     const cityData = new FormData();
     cityData.append("accesskey", "90336");
-    axios.post("https://grocery.intelliatech.in/api-firebase/get-cities.php",
-    cityData,
-    config)
-    .then((res) => {setCities(res.data.data)})
-    .catch((err) => console.log(err));
-  },[])
+    axios
+      .post(
+        "https://grocery.intelliatech.in/api-firebase/get-cities.php",
+        cityData,
+        config
+      )
+      .then((res) => {
+        setCities(res.data.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
-
-
-    useEffect(()=>{
-      if (initialRender) {
-        console.log('initial')
-        setIntialrender(false)
-      } else {
-        if(!cityDropdown) {
-          console.log('Not initial render, not calling api')
-          return 
-        }
-        console.log('calling areas api')
-        const areaData = new FormData();
-        areaData.append("accesskey", "90336");
-        areaData.append('city_id', `${cityDropdown}`);
-        axios.post("https://grocery.intelliatech.in/api-firebase/get-areas-by-city-id.php",
-        areaData,
-        config)
+  useEffect(() => {
+    if (initialRender) {
+      console.log("initial");
+      setIntialrender(false);
+    } else {
+      if (!cityDropdown) {
+        console.log("Not initial render, not calling api");
+        return;
+      }
+      console.log("calling areas api");
+      const areaData = new FormData();
+      areaData.append("accesskey", "90336");
+      areaData.append("city_id", `${cityDropdown}`);
+      axios
+        .post(
+          "https://grocery.intelliatech.in/api-firebase/get-areas-by-city-id.php",
+          areaData,
+          config
+        )
         .then((res) => setAreas(res.data.data))
         .catch((err) => console.log(err));
-      }    
-      }
-      ,[cityDropdown])
+    }
+  }, [cityDropdown]);
 
   return (
     <div className="flex justify-center items-center relative">
       <div className="container my-4 px-4 lg:px-20 opacity-70">
         <div className="w-full p-8 my-4 md:px-12  lg:pl-20 lg:pr-40 mr-auto rounded-2xl shadow-2xl">
-          <div className="flex">
+          <div className="flex justify-between">
             <h1 className="font-bold uppercase text-3xl">Address : </h1>
-            <button onClick={()=>setFormOpen(false)}>Close Modal</button>
+            <button onClick={() => setFormOpen(false)}>x</button>
           </div>
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 mt-5">
@@ -147,14 +152,7 @@ export const AddressForm = ({ addList, setAddList, getAddress, setFormOpen }) =>
                 value={addressData.address}
                 onChange={handleInputChange}
               />
-              {/* <input
-                className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
-                type="text"
-                placeholder="City"
-                name="city"
-                value={addressData.city}
-                onChange={handleInputChange}
-              /> */}
+
               <input
                 className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
                 placeholder="Pincode*"
@@ -171,19 +169,18 @@ export const AddressForm = ({ addList, setAddList, getAddress, setFormOpen }) =>
                 value={addressData.type}
                 onChange={handleInputChange}
               />
-
             </div>
             <div className="mr-6 flex flex-wrap">
               <div className="my-1">
-                <label htmlFor="month" className="sr-only">
-                  Select expiration month
-                </label>
+               
                 <select value={cityDropdown} onChange={handleDropdown1Change}>
                   <option value="">City</option>
-                  {cities.map((item)=>{
-                    return <>
-                      <option value={item.id}>{item.name}</option>
-                    </>
+                  {cities.map((item) => {
+                    return (
+                      <>
+                        <option value={item.id}>{item.name}</option>
+                      </>
+                    );
                   })}
                 </select>
 
@@ -193,10 +190,12 @@ export const AddressForm = ({ addList, setAddList, getAddress, setFormOpen }) =>
                   disabled={!cityDropdown}
                 >
                   <option value="">Area</option>
-                  {areas.map((item)=>{
-                    return <>
-                      <option value={item.id}>{item.name}</option>
-                    </>
+                  {areas.map((item) => {
+                    return (
+                      <>
+                        <option value={item.id}>{item.name}</option>
+                      </>
+                    );
                   })}
                 </select>
               </div>

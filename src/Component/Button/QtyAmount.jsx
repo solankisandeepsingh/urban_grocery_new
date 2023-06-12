@@ -4,14 +4,7 @@ import { API_TOKEN } from "../Token/Token";
 
 export const QtyAmount = ({ item, setAddItem, addItem }) => {
   const quantityDecrease = () => {
-    if (addItem.some((cartItem) => cartItem.amount === 1)) {
-      setAddItem(
-        addItem.filter((item) => {
-          return item.id === item.id && item.amount === 0;
-        })
-      );
-    }
-
+    
     let config = {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
@@ -23,12 +16,8 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
     bodyFormData.append("user_id", "14");
     bodyFormData.append("product_id", +item.product_id);
     bodyFormData.append("product_variant_id", +item.id);
+    bodyFormData.append("qty", "1");
     console.log(">>>>>>>>>>>>>>>>>>>>>>>itmemmmmmmamiyt", item);
-
-    const finditem = addItem.find((data) => data.id == item.id);
-
-    const newQty = (+finditem.amount || 0) - 1;
-    bodyFormData.append("qty", newQty);
 
     axios
       .post(
@@ -59,6 +48,8 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
   };
 
   const quantityIncrease = () => {
+    alert("helloo");
+    console.log("addItem>>>>>>>>>>>>>>>>>>>>>>>>>>>>", addItem);
     const config = {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
@@ -70,13 +61,9 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
     bodyFormData.append("add_to_cart", "1");
     bodyFormData.append("user_id", "14");
     bodyFormData.append("product_id", +item.product_id);
-    bodyFormData.append("product_variant_id", +item.product_variant_id
-    );
-
-    const finditem = addItem.find((data) => data.id == item.id);
-
-    const newQty = (+finditem.amount || 0) + 1;
-    bodyFormData.append("qty", newQty);
+    bodyFormData.append("product_variant_id", +item.id);
+    bodyFormData.append("qty", "1");
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>itmemmmmmmamiyt", item);
 
     axios
       .post(
@@ -85,10 +72,11 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
         config
       )
       .then((res) => {
-        if (addItem.some((cartItem) => cartItem.product_id === item.id)) {
+        console.log(">>>>>>>>>>>>>>resonse", res);
+        if (addItem.some((cartItem) => cartItem.id === item.id)) {
           setAddItem((cart) =>
             cart.map((data) =>
-              data.product_id === item.id ? { ...data, amount: +data.amount + 1 } : data
+              data.id === item.id ? { ...data, amount: +data.amount + 1 } : data
             )
           );
 
@@ -103,15 +91,10 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
   };
 
   const findAddItem = () => {
-    // console.log("[][][][][][][][][][][][]]",addItem,"addITEM", item, "ITEM")
+    // console.log(">>>>>>>>>>>>item.id cartQuantity",addItem)
     let index = addItem.findIndex((i) => +i.id === +item.id);
     return addItem[index].amount;
   };
-  //   let index = addItem.findIndex((i) => +i.product_id === +item.id);
-  //   console.log(addItem[index].amount);
-  //   return addItem[index].amount;
-  // };
-
 
   return (
     <div>

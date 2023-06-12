@@ -46,33 +46,88 @@ export const SubCategory = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
 
   useEffect(() => {}, [allproducts, category_id]);
 
-  const addItemHandler = (item) => {
-    let config = {
+  // const addItemHandler = (item) => {
+  //   let config = {
+  //     headers: {
+  //       Authorization: `Bearer ${API_TOKEN}`,
+  //     },
+  //   };
+  
+  //   var bodyFormData = new FormData();
+  //   bodyFormData.append("accesskey", "90336");
+  //   bodyFormData.append("add_to_cart", "1");
+  //   bodyFormData.append("user_id", "21");
+  //   bodyFormData.append("product_id", item.variants[0].product_id);
+  //   bodyFormData.append("product_variant_id", item.variants[0].id);
+  //   console.log(bodyFormData);
+
+  //   axios
+  //   .post(
+  //     "https://grocery.intelliatech.in/api-firebase/get-products-by-subcategory-id.php",
+  //     bodyFormData,
+  //     config
+  //   )
+  //     .then((res) => {
+  //       console.log(res, "<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+  //       if (addItem.some((cartItem) => cartItem.id === item.id)) {
+  //         setAddItem((cart) =>
+  //           cart.map((data) =>
+  //             data.id === item.id
+  //               ? {
+  //                   ...data,
+  //                   amount: data.amount + 1,
+  //                 }
+  //               : data
+  //           )
+  //         );
+  //         return;
+  //       }
+  
+  //       setAddItem((cart) => [...cart, { ...item, amount: 1 }]);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+  
+  const addItemHandler = (item, data) => {
+    // console.log("item1>>>>>>>>>>>>>>", addItem);
+    console.log("item", item);
+    const config = {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
       },
     };
-  
-    var bodyFormData = new FormData();
+    console.log(data.id, "varaitn id");
+    console.log(item.id, "main id");
+    const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", "21");
-    bodyFormData.append("product_id", item.variants[0].product_id);
-    bodyFormData.append("product_variant_id", item.variants[0].id);
-    console.log(bodyFormData);
+    bodyFormData.append("user_id", "14");
+
+    bodyFormData.append("product_id", `${data.id}`);
+    bodyFormData.append("product_variant_id", `${item.id}`);
+
+    // const qtys = (item.qty || 0) + 1;
+
+    bodyFormData.append("qty", 1);
+
+    // console.log("item", qtys);
 
     axios
-    .post(
-      "https://grocery.intelliatech.in/api-firebase/get-products-by-subcategory-id.php",
-      bodyFormData,
-      config
-    )
+      .post(
+        "https://grocery.intelliatech.in/api-firebase/cart.php",
+        bodyFormData,
+        config
+      )
       .then((res) => {
-        console.log(res, "<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        if (addItem.some((cartItem) => cartItem.id === item.id)) {
+        console.log(res, "res add item");
+        // setAddItem(res)
+        if (addItem.some((cartItem) => cartItem.product_id === item.id)) {
+          // console.log("addtiem", addItem);
           setAddItem((cart) =>
             cart.map((data) =>
-              data.id === item.id
+              data.product_id === item.id
                 ? {
                     ...data,
                     amount: data.amount + 1,
@@ -82,13 +137,36 @@ export const SubCategory = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
           );
           return;
         }
-  
-        setAddItem((cart) => [...cart, { ...item, amount: 1 }]);
+        console.log(item.id, "Additem Id in product caraousel");
+        let item1 = {
+          amount: 1,
+          discounted_price: item.discounted_price,
+          id: item.id,
+          image: data.image,
+          images: [
+            "http://grocery.intelliatech.in/upload/variant_images/1676618514.4521-883.png",
+          ],
+          price: item.price,
+          product_id: item.product_id,
+          product_variant_id: item.id,
+          qty: 1,
+          save_for_later: "0",
+          serve_for: "Available",
+          slug: "butterscotch-flavorsome-cake",
+          stock: "29",
+
+          type: "packet",
+          unit: "gm",
+          user_id: "14",
+        };
+        setAddItem((cart) => [...cart, { ...item1, amount: 1 }]);
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
+  
   return (
     <>
       <div>
@@ -133,9 +211,18 @@ export const SubCategory = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
                               {item.variants.some(
                                 (variant) => variant.stock > 0
                               ) ? (
-                                addItem.find((i) => i.id === item.id) ? (
+                                addItem.find(
+                                  (i) => i.product_id === item.id
+                                ) ? (
                                   <>
-                                    <div className="md:mt-2 xs:mt-3 xs:mr-[12px] sm:mt-2 ">
+                                    <div className="md:mt-2 md:ml-6 xs:mt-2.5 sm:mt-4 ">
+                                      {console.log(
+                                        item,
+                                        "Item",
+                                        addItem,
+                                        "addItem",
+                                        "In ProductCarousel, calling CartQuantity"
+                                      )}
                                       <CartQuantity
                                         item={item}
                                         setAddItem={setAddItem}
@@ -145,14 +232,14 @@ export const SubCategory = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
                                   </>
                                 ) : (
                                   <button
-                                    className="my-1 w-24 xs:w-14 xs:mr-2 xs:text-xs md:w-16 md:h-10 md:text-base md:mb-3 md:mr-2 sm:w-[80px] sm:h-12 sm:mr-3 sm:text-lg text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm py-2.5 sm:py-2 text-center"
-                                    onClick={() => addItemHandler(item)}
+                                    className="md:w-16 md:h-8 mb-3 xs:w-18 sm:ml-2 md:text-xs md:mt-2 xs:mt-2 sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
+                                    onClick={() => addItemHandler(data, item)}
                                   >
                                     Add
                                   </button>
                                 )
                               ) : (
-                                <p className="text-orange text-sm xs:text-xs md:text-xs font-medium mt-4 xs:mr-2 md:mr-3 sm:text-lg sm:mr-1 bg-white">
+                                <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:mb-4 sm:text-xs  xs:text-xs">
                                   Out of stock
                                 </p>
                               )}

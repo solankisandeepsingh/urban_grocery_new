@@ -34,11 +34,10 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
     }
   };
 
-
   const total = () => {
     let price = 0;
     addItem.forEach((cartItem) => {
-      console.log(addItem)
+      console.log(addItem);
       if (cartItem.amount) {
         price += parseFloat(cartItem.price) * cartItem.amount;
       }
@@ -46,7 +45,7 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
     setPrice(price);
     // console.log(price,"piceeeeeeeeeeeeeeeeeeeeeeeeee")
   };
-  
+
   const totalAmount = () => {
     let totalAmount = 0;
     addItem.forEach((e) => {
@@ -56,7 +55,7 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
     });
     setTotalItem(totalAmount);
   };
-  
+
   // const getAddress = () => {
   //   const data = new FormData();
   //   data.append("accesskey", "90336");
@@ -93,8 +92,7 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
     bodyFormdata.append("accesskey", "90336");
     bodyFormdata.append("remove_from_cart", "1");
     bodyFormdata.append("user_id", "14");
-    bodyFormdata.append("product_variant_id", `${item.product_variant_id
-    }`);
+    bodyFormdata.append("product_variant_id", `${item.product_variant_id}`);
     axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
@@ -151,29 +149,32 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
     bodyFormdata.append("get_user_cart", "1");
     bodyFormdata.append("user_id", user_id);
 
-    return axios.post(
-      "https://grocery.intelliatech.in/api-firebase/cart.php",
-      bodyFormdata,
-      config
-    ).then((res) => {
+    return axios
+      .post(
+        "https://grocery.intelliatech.in/api-firebase/cart.php",
+        bodyFormdata,
+        config
+      )
+      .then((res) => {
+        // console.log(res.data.data, "cart my-response");
+        // console.log(res.data.data.map(data=> ({...data ,amount:+data.qty})), "my-response");
 
-      // console.log(res.data.data, "cart my-response");
-      // console.log(res.data.data.map(data=> ({...data ,amount:+data.qty})), "my-response");
-
-     let addqtytoamount= res.data.data.map(data=> ({...data ,amount:+data.qty}))
-    //  console.log(addqtytoamount, "addqtytoamount");
-      setAddItem( addqtytoamount);
-      total();
-      totalAmount();
-    })
-    .catch((error) => {
-      console.log("hello this error is shown in the program", error);
-    });
+        let addqtytoamount = res.data.data.map((data) => ({
+          ...data,
+          amount: +data.qty,
+        }));
+        //  console.log(addqtytoamount, "addqtytoamount");
+        setAddItem(addqtytoamount);
+        total();
+        totalAmount();
+      })
+      .catch((error) => {
+        console.log("hello this error is shown in the program", error);
+      });
   };
-  
+
   useEffect(() => {
-    getUserCarts()
-      
+    getUserCarts();
   }, [accesskey, user_id]);
 
   // console.log("addItemmmmmmmmmmmmmmmmmmmmmmmm",addItem)
@@ -298,16 +299,11 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
 
                                           <div className="bg-white">
                                             {/* {console.log(item,'Item', addItem,'addItem', 'In mycart, calling QtyAmount')} */}
-                                          <QtyAmount
+                                            <QtyAmount
                                               item={item}
                                               setAddItem={setAddItem}
                                               addItem={addItem}
                                             />
-                                          {/* <CartQuantity
-                                              item={item}
-                                              setAddItem={setAddItem}
-                                              addItem={addItem}
-                                            /> */}
                                           </div>
                                           <div className="bg-white">
                                             <FaTrash
@@ -373,11 +369,11 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
                       setFormdata={setFormdata}
                       formData={formData}
                     />
-                    // addList.map((item)=>{
+                  ) : // addList.map((item)=>{
 
-                    // })
-                    // <AddressForm />
-                  ) : null}
+                  // })
+                  // <AddressForm />
+                  null}
                 </div>
               </div>
             </div>

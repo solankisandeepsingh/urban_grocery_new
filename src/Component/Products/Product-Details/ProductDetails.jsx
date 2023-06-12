@@ -24,7 +24,7 @@ export const ProductDetails = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
   
     var bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
-    bodyFormData.append("product_id", "231 OR slug:onion-1");
+    bodyFormData.append("product_id", id);
   
     axios
       .post(
@@ -46,20 +46,73 @@ export const ProductDetails = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
   },[])
  
 
-  const addItemHandler = (item) => {
-    let config = {
+  // const addItemHandler = (item) => {
+  //   let config = {
+  //     headers: {
+  //       Authorization: `Bearer ${API_TOKEN}`,
+  //     },
+  //   };
+  
+  //   var bodyFormData = new FormData();
+  //   bodyFormData.append("accesskey", "90336");
+  //   bodyFormData.append("add_to_cart", "1");
+  //   bodyFormData.append("user_id", "14");
+  //   bodyFormData.append("product_id", item.variants[0].product_id);
+  //   bodyFormData.append("product_variant_id", item.variants[0].id);
+  
+  //   axios
+  //     .post(
+  //       "https://grocery.intelliatech.in/api-firebase/cart.php",
+  //       bodyFormData,
+  //       config
+  //     )
+  //     .then((res) => {
+  //       console.log(res, "<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+  //       if (addItem.some((cartItem) => cartItem.id === item.id)) {
+  //         setAddItem((cart) =>
+  //           cart.map((data) =>
+  //             data.id === item.id
+  //               ? {
+  //                   ...data,
+  //                   amount: data.amount + 1,
+  //                 }
+  //               : data
+  //           )
+  //         );
+  //         return;
+  //       }
+  
+  //       setAddItem((cart) => [...cart, { ...item, amount: 1 }]);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
+
+  const addItemHandler = (item, data) => {
+    // console.log("item1>>>>>>>>>>>>>>", addItem);
+    console.log("item", item);
+    const config = {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
       },
     };
-  
-    var bodyFormData = new FormData();
+   
+    const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
     bodyFormData.append("user_id", "14");
-    bodyFormData.append("product_id", item.variants[0].product_id);
-    bodyFormData.append("product_variant_id", item.variants[0].id);
-  
+
+    bodyFormData.append("product_id", `${data.id}`);
+    bodyFormData.append("product_variant_id", `${item.id}`);
+
+    // const qtys = (item.qty || 0) + 1;
+
+    bodyFormData.append("qty", 1);
+
+    // console.log("item", qtys);
+
     axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
@@ -67,11 +120,13 @@ export const ProductDetails = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
         config
       )
       .then((res) => {
-        console.log(res, "<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        if (addItem.some((cartItem) => cartItem.id === item.id)) {
+        console.log(res, "res add item");
+        // setAddItem(res)
+        if (addItem.some((cartItem) => cartItem.product_id === item.id)) {
+          // console.log("addtiem", addItem);
           setAddItem((cart) =>
             cart.map((data) =>
-              data.id === item.id
+              data.product_id === item.id
                 ? {
                     ...data,
                     amount: data.amount + 1,
@@ -81,14 +136,34 @@ export const ProductDetails = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
           );
           return;
         }
-  
-        setAddItem((cart) => [...cart, { ...item, amount: 1 }]);
+        console.log(item.id, "Additem Id in product caraousel");
+        let item1 = {
+          amount: 1,
+          discounted_price: item.discounted_price,
+          id: item.id,
+          image: data.image,
+          images: [
+            "http://grocery.intelliatech.in/upload/variant_images/1676618514.4521-883.png",
+          ],
+          price: item.price,
+          product_id: item.product_id,
+          product_variant_id: item.id,
+          qty: 1,
+          save_for_later: "0",
+          serve_for: "Available",
+          slug: "butterscotch-flavorsome-cake",
+          stock: "29",
+
+          type: "packet",
+          unit: "gm",
+          user_id: "14",
+        };
+        setAddItem((cart) => [...cart, { ...item1, amount: 1 }]);
       })
       .catch((error) => {
         console.log(error);
       });
   };
-
   const filterData = productPageData.filter((data) => {
     return data.id === id;
   });
@@ -226,7 +301,7 @@ export const ProductDetails = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
                                 {data.stock > 0 && (
                                   <button
                                     className="bg-lime 2xs:px-2 2xs:mt-2 2xs:rounded xs:mt-3 xs:w-24 xs:rounded-lg xs:py-1 md:mt-3 md:w-[118px] sm:w-[130px] sm:mt-5  text-white md:font-bold md:py-3 sm:text-lg md:text-sm md:px-4 md:rounded-lg md:hover:opacity-90"
-                                    onClick={() => addItemHandler(item)}
+                                    onClick={() => addItemHandler(data, item)}
                                   >
                                     Add to cart
                                   </button>

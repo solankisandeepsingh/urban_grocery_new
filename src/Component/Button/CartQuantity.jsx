@@ -30,11 +30,11 @@ function CartQuantity({ item, setAddItem, addItem }) {
         bodyFormData,
         config
       )
-      .then((res) => {
-        console.log(addItem);
-        // if (addItem.some((cartItem) => cartItem.amount === 1)) {
-        //   setAddItem(addItem.filter((item) => item.amount === 0));
-        // }
+      .then(() => {
+        if (addItem.some((product) => product.amount === 1))
+          setAddItem(
+            addItem.filter((pro) => pro.product_id !== item.id || pro.amount !== 1)
+          );
 
         if (addItem.some((cartItem) => cartItem.product_id === item.id)) {
           setAddItem((cart) =>
@@ -54,27 +54,6 @@ function CartQuantity({ item, setAddItem, addItem }) {
       .catch((error) => {
         console.log(error);
       });
-
-    //   setAddItem((cart) => [...cart, { ...item, amount: 1 }]);
-
-    // if (addItem.some((cartItem) => cartItem.amount === 1)) {                                1
-    //   setAddItem(addItem.filter((item) => item.amount === 0));
-    // }
-
-    //   if (addItem.some((cartItem) => cartItem.id === item.id)) {                              2
-    //     setAddItem((cart) =>
-    //       cart.map((data) =>
-    //         data.id === item.id && data.amount > 1
-    //           ? {
-    //               ...data,
-    //               amount: data.amount - 1,
-    //             }
-    //           : data
-    //       )
-    //     );
-
-    //     return;
-    //   }
   };
 
   const quantityIncrease = () => {
