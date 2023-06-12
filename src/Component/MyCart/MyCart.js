@@ -26,11 +26,14 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
   const hideMOdal = () => {
     setShowModal(false);
     setShowForm(false);
-  };
+  }; 
 
   const back = () => {
     if (showForm) {
       setShowForm(false);
+    }
+    if (Payment) {
+      setPayment(false)
     }
   };
 
@@ -241,7 +244,7 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
                   </button>
                 </div>
 
-                <div className=" bg-white overflow-y-scroll md:h-[500px] xs:h-[758px] sm:h[985px] 2xs:h-[500px]">
+                <div className=" bg-white overflow-y-scroll md:h-[700px] xs:h-[758px] sm:h[985px] 2xs:h-[500px]">
                   {!showForm && addItem.length
                     ? addItem &&
                       addItem.map((item) => {
