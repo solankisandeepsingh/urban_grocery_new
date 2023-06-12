@@ -14,6 +14,7 @@ function Form({ back, setFormdata, formData }) {
 
   const handleOptionChange = (event) => {
     console.log(event.target.value);
+    console.log(event.target.value);
     setSelectedOption(event.target.value);
   };
 
