@@ -26,21 +26,21 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
   const hideMOdal = () => {
     setShowModal(false);
     setShowForm(false);
-  }; 
+  };
 
   const back = () => {
     if (showForm) {
       setShowForm(false);
     }
     if (Payment) {
-      setPayment(false)
+      setPayment(false);
     }
   };
 
   const total = () => {
     let price = 0;
     addItem.forEach((cartItem) => {
-      console.log(addItem);
+      // console.log(addItem);
       if (cartItem.amount) {
         price += parseFloat(cartItem.price) * cartItem.amount;
       }
@@ -58,26 +58,6 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
     });
     setTotalItem(totalAmount);
   };
-
-  // const getAddress = () => {
-  //   const data = new FormData();
-  //   data.append("accesskey", "90336");
-  //   data.append("get_addresses", "1");
-  //   data.append("user_id", "14");
-
-  //   axios
-  //     .post(
-  //       "https://grocery.intelliatech.in/api-firebase/user-addresses.php",
-  //       data,
-  //       config
-  //     )
-  //     .then((res) => setAddlist(res.data.data))
-  //     .catch((err) => console.log(err));
-  // };
-
-  // useEffect(() => {
-  //   getAddress();
-  // }, []);
 
   useEffect(() => {
     total();
@@ -162,12 +142,12 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
         // console.log(res.data.data, "cart my-response");
         // console.log(res.data.data.map(data=> ({...data ,amount:+data.qty})), "my-response");
 
-        let addqtytoamount = res.data.data.map((data) => ({
+        let addQtyAmount = res.data.data.map((data) => ({
           ...data,
           amount: +data.qty,
         }));
         //  console.log(addqtytoamount, "addqtytoamount");
-        setAddItem(addqtytoamount);
+        setAddItem(addQtyAmount);
         total();
         totalAmount();
       })
@@ -180,7 +160,7 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
     getUserCarts();
   }, [accesskey, user_id]);
 
-  // console.log("addItemmmmmmmmmmmmmmmmmmmmmmmm",addItem)
+  console.log("addItemmmmmmmmmmmmmmmmmmmmmmmm",addItem)
   return (
     <>
       <button
@@ -248,7 +228,6 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
                   {!showForm && addItem.length
                     ? addItem &&
                       addItem.map((item) => {
-                        // console.log(item,'this is cart item')
                         return (
                           <>
                             <div class="mt-3 bg-white md:p-5 xs:p-4 2xs:p-2  ">
@@ -274,6 +253,7 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
                                         <br />
                                         {item.variants &&
                                           item.variants.map((data) => {
+                                            console.log(data,"dataaaaaaaaaaaaaaaaaa")
                                             return (
                                               <>
                                                 <div className="2xs:flex-col md:flex-col bg-white">
@@ -301,7 +281,6 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
                                           </div>
 
                                           <div className="bg-white">
-                                            {/* {console.log(item,'Item', addItem,'addItem', 'In mycart, calling QtyAmount')} */}
                                             <QtyAmount
                                               item={item}
                                               setAddItem={setAddItem}
@@ -372,11 +351,7 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
                       setFormdata={setFormdata}
                       formData={formData}
                     />
-                  ) : // addList.map((item)=>{
-
-                  // })
-                  // <AddressForm />
-                  null}
+                  ) : null}
                 </div>
               </div>
             </div>

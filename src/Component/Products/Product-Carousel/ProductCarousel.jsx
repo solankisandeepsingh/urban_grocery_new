@@ -49,7 +49,7 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
 
-      items: 5,
+      items: 6,
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
@@ -144,11 +144,11 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
   return (
     <div className="mt-14 pb-5">
       <div className="xs:my-5 mt-20 flex justify-between">
-        <div className="text-lime text-base font-semibold">
-          <h1>All Proudcts</h1>
+        <div className="text-customBlack text-[24px]">
+          <h1 className="font-okra font-600">All Proudcts</h1>
         </div>
-        <div className=" text-orange  text-base	font-semibold">
-          <h1 className="cursor-pointer" onClick={viewAllProducts}>
+        <div className=" text-customGreen text-[20px]	">
+          <h1 className="cursor-pointer font-okra font-600" onClick={viewAllProducts}>
             View All
           </h1>
         </div>
@@ -171,15 +171,10 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
                       />
                     </NavLink>
                     <div className="py-4 xs:mb-[-10px]  md:mx-4 xs:mx-4 sm:mx-4 bg-white">
-                      <p className="md:text-sm xs:text-sm sm:text-2xl font-normal bg-white truncate ...">
+                      <p className="md:text-sm xs:text-sm sm:text-2xl font-medium bg-white truncate ...">
                         {item.name}
                       </p>
-                      <button
-                        className="text-black"
-                        onClick={() => console.log(addItem)}
-                      >
-                        Check
-                      </button>
+                  
                     </div>
                     {item &&
                       item.variants.map((data) => {

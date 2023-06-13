@@ -4,52 +4,6 @@ import { API_TOKEN } from "../Token/Token";
 
 export const QtyAmount = ({ item, setAddItem, addItem }) => {
   const quantityDecrease = () => {
-    
-    let config = {
-      headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
-      },
-    };
-    var bodyFormData = new FormData();
-    bodyFormData.append("accesskey", "90336");
-    bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", "14");
-    bodyFormData.append("product_id", +item.product_id);
-    bodyFormData.append("product_variant_id", +item.id);
-    bodyFormData.append("qty", "1");
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>itmemmmmmmamiyt", item);
-
-    axios
-      .post(
-        "https://grocery.intelliatech.in/api-firebase/cart.php",
-        config,
-        bodyFormData
-      )
-      .then((res) => {
-        console.log(res);
-        if (addItem.some((cartItem) => cartItem.id === item.id)) {
-          setAddItem((cart) =>
-            cart.map((data) =>
-              data.id === item.id && data.amount > 1
-                ? {
-                    ...data,
-                    amount: data.amount - 1,
-                  }
-                : data
-            )
-          );
-
-          return;
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const quantityIncrease = () => {
-    alert("helloo");
-    console.log("addItem>>>>>>>>>>>>>>>>>>>>>>>>>>>>", addItem);
     const config = {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
@@ -60,10 +14,66 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
     bodyFormData.append("user_id", "14");
-    bodyFormData.append("product_id", +item.product_id);
-    bodyFormData.append("product_variant_id", +item.id);
-    bodyFormData.append("qty", "1");
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>itmemmmmmmamiyt", item);
+    bodyFormData.append("product_id", item.product_id);
+    bodyFormData.append("product_variant_id", item.product_variant_id);
+
+    const finditem = addItem.find((data) => {
+      console.log(data);
+      return data.product_id === item.product_id;
+    });
+    const newQty = +finditem.amount !== 0 ? +finditem.amount - 1 : 0;
+    bodyFormData.append("qty", newQty);
+
+    axios
+      .post(
+        "https://grocery.intelliatech.in/api-firebase/cart.php",
+        bodyFormData,
+        config
+      )
+      .then(() => {
+        if (
+          addItem.some((cartItem) => cartItem.product_id === item.product_id)
+        ) {
+          if (newQty > 0) {
+            setAddItem((cart) =>
+              cart.map((data) =>
+                data.product_id === item.product_id
+                  ? { ...data, amount: newQty }
+                  : data
+              )
+            );
+          } else {
+            setAddItem((cart) =>
+              cart.filter((data) => data.product_id !== item.product_id)
+            );
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const quantityIncrease = () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    };
+
+    const bodyFormData = new FormData();
+    bodyFormData.append("accesskey", "90336");
+    bodyFormData.append("add_to_cart", "1");
+    bodyFormData.append("user_id", "14");
+    bodyFormData.append("product_id", item.id);
+    bodyFormData.append("product_id", item.product_id);
+    bodyFormData.append("product_variant_id", item.product_variant_id);
+    const finditem = addItem.find((data) => {
+      console.log(data);
+      return data.product_id == item.product_id;
+    });
+    const newQty = (+finditem.amount || 0) + 1;
+    bodyFormData.append("qty", newQty);
 
     axios
       .post(
@@ -91,7 +101,6 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
   };
 
   const findAddItem = () => {
-    // console.log(">>>>>>>>>>>>item.id cartQuantity",addItem)
     let index = addItem.findIndex((i) => +i.id === +item.id);
     return addItem[index].amount;
   };

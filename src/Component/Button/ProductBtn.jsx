@@ -19,6 +19,7 @@ function CartQuantity({ item, setAddItem, addItem }) {
     bodyFormData.append("product_id", item.id);
     bodyFormData.append("product_variant_id", item.variants[0].id);
     const finditem = addItem.find((data) => data.product_id == item.id);
+    // const newQty = (+finditem.amount || 0) - 1;
     const newQty =
       +finditem.amount !== 0 ? +finditem.amount - 1 : finditem.amount;
     bodyFormData.append("qty", newQty);
@@ -32,9 +33,7 @@ function CartQuantity({ item, setAddItem, addItem }) {
       .then(() => {
         if (addItem.some((product) => product.amount === 1))
           setAddItem(
-            addItem.filter(
-              (pro) => pro.product_id !== item.id || pro.amount !== 1
-            )
+            addItem.filter((pro) => pro.product_id !== item.id || pro.amount !== 1)
           );
 
         if (addItem.some((cartItem) => cartItem.product_id === item.id)) {
@@ -113,27 +112,29 @@ function CartQuantity({ item, setAddItem, addItem }) {
   };
 
   return (
-    <div className="rounded-lg bg-lime text-white gap-1 hover:bg-blue-700 font-bold px-2 md:h-[28px] xs:h-[28px]  md:w-14 xs:w-14 sm:w-[70px] sm:h-[36px] flex justify-between ">
-      <button
-        className="md:text-lg xs:text-sm sm:text-4xl"
+    <>
+    <div className="rounded-lg bg-lime text-white gap-1 hover:bg-blue-700 font-bold px-2 md:h-[28px] xs:h-[28px] w-[100%] sm:h-[36px] flex justify-around  p-0 items-center ">
+    <button
+        className="xs:text-sm sm:text-4xl md:text-xl"
         onClick={() => quantityDecrease()}
       >
         -
       </button>
 
       {
-        <p className="md:text-sm xs:text-sm sm:text-xl mt-1 bg-lime">
+          <p className="md:text-xl xs:text-sm sm:text-xl bg-lime">
           {findItemNumber()}
         </p>
       }
 
       <button
-        className="md:text-lg xs:text-sm sm:text-2xl"
+        className="md:text-xl xs:text-sm sm:text-2xl"
         onClick={() => quantityIncrease()}
-      >
+        >
         +
       </button>
-    </div>
+      </div>
+          </> 
   );
 }
 

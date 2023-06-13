@@ -175,8 +175,8 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
                       alt={name}
                     />
                   </NavLink>
-                  <div className="md:py-4 px-3 bg-white">
-                    <p className="text-xl font-light truncate ... xs:text-xs sm:text-xl md:text-sm bg-white">
+                  <div className="md:py-1 px-3 bg-white">
+                    <p className="text-xl font-medium truncate ... xs:text-xs sm:text-xl md:text-sm bg-white">
                       {item.name}
                     </p>
                   </div>
@@ -185,14 +185,14 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
                     item.variants.map((data) => {
                       return (
                         <>
-                          <div className="sm:mt-2 md:mt-[-10px] px-3 bg-white">
+                          <div className="sm:mt-2 md:mt-[-1px] px-3 bg-white">
                             <p className="text-lime text-lg font-bold xs:text-sm  sm:text-xl md:text-xs bg-white">
                               You save ₹{data.price - data.discounted_price}
                               .00
                             </p>
                             <p className="2xs:text-base xs:text-sm  sm:text-xl md:text-sm text-black font-medium md:mt-1 sm:mt-2 bg-white">
                               ₹{data.discounted_price}.00{" "}
-                              <span className="text-xs sm:text-xl xs:text-sm xs:ml-1 md:text-sm text-black line-through bg-white">
+                              <span className="text-xs sm:text-xl xs:text-sm xs:ml-1 md:text-sm text-customBlack line-through bg-white">
                                 ₹{data.price}.00{" "}
                               </span>
                             </p>

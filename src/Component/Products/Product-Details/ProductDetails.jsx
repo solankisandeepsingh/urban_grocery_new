@@ -8,6 +8,7 @@ import Rating from "../../StarRating/Rating";
 import DropdownMenu from "../../AccountDropdown/DropdownMenu";
 import axios from "axios";
 import { API_TOKEN } from "../../Token/Token";
+import ProductBtn from "../../Button/ProductBtn";
 
 export const ProductDetails = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
   // const [productPageData, setProductPage] = useState(mockProduct.data);
@@ -15,17 +16,17 @@ export const ProductDetails = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
   const [wishlist, setWishlist] = useState(false);
   const { id } = useParams();
 
-  const productDetail = () =>{
+  const productDetail = () => {
     let config = {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
       },
     };
-  
+
     var bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("product_id", id);
-  
+
     axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/get-product-by-id.php",
@@ -39,12 +40,11 @@ export const ProductDetails = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     productDetail();
-  },[])
- 
+  }, []);
 
   // const addItemHandler = (item) => {
   //   let config = {
@@ -52,14 +52,14 @@ export const ProductDetails = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
   //       Authorization: `Bearer ${API_TOKEN}`,
   //     },
   //   };
-  
+
   //   var bodyFormData = new FormData();
   //   bodyFormData.append("accesskey", "90336");
   //   bodyFormData.append("add_to_cart", "1");
   //   bodyFormData.append("user_id", "14");
   //   bodyFormData.append("product_id", item.variants[0].product_id);
   //   bodyFormData.append("product_variant_id", item.variants[0].id);
-  
+
   //   axios
   //     .post(
   //       "https://grocery.intelliatech.in/api-firebase/cart.php",
@@ -81,14 +81,13 @@ export const ProductDetails = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
   //         );
   //         return;
   //       }
-  
+
   //       setAddItem((cart) => [...cart, { ...item, amount: 1 }]);
   //     })
   //     .catch((error) => {
   //       console.log(error);
   //     });
   // };
-
 
   const addItemHandler = (item, data) => {
     // console.log("item1>>>>>>>>>>>>>>", addItem);
@@ -98,7 +97,7 @@ export const ProductDetails = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
         Authorization: `Bearer ${API_TOKEN}`,
       },
     };
-   
+
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
@@ -298,14 +297,47 @@ export const ProductDetails = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
                                     Not Cancellable
                                   </div>
                                 </div>
-                                {data.stock > 0 && (
+                                {/* {data.stock > 0 && (
                                   <button
                                     className="bg-lime 2xs:px-2 2xs:mt-2 2xs:rounded xs:mt-3 xs:w-24 xs:rounded-lg xs:py-1 md:mt-3 md:w-[118px] sm:w-[130px] sm:mt-5  text-white md:font-bold md:py-3 sm:text-lg md:text-sm md:px-4 md:rounded-lg md:hover:opacity-90"
                                     onClick={() => addItemHandler(data, item)}
                                   >
                                     Add to cart
                                   </button>
-                                )}
+                                )} */}
+
+                                <div>
+                                  {item.variants.some(
+                                    (variant) => variant.stock > 0
+                                  ) ? (
+                                    addItem.find(
+                                      (i) => i.product_id === item.id
+                                    ) ? (
+                                      <>
+                                        <div className="bg-lime 2xs:px-2 2xs:mt-2 2xs:rounded xs:mt-3 xs:w-24 xs:rounded-lg xs:py-1 md:mt-3 md:w-[118px] sm:w-[130px] sm:mt-5 md:text-2xl text-white md:font-bold md:py-2 sm:text-lg md:px-4 md:rounded-lg md:hover:opacity-90">
+                                          <ProductBtn
+                                            item={item}
+                                            setAddItem={setAddItem}
+                                            addItem={addItem}
+                                          />
+                                        </div>
+                                      </>
+                                    ) : (
+                                      <button
+                                        className="bg-lime 2xs:px-2 2xs:mt-2 2xs:rounded xs:mt-3 xs:w-24 xs:rounded-lg xs:py-1 md:mt-3 md:w-[118px] sm:w-[130px] sm:mt-5  text-white md:font-bold md:py-3 sm:text-lg md:text-sm md:px-4 md:rounded-lg md:hover:opacity-90"
+                                        onClick={() =>
+                                          addItemHandler(data, item)
+                                        }
+                                      >
+                                        Add
+                                      </button>
+                                    )
+                                  ) : (
+                                    <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:mb-4 sm:text-xs  xs:text-xs">
+                                      Out of stock
+                                    </p>
+                                  )}
+                                </div>
                               </div>
                             </>
                           );
