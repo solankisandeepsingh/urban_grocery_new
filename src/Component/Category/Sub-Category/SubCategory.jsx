@@ -12,7 +12,7 @@ export const SubCategory = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const { category_id } = useParams();
-  
+
   let config = {
     headers: {
       Authorization: `Bearer ${API_TOKEN}`,
@@ -32,7 +32,7 @@ export const SubCategory = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
           config
         )
         .then((res) => {
-          console.log(res.data.data);  
+          console.log(res.data.data);
           setAllProducts(res.data.data);
           setIsLoading(false);
         })
@@ -52,7 +52,7 @@ export const SubCategory = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
   //       Authorization: `Bearer ${API_TOKEN}`,
   //     },
   //   };
-  
+
   //   var bodyFormData = new FormData();
   //   bodyFormData.append("accesskey", "90336");
   //   bodyFormData.append("add_to_cart", "1");
@@ -82,14 +82,14 @@ export const SubCategory = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
   //         );
   //         return;
   //       }
-  
+
   //       setAddItem((cart) => [...cart, { ...item, amount: 1 }]);
   //     })
   //     .catch((error) => {
   //       console.log(error);
   //     });
   // };
-  
+
   const addItemHandler = (item, data) => {
     // console.log("item1>>>>>>>>>>>>>>", addItem);
     console.log("item", item);
@@ -166,48 +166,55 @@ export const SubCategory = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
       });
   };
 
-  
   return (
     <>
       <div>
         <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2 md:mt-[-22px] xs:mt-3 bg-white">
           <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
-        <div className="grid md:grid-cols-6 sm:grid-cols-3 xs:grid-cols-2 2xs:grid-cols-1 mt-20 px-5 gap-4 md:gap-2 ">
+        <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-6 sm:grid-cols-3 flex flex-wrap md:ml-5 ">
           {isLoading ? (
             <p className="m-auto">Loading...</p>
           ) : allproducts && allproducts.length > 0 ? (
             allproducts.map((item) => {
               return (
-                <div className="bg-white md:w-44 md:h-[240px] xs:h-[235px] sm:h-[310px] sm:w-56 mt-5 md:ml-4 rounded-2xl border border-light_gray hover:border-light_green cursor-pointer transform transition-all hover:scale-105 ">
+                <div className="w-72 xs:w-40 md:w-44 md:h-[246px] sm:w-60 sm:h-[365px]  rounded-xl xs:m-2 xs:my-3 md:mx-5 md:my-4 sm:my-4 container shadow-sm bg border border-light_gray hover:border-light_green">
                   <NavLink to={`product-details/${item.id}`}>
                     <img
-                      className="xs:w-32 xs:m-3.5 xs:h-28 md:w-28 md:h-24 md:m-4 md:ml-7 sm:w-48 sm:h-36 sm:ml-4 sm-ml-10 rounded-md bg-white"
+                      className="w-full h-56 xs:w-32 xs:h-24 xs:m-3 xs:mx-4 md:w-36 md:h-28 md:mx-4 md:m-2 sm:w-40 sm:h-32 sm:m-8 rounded-lg"
                       src={item.image}
                       alt="product"
                     />
                   </NavLink>
 
                   <div className="sm:-pl-2 xs:pl-2 bg-white mt-2">
-                    <p className="xs:text-sm md:text-sm sm:text-xl md:font-light md:tracking-tight bg-white truncate ...">
+                  <div className="md:py-1 px-3 bg-white">
+                    <p className="text-xl font-medium truncate ... xs:text-xs sm:text-xl md:text-sm bg-white">
                       {item.name}
                     </p>
-                    {item.variants.map((data) => {
+                  </div>
+                   
+                    {item &&
+                    item.variants.map((data) => {
                       return (
-                        <div className="flex flex-col bg-white">
-                          <div>
-                            <p className="text-lime text-lg xs:text-xs md:text-sm sm:text-xl sm:mt-1 font-normal md:mt-2 bg-white">
-                              ₹{data.price}{" "}
+                        <>
+                          <div className="sm:mt-2 md:mt-[-1px] px-3 bg-white">
+                           
+                            <p className="2xs:text-base xs:text-sm  sm:text-xl md:text-sm text-black font-medium md:mt-1 sm:mt-2 bg-white">
+                              ₹{data.discounted_price}.00{" "}
+                              <span className="text-xs sm:text-xl xs:text-sm xs:ml-1 md:text-sm text-gryColour line-through bg-white">
+                                ₹{data.price}.00{" "}
+                              </span>
                             </p>
-                          </div>
-                          <div className="md:flex justify-between xs:flex">
-                            <div className="md:mt-4 xs:mt-4">
-                              <p className="text-lg xs:text-xs md:text-xs sm:text-lg font-light md:mb-4 text-lava_grey bg-white">
-                                Discount: ₹{data.discounted_price}{" "}
-                              </p>
-                            </div>
+                            <div className="md:flex xs:flex justify-between ">
+                              <div>
+                                <p className="bg-white 2xs:text-base xs:text-sm xs:mt-4 sm:text-xl md:text-xs text-gryColour  mt-1 font-light">
+                                  {data.measurement}
+                                  {data.measurement_unit_name}
+                                </p>
+                              </div>
 
-                            <div>
+                              <div>
                               {item.variants.some(
                                 (variant) => variant.stock > 0
                               ) ? (
@@ -239,13 +246,14 @@ export const SubCategory = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
                                   </button>
                                 )
                               ) : (
-                                <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:mb-4 sm:text-xs  xs:text-xs">
+                                <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:mb-4 sm:text-xs xs:text-xs">
                                   Out of stock
                                 </p>
                               )}
                             </div>
+                            </div>
                           </div>
-                        </div>
+                        </>
                       );
                     })}
                   </div>

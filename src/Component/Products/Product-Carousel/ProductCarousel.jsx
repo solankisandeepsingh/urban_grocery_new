@@ -160,7 +160,7 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
             showAllProduct.map((item) => {
               return (
                 <>
-                  <div className="w-72 xs:w-40 xs:h-[265px] md:w-40 md:h-[230px] sm:h-[280px] rounded-xl md:mt-4 container border border-light_gray hover:border-light_green shadow-lg bg-white">
+                  <div className="w-72 xs:w-40 xs:h-[265px] md:w-40 md:h-[230px] sm:h-[280px] rounded-xl md:mt-4 container border border-light_gray hover:border-light_green bg-white">
                     <NavLink
                       to={`/subcategory-details/${item.category_name}/product-details/${item.id}`}
                     >
@@ -180,8 +180,8 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
                       item.variants.map((data) => {
                         return (
                           <div className="md:flex md:justify-evenly sm:flex xs:flex xs:justify-between xs:mr-4">
-                            <div className=" xs:text-left sm:mt-2 md:mt-[15px] md:mx-4 xs:mx-4 sm:mx-4 md:text-left ">
-                              <p className="2xs:text-base xs:text-sm sm:text-xl xs:mt-4 md:mt-[-3px] sm:mt-[12px] md:text-sm text-black font-light bg-white">
+                            <div className=" xs:text-left  sm:mt-2 md:mt-[15px] md:mx-4 xs:mx-4 sm:mx-4 md:text-left ">
+                              <p className="2xs:text-base xs:text-sm t sm:text-xl  xs:mt-4 md:mt-[-3px] sm:mt-[12px] md:text-sm text-gryColour font-light bg-white">
                                 ₹{data.price}{" "}
                               </p>
                             </div>

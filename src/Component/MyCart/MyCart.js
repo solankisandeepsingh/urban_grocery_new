@@ -9,6 +9,7 @@ import { API_TOKEN } from "../Token/Token";
 import { QtyAmount } from "../Button/QtyAmount";
 import CartQuantity from "../Button/CartQuantity";
 import { AddressForm } from "../MyAddress/AddressForm";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 function MyCart({ addItem, setAddItem, formData, setFormdata }) {
   const navigate = useNavigate();
@@ -97,11 +98,16 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
     setPayment(true);
   };
 
+  const handleCloseModal = () => {
+    hideMOdal();
+    setPayment(false);
+    setPrice(0); 
+  };
+  
   const handlePayment = () => {
     navigate("/payment");
     hideMOdal();
   };
-
   let menuRef = useRef();
 
   useEffect(() => {
@@ -160,7 +166,7 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
     getUserCarts();
   }, [accesskey, user_id]);
 
-  console.log("addItemmmmmmmmmmmmmmmmmmmmmmmm",addItem)
+  console.log("addItemmmmmmmmmmmmmmmmmmmmmmmm", addItem);
   return (
     <>
       <button
@@ -219,7 +225,10 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
                     onClick={hideMOdal}
                   >
                     <span className="text-black opacity-6 h-10 w-9 text-2xl block bg-gray-400 py-0 rounded-full bg-white">
-                      x
+                      <AiOutlineCloseCircle
+                        className="text-red text-2xl hover:opacity-50 mt-3"
+                        onClick={handleCloseModal}
+                      />
                     </span>
                   </button>
                 </div>
@@ -253,7 +262,6 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
                                         <br />
                                         {item.variants &&
                                           item.variants.map((data) => {
-                                            console.log(data,"dataaaaaaaaaaaaaaaaaa")
                                             return (
                                               <>
                                                 <div className="2xs:flex-col md:flex-col bg-white">
@@ -273,14 +281,14 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
 
                                         <div className="bg-white flex justify-between ">
                                           <div className="bg-white">
-                                            <p class="bg-white md:text-sm xs:text-sm sm:text-2xl font-light float-left">
+                                            <p class="bg-white text-gryColour md:mt-2 md:text-sm xs:text-sm sm:text-2xl font-light float-left">
                                               {" "}
                                               Qty : {item.amount}
                                               {() => setAmount(item.amount)}
                                             </p>
                                           </div>
 
-                                          <div className="bg-white">
+                                          <div className="bg-white md:mt-1.5">
                                             <QtyAmount
                                               item={item}
                                               setAddItem={setAddItem}
@@ -292,7 +300,7 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
                                               onClick={() =>
                                                 removeItemHandler(item)
                                               }
-                                              className="bg-white cursor-pointer mt-1 md:text-sm xs:text-sm sm:text-3xl text-red"
+                                              className="bg-white md:mt-2 hover:bg-RedColour hover:bg-opacity-20 cursor-pointer mt-1 md:text-[18px] xs:text-sm sm:text-3xl text-red"
                                             />
                                           </div>
                                         </div>
@@ -307,7 +315,7 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
                                   </div>
                                 )}
 
-                                {Payment ? (
+                                {/* {Payment ? (
                                   <button
                                     className="flex justify-between bg-lime text-white  fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
                                     onClick={handlePayment}
@@ -329,6 +337,32 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
                                     </p>
                                     <p className="p-2 bg-lime rounded-lg">
                                       Proceed{" "}
+                                    </p>
+                                  </button>
+                                )} */}
+
+                                {Payment ? (
+                                  <button
+                                    className="flex justify-between bg-lime text-white fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
+                                    onClick={handlePayment}
+                                  >
+                                    <p className="p-2 bg-lime rounded-lg">
+                                      Total : ₹ {price}
+                                    </p>
+                                    <p className="p-2 bg-lime rounded-lg">
+                                      Process to Payment
+                                    </p>
+                                  </button>
+                                ) : (
+                                  <button
+                                    className="flex justify-between bg-lime text-white fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
+                                    onClick={formHandler}
+                                  >
+                                    <p className="p-2 bg-lime rounded-lg">
+                                      Total : ₹ {price}
+                                    </p>
+                                    <p className="p-2 bg-lime rounded-lg">
+                                      Proceed
                                     </p>
                                   </button>
                                 )}

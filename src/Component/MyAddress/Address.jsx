@@ -163,7 +163,7 @@ export const Address = ({ isOpen, setIsOpen }) => {
                               <HiOfficeBuilding className="inline mr-3" />
                             )}
                           </div>
-                          <div className="w-[85%] flec flex-col">
+                          <div className="w-[85%] flex flex-col">
                             <div>{item.type === "Home" ? "Home" : "work"}</div>
                             <div className="pt-[10px]">
                               <span className="gap-2">{item.name} -</span>

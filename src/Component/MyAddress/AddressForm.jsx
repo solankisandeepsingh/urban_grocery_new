@@ -139,7 +139,7 @@ export const AddressForm = ({
               className="absolute top-[5%] right-[5%]"
               onClick={() => setFormOpen(false)}
             >
-              <AiOutlineCloseCircle className="text-red text-2xl" />
+              <AiOutlineCloseCircle className="text-red text-2xl hover:opacity-50" />
             </button>
             <div className="w-full p-8 my-4 md:px-12  lg:pl-20 lg:pr-40 mr-auto rounded-2xl shadow-2xl">
               <div className="flex justify-between">
@@ -189,46 +189,32 @@ export const AddressForm = ({
                 onChange={handleInputChange}
               /> */}
 
-                  <label>
-                    <input
-                      type="radio"
-                      name="type"
-                      value="Home"
-                      checked={addressData.type === "Home"}
-                      onChange={handleInputChange}
-                    />
-                    Home
-                  </label>
+                  <div className="flex justify-around mt-6">
+                    <label>
+                      <input
+                        type="radio"
+                        name="type"
+                        value="Home"
+                        checked={addressData.type === "Home"}
+                        onChange={handleInputChange}
+                      />
+                      <span className="ml-2">Home</span>
+                    </label>
 
-                  <label>
-                    <input
-                      type="radio"
-                      name="type"
-                      value="Work"
-                      checked={addressData.type === "Work"}
-                      onChange={handleInputChange}
-                    />
-                    Work
-                  </label>
-
-                  <label class="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg cursor-pointer">
-  <input type="radio" class="form-radio" name="myRadioButtonGroup" value="option1" />
-  <span class="ml-2">Option 1</span>
-</label>
-
-
-                  {/* <label>
-        <input
-          type="radio"
-          name="myRadioButtonGroup"
-          value="option3"
-          checked={addressData.type === 'option3'}
-          onChange={handleInputChange}
-        />
-        Option 3
-      </label> */}
+                    <label>
+                      <input
+                        type="radio"
+                        name="type"
+                        value="Work"
+                        checked={addressData.type === "Work"}
+                        onChange={handleInputChange}
+                      />
+                      <span className="ml-2">Work</span>
+                    </label>
+                  </div>
                 </div>
-                <div className="mr-6 flex flex-wrap">
+
+                {/* <div className="mr-6 flex flex-wrap">
                   <div className="my-1">
                     <select
                       value={cityDropdown}
@@ -259,7 +245,43 @@ export const AddressForm = ({
                       })}
                     </select>
                   </div>
+                </div> */}
+
+                <div className="mr-6 flex flex-wrap">
+                  <div className="my-1 flex">
+                    <div className="mr-2">
+                      <select
+                        value={cityDropdown}
+                        onChange={handleDropdown1Change}
+                        className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      >
+                        <option value="">City</option>
+                        {cities.map((item) => (
+                          <option key={item.id} value={item.id}>
+                            {item.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <select
+                        value={areaDropdown}
+                        onChange={handleDropdown2Change}
+                        disabled={!cityDropdown}
+                        className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      >
+                        <option value="">Area</option>
+                        {areas && areas.map((item) => (
+                          <option key={item.id} value={item.id}>
+                            {item.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
                 </div>
+
                 <div className="mx-auto mt-8 w-1/2 lg:w-1/4">
                   <button
                     className="uppercase text-sm font-bold tracking-wide bg-lime text-gray-100 p-3 rounded-lg w-full 

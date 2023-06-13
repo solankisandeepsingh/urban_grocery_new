@@ -165,7 +165,7 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
           allproduct.map((item) => {
             return (
               <>
-                <div className="w-72 xs:w-40 md:w-44  md:h-[280px] sm:w-60 sm:h-[365px]  rounded-xl xs:m-2 xs:my-3 md:mx-5 md:my-4 sm:my-4 container shadow-sm bg border border-light_gray hover:border-light_green">
+                <div className="w-72 xs:w-40 md:w-44  md:h-[263px] sm:w-60 sm:h-[365px]  rounded-xl xs:m-2 xs:my-3 md:mx-5 md:my-4 sm:my-4 container shadow-sm bg border border-light_gray hover:border-light_green">
                   <NavLink
                     to={`/subcategory-details/${item.category_name}/product-details/${item.id}`}
                   >
@@ -192,13 +192,13 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
                             </p>
                             <p className="2xs:text-base xs:text-sm  sm:text-xl md:text-sm text-black font-medium md:mt-1 sm:mt-2 bg-white">
                               ₹{data.discounted_price}.00{" "}
-                              <span className="text-xs sm:text-xl xs:text-sm xs:ml-1 md:text-sm text-customBlack line-through bg-white">
+                              <span className="text-xs sm:text-xl xs:text-sm xs:ml-1 md:text-sm text-gryColour line-through bg-white">
                                 ₹{data.price}.00{" "}
                               </span>
                             </p>
-                            <div className="md:flex xs:flex ">
+                            <div className="md:flex xs:flex justify-between ">
                               <div>
-                                <p className="bg-white 2xs:text-base xs:text-sm xs:mt-4 sm:text-xl md:text-sm  mt-1 font-light">
+                                <p className="bg-white 2xs:text-base xs:text-sm xs:mt-4 sm:text-xl md:text-xs text-gryColour  mt-1 font-light">
                                   {data.measurement}
                                   {data.measurement_unit_name}
                                 </p>
@@ -236,7 +236,7 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
                                   </button>
                                 )
                               ) : (
-                                <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:mb-4 sm:text-xs  xs:text-xs">
+                                <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:mb-4 sm:text-xs xs:text-xs">
                                   Out of stock
                                 </p>
                               )}
