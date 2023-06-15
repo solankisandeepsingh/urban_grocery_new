@@ -155,6 +155,7 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
         console.log(error);
       });
   };
+  
   return (
     <>
       <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2 md:mt-[-22px] bg-white">
@@ -165,7 +166,7 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
           allproduct.map((item) => {
             return (
               <>
-                <div className="w-72 xs:w-40 md:w-44  md:h-[263px] sm:w-60 sm:h-[365px]  rounded-xl xs:m-2 xs:my-3 md:mx-5 md:my-4 sm:my-4 container shadow-sm bg border border-light_gray hover:border-light_green">
+                <div className="w-72 xs:w-40 md:w-44  md:h-[263px] sm:w-60 sm:h-[365px]  rounded-xl xs:m-2 xs:my-3 md:mx-5 md:my-4 sm:my-4 container shadow-sm bg border-2 border-light_gray hover:border-light_green">
                   <NavLink
                     to={`/subcategory-details/${item.category_name}/product-details/${item.id}`}
                   >
@@ -198,7 +199,7 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
                             </p>
                             <div className="md:flex xs:flex justify-between ">
                               <div>
-                                <p className="bg-white 2xs:text-base xs:text-sm xs:mt-4 sm:text-xl md:text-xs text-gryColour  mt-1 font-light">
+                                <p className="bg-white 2xs:text-base xs:text-sm xs:mt-4 sm:text-xl md:text-xs text-gryColour mt-1 font-light">
                                   {data.measurement}
                                   {data.measurement_unit_name}
                                 </p>

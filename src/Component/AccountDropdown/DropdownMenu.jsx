@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
+import { API_TOKEN } from "../Token/Token";
 
-function DropdownMenu({ isOpen, setIsOpen }) {
+function DropdownMenu({ isOpen, setIsOpen,setLoggedIn }) {
   let menuRef = useRef();
   useEffect(() => {
     let handler = (e) => {
@@ -18,6 +19,12 @@ function DropdownMenu({ isOpen, setIsOpen }) {
       document.removeEventListener("mousedown", handler);
     };
   });
+
+  const handleLogout = () => {
+    localStorage.removeItem(`${API_TOKEN}`);
+    setLoggedIn(false);
+    setIsOpen(false)
+  };
   return (
     <>
       {isOpen && (
@@ -82,7 +89,7 @@ function DropdownMenu({ isOpen, setIsOpen }) {
             </NavLink>
             <NavLink to={"/"}>
               <p
-                onClick={() => setIsOpen(false)}
+                onClick={handleLogout}
                 className="bg-white sm:text-lg  md:text-sm mt-4"
               >
                 Log Out

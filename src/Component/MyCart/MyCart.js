@@ -43,7 +43,7 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
     addItem.forEach((cartItem) => {
       // console.log(addItem);
       if (cartItem.amount) {
-        price += parseFloat(cartItem.price) * cartItem.amount;
+        price += parseFloat(cartItem.discounted_price) * cartItem.amount;
       }
     });
     setPrice(price);
@@ -101,9 +101,9 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
   const handleCloseModal = () => {
     hideMOdal();
     setPayment(false);
-    setPrice(0); 
+    setPrice(0);
   };
-  
+
   const handlePayment = () => {
     navigate("/payment");
     hideMOdal();

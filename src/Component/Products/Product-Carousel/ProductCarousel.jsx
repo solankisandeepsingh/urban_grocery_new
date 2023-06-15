@@ -154,13 +154,13 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
         </div>
       </div>
 
-      <div className="md:mt-5 ">
+      <div className="md:my-2 ">
         <Carousel responsive={responsive}>
           {showAllProduct &&
             showAllProduct.map((item) => {
               return (
                 <>
-                  <div className="w-72 xs:w-40 xs:h-[265px] md:w-40 md:h-[230px] sm:h-[280px] rounded-xl md:mt-4 container border border-light_gray hover:border-light_green bg-white">
+                  <div className="w-72 xs:w-40 xs:h-[265px] md:w-40 md:h-[235px] sm:h-[280px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green  bg-white">
                     <NavLink
                       to={`/subcategory-details/${item.category_name}/product-details/${item.id}`}
                     >
@@ -218,7 +218,7 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
                                   </button>
                                 )
                               ) : (
-                                <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:mb-4 sm:text-xs  xs:text-xs">
+                                <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:text-xs  xs:text-xs">
                                   Out of stock
                                 </p>
                               )}

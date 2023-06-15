@@ -6,7 +6,7 @@ import { HiOfficeBuilding } from "react-icons/hi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AddressForm } from "../../MyAddress/AddressForm";
 
-function Form({ setFormdata, formData }) {
+function Form() {
   const [addList, setAddlist] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
   const [formOpen, setFormOpen] = useState(false);
@@ -18,11 +18,6 @@ function Form({ setFormdata, formData }) {
     setSelectedOption(event.target.value);
   };
 
-  const formHandler = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setFormdata({ ...formData, [name]: value });
-  };
   const config = {
     headers: {
       Authorization: `Bearer ${API_TOKEN}`,
@@ -51,6 +46,7 @@ function Form({ setFormdata, formData }) {
 
   const handleOpenForm = () => {
     setFormOpen(true);
+    
   };
   const handleProceedToPay = () => {
     navigate("/payment");

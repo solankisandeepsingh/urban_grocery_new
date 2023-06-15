@@ -6,53 +6,71 @@ import { Signup } from "./Signup";
 import axios from "axios";
 import { API_TOKEN } from "../Token/Token";
 
-export const Login = ({ isOpen, setIsOpen }) => {
+export const Login = ({ isOpen, setIsOpen, onClick }) => {
   const [logins, setLogins] = useState({
     phone: "",
     password: "",
   });
   const [showModals, setShowModals] = useState(false);
-
-  const navigate = useNavigate();
+  const [loginData, setLoginData] = useState([]);
 
   const handleShow = (e) => {
     e.preventDefault();
     setShowModals(true);
   };
+  const navigate = useNavigate();
 
-  const handleSubmit = async  (e) => {
-    e.preventDefault();
-    console.log(logins);
-
-    var phone = '9131582414'
-    var password = '9131582414'
-
-  
-
-  let config = {
-    headers: {
-      Authorization: `Bearer ${API_TOKEN}`,
-    },
+  const inputHandler = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setLogins({ ...logins, [name]: value });
   };
 
-  let formData = new FormData();
-  formData.append('accesskey', '90336');
-  formData.append('mobile', phone );
-  formData.append('password', password );
-  formData.append('fcm_id', 'YOUR_FCM_ID');
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  axios
-    .post('https://grocery.intelliatech.in/api-firebase/login.php', formData, config)
-    .then((res) => {
-      console.log(res);
-      if (res.data.status) {
-        navigate('/');
-      }
-    })
-    .catch((error) => {
-      console.log(error);
+    if (!logins.phone || !logins.password) {
+      alert("Please enter both phone and password");
+      return;
+    }
+
+    let config = {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    };
+
+    const loginItem = new FormData();
+    loginItem.append("accesskey", "90336");
+    loginItem.append("mobile", logins.phone);
+    loginItem.append("password", logins.password);
+    loginItem.append("fcm_id", "YOUR_FCM_ID");
+
+    axios
+      .post(
+        "https://grocery.intelliatech.in/api-firebase/login.php",
+        loginItem,
+        config
+      )
+      .then((res) => {
+        console.log(res);
+        if (!res.data.error) {
+          setLoginData([...loginData, logins]);
+          navigate("/");
+          console.log(onClick, "onclickkkkkkkkkkkkkkkkkk");
+          onClick(e);
+        } else {
+          alert("Invalid Phone Or Password");
+        }
+      })
+      .catch((err) => console.log(err));
+
+    setLogins({
+      phone: "",
+      password: "",
     });
   };
+
   return (
     <>
       <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2 md:mt-[-22px] xs:mt-3 bg-white">
@@ -63,7 +81,7 @@ export const Login = ({ isOpen, setIsOpen }) => {
           <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
             <div className="shrink-1 xs:mt-12  grow-0 basis-auto md:mb-0 md:w-9/12 md:shrink-0 lg:w-6/12 xl:w-6/12">
               <img
-                src="http://grocery.intelliatech.com/dist/img/logo.png"
+                src="http://grocery.intelliatech.in/dist/img/logo.png"
                 className="xs:w-[300px] md:w-[600px] sm:w-[600px]"
                 alt="login image"
               />
@@ -114,9 +132,10 @@ export const Login = ({ isOpen, setIsOpen }) => {
                     type="phone"
                     className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                     id="phone"
-                    onChange={(e) =>
-                      setLogins({ ...logins, phone: e.target.value })
-                    }
+                    // onChange={(e) =>
+                    //   setLogins({ ...logins, password: e.target.value })
+                    // }
+                    onChange={inputHandler}
                     name="phone"
                     value={logins.phone}
                     placeholder="Phone"
@@ -134,9 +153,7 @@ export const Login = ({ isOpen, setIsOpen }) => {
                     className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                     id="password"
                     placeholder="Password"
-                    onChange={(e) =>
-                      setLogins({ ...logins, password: e.target.value })
-                    }
+                    onChange={inputHandler}
                     value={logins.password}
                     name="password"
                   />

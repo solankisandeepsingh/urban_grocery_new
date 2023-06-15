@@ -178,7 +178,7 @@ export const SubCategory = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
           ) : allproducts && allproducts.length > 0 ? (
             allproducts.map((item) => {
               return (
-                <div className="w-72 xs:w-40 md:w-44 md:h-[246px] sm:w-60 sm:h-[365px]  rounded-xl xs:m-2 xs:my-3 md:mx-5 md:my-4 sm:my-4 container shadow-sm bg border border-light_gray hover:border-light_green">
+                <div className="w-72 xs:w-40 md:w-44 md:h-[246px] sm:w-60 sm:h-[365px]  rounded-xl xs:m-2 xs:my-3 md:mx-5 md:my-4 sm:my-4 container shadow-sm bg border-2 border-light_gray hover:border-light_green">
                   <NavLink to={`product-details/${item.id}`}>
                     <img
                       className="w-full h-56 xs:w-32 xs:h-24 xs:m-3 xs:mx-4 md:w-36 md:h-28 md:mx-4 md:m-2 sm:w-40 sm:h-32 sm:m-8 rounded-lg"

@@ -172,22 +172,7 @@ export const AddressForm = ({
                     value={addressData.pincode}
                     onChange={handleInputChange}
                   />
-                  {/* <input
-                className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg  focus:shadow-outline"
-                placeholder="type"
-                type="text"
-                name="type"
-                value={addressData.type}
-                onChange={handleInputChange}
-              /> */}
-                  {/* <input
-                className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg  focus:shadow-outline"
-                placeholder="type"
-                type="radio"
-                name="type"
-                value={addressData.type}
-                onChange={handleInputChange}
-              /> */}
+                
 
                   <div className="flex justify-around mt-6">
                     <label>
