@@ -65,7 +65,7 @@ export const MyOrder = ({
   }, [total]);
   return (
     <>
-      <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2 md:mt-[-22px]  bg-white">
+      <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2   bg-white">
         <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
 

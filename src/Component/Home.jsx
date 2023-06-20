@@ -14,7 +14,7 @@ function Home({
   setAddItem,
   isOpen,
   setIsOpen,
-  setHideNav
+  
 })
  {
  

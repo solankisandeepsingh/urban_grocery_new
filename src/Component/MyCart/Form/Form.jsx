@@ -6,7 +6,7 @@ import { HiOfficeBuilding } from "react-icons/hi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AddressForm } from "../../MyAddress/AddressForm";
 
-function Form({setShowModal}) {
+function Form({setShowModal,setNavbarOpen}) {
   const [addList, setAddlist] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
   const [formOpen, setFormOpen] = useState(false);
@@ -49,13 +49,15 @@ function Form({setShowModal}) {
   const handleProceedToPay = () => {
     navigate("/payment");
     setShowModal(false)
+    setNavbarOpen(false)
   };
 
   return (
     <>
-      {!formOpen && (
+      {!formOpen && addList &&(
         <>
           <form>
+
             {addList.map((item) => {
               return (
                 <label>
@@ -100,27 +102,27 @@ function Form({setShowModal}) {
           </form>
 
           <div className="mt-2">
-            {selectedOption ? (
-              <NavLink to={`/payment`}>
-                <button
-                  onClick={handleProceedToPay}
-                  className="bg-lime text-white hover:opacity-90 sm:w-full md:w-[90%] mx-4 sm:text-2xl md:text-lg px-4 py-1.5 rounded-lg"
-                >
-                  Proceed to Pay
-                </button>
-              </NavLink>
-            ) : (
-              <button
-                onClick={() => handleOpenForm()}
-                className="bg-lime text-white hover:opacity-90 sm:w-full md:w-[90%] mx-4 sm:text-2xl md:text-lg px-4 py-1.5  rounded-lg "
-              >
-                Add new address
-              </button>
-            )}
           </div>
         </>
       )}
 
+      {selectedOption ? (
+        <NavLink to={`/payment`}>
+          <button
+            onClick={handleProceedToPay}
+            className="bg-lime text-white hover:opacity-90 sm:w-full md:w-[90%] mx-4 sm:text-2xl md:text-lg px-4 py-1.5 rounded-lg"
+          >
+            Proceed to Pay
+          </button>
+        </NavLink>
+      ) : (
+        <button
+          onClick={() => handleOpenForm()}
+          className="bg-lime text-white hover:opacity-90 sm:w-full md:w-[90%] mx-4 sm:text-2xl md:text-lg px-4 py-1.5  rounded-lg "
+        >
+          Add new address
+        </button>
+      )}
       {formOpen && (
         <AddressForm setFormOpen={setFormOpen} getAddress={getAddress} />
       )}

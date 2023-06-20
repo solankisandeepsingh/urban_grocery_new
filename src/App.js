@@ -19,17 +19,14 @@ import { Address } from "./Component/MyAddress/Address";
 import { API_TOKEN } from "./Component/Token/Token";
 import { isDisabled } from "@testing-library/user-event/dist/utils";
 
-
-const initialLoggedUserName = "User"
+const initialLoggedUserName = "User";
 
 const loginReducer = (state, action) => {
   console.log(action);
-    if(action.type === "LOGIN")
-        state = action.payload
-    if(action.type === "LOGOUT")
-      state = "User"
-    return state
-}
+  if (action.type === "LOGIN") state = action.payload;
+  if (action.type === "LOGOUT") state = "User";
+  return state;
+};
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -42,14 +39,17 @@ function App() {
     phone: "",
     pin: "",
   });
-  const [hideNav,setHideNav] = useState(false)
+  const [hideNav, setHideNav] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [name, setName] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [NavbarOpen, setNavbarOpen] = useState(true);
   const [price, setPrice] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [loggedUsername, dispatchLogin] = useReducer(loginReducer, initialLoggedUserName)
- 
+  const [loggedUsername, dispatchLogin] = useReducer(
+    loginReducer,
+    initialLoggedUserName
+  );
 
   useEffect(() => {
     const LoggedInStatus = () => {
@@ -71,142 +71,158 @@ function App() {
   }
 
   const handleLogin = (e) => {
-
     e.preventDefault();
-    localStorage.setItem("token",`${API_TOKEN}`);
+    localStorage.setItem("token", `${API_TOKEN}`);
     setLoggedIn(true);
   };
 
   return (
     <>
       {/* {loggedIn ? ( */}
-        <div>
-          <Navbar
-            setData={setData}
-            addItem={addItem}
-            setAddItem={setAddItem}
-            formData={formData}
-            setFormdata={setFormdata}
-            setShowSearchBar={setShowSearchBar}
-            name={name}
-            setName={setName}
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            loggedUsername={loggedUsername}
+      <div>
+        <Navbar
+          setData={setData}
+          addItem={addItem}
+          setAddItem={setAddItem}
+          formData={formData}
+          setFormdata={setFormdata}
+          setShowSearchBar={setShowSearchBar}
+          name={name}
+          setName={setName}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          loggedUsername={loggedUsername}
+          NavbarOpen={NavbarOpen}
+          setNavbarOpen={setNavbarOpen}
+        />
+        <Routes>
+          <Route
+            path="/login"
+            element={
+              <Login
+                onClick={handleLogin}
+                dispatchLogin={dispatchLogin}
+                setIsOpen={setIsOpen}
+                isOpen={isOpen}
+                setLoggedIn={setLoggedIn}
+              />
+            }
           />
-          <Routes>
-
+          <Route
+            path="/"
+            element={
+              <Home
+                data={data}
+                addItem={addItem}
+                setAddItem={setAddItem}
+                setData={setData}
+                showSearchBar={showSearchBar}
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                 
+              />
+            }
+          />
+          <Route
+            path="/subcategory-details/:category_name/product-details/:id"
+            element={
+              <ProductDetails
+                setAddItem={setAddItem}
+                addItem={addItem}
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+              />
+            }
+          />
 
           <Route
-              path="/login"
-              element={<Login onClick={handleLogin} dispatchLogin={dispatchLogin} setIsOpen={setIsOpen} isOpen={isOpen} setLoggedIn={setLoggedIn} />}
-            />
-            <Route
-              path="/"
-              element={
-                <Home
-                  data={data}
-                  addItem={addItem}
-                  setAddItem={setAddItem}
-                  setData={setData}
-                  showSearchBar={showSearchBar}
-                  isOpen={isOpen}
-                  setIsOpen={setIsOpen}
-                  setHideNav={setHideNav}
-                  hideNav={hideNav}
-                />
-              }
-            />
-            <Route
-              path="/subcategory-details/:category_name/product-details/:id"
-              element={
-                <ProductDetails
-                  setAddItem={setAddItem}
-                  addItem={addItem}
-                  isOpen={isOpen}
-                  setIsOpen={setIsOpen}
-                />
-              }
-            />
+            path="/subcategory-details/:category_id"
+            element={
+              <SubCategory
+                setAddItem={setAddItem}
+                addItem={addItem}
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+              />
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <FilterData
+                setData={setData}
+                setName={setName}
+                data={data}
+                name={name}
+                addItem={addItem}
+                setAddItem={setAddItem}
+                
+              />
+            }
+          />
+          <Route
+            path="/payment"
+            element={
+              <Payment
+                setIsOpen={setIsOpen}
+                isOpen={isOpen}
+                NavbarOpen={NavbarOpen}
+                setNavbarOpen={setNavbarOpen}
+                setData={true}
+              />
+            }
+          />
+          {/* <Route path="/account" element={<Account />} /> */}
+          <Route
+            path="/wallet"
+            element={<Wallet setIsOpen={setIsOpen} isOpen={isOpen} />}
+          />
+          {/* <Route path="/myprofile" element={<Myprofile/>} /> */}
+          <Route path="/aside" element={<Aside />} />
+          <Route
+            path="/reset"
+            element={<ForgetPass isOpen={isOpen} setIsOpen={setIsOpen} />}
+          />
 
-            <Route
-              path="/subcategory-details/:category_id"
-              element={
-                <SubCategory
-                  setAddItem={setAddItem}
-                  addItem={addItem}
-                  isOpen={isOpen}
-                  setIsOpen={setIsOpen}
-                />
-              }
-            />
-            <Route
-              path="/search"
-              element={
-                <FilterData
-                  setData={setData}
-                  setName={setName}
-                  data={data}
-                  name={name}
-                  addItem={addItem}
-                  setAddItem={setAddItem}
-               
-                />
-              }
-            />
-            <Route
-              path="/payment"
-              element={<Payment  setIsOpen={setIsOpen} isOpen={isOpen} hideNav={isDisabled} setHideNav={isDisabled} />}
-             
-            />
-            {/* <Route path="/account" element={<Account />} /> */}
-            <Route
-              path="/wallet"
-              element={<Wallet setIsOpen={setIsOpen} isOpen={isOpen} />}
-            />
-            {/* <Route path="/myprofile" element={<Myprofile/>} /> */}
-            <Route path="/aside" element={<Aside />} />
-            <Route
-              path="/reset"
-              element={<ForgetPass isOpen={isOpen} setIsOpen={setIsOpen} />}
-            />
-
-            <Route path="/success" element={<Success />} />
-            <Route
-              path="/address"
-              element={<Address isOpen={isOpen} setIsOpen={setIsOpen} />}
-            />
-            <Route
-              path="/faq"
-              element={<Faq isOpen={isOpen} setIsOpen={setIsOpen} />}
-            />
-            <Route
-              path="/myorder"
-              element={
-                <MyOrder
-                  isOpen={isOpen}
-                  setIsOpen={setIsOpen}
-                  setAddItem={setAddItem}
-                  addItem={addItem}
-                  price={price}
-                  setPrice={setPrice}
-                />
-              }
-            />
-            <Route
-              path="/allproducts"
-              element={
-                <Allproducts
-                  name={name}
-                  setAddItem={setAddItem}
-                  addItem={addItem}
-                  isOpen={isOpen}
-                  setIsOpen={setIsOpen}
-                />
-              }
-            />
-          </Routes>
-        </div>
+          <Route
+            path="/success"
+            element={<Success isOpen={isOpen} setIsOpen={setIsOpen} />}
+          />
+          <Route
+            path="/address"
+            element={<Address isOpen={isOpen} setIsOpen={setIsOpen} />}
+          />
+          <Route
+            path="/faq"
+            element={<Faq isOpen={isOpen} setIsOpen={setIsOpen} />}
+          />
+          <Route
+            path="/myorder"
+            element={
+              <MyOrder
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                setAddItem={setAddItem}
+                addItem={addItem}
+                price={price}
+                setPrice={setPrice}
+              />
+            }
+          />
+          <Route
+            path="/allproducts"
+            element={
+              <Allproducts
+                name={name}
+                setAddItem={setAddItem}
+                addItem={addItem}
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+              />
+            }
+          />
+        </Routes>
+      </div>
       {/* ) : (
         <>
           <Login onClick={handleLogin} dispatchLogin={dispatchLogin}  />

@@ -7,7 +7,7 @@ import { API_TOKEN } from "../Token/Token";
 import { QtyAmount } from "../Button/QtyAmount";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
-function MyCart({ addItem, setAddItem, formData, setFormdata }) {
+function MyCart({ addItem, setAddItem, formData, setFormdata,setNavbarOpen }) {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [setAmount] = useState();
@@ -100,6 +100,7 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
   const handleProceedToPay = () => {
     setShowModal(false);
     navigate("/payment");
+    setNavbarOpen(false)
   };
 
   useEffect(() => {
@@ -332,6 +333,7 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
                       setFormdata={setFormdata}
                       formData={formData}
                       setShowModal = {setShowModal}
+                      setNavbarOpen={setNavbarOpen}
                     />
                   ) : null}
                 </div>

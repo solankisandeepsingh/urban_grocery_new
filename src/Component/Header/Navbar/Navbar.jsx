@@ -16,8 +16,9 @@ export const Navbar = ({
   setName,
   isOpen,
   setIsOpen,
-  loggedUsername
-  
+  loggedUsername,
+  NavbarOpen,
+  setNavbarOpen,
 }) => {
   const navigate = useNavigate();
   const [showSearch, setShowSearch] = useState(true);
@@ -61,16 +62,23 @@ export const Navbar = ({
                 />
               </div>
             )}
-            <AccountButton loggedUsername={loggedUsername} isOpen={isOpen} setIsOpen={setIsOpen} />
+            <AccountButton
+              loggedUsername={loggedUsername}
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+            />
             <MyCart
               addItem={addItem}
               setAddItem={setAddItem}
               formData={formData}
               setFormdata={setFormdata}
+              setData={setData}
+              setNavbarOpen={setNavbarOpen}
             />
           </div>
           <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1 z-0 bg-white">
-            <Search setData={setData} name={name} setName={setName} />
+            {NavbarOpen &&  <Search setData={setData} name={name} setName={setName} /> }
+           
           </div>
         </div>
       </nav>

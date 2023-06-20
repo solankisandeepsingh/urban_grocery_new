@@ -1,11 +1,53 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import DropdownMenu from "../../Component/AccountDropdown/DropdownMenu";
+import { API_TOKEN } from "../Token/Token";
+import axios from "axios";
 
 function Payment({ isOpen,setIsOpen}) {
   const handleCashOnDelivery = () => {
-    // Handle cash on delivery payment method
     console.log("Cash on Delivery");
+    let config = {
+      headers:{
+        Authorization :`Bearer ${API_TOKEN}`
+      }
+    } 
+    let CashOnData = new FormData();
+    CashOnData.append("accesskey","90336")
+    CashOnData.append("place_order","9")
+    CashOnData.append("user_id","14")
+    CashOnData.append("mobile","0123456789")
+    CashOnData.append("product_variant_id","90336")
+    CashOnData.append("delivery_charge","50")
+    CashOnData.append("total","500")
+    CashOnData.append("final_total","500")
+    CashOnData.append("address","bhuj")
+    CashOnData.append("latitude","44.456321")
+    CashOnData.append("longitude","12.456987")
+    CashOnData.append("payment_method","Paypal / Payumoney / COD / PAYTM / razorpay / bank transfer")
+    CashOnData.append("quantity",["3","1"])
+    CashOnData.append("discount","10")
+    CashOnData.append("tax_percentage","20")
+    CashOnData.append("tax_amount","30")
+    CashOnData.append("area_id","1")
+    CashOnData.append("order_note","home")
+    CashOnData.append("promo_code","NEW20")
+    CashOnData.append("promo_discount","40")
+    CashOnData.append("order_from","test ")
+    CashOnData.append("local_pickup","0/1 ")
+    CashOnData.append("wallet_used","true/false")
+    CashOnData.append("status","awaiting_payment ")
+    CashOnData.append("delivery_time","Today - Evening (4:00pm to 7:00pm)")
+
+    axios.post("https://grocery.intelliatech.in/api-firebase/order-process.php",
+    CashOnData,config
+    ).then((res)=>{
+      console.log(res);
+    }).catch((err)=>{
+      console.log(err.response); // Log the response data for further investigation
+      console.log(err.message)
+    })
+
   };
 
   const handleRazorpay = () => {
@@ -30,7 +72,7 @@ function Payment({ isOpen,setIsOpen}) {
   return (
     <>
     <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2 xs:mt-0.5 bg-white">
-        <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} />
+        <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen}/>
       </div>
       <div>
         <div className="min-h-screen bg-gray-100 flex items-center justify-center">
