@@ -14,11 +14,12 @@ function Home({
   setAddItem,
   isOpen,
   setIsOpen,
+  setHideNav
 })
  {
  
   return (
-    <div className="relative">
+    <div className="relative mt-0.5">
       <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} />
       <>
         <div className="md:invisible xs:visible">

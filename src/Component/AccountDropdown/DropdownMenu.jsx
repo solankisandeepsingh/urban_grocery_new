@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { API_TOKEN } from "../Token/Token";
 
-function DropdownMenu({ isOpen, setIsOpen,setLoggedIn }) {
+function DropdownMenu({ isOpen, setIsOpen,setLoggedIn, dispatchLogin }) {
+  const navigate = useNavigate();
   let menuRef = useRef();
   useEffect(() => {
     let handler = (e) => {
@@ -21,16 +22,18 @@ function DropdownMenu({ isOpen, setIsOpen,setLoggedIn }) {
   });
 
   const handleLogout = () => {
-    localStorage.removeItem(`${API_TOKEN}`);
+    localStorage.removeItem('token');
+    // dispatchLogin({type:"LOGOUT"})
     setLoggedIn(false);
-    setIsOpen(false)
+    setIsOpen(false);
+    navigate("/")
   };
   return (
     <>
       {isOpen && (
         <div
           ref={menuRef}
-          className="rounded-lg  bg-white md:mt-20 sm:mt-20 xs:mt-20 md:ml-[980px] sm:ml-[400px] xs:ml-[100px] z-10 fixed w-60 px-4"
+          className="rounded-lg  bg-white xs:mt-[58px] md:ml-[980px] sm:ml-[400px] xs:ml-[100px] z-10 fixed w-60 px-4"
         >
           <NavLink to={"/aside"}>
             <p className="bg-white mt-4 sm:text-2xl md:text-lg">My Account</p>

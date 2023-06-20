@@ -6,14 +6,13 @@ import { HiOfficeBuilding } from "react-icons/hi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AddressForm } from "../../MyAddress/AddressForm";
 
-function Form() {
+function Form({setShowModal}) {
   const [addList, setAddlist] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
   const [formOpen, setFormOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleOptionChange = (event) => {
-    console.log(event.target.value);
     console.log(event.target.value);
     setSelectedOption(event.target.value);
   };
@@ -46,10 +45,10 @@ function Form() {
 
   const handleOpenForm = () => {
     setFormOpen(true);
-    
   };
   const handleProceedToPay = () => {
     navigate("/payment");
+    setShowModal(false)
   };
 
   return (

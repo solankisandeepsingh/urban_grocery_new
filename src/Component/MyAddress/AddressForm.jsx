@@ -3,12 +3,7 @@ import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
-export const AddressForm = ({
-  addList,
-  setAddList,
-  getAddress,
-  setFormOpen,
-}) => {
+export const AddressForm = ({ getAddress, setFormOpen }) => {
   const [addressData, setAddressData] = useState({
     name: "",
     address: "",
@@ -22,13 +17,15 @@ export const AddressForm = ({
   const [cityDropdown, setCityDropdown] = useState("");
   const [areaDropdown, setAreaDropdown] = useState("");
   const [initialRender, setIntialrender] = useState(true);
-  // const [pressed, setPressed] = useState(false);
+
 
   const handleDropdown1Change = (event) => {
     const selectedValue = event.target.value;
     setCityDropdown(selectedValue);
     console.log(selectedValue);
   };
+
+
 
   const handleDropdown2Change = (event) => {
     const selectedValue = event.target.value;
@@ -52,7 +49,6 @@ export const AddressForm = ({
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(cityDropdown);
     // setAddList([...addList, addressData]);
 
     const data = new FormData();
@@ -112,7 +108,6 @@ export const AddressForm = ({
       setIntialrender(false);
     } else {
       if (!cityDropdown) {
-        console.log("Not initial render, not calling api");
         return;
       }
       console.log("calling areas api");
@@ -141,7 +136,7 @@ export const AddressForm = ({
             >
               <AiOutlineCloseCircle className="text-red text-2xl hover:opacity-50" />
             </button>
-            <div className="w-full p-8 my-4 md:px-12  lg:pl-20 lg:pr-40 mr-auto rounded-2xl shadow-2xl">
+            <div className="w-full p-8 md:px-12 mr-auto rounded-2xl shadow-2xl">
               <div className="flex justify-between">
                 <h1 className="font-bold uppercase text-3xl">Address : </h1>
               </div>
@@ -172,7 +167,6 @@ export const AddressForm = ({
                     value={addressData.pincode}
                     onChange={handleInputChange}
                   />
-                
 
                   <div className="flex justify-around mt-6">
                     <label>
@@ -199,41 +193,54 @@ export const AddressForm = ({
                   </div>
                 </div>
 
-                {/* <div className="mr-6 flex flex-wrap">
-                  <div className="my-1">
-                    <select
-                      value={cityDropdown}
-                      onChange={handleDropdown1Change}
+                {/* <div className="flex gap-2.5 ml-3 mt-1">
+                  <div>
+                    <button
+                      onClick={(e) => {
+                        setPressed(false);
+                        e.preventDefault();
+                      }}
+                      className="bg-lime text-xs font-bold h-[36px] w-[60px]  rounded-lg"
                     >
-                      <option value="">City</option>
-                      {cities.map((item) => {
-                        return (
-                          <>
-                            <option value={item.id}>{item.name}</option>
-                          </>
-                        );
-                      })}
-                    </select>
-
-                    <select
-                      value={areaDropdown}
-                      onChange={handleDropdown2Change}
-                      disabled={!cityDropdown}
-                    >
-                      <option value="">Area</option>
-                      {areas.map((item) => {
-                        return (
-                          <>
-                            <option value={item.id}>{item.name}</option>
-                          </>
-                        );
-                      })}
-                    </select>
+                      Home
+                    </button>
                   </div>
-                </div> */}
+                  <div>
+                    <button
+                      onClick={(e) => {
+                        setPressed(false);
+                        e.preventDefault();
+                      }}
+                      className="bg-candy text-xs font-bold h-[36px] w-[60px] text-gray-100  rounded-lg"
+                    >
+                      Office
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      className="bg-RedColour text-xs font-bold h-[36px] w-[60px] text-gray-100  rounded-lg"
+                      onClick={(e) => handleShowInput(e)}
+                    >
+                      Others
+                    </button>
+                  </div>
+                </div>
+                {pressed && (
+                  <div>
+                    <fieldset className="border border-bg-lime ">
+                      <legend className="font-semibold">Address Others</legend>
+                      <input
+                      className="w-72 border mt-3 ml-3 h-10 rounded-lg"
+                      type="text"
+                    />
+                    </fieldset>
+                    
+                  </div>
+                )} */}
 
-                <div className="mr-6 flex flex-wrap">
-                  <div className="my-1 flex">
+
+                <div className="mt-[-60px] flex justify-between">
+                  <div className="my-1 flex mt-24">
                     <div className="mr-2">
                       <select
                         value={cityDropdown}
@@ -257,23 +264,20 @@ export const AddressForm = ({
                         className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       >
                         <option value="">Area</option>
-                        {areas && areas.map((item) => (
-                          <option key={item.id} value={item.id}>
-                            {item.name}
-                          </option>
-                        ))}
+                        {areas &&
+                          areas.map((item) => (
+                            <option key={item.id} value={item.id}>
+                              {item.name}
+                            </option>
+                          ))}
                       </select>
                     </div>
                   </div>
-                </div>
-
-                <div className="mx-auto mt-8 w-1/2 lg:w-1/4">
-                  <button
-                    className="uppercase text-sm font-bold tracking-wide bg-lime text-gray-100 p-3 rounded-lg w-full 
-                  focus:outline-none focus:shadow-outline"
-                  >
-                    Save Address
-                  </button>
+                  <div className="flex mt-[90px]">
+                    <button className="uppercase text-[10px] font-bold h-[40px] w-[78px] bg-lime text-gray-100 rounded-lg">
+                      Save Address
+                    </button>
+                  </div>
                 </div>
               </form>
             </div>

@@ -42,6 +42,7 @@ module.exports = {
       light_gray: "#313131",
       gryColour: "#8F8F8F",
       RedColour: "#ff0000",
+      graycol: "#9A9A9A",
       green_light : "#a3183d",
       customGreen: 'rgb(12, 166, 31)',
       customBlack: 'rgb(28, 28, 28)',

@@ -1,7 +1,8 @@
 import React from "react";
 import { FaCaretDown,FaUserCircle } from "react-icons/fa";
 
-function AccountButton({ isOpen, setIsOpen }) {
+function AccountButton({ isOpen, setIsOpen,loggedUsername }) {
+  
   return (
     <>
       <div
@@ -10,7 +11,7 @@ function AccountButton({ isOpen, setIsOpen }) {
         onClick={() => setIsOpen(!isOpen)}
       >
         <FaUserCircle className="xs:mt-1 xs:text-3xl text-lime md:mt-1.5 md:text-2xl mr-1"/>
-        <button className=" text-black sm:text-md md:text-md mt-2">User</button>
+        <button className=" text-black sm:text-md md:text-md mt-2">{loggedUsername}</button>
         <div className="md:mt-1 xs:mt-1 bg-white ">
           <FaCaretDown className="bg-white md:mt-2 xs:mt-2 "/>
         </div>

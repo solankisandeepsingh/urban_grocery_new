@@ -1,8 +1,8 @@
 import { Navbar } from "./Component/Header/Navbar/Navbar";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { ProductDetails } from "./Component/Products/Product-Details/ProductDetails";
 import Home from "./Component/Home";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import Payment from "./Component/Payment/Payment";
 import "./index.css";
 import { SubCategory } from "./Component/Category/Sub-Category/SubCategory";
@@ -10,7 +10,6 @@ import FilterData from "./Component/FilterData";
 import Allproducts from "./Component/Products/Allproducts";
 import { Faq } from "./Component/FAQ/Faq";
 import { MyOrder } from "./Component/My-Order/MyOrder";
-import { Myprofile } from "./Component/User-Account/Myprofile";
 import { Success } from "./Component/Payment/Success";
 import { Wallet } from "./Component/MyWallet/Wallet";
 import { Aside } from "./Component/User-Account/Aside";
@@ -18,6 +17,19 @@ import { Login } from "./Component/Login.jsx/Login";
 import { ForgetPass } from "./Component/Login.jsx/ForgetPass";
 import { Address } from "./Component/MyAddress/Address";
 import { API_TOKEN } from "./Component/Token/Token";
+import { isDisabled } from "@testing-library/user-event/dist/utils";
+
+
+const initialLoggedUserName = "User"
+
+const loginReducer = (state, action) => {
+  console.log(action);
+    if(action.type === "LOGIN")
+        state = action.payload
+    if(action.type === "LOGOUT")
+      state = "User"
+    return state
+}
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -30,34 +42,44 @@ function App() {
     phone: "",
     pin: "",
   });
-
+  const [hideNav,setHideNav] = useState(false)
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [name, setName] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [price, setPrice] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [loggedUsername, dispatchLogin] = useReducer(loginReducer, initialLoggedUserName)
+ 
 
   useEffect(() => {
     const LoggedInStatus = () => {
-      const token = localStorage.getItem(`${API_TOKEN}`);
+      // console.log(localStorage.getItem(`${API_TOKEN}`));
+      const token = localStorage.getItem(`token`);
       if (token) {
         setLoggedIn(true);
       } else {
         setLoggedIn(false);
       }
+      setLoading(false);
     };
 
     LoggedInStatus();
   }, []);
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   const handleLogin = (e) => {
+
     e.preventDefault();
-    localStorage.setItem("your_login_token", `${API_TOKEN}`);
+    localStorage.setItem("token",`${API_TOKEN}`);
     setLoggedIn(true);
   };
 
   return (
     <>
-      {loggedIn ? (
+      {/* {loggedIn ? ( */}
         <div>
           <Navbar
             setData={setData}
@@ -70,8 +92,15 @@ function App() {
             setName={setName}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
+            loggedUsername={loggedUsername}
           />
           <Routes>
+
+
+          <Route
+              path="/login"
+              element={<Login onClick={handleLogin} dispatchLogin={dispatchLogin} setIsOpen={setIsOpen} isOpen={isOpen} setLoggedIn={setLoggedIn} />}
+            />
             <Route
               path="/"
               element={
@@ -83,6 +112,8 @@ function App() {
                   showSearchBar={showSearchBar}
                   isOpen={isOpen}
                   setIsOpen={setIsOpen}
+                  setHideNav={setHideNav}
+                  hideNav={hideNav}
                 />
               }
             />
@@ -119,10 +150,15 @@ function App() {
                   name={name}
                   addItem={addItem}
                   setAddItem={setAddItem}
+               
                 />
               }
             />
-            <Route path="/payment" element={<Payment />} />
+            <Route
+              path="/payment"
+              element={<Payment  setIsOpen={setIsOpen} isOpen={isOpen} hideNav={isDisabled} setHideNav={isDisabled} />}
+             
+            />
             {/* <Route path="/account" element={<Account />} /> */}
             <Route
               path="/wallet"
@@ -139,10 +175,6 @@ function App() {
             <Route
               path="/address"
               element={<Address isOpen={isOpen} setIsOpen={setIsOpen} />}
-            />
-            <Route
-              path="/login"
-              element={<Login setIsOpen={setIsOpen} isOpen={isOpen} />}
             />
             <Route
               path="/faq"
@@ -175,11 +207,11 @@ function App() {
             />
           </Routes>
         </div>
-      ) : (
+      {/* ) : (
         <>
-          <Login onClick={handleLogin} />
+          <Login onClick={handleLogin} dispatchLogin={dispatchLogin}  />
         </>
-      )}
+      )} */}
     </>
   );
 }

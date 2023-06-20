@@ -158,7 +158,7 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
   
   return (
     <>
-      <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2 md:mt-[-22px] bg-white">
+      <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2 xs:mt-0.5 bg-white">
         <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
       <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-6 sm:grid-cols-3 flex flex-wrap md:ml-5 ">

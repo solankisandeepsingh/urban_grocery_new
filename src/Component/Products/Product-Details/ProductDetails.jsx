@@ -177,7 +177,7 @@ export const ProductDetails = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
 
   return (
     <>
-      <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2 md:mt-[-22px] xs:mt-3 bg-white">
+      <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2 xs:mt-1 bg-white">
         <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
       <div className="2xs:mt-10 xs:mt-10 md:p-20 xs:p-8">

@@ -168,10 +168,10 @@ export const SubCategory = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
 
   return (
     <>
+      <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2  xs:mt-1 bg-white">
+        <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} />
+      </div>
       <div>
-        <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2 md:mt-[-22px] xs:mt-3 bg-white">
-          <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} />
-        </div>
         <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-6 sm:grid-cols-3 flex flex-wrap md:ml-5 ">
           {isLoading ? (
             <p className="m-auto">Loading...</p>
@@ -188,74 +188,75 @@ export const SubCategory = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
                   </NavLink>
 
                   <div className="sm:-pl-2 xs:pl-2 bg-white mt-2">
-                  <div className="md:py-1 px-3 bg-white">
-                    <p className="text-xl font-medium truncate ... xs:text-xs sm:text-xl md:text-sm bg-white">
-                      {item.name}
-                    </p>
-                  </div>
-                   
-                    {item &&
-                    item.variants.map((data) => {
-                      return (
-                        <>
-                          <div className="sm:mt-2 md:mt-[-1px] px-3 bg-white">
-                           
-                            <p className="2xs:text-base xs:text-sm  sm:text-xl md:text-sm text-black font-medium md:mt-1 sm:mt-2 bg-white">
-                              ₹{data.discounted_price}.00{" "}
-                              <span className="text-xs sm:text-xl xs:text-sm xs:ml-1 md:text-sm text-gryColour line-through bg-white">
-                                ₹{data.price}.00{" "}
-                              </span>
-                            </p>
-                            <div className="md:flex xs:flex justify-between ">
-                              <div>
-                                <p className="bg-white 2xs:text-base xs:text-sm xs:mt-4 sm:text-xl md:text-xs text-gryColour  mt-1 font-light">
-                                  {data.measurement}
-                                  {data.measurement_unit_name}
-                                </p>
-                              </div>
+                    <div className="md:py-1 px-3 bg-white">
+                      <p className="text-xl font-medium truncate ... xs:text-xs sm:text-xl md:text-sm bg-white">
+                        {item.name}
+                      </p>
+                    </div>
 
-                              <div>
-                              {item.variants.some(
-                                (variant) => variant.stock > 0
-                              ) ? (
-                                addItem.find(
-                                  (i) => i.product_id === item.id
-                                ) ? (
-                                  <>
-                                    <div className="md:mt-2 md:ml-6 xs:mt-2.5 sm:mt-4 ">
-                                      {console.log(
-                                        item,
-                                        "Item",
-                                        addItem,
-                                        "addItem",
-                                        "In ProductCarousel, calling CartQuantity"
-                                      )}
-                                      <CartQuantity
-                                        item={item}
-                                        setAddItem={setAddItem}
-                                        addItem={addItem}
-                                      />
-                                    </div>
-                                  </>
-                                ) : (
-                                  <button
-                                    className="md:w-16 md:h-8 mb-3 xs:w-18 sm:ml-2 md:text-xs md:mt-2 xs:mt-2 sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
-                                    onClick={() => addItemHandler(data, item)}
-                                  >
-                                    Add
-                                  </button>
-                                )
-                              ) : (
-                                <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:mb-4 sm:text-xs xs:text-xs">
-                                  Out of stock
-                                </p>
-                              )}
+                    {item &&
+                      item.variants.map((data) => {
+                        return (
+                          <>
+                            <div className="sm:mt-2 md:mt-[-1px] px-3 bg-white">
+                              <p className="2xs:text-base xs:text-sm  sm:text-xl md:text-sm text-black font-medium md:mt-1 sm:mt-2 bg-white">
+                                ₹{data.discounted_price}.00{" "}
+                                <span className="text-xs sm:text-xl xs:text-sm xs:ml-1 md:text-sm text-gryColour line-through bg-white">
+                                  ₹{data.price}.00{" "}
+                                </span>
+                              </p>
+                              <div className="md:flex xs:flex justify-between ">
+                                <div>
+                                  <p className="bg-white 2xs:text-base xs:text-sm xs:mt-4 sm:text-xl md:text-xs text-gryColour  mt-1 font-light">
+                                    {data.measurement}
+                                    {data.measurement_unit_name}
+                                  </p>
+                                </div>
+
+                                <div>
+                                  {item.variants.some(
+                                    (variant) => variant.stock > 0
+                                  ) ? (
+                                    addItem.find(
+                                      (i) => i.product_id === item.id
+                                    ) ? (
+                                      <>
+                                        <div className="md:mt-2 md:ml-6 xs:mt-2.5 sm:mt-4 ">
+                                          {console.log(
+                                            item,
+                                            "Item",
+                                            addItem,
+                                            "addItem",
+                                            "In ProductCarousel, calling CartQuantity"
+                                          )}
+                                          <CartQuantity
+                                            item={item}
+                                            setAddItem={setAddItem}
+                                            addItem={addItem}
+                                          />
+                                        </div>
+                                      </>
+                                    ) : (
+                                      <button
+                                        className="md:w-16 md:h-8 mb-3 xs:w-18 sm:ml-2 md:text-xs md:mt-2 xs:mt-2 sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
+                                        onClick={() =>
+                                          addItemHandler(data, item)
+                                        }
+                                      >
+                                        Add
+                                      </button>
+                                    )
+                                  ) : (
+                                    <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:mb-4 sm:text-xs xs:text-xs">
+                                      Out of stock
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
                             </div>
-                            </div>
-                          </div>
-                        </>
-                      );
-                    })}
+                          </>
+                        );
+                      })}
                   </div>
                 </div>
               );

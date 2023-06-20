@@ -16,6 +16,7 @@ export const Navbar = ({
   setName,
   isOpen,
   setIsOpen,
+  loggedUsername
   
 }) => {
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ export const Navbar = ({
                 />
               </div>
             )}
-            <AccountButton isOpen={isOpen} setIsOpen={setIsOpen} />
+            <AccountButton loggedUsername={loggedUsername} isOpen={isOpen} setIsOpen={setIsOpen} />
             <MyCart
               addItem={addItem}
               setAddItem={setAddItem}

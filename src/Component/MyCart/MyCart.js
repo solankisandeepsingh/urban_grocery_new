@@ -1,33 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaArrowLeft, FaShoppingCart, FaTrash } from "react-icons/fa";
-
 import Form from "./Form/Form";
-import Review from "./Review/Review";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_TOKEN } from "../Token/Token";
 import { QtyAmount } from "../Button/QtyAmount";
-import CartQuantity from "../Button/CartQuantity";
-import { AddressForm } from "../MyAddress/AddressForm";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
 function MyCart({ addItem, setAddItem, formData, setFormdata }) {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const [amount, setAmount] = useState();
+  const [setAmount] = useState();
   const [price, setPrice] = useState(0);
   const [showForm, setShowForm] = useState(false);
   const [Payment, setPayment] = useState(false);
   const [totalItem, setTotalItem] = useState(0);
-  // const [addList, setAddlist] = useState([]);
+  let menuRef = useRef();
 
   const accesskey = "90336";
   const user_id = "14";
-
-  const hideMOdal = () => {
-    setShowModal(false);
-    setShowForm(false);
-  };
 
   const back = () => {
     if (showForm) {
@@ -41,13 +32,11 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
   const total = () => {
     let price = 0;
     addItem.forEach((cartItem) => {
-      // console.log(addItem);
       if (cartItem.amount) {
         price += parseFloat(cartItem.discounted_price) * cartItem.amount;
       }
     });
     setPrice(price);
-    // console.log(price,"piceeeeeeeeeeeeeeeeeeeeeeeeee")
   };
 
   const totalAmount = () => {
@@ -93,22 +82,25 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
       });
   };
 
+  const hideMOdal = () => {
+    setShowModal(false);
+    setShowForm(false);
+  };
+
   const formHandler = () => {
     setShowForm(true);
     setPayment(true);
   };
 
   const handleCloseModal = () => {
-    hideMOdal();
     setPayment(false);
     setPrice(0);
   };
 
-  const handlePayment = () => {
+  const handleProceedToPay = () => {
+    setShowModal(false);
     navigate("/payment");
-    hideMOdal();
   };
-  let menuRef = useRef();
 
   useEffect(() => {
     let handler = (e) => {
@@ -145,20 +137,17 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
         config
       )
       .then((res) => {
-        // console.log(res.data.data, "cart my-response");
-        // console.log(res.data.data.map(data=> ({...data ,amount:+data.qty})), "my-response");
-
         let addQtyAmount = res.data.data.map((data) => ({
           ...data,
           amount: +data.qty,
         }));
-        //  console.log(addqtytoamount, "addqtytoamount");
+
         setAddItem(addQtyAmount);
         total();
         totalAmount();
       })
       .catch((error) => {
-        console.log("hello this error is shown in the program", error);
+        console.log(error);
       });
   };
 
@@ -260,48 +249,38 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
                                           {item.name}
                                         </p>
                                         <br />
-                                        {item.variants &&
-                                          item.variants.map((data) => {
-                                            return (
-                                              <>
-                                                <div className="2xs:flex-col md:flex-col bg-white">
-                                                  <p class=" bg-white md:text-sm xs:text-sm sm:text-2xl font-light float-left">
-                                                    {data.measurement}{" "}
-                                                    {data.measurement_unit_name}
-                                                  </p>
-                                                  <br></br>
-                                                  <p class="bg-white md:text-sm xs:text-sm sm:text-2xl text-gray-500 float-left text-lime">
-                                                    ₹{data.price}{" "}
-                                                  </p>
-                                                  <br></br>
-                                                </div>
-                                              </>
-                                            );
-                                          })}
 
-                                        <div className="bg-white flex justify-between ">
-                                          <div className="bg-white">
-                                            <p class="bg-white text-gryColour md:mt-2 md:text-sm xs:text-sm sm:text-2xl font-light float-left">
+                                        <div className="flex justify-between mt-0.5">
+                                          <div>
+                                            <p className="text-lightgray font-semi-bold">
+                                              {item.serve_for}
+                                            </p>
+                                            <p className="text-">
+                                              {" "}
+                                              ₹{item.discounted_price}{" "}
+                                            </p>
+                                            <p class="bg-white text-gryColour">
                                               {" "}
                                               Qty : {item.amount}
                                               {() => setAmount(item.amount)}
                                             </p>
                                           </div>
-
-                                          <div className="bg-white md:mt-1.5">
-                                            <QtyAmount
-                                              item={item}
-                                              setAddItem={setAddItem}
-                                              addItem={addItem}
-                                            />
-                                          </div>
-                                          <div className="bg-white">
-                                            <FaTrash
-                                              onClick={() =>
-                                                removeItemHandler(item)
-                                              }
-                                              className="bg-white md:mt-2 hover:bg-RedColour hover:bg-opacity-20 cursor-pointer mt-1 md:text-[18px] xs:text-sm sm:text-3xl text-red"
-                                            />
+                                          <div className="flex items-center justify-center text-center">
+                                            <div className="bg-white md:mt-1.5 mr-14">
+                                              <QtyAmount
+                                                item={item}
+                                                setAddItem={setAddItem}
+                                                addItem={addItem}
+                                              />
+                                            </div>
+                                            <div className="bg-white">
+                                              <FaTrash
+                                                onClick={() =>
+                                                  removeItemHandler(item)
+                                                }
+                                                className="bg-white md:mt-2 hover:bg-RedColour hover:bg-opacity-20 cursor-pointer mt-1 md:text-[18px] xs:text-sm sm:text-3xl text-red"
+                                              />
+                                            </div>
                                           </div>
                                         </div>
                                       </div>
@@ -309,42 +288,10 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
                                   </li>
                                 </ul>
 
-                                {showForm && addItem.length ? null : (
-                                  <div className="fixed bottom-10 bg-white p-3">
-                                    <Review formData={formData} />
-                                  </div>
-                                )}
-
-                                {/* {Payment ? (
-                                  <button
-                                    className="flex justify-between bg-lime text-white  fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
-                                    onClick={handlePayment}
-                                  >
-                                    <p className="p-2 bg-lime rounded-lg">
-                                      Total : ₹ {price}
-                                    </p>
-                                    <p className="p-2 bg-lime rounded-lg">
-                                      Process to Payment{" "}
-                                    </p>
-                                  </button>
-                                ) : (
-                                  <button
-                                    className="flex justify-between bg-lime text-white  fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
-                                    onClick={formHandler}
-                                  >
-                                    <p className="p-2 bg-lime rounded-lg">
-                                      Total : ₹ {price}
-                                    </p>
-                                    <p className="p-2 bg-lime rounded-lg">
-                                      Proceed{" "}
-                                    </p>
-                                  </button>
-                                )} */}
-
                                 {Payment ? (
                                   <button
                                     className="flex justify-between bg-lime text-white fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
-                                    onClick={handlePayment}
+                                    onClick={handleProceedToPay}
                                   >
                                     <p className="p-2 bg-lime rounded-lg">
                                       Total : ₹ {price}
@@ -384,6 +331,7 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
                       back={back}
                       setFormdata={setFormdata}
                       formData={formData}
+                      setShowModal = {setShowModal}
                     />
                   ) : null}
                 </div>
