@@ -7,7 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
-export const Login = ({ dispatchLogin, setUser_id, handleLogin, addItem,setLoggedIn }) => {
+export const Login = ({ dispatchLogin, setUser_id, handleLogin, addItem,setLoggedIn, getUserCarts }) => {
   const [logins, setLogins] = useState({
     phone: "",
     password: "",
@@ -32,6 +32,32 @@ export const Login = ({ dispatchLogin, setUser_id, handleLogin, addItem,setLogge
     let value = e.target.value;
     setLogins({ ...logins, [name]: value });
   };
+
+  const clearCart = (user_id) => {
+    let config = {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    };
+
+    var bodyFormdata = new FormData();
+    bodyFormdata.append("accesskey", "90336");
+    bodyFormdata.append("remove_from_cart", "1");
+    bodyFormdata.append("user_id", user_id);
+
+    return axios
+      .post(
+        "https://grocery.intelliatech.in/api-firebase/cart.php",
+        bodyFormdata,
+        config
+      )
+      .then((res) => {
+       
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -75,42 +101,45 @@ export const Login = ({ dispatchLogin, setUser_id, handleLogin, addItem,setLogge
           let newUserId = res.data.user_id;
           setUser_id(newUserId);
 
-        //   const addMultipleItems = () => {
-        //     let arr = {};
-        //     // console.log(addItem)
-        //     addItem.forEach((item) => {
-        //       arr[item.product_variant_id] = item.amount;
-        //     });
+          clearCart(newUserId)
 
-        //     let variants = (Object.keys(arr)).join(',');
-        //     let variantQty = (Object.values(arr)).join(',');
-        //     console.log("variants",variants);
-        //     console.log("variantQty",variantQty);
+          const addMultipleItems = () => {
+            let arr = {};
+            // console.log(addItem)
+            addItem.forEach((item) => {
+              arr[item.product_variant_id] = item.amount;
+            });
 
-        //     console.log(config);
-        //     var bodyFormdata = new FormData();
-        //     bodyFormdata.append("accesskey", "90336");
-        //     bodyFormdata.append("add_multiple_items", "1");
-        //     bodyFormdata.append("user_id", newUserId);
-        //     bodyFormdata.append("product_variant_id", variants);
-        //     bodyFormdata.append("qty", variantQty);
+            let variants = (Object.keys(arr)).join(',');
+            let variantQty = (Object.values(arr)).join(',');
+            console.log("variants",variants);
+            console.log("variantQty",variantQty);
 
-        //     return axios
-        //       .post(
-        //         "https://grocery.intelliatech.in/api-firebase/cart.php",
-        //         bodyFormdata,
-        //         config
-        //       )
-        //       .then((res) => {
+            console.log(config);
+            var bodyFormdata = new FormData();
+            bodyFormdata.append("accesskey", "90336");
+            bodyFormdata.append("add_multiple_items", "1");
+            bodyFormdata.append("user_id", newUserId);
+            bodyFormdata.append("product_variant_id", variants);
+            bodyFormdata.append("qty", variantQty);
+
+            return axios
+              .post(
+                "https://grocery.intelliatech.in/api-firebase/cart.php",
+                bodyFormdata,
+                config
+              )
+              .then((res) => {
    
-        //         console.log(res, "res<><><><><><><><>");
-        //       })
-        //       .catch((error) => {
-        //         console.log(error);
-        //       });
-        //   };
+                console.log(res, "res<><><><><><><><>");
+                getUserCarts(newUserId);
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          };
 
-        // addMultipleItems();
+        addMultipleItems();
         } else {
           toast.error("Invalid phone OR password! !", {
             position: toast.POSITION.TOP_CENTER,
@@ -124,8 +153,7 @@ export const Login = ({ dispatchLogin, setUser_id, handleLogin, addItem,setLogge
       password: "",
     });
   };
-  
-
+ 
   return (
     <>
       {LoginFormModals && (

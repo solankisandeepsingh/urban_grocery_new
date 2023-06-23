@@ -126,7 +126,7 @@ function MyCart({
     };
   });
 
-  const getUserCarts = () => {
+  const getUserCarts = (user_id) => {
     let config = {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
@@ -160,8 +160,8 @@ function MyCart({
   };
 
   useEffect(() => {
-    getUserCarts();
-  }, [accesskey, user_id]);
+    getUserCarts(user_id);
+  }, [accesskey]);
   console.log(addItem," ADD ITEM IN MYCART <><><><><")
 
   return (
@@ -304,6 +304,7 @@ function MyCart({
                                       setUser_id={setUser_id}
                                       // handleLogin={handleLogin}
                                       addItem={addItem}
+                                      getUserCarts={getUserCarts}
                                     />
                                   ) : (
                                     <>
