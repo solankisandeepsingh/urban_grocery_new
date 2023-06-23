@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { mockProduct } from "../../../Models/MockProduct";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import CartQuantity from "../../Button/CartQuantity";
 import axios from "axios";
 import { API_TOKEN } from "../../Token/Token";
 
-export const ProductCarousel = ({ name, setAddItem, addItem }) => {
-  const navigate = useNavigate();
-  // const [allproduct, setShowAllProducts] = useState(mockProduct.data);
+export const ProductCarousel = ({ setAddItem, addItem, user_id }) => {
   const [showAllProduct, setShowAllProducts] = useState([]);
-  // const [showQtybtn, setShowQtybtn] = useState(false);
+  const navigate = useNavigate();
 
   const productCarousels = () => {
     let config = {
@@ -42,7 +39,6 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
 
   const responsive = {
     superLargeDesktop: {
-      // the naming can be any, depends on you.
       breakpoint: { max: 4000, min: 3000 },
       items: 5,
     },
@@ -62,7 +58,6 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
   };
 
   const addItemHandler = (item, data) => {
-    // console.log("item1>>>>>>>>>>>>>>", addItem);
     console.log("item", item);
     const config = {
       headers: {
@@ -74,16 +69,12 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", "14");
+    bodyFormData.append("user_id", user_id);
 
     bodyFormData.append("product_id", `${data.id}`);
     bodyFormData.append("product_variant_id", `${item.id}`);
 
-    // const qtys = (item.qty || 0) + 1;
-
     bodyFormData.append("qty", 1);
-
-    // console.log("item", qtys);
 
     axios
       .post(
@@ -92,10 +83,7 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
         config
       )
       .then((res) => {
-        console.log(res, "res add item");
-        // setAddItem(res)
         if (addItem.some((cartItem) => cartItem.product_id === item.id)) {
-          // console.log("addtiem", addItem);
           setAddItem((cart) =>
             cart.map((data) =>
               data.product_id === item.id
@@ -113,22 +101,11 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
           amount: 1,
           discounted_price: item.discounted_price,
           id: item.id,
-          image: data.image,
-          images: [
-            "http://grocery.intelliatech.in/upload/variant_images/1676618514.4521-883.png",
-          ],
           price: item.price,
           product_id: item.product_id,
           product_variant_id: item.id,
           qty: 1,
-          save_for_later: "0",
-          serve_for: "Available",
-          slug: "butterscotch-flavorsome-cake",
-          stock: "29",
-
-          type: "packet",
-          unit: "gm",
-          user_id: "14",
+          user_id: user_id,
         };
         setAddItem((cart) => [...cart, { ...item1, amount: 1 }]);
       })
@@ -148,7 +125,10 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
           <h1 className="font-okra font-600">All Proudcts</h1>
         </div>
         <div className=" text-customGreen text-[20px]	">
-          <h1 className="cursor-pointer font-okra font-600" onClick={viewAllProducts}>
+          <h1
+            className="cursor-pointer font-okra font-600"
+            onClick={viewAllProducts}
+          >
             View All
           </h1>
         </div>
@@ -174,7 +154,6 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
                       <p className="md:text-sm xs:text-sm sm:text-2xl font-medium bg-white truncate ...">
                         {item.name}
                       </p>
-                  
                     </div>
                     {item &&
                       item.variants.map((data) => {
@@ -195,17 +174,11 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
                                 ) ? (
                                   <>
                                     <div className="md:mt-2 md:ml-6 xs:mt-2.5 sm:mt-4 ">
-                                      {console.log(
-                                        item,
-                                        "Item",
-                                        addItem,
-                                        "addItem",
-                                        "In ProductCarousel, calling CartQuantity"
-                                      )}
                                       <CartQuantity
                                         item={item}
                                         setAddItem={setAddItem}
                                         addItem={addItem}
+                                        user_id={user_id}
                                       />
                                     </div>
                                   </>

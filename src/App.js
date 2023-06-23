@@ -12,12 +12,10 @@ import { Faq } from "./Component/FAQ/Faq";
 import { MyOrder } from "./Component/My-Order/MyOrder";
 import { Success } from "./Component/Payment/Success";
 import { Wallet } from "./Component/MyWallet/Wallet";
-import { Aside } from "./Component/User-Account/Aside";
 import { Login } from "./Component/Login.jsx/Login";
 import { ForgetPass } from "./Component/Login.jsx/ForgetPass";
 import { Address } from "./Component/MyAddress/Address";
 import { API_TOKEN } from "./Component/Token/Token";
-import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 const initialLoggedUserName = "User";
 
@@ -39,21 +37,32 @@ function App() {
     phone: "",
     pin: "",
   });
-  const [hideNav, setHideNav] = useState(false);
+
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [name, setName] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [NavbarOpen, setNavbarOpen] = useState(true);
   const [price, setPrice] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [user_id, setUser_id] = useState("14");
   const [loggedUsername, dispatchLogin] = useReducer(
     loginReducer,
     initialLoggedUserName
   );
 
   useEffect(() => {
+    const NavOpen = localStorage.getItem("NavbarOpen");
+    if (NavOpen) {
+      setNavbarOpen(JSON.parse(NavOpen));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("NavbarOpen", JSON.stringify(NavbarOpen));
+  }, [NavbarOpen]);
+
+  useEffect(() => {
     const LoggedInStatus = () => {
-      // console.log(localStorage.getItem(`${API_TOKEN}`));
       const token = localStorage.getItem(`token`);
       if (token) {
         setLoggedIn(true);
@@ -70,15 +79,8 @@ function App() {
     return <div>Loading...</div>;
   }
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    localStorage.setItem("token", `${API_TOKEN}`);
-    setLoggedIn(true);
-  };
-
   return (
     <>
-      {/* {loggedIn ? ( */}
       <div>
         <Navbar
           setData={setData}
@@ -94,20 +96,26 @@ function App() {
           loggedUsername={loggedUsername}
           NavbarOpen={NavbarOpen}
           setNavbarOpen={setNavbarOpen}
+          setLoggedIn={setLoggedIn}
+          dispatchLogin={dispatchLogin}
+          user_id={user_id}
+          setUser_id={setUser_id}
         />
         <Routes>
           <Route
             path="/login"
             element={
               <Login
-                onClick={handleLogin}
                 dispatchLogin={dispatchLogin}
                 setIsOpen={setIsOpen}
                 isOpen={isOpen}
                 setLoggedIn={setLoggedIn}
+                user_id={user_id}
+                setUser_id={setUser_id}
               />
             }
           />
+
           <Route
             path="/"
             element={
@@ -119,7 +127,9 @@ function App() {
                 showSearchBar={showSearchBar}
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
-                 
+                user_id={user_id}
+                setUser_id={setUser_id}
+                setLoggedIn={setLoggedIn}
               />
             }
           />
@@ -130,6 +140,8 @@ function App() {
                 setAddItem={setAddItem}
                 addItem={addItem}
                 isOpen={isOpen}
+                user_id={user_id}
+                setUser_id={setUser_id}
                 setIsOpen={setIsOpen}
               />
             }
@@ -142,6 +154,8 @@ function App() {
                 setAddItem={setAddItem}
                 addItem={addItem}
                 isOpen={isOpen}
+                user_id={user_id}
+                setUser_id={setUser_id}
                 setIsOpen={setIsOpen}
               />
             }
@@ -156,7 +170,8 @@ function App() {
                 name={name}
                 addItem={addItem}
                 setAddItem={setAddItem}
-                
+                user_id={user_id}
+                setUser_id={setUser_id}
               />
             }
           />
@@ -169,16 +184,17 @@ function App() {
                 NavbarOpen={NavbarOpen}
                 setNavbarOpen={setNavbarOpen}
                 setData={true}
+                user_id={user_id}
+                setUser_id={setUser_id}
               />
             }
           />
-          {/* <Route path="/account" element={<Account />} /> */}
+
           <Route
             path="/wallet"
             element={<Wallet setIsOpen={setIsOpen} isOpen={isOpen} />}
           />
-          {/* <Route path="/myprofile" element={<Myprofile/>} /> */}
-          <Route path="/aside" element={<Aside />} />
+
           <Route
             path="/reset"
             element={<ForgetPass isOpen={isOpen} setIsOpen={setIsOpen} />}
@@ -186,11 +202,25 @@ function App() {
 
           <Route
             path="/success"
-            element={<Success isOpen={isOpen} setIsOpen={setIsOpen} />}
+            element={
+              <Success
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                NavbarOpen={NavbarOpen}
+                setNavbarOpen={setNavbarOpen}
+              />
+            }
           />
           <Route
             path="/address"
-            element={<Address isOpen={isOpen} setIsOpen={setIsOpen} />}
+            element={
+              <Address
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                user_id={user_id}
+                setUser_id={setUser_id}
+              />
+            }
           />
           <Route
             path="/faq"
@@ -205,6 +235,8 @@ function App() {
                 setAddItem={setAddItem}
                 addItem={addItem}
                 price={price}
+                user_id={user_id}
+                setUser_id={setUser_id}
                 setPrice={setPrice}
               />
             }
@@ -218,16 +250,13 @@ function App() {
                 addItem={addItem}
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
+                user_id={user_id}
+                setUser_id={setUser_id}
               />
             }
           />
         </Routes>
       </div>
-      {/* ) : (
-        <>
-          <Login onClick={handleLogin} dispatchLogin={dispatchLogin}  />
-        </>
-      )} */}
     </>
   );
 }

@@ -3,7 +3,7 @@ import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
-export const AddressForm = ({ getAddress, setFormOpen }) => {
+export const AddressForm = ({ getAddress, setFormOpen,user_id }) => {
   const [addressData, setAddressData] = useState({
     name: "",
     address: "",
@@ -18,14 +18,11 @@ export const AddressForm = ({ getAddress, setFormOpen }) => {
   const [areaDropdown, setAreaDropdown] = useState("");
   const [initialRender, setIntialrender] = useState(true);
 
-
   const handleDropdown1Change = (event) => {
     const selectedValue = event.target.value;
     setCityDropdown(selectedValue);
     console.log(selectedValue);
   };
-
-
 
   const handleDropdown2Change = (event) => {
     const selectedValue = event.target.value;
@@ -54,7 +51,7 @@ export const AddressForm = ({ getAddress, setFormOpen }) => {
     const data = new FormData();
     data.append("accesskey", "90336");
     data.append("add_address", "1");
-    data.append("user_id", "14");
+    data.append("user_id", user_id);
     data.append("type", `${addressData.type}`);
     data.append("name", `${addressData.name}`);
     data.append("mobile", "9131582414");
@@ -237,7 +234,6 @@ export const AddressForm = ({ getAddress, setFormOpen }) => {
                     
                   </div>
                 )} */}
-
 
                 <div className="mt-[-60px] flex justify-between">
                   <div className="my-1 flex mt-24">

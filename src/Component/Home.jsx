@@ -14,10 +14,9 @@ function Home({
   setAddItem,
   isOpen,
   setIsOpen,
-  
-})
- {
- 
+  setUser_id,
+  user_id,
+}) {
   return (
     <div className="relative mt-0.5">
       <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} />
@@ -28,6 +27,7 @@ function Home({
             data={data}
             addItem={addItem}
             setAddItem={setAddItem}
+            user_id={user_id}
           />
         </div>
 
@@ -65,8 +65,13 @@ function Home({
             <Category
               SubCategory={SubCategory}
               productDetails={productDetails}
+              user_id={user_id}
             />
-            <ProductCarousel addItem={addItem} setAddItem={setAddItem} />
+            <ProductCarousel
+              addItem={addItem}
+              setAddItem={setAddItem}
+              user_id={user_id}
+            />
           </div>
         </div>
       </>

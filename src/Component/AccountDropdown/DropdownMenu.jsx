@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { API_TOKEN } from "../Token/Token";
 
-function DropdownMenu({ isOpen, setIsOpen,setLoggedIn, dispatchLogin }) {
+function DropdownMenu({ isOpen, setIsOpen, setLoggedIn, dispatchLogin }) {
   const navigate = useNavigate();
   let menuRef = useRef();
   useEffect(() => {
@@ -22,11 +22,10 @@ function DropdownMenu({ isOpen, setIsOpen,setLoggedIn, dispatchLogin }) {
   });
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    // dispatchLogin({type:"LOGOUT"})
-    setLoggedIn(false);
+    localStorage.removeItem(`${API_TOKEN}`);
+    // setLoggedIn(false);
     setIsOpen(false);
-    navigate("/")
+    navigate("/");
   };
   return (
     <>
@@ -90,14 +89,13 @@ function DropdownMenu({ isOpen, setIsOpen,setLoggedIn, dispatchLogin }) {
                 FAQ
               </p>
             </NavLink>
-            <NavLink to={"/"}>
-              <p
-                onClick={handleLogout}
-                className="bg-white sm:text-lg  md:text-sm mt-4"
-              >
-                Log Out
-              </p>
-            </NavLink>
+
+            <p
+              onClick={handleLogout}
+              className="bg-white sm:text-lg  md:text-sm mt-4 cursor-pointer"
+            >
+              Log Out
+            </p>
           </div>
         </div>
       )}

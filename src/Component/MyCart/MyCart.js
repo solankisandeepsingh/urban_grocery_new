@@ -6,19 +6,32 @@ import axios from "axios";
 import { API_TOKEN } from "../Token/Token";
 import { QtyAmount } from "../Button/QtyAmount";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { Login } from "../Login.jsx/Login";
 
-function MyCart({ addItem, setAddItem, formData, setFormdata,setNavbarOpen }) {
+function MyCart({
+  addItem,
+  setAddItem,
+  formData,
+  setFormdata,
+  setNavbarOpen,
+  dispatchLogin,
+  setLoggedIn,
+  user_id,
+  setUser_id,
+  
+}) {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [setAmount] = useState();
   const [price, setPrice] = useState(0);
   const [showForm, setShowForm] = useState(false);
   const [Payment, setPayment] = useState(false);
+  const [newUserLog, setNewUserLog] = useState(false);
   const [totalItem, setTotalItem] = useState(0);
+
   let menuRef = useRef();
 
   const accesskey = "90336";
-  const user_id = "14";
 
   const back = () => {
     if (showForm) {
@@ -28,7 +41,6 @@ function MyCart({ addItem, setAddItem, formData, setFormdata,setNavbarOpen }) {
       setPayment(false);
     }
   };
-
   const total = () => {
     let price = 0;
     addItem.forEach((cartItem) => {
@@ -64,7 +76,7 @@ function MyCart({ addItem, setAddItem, formData, setFormdata,setNavbarOpen }) {
     var bodyFormdata = new FormData();
     bodyFormdata.append("accesskey", "90336");
     bodyFormdata.append("remove_from_cart", "1");
-    bodyFormdata.append("user_id", "14");
+    bodyFormdata.append("user_id", user_id);
     bodyFormdata.append("product_variant_id", `${item.product_variant_id}`);
     axios
       .post(
@@ -84,23 +96,18 @@ function MyCart({ addItem, setAddItem, formData, setFormdata,setNavbarOpen }) {
 
   const hideMOdal = () => {
     setShowModal(false);
+    setPayment(false);
     setShowForm(false);
   };
 
   const formHandler = () => {
     setShowForm(true);
     setPayment(true);
+    setNewUserLog(false)
   };
 
   const handleCloseModal = () => {
     setPayment(false);
-    setPrice(0);
-  };
-
-  const handleProceedToPay = () => {
-    setShowModal(false);
-    navigate("/payment");
-    setNavbarOpen(false)
   };
 
   useEffect(() => {
@@ -155,8 +162,8 @@ function MyCart({ addItem, setAddItem, formData, setFormdata,setNavbarOpen }) {
   useEffect(() => {
     getUserCarts();
   }, [accesskey, user_id]);
+  console.log(addItem," ADD ITEM IN MYCART <><><><><")
 
-  console.log("addItemmmmmmmmmmmmmmmmmmmmmmmm", addItem);
   return (
     <>
       <button
@@ -289,18 +296,30 @@ function MyCart({ addItem, setAddItem, formData, setFormdata,setNavbarOpen }) {
                                   </li>
                                 </ul>
 
-                                {Payment ? (
-                                  <button
-                                    className="flex justify-between bg-lime text-white fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
-                                    onClick={handleProceedToPay}
-                                  >
-                                    <p className="p-2 bg-lime rounded-lg">
-                                      Total : ₹ {price}
-                                    </p>
-                                    <p className="p-2 bg-lime rounded-lg">
-                                      Process to Payment
-                                    </p>
-                                  </button>
+                                {user_id === "14" ? (
+                                  newUserLog ? (
+                                    <Login
+                                      setLoggedIn={setLoggedIn}
+                                      dispatchLogin={dispatchLogin}
+                                      setUser_id={setUser_id}
+                                      // handleLogin={handleLogin}
+                                      addItem={addItem}
+                                    />
+                                  ) : (
+                                    <>
+                                      <button
+                                        className="flex justify-between bg-lime text-white fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
+                                        onClick={() => setNewUserLog(true)}
+                                      >
+                                        <p className="p-2 bg-lime rounded-lg">
+                                          Total : ₹ {price}
+                                        </p>
+                                        <p className="p-2 bg-lime rounded-lg">
+                                          Proceed
+                                        </p>
+                                      </button>
+                                    </>
+                                  )
                                 ) : (
                                   <button
                                     className="flex justify-between bg-lime text-white fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
@@ -332,8 +351,11 @@ function MyCart({ addItem, setAddItem, formData, setFormdata,setNavbarOpen }) {
                       back={back}
                       setFormdata={setFormdata}
                       formData={formData}
-                      setShowModal = {setShowModal}
+                      setShowModal={setShowModal}
                       setNavbarOpen={setNavbarOpen}
+                      user_id={user_id}
+                      setUser_id={setUser_id}
+                      
                     />
                   ) : null}
                 </div>

@@ -6,7 +6,7 @@ import { HiOfficeBuilding } from "react-icons/hi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AddressForm } from "../../MyAddress/AddressForm";
 
-function Form({setShowModal,setNavbarOpen}) {
+function Form({ setShowModal, setNavbarOpen, user_id }) {
   const [addList, setAddlist] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
   const [formOpen, setFormOpen] = useState(false);
@@ -27,7 +27,7 @@ function Form({setShowModal,setNavbarOpen}) {
     const data = new FormData();
     data.append("accesskey", "90336");
     data.append("get_addresses", "1");
-    data.append("user_id", "14");
+    data.append("user_id", user_id);
 
     axios
       .post(
@@ -46,18 +46,18 @@ function Form({setShowModal,setNavbarOpen}) {
   const handleOpenForm = () => {
     setFormOpen(true);
   };
+
   const handleProceedToPay = () => {
     navigate("/payment");
-    setShowModal(false)
-    setNavbarOpen(false)
+    setShowModal(false);
+    setNavbarOpen(false);
   };
 
   return (
     <>
-      {!formOpen && addList &&(
+      {!formOpen && addList && (
         <>
           <form>
-
             {addList.map((item) => {
               return (
                 <label>
@@ -101,8 +101,7 @@ function Form({setShowModal,setNavbarOpen}) {
             })}
           </form>
 
-          <div className="mt-2">
-          </div>
+          <div className="mt-2"></div>
         </>
       )}
 
@@ -124,7 +123,7 @@ function Form({setShowModal,setNavbarOpen}) {
         </button>
       )}
       {formOpen && (
-        <AddressForm setFormOpen={setFormOpen} getAddress={getAddress} />
+        <AddressForm setFormOpen={setFormOpen} getAddress={getAddress} user_id={user_id} />
       )}
     </>
   );

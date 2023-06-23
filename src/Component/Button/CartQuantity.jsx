@@ -2,9 +2,7 @@ import axios from "axios";
 import React from "react";
 import { API_TOKEN } from "../Token/Token";
 
-function CartQuantity({ item, setAddItem, addItem }) {
-  console.log(addItem);
-
+function CartQuantity({ item, setAddItem, addItem, user_id }) {
   const quantityDecrease = () => {
     const config = {
       headers: {
@@ -15,7 +13,7 @@ function CartQuantity({ item, setAddItem, addItem }) {
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", "14");
+    bodyFormData.append("user_id", user_id);
     bodyFormData.append("product_id", item.id);
     bodyFormData.append("product_variant_id", item.variants[0].id);
     const finditem = addItem.find((data) => data.product_id == item.id);
@@ -58,7 +56,6 @@ function CartQuantity({ item, setAddItem, addItem }) {
   };
 
   const quantityIncrease = () => {
-    // console.log("addItem>>>>>>>>>>>>>>>>>>>>>>>>>>>>", item);
     const config = {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
@@ -67,15 +64,11 @@ function CartQuantity({ item, setAddItem, addItem }) {
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", "14");
-
+    bodyFormData.append("user_id", user_id);
     bodyFormData.append("product_id", item.id);
     bodyFormData.append("product_variant_id", item.variants[0].id);
-
     const finditem = addItem.find((data) => data.product_id == item.id);
-    // console.log(finditem, "[FIND ITEM]")
 
-    // console.log(oldQty)
     const newQty = (+finditem.amount || 0) + 1;
     bodyFormData.append("qty", newQty);
 
@@ -86,7 +79,6 @@ function CartQuantity({ item, setAddItem, addItem }) {
         config
       )
       .then((res) => {
-        // console.log(">>>>>>>>>>>>>>resonse", res);
         if (addItem.some((cartItem) => cartItem.product_id === item.id)) {
           setAddItem((cart) =>
             cart.map((data) =>

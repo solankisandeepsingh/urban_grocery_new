@@ -7,6 +7,7 @@ import axios from "axios";
 function Payment({ isOpen,setIsOpen}) {
   const handleCashOnDelivery = () => {
     console.log("Cash on Delivery");
+ 
     let config = {
       headers:{
         Authorization :`Bearer ${API_TOKEN}`
@@ -14,28 +15,26 @@ function Payment({ isOpen,setIsOpen}) {
     } 
     let CashOnData = new FormData();
     CashOnData.append("accesskey","90336")
-    CashOnData.append("place_order","9")
-    CashOnData.append("user_id","14")
-    CashOnData.append("mobile","0123456789")
-    CashOnData.append("product_variant_id","90336")
+    CashOnData.append("place_order","1")
+    CashOnData.append("user_id","33")
+    CashOnData.append("mobile","7042719917")
+    CashOnData.append("product_variant_id",["847"])
     CashOnData.append("delivery_charge","50")
     CashOnData.append("total","500")
     CashOnData.append("final_total","500")
-    CashOnData.append("address","bhuj")
+    CashOnData.append("address","indore")
     CashOnData.append("latitude","44.456321")
     CashOnData.append("longitude","12.456987")
-    CashOnData.append("payment_method","Paypal / Payumoney / COD / PAYTM / razorpay / bank transfer")
-    CashOnData.append("quantity",["3","1"])
-    CashOnData.append("discount","10")
-    CashOnData.append("tax_percentage","20")
-    CashOnData.append("tax_amount","30")
+    CashOnData.append("payment_method","COD")
+    CashOnData.append("quantity",["3"])
+    CashOnData.append("discount","0")
+    CashOnData.append("tax_percentage","0")
+    CashOnData.append("tax_amount","0")
     CashOnData.append("area_id","1")
     CashOnData.append("order_note","home")
-    CashOnData.append("promo_code","NEW20")
-    CashOnData.append("promo_discount","40")
     CashOnData.append("order_from","test ")
-    CashOnData.append("local_pickup","0/1 ")
-    CashOnData.append("wallet_used","true/false")
+    CashOnData.append("local_pickup","1 ")
+    CashOnData.append("wallet_used","false")
     CashOnData.append("status","awaiting_payment ")
     CashOnData.append("delivery_time","Today - Evening (4:00pm to 7:00pm)")
 
@@ -44,10 +43,9 @@ function Payment({ isOpen,setIsOpen}) {
     ).then((res)=>{
       console.log(res);
     }).catch((err)=>{
-      console.log(err.response); // Log the response data for further investigation
+      console.log(err)
       console.log(err.message)
     })
-
   };
 
   const handleRazorpay = () => {
@@ -68,6 +66,10 @@ function Payment({ isOpen,setIsOpen}) {
     console.log("Expiry Date:", expiryDate);
     console.log("CVV:", cvv);
   };
+
+  const handleSuccessPay =()=>{
+    
+  }
 
   return (
     <>
@@ -187,7 +189,7 @@ function Payment({ isOpen,setIsOpen}) {
               </div>
               <div>
                 <NavLink to={`/success`}>
-                  <button className="bg-lime w-full rounded-xl p-1">Pay</button>
+                  <button className="bg-lime w-full rounded-xl p-1" onClick={handleSuccessPay}>Pay</button>
                 </NavLink>
               </div>
             </form>
