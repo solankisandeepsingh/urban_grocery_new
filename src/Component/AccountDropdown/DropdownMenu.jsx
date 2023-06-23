@@ -2,7 +2,13 @@ import React, { useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { API_TOKEN } from "../Token/Token";
 
-function DropdownMenu({ isOpen, setIsOpen, setLoggedIn, dispatchLogin }) {
+function DropdownMenu({
+  isOpen,
+  setIsOpen,
+  setLoggedIn,
+  dispatchLogin,
+  loggedIn,
+}) {
   const navigate = useNavigate();
   let menuRef = useRef();
   useEffect(() => {
@@ -21,10 +27,17 @@ function DropdownMenu({ isOpen, setIsOpen, setLoggedIn, dispatchLogin }) {
     };
   });
 
+  // const handleLogout = () => {
+  //   localStorage.removeItem('token');
+  //   // dispatchLogin({type:"LOGOUT"})
+  //   setLoggedIn(false);
+  //   setIsOpen(false);
+  //   navigate("/")
+  // };
   const handleLogout = () => {
-    localStorage.removeItem(`${API_TOKEN}`);
-    // setLoggedIn(false);
-    setIsOpen(false);
+    localStorage.removeItem("token");
+    dispatchLogin({ type: "LOGOUT" });
+    setLoggedIn(false);
     navigate("/");
   };
   return (
@@ -89,13 +102,21 @@ function DropdownMenu({ isOpen, setIsOpen, setLoggedIn, dispatchLogin }) {
                 FAQ
               </p>
             </NavLink>
-
-            <p
-              onClick={handleLogout}
-              className="bg-white sm:text-lg  md:text-sm mt-4 cursor-pointer"
-            >
-              Log Out
-            </p>
+            {loggedIn ? (
+              <p
+                onClick={handleLogout}
+                className="bg-white sm:text-lg  md:text-sm mt-4 cursor-pointer "
+              >
+                Log Out
+              </p>
+            ) : (
+              <p
+                onClick={handleLogout}
+                className="bg-white sm:text-lg  md:text-sm mt-4 cursor-pointer "
+              >
+                Log Out
+              </p>
+            )}
           </div>
         </div>
       )}

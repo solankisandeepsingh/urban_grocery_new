@@ -17,14 +17,6 @@ import { ForgetPass } from "./Component/Login.jsx/ForgetPass";
 import { Address } from "./Component/MyAddress/Address";
 import { API_TOKEN } from "./Component/Token/Token";
 
-const initialLoggedUserName = "User";
-
-const loginReducer = (state, action) => {
-  console.log(action);
-  if (action.type === "LOGIN") state = action.payload;
-  if (action.type === "LOGOUT") state = "User";
-  return state;
-};
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -40,47 +32,74 @@ function App() {
 
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [name, setName] = useState("");
+  const [userName, setUserName] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [NavbarOpen, setNavbarOpen] = useState(true);
   const [price, setPrice] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [user_id, setUser_id] = useState("14");
-  const [loggedUsername, dispatchLogin] = useReducer(
-    loginReducer,
-    initialLoggedUserName
-  );
-
+  const [user_id, setUser_id] = useState(null);
+  
+  
   useEffect(() => {
     const NavOpen = localStorage.getItem("NavbarOpen");
     if (NavOpen) {
       setNavbarOpen(JSON.parse(NavOpen));
     }
+    localStorage.setItem("user_id", "14");
+    const token = localStorage.getItem("user_id");
+    // console.log("USERID IN USE EFFECT", token)
+    setUser_id(token)
+    
   }, []);
-
+  
+  
+  const loginReducer = (state, action) => {
+    if (action.type === "LOGIN") state = action.payload;
+    if (action.type === "LOGOUT") state = initialLoggedUserName;
+    return state;
+  };
+  
+  const initialLoggedUserName = user_id;
   useEffect(() => {
-    localStorage.setItem("NavbarOpen", JSON.stringify(NavbarOpen));
-  }, [NavbarOpen]);
-
-  useEffect(() => {
-    const LoggedInStatus = () => {
-      const token = localStorage.getItem(`token`);
-      if (token) {
-        setLoggedIn(true);
-      } else {
-        setLoggedIn(false);
-      }
-      setLoading(false);
-    };
-
-    LoggedInStatus();
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  return (
-    <>
+    localStorage.setItem("user_id", `${user_id}`);
+    
+    // if(userName){
+      // console.log(user_id,"USER ID BEING SET TO 14")
+      
+      // }
+      // else setUserName(true)
+    }, [user_id]);
+    
+    
+    useEffect(() => {
+      localStorage.setItem("NavbarOpen", JSON.stringify(NavbarOpen));
+    }, [NavbarOpen]);
+    
+    useEffect(() => {
+      const LoggedInStatus = () => {
+        const token = localStorage.getItem("token");
+        if (token) {
+          setLoggedIn(true);
+        } else {
+          // dispatchLogin({ type: "LOGOUT" });
+          setLoggedIn(false);
+        }
+        setLoading(false);
+      };
+      LoggedInStatus();
+    });
+    
+    const [loggedUsername, dispatchLogin] = useReducer(
+      loginReducer,
+      initialLoggedUserName
+      );
+      
+    if (loading) {
+      return <div>Loading...</div>;
+    }
+    
+    return (
+      <>
       <div>
         <Navbar
           setData={setData}
@@ -100,6 +119,7 @@ function App() {
           dispatchLogin={dispatchLogin}
           user_id={user_id}
           setUser_id={setUser_id}
+          loggedIn={loggedIn}
         />
         <Routes>
           <Route
@@ -112,6 +132,7 @@ function App() {
                 setLoggedIn={setLoggedIn}
                 user_id={user_id}
                 setUser_id={setUser_id}
+                loggedIn={loggedIn}
               />
             }
           />
@@ -130,6 +151,7 @@ function App() {
                 user_id={user_id}
                 setUser_id={setUser_id}
                 setLoggedIn={setLoggedIn}
+                loggedIn={loggedIn}
               />
             }
           />

@@ -23,7 +23,8 @@ export const Navbar = ({
   setLoggedIn,
   setUser_id,
   user_id,
-  handleLogin
+  handleLogin,
+  loggedIn
 }) => {
   const navigate = useNavigate();
   const [showSearch, setShowSearch] = useState(true);
@@ -57,19 +58,19 @@ export const Navbar = ({
             alt="Flowbite Logo"
             onClick={handleClickHome}
           />
-          {/* <button onClick={()=>{
-            let arr = {};
+          <button onClick={()=>{
+            // let arr = {};
             // console.log(...arr)
-            addItem.forEach((item)=>{
-              arr[item.product_variant_id] = item.amount  
-            }
-            )
+            // addItem.forEach((item)=>{
+            //   arr[item.product_variant_id] = item.amount  
+            // }
+            // )
             // let text = arr.join(',')
-            console.log(Object.keys(arr))
-            // console.log(addItem)
+            // console.log(Object.keys(arr))
+            console.log(user_id)
 
           }}>
-            CHECK ADD ITEM LIST</button> */}
+            CHECK ADD ITEM LIST</button>
           <div className="flex md:order-2 z-10 xs:justify-between bg-white">
             {showSearch ? null : (
               <div className="md:hidden xs:visible rounded-lg bg-lime w-8 h-8 xs:w-8 xs:h-8 xs:mt-3.5 xs:mx-2">
@@ -85,6 +86,8 @@ export const Navbar = ({
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
                 setLoggedIn={setLoggedIn}
+                loggedIn={loggedIn}
+                dispatchLogin={dispatchLogin}
               />
             )}
 
@@ -100,6 +103,7 @@ export const Navbar = ({
                 dispatchLogin={dispatchLogin}
                 user_id={user_id}
                 setUser_id={setUser_id}
+                loggedIn={loggedIn}
                 // handleLogin={handleLogin}
               />
             )}

@@ -16,10 +16,12 @@ function Home({
   setIsOpen,
   setUser_id,
   user_id,
+  loggedIn,
+  setLoggedIn
 }) {
   return (
     <div className="relative mt-0.5">
-      <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} />
+      <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} setLoggedIn={setLoggedIn} loggedIn={loggedIn} />
       <>
         <div className="md:invisible xs:visible">
           <Search

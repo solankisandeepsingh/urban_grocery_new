@@ -18,7 +18,7 @@ function MyCart({
   setLoggedIn,
   user_id,
   setUser_id,
-  
+  loggedIn
 }) {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
@@ -302,6 +302,8 @@ function MyCart({
                                       setLoggedIn={setLoggedIn}
                                       dispatchLogin={dispatchLogin}
                                       setUser_id={setUser_id}
+                                      user_id={user_id}
+                                      loggedIn={loggedIn}
                                       // handleLogin={handleLogin}
                                       addItem={addItem}
                                       getUserCarts={getUserCarts}
