@@ -1,7 +1,15 @@
 import React, { useEffect, useRef } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { API_TOKEN } from "../Token/Token";
 
-function DropdownMenu({ isOpen, setIsOpen }) {
+function DropdownMenu({
+  isOpen,
+  setIsOpen,
+  setLoggedIn,
+  dispatchLogin,
+  loggedIn,
+}) {
+  const navigate = useNavigate();
   let menuRef = useRef();
   useEffect(() => {
     let handler = (e) => {
@@ -18,12 +26,26 @@ function DropdownMenu({ isOpen, setIsOpen }) {
       document.removeEventListener("mousedown", handler);
     };
   });
+
+  // const handleLogout = () => {
+  //   localStorage.removeItem('token');
+  //   // dispatchLogin({type:"LOGOUT"})
+  //   setLoggedIn(false);
+  //   setIsOpen(false);
+  //   navigate("/")
+  // };
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    dispatchLogin({ type: "LOGOUT" });
+    setLoggedIn(false);
+    navigate("/");
+  };
   return (
     <>
       {isOpen && (
         <div
           ref={menuRef}
-          className="rounded-lg  bg-white md:mt-20 sm:mt-20 xs:mt-20 md:ml-[980px] sm:ml-[400px] xs:ml-[100px] z-10 fixed w-60 px-4"
+          className="rounded-lg  bg-white xs:mt-[58px] md:ml-[980px] sm:ml-[400px] xs:ml-[100px] z-10 fixed w-60 px-4"
         >
           <NavLink to={"/aside"}>
             <p className="bg-white mt-4 sm:text-2xl md:text-lg">My Account</p>
@@ -80,14 +102,21 @@ function DropdownMenu({ isOpen, setIsOpen }) {
                 FAQ
               </p>
             </NavLink>
-            <NavLink to={"/"}>
+            {loggedIn ? (
               <p
-                onClick={() => setIsOpen(false)}
-                className="bg-white sm:text-lg  md:text-sm mt-4"
+                onClick={handleLogout}
+                className="bg-white sm:text-lg  md:text-sm mt-4 cursor-pointer "
               >
                 Log Out
               </p>
-            </NavLink>
+            ) : (
+              <p
+                onClick={handleLogout}
+                className="bg-white sm:text-lg  md:text-sm mt-4 cursor-pointer "
+              >
+                Log Out
+              </p>
+            )}
           </div>
         </div>
       )}

@@ -7,7 +7,7 @@ export const Wallet = ({ isOpen, setIsOpen }) => {
   return (
     <>
       <div>
-        <div className="mt-[-15px] fixed">
+        <div className="xs:mt-0.5 fixed">
           <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
         <div className="md:flex md:flex-row">

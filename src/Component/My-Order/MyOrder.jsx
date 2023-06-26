@@ -5,6 +5,9 @@ import CartQuantity from "../Button/CartQuantity";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { FaBell, FaHome, FaRegAddressBook, FaWallet } from "react-icons/fa";
+import { QtyAmount } from "../Button/QtyAmount";
+import axios from "axios";
+import { API_TOKEN } from "../Token/Token";
 
 export const MyOrder = ({
   isOpen,
@@ -17,9 +20,31 @@ export const MyOrder = ({
 
   const navigate = useNavigate();
   const removeItemHandler = (item) => {
-    setAddItem((cart) => cart.filter((data) => data.id !== item.id));
-    let price = price - item.amount * parseFloat(item.variants[0].price);
-    setPrice(price);
+    let config = {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    };
+
+    var bodyFormdata = new FormData();
+    bodyFormdata.append("accesskey", "90336");
+    bodyFormdata.append("remove_from_cart", "1");
+    bodyFormdata.append("user_id", "14");
+    bodyFormdata.append("product_variant_id", `${item.product_variant_id}`);
+    axios
+      .post(
+        "https://grocery.intelliatech.in/api-firebase/cart.php",
+        bodyFormdata,
+        config
+      )
+      .then((res) => {
+        setAddItem((cart) => cart.filter((data) => data.id !== item.id));
+        let newPrice = price - item.amount * parseFloat(item.price);
+        setPrice(newPrice);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handlePayment = () => {
@@ -29,7 +54,7 @@ export const MyOrder = ({
   const total = () => {
     let price = 0;
     addItem.map((e) => {
-      price += parseFloat(e.variants[0].price) * e.amount;
+      price += parseFloat(e.price) * e.amount;
     });
     setPrice(price);
   };
@@ -40,7 +65,7 @@ export const MyOrder = ({
   }, [total]);
   return (
     <>
-      <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2 md:mt-[-22px]  bg-white">
+      <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2   bg-white">
         <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
 
@@ -101,7 +126,6 @@ export const MyOrder = ({
             </li>
           </ul>
         </div>
-        
 
         <div className="md:w-3/4 xs:w-full md:mt-[-30px] xs:mt-[-270px] ">
           <div className="md:mt-28 md:text-center ">
@@ -117,7 +141,6 @@ export const MyOrder = ({
                               role="list"
                               className="-my-6 divide-y divide-gray-200"
                             >
-                              
                               <li className="flex py-6 bg-white">
                                 <div className="bg-white xs:w-20 xs:h-20 md:h-24 md:w-24 sm:h-48 sm:w-48 flex-shrink-0 overflow-hidden rounded-md">
                                   <img
@@ -133,46 +156,39 @@ export const MyOrder = ({
                                       {item.name}
                                     </p>
                                     <br />
-                                    {item.variants.map((data) => {
-                                      return (
-                                        <>
-                                          <div className="2xs:flex-col md:flex-col bg-white">
-                                            <p className=" bg-white md:text-sm xs:text-xs sm:text-2xl font-light float-left">
-                                              {data.measurement}{" "}
-                                              {data.measurement_unit_name}
-                                            </p>
-                                            <br></br>
-                                            <p className="bg-white md:text-sm xs:text-xs sm:text-2xl text-gray-500 float-left text-lime">
-                                              ₹{data.price}{" "}
-                                            </p>
-                                            <br></br>
-                                          </div>
-                                        </>
-                                      );
-                                    })}
 
-                                    <div className="bg-white flex justify-between ">
+                                    <>
+                                      <div className="2xs:flex-col md:flex-col bg-white">
+                                        <br></br>
+                                        <p className="bg-white md:text-sm xs:text-xs sm:text-2xl  float-left text-graycol">
+                                          ₹{item.discounted_price}{" "}
+                                        </p>
+                                        <br></br>
+                                      </div>
+                                    </>
+
+                                    <div className="bg-white mt-2 flex justify-between ">
                                       <div className="bg-white">
-                                        <p className="bg-white md:text-sm xs:text-xs sm:text-2xl font-light float-left">
+                                        <p className="bg-white xs:mt-1.5 md:text-sm xs:text-xs sm:text-2xl font-light float-left">
                                           {" "}
                                           Qty : {item.amount}
                                           {() => setAmount(item.amount)}
                                         </p>
                                       </div>
 
-                                      <div className="bg-white mt-[-40px] xs:ml-10 xs:mt-[1px]">
-                                        <CartQuantity
+                                      <div className="bg-white mt-[-40px] xs:ml-10 xs:mt-0">
+                                        <QtyAmount
                                           item={item}
                                           setAddItem={setAddItem}
                                           addItem={addItem}
                                         />
                                       </div>
-                                      <div className="bg-white">
+                                      <div className="bg-white xs:mt-1">
                                         <FaTrash
                                           onClick={() =>
                                             removeItemHandler(item)
                                           }
-                                          className="bg-white cursor-pointer mt-1 md:text-2xl md:mt-[-40px] xs:text-sm xs:ml-20 xs:mb-2 sm:text-4xl sm:ml-12 text-red"
+                                          className="bg-white xs:w-44 xs:h-5 text-red"
                                         />
                                       </div>
                                     </div>
@@ -193,9 +209,7 @@ export const MyOrder = ({
                               </div>
                             </div>
                           </div>
-                          <div>
-
-                          </div>
+                          <div></div>
                         </div>
                       </>
                     );

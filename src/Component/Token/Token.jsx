@@ -1,1 +1,1 @@
-export const API_TOKEN = '10:25';
+export const API_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2ODc1MjY1NzYsImlzcyI6ImVLYXJ0IiwiZXhwIjoxNjg3NTI4Mzc2LCJzdWIiOiJlS2FydCBBdXRoZW50aWNhdGlvbiJ9.l13t9u3QipukAcRr2irtEq-2wxOm-QZD0gMvTUXWZ8E';

@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { mockProduct } from "../../../Models/MockProduct";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import CartQuantity from "../../Button/CartQuantity";
 import axios from "axios";
 import { API_TOKEN } from "../../Token/Token";
 
-export const ProductCarousel = ({ name, setAddItem, addItem }) => {
-  const navigate = useNavigate();
-  // const [allproduct, setShowAllProducts] = useState(mockProduct.data);
+export const ProductCarousel = ({ setAddItem, addItem, user_id }) => {
   const [showAllProduct, setShowAllProducts] = useState([]);
-  // const [showQtybtn, setShowQtybtn] = useState(false);
+  const navigate = useNavigate();
 
   const productCarousels = () => {
     let config = {
@@ -42,14 +39,13 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
 
   const responsive = {
     superLargeDesktop: {
-      // the naming can be any, depends on you.
       breakpoint: { max: 4000, min: 3000 },
       items: 5,
     },
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
 
-      items: 5,
+      items: 6,
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
@@ -62,7 +58,6 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
   };
 
   const addItemHandler = (item, data) => {
-    // console.log("item1>>>>>>>>>>>>>>", addItem);
     console.log("item", item);
     const config = {
       headers: {
@@ -74,16 +69,12 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", "14");
+    bodyFormData.append("user_id", user_id);
 
     bodyFormData.append("product_id", `${data.id}`);
     bodyFormData.append("product_variant_id", `${item.id}`);
 
-    // const qtys = (item.qty || 0) + 1;
-
     bodyFormData.append("qty", 1);
-
-    // console.log("item", qtys);
 
     axios
       .post(
@@ -92,10 +83,7 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
         config
       )
       .then((res) => {
-        console.log(res, "res add item");
-        // setAddItem(res)
         if (addItem.some((cartItem) => cartItem.product_id === item.id)) {
-          // console.log("addtiem", addItem);
           setAddItem((cart) =>
             cart.map((data) =>
               data.product_id === item.id
@@ -113,22 +101,11 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
           amount: 1,
           discounted_price: item.discounted_price,
           id: item.id,
-          image: data.image,
-          images: [
-            "http://grocery.intelliatech.in/upload/variant_images/1676618514.4521-883.png",
-          ],
           price: item.price,
           product_id: item.product_id,
           product_variant_id: item.id,
           qty: 1,
-          save_for_later: "0",
-          serve_for: "Available",
-          slug: "butterscotch-flavorsome-cake",
-          stock: "29",
-
-          type: "packet",
-          unit: "gm",
-          user_id: "14",
+          user_id: user_id,
         };
         setAddItem((cart) => [...cart, { ...item1, amount: 1 }]);
       })
@@ -144,23 +121,26 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
   return (
     <div className="mt-14 pb-5">
       <div className="xs:my-5 mt-20 flex justify-between">
-        <div className="text-lime text-base font-semibold">
-          <h1>All Proudcts</h1>
+        <div className="text-customBlack text-[24px]">
+          <h1 className="font-okra font-600">All Proudcts</h1>
         </div>
-        <div className=" text-orange  text-base	font-semibold">
-          <h1 className="cursor-pointer" onClick={viewAllProducts}>
+        <div className=" text-customGreen text-[20px]	">
+          <h1
+            className="cursor-pointer font-okra font-600"
+            onClick={viewAllProducts}
+          >
             View All
           </h1>
         </div>
       </div>
 
-      <div className="md:mt-5 ">
+      <div className="md:my-2 ">
         <Carousel responsive={responsive}>
           {showAllProduct &&
             showAllProduct.map((item) => {
               return (
                 <>
-                  <div className="w-72 xs:w-40 xs:h-[265px] md:w-40 md:h-[230px] sm:h-[280px] rounded-xl md:mt-4 container border border-light_gray hover:border-light_green shadow-lg bg-white">
+                  <div className="w-72 xs:w-40 xs:h-[265px] md:w-40 md:h-[235px] sm:h-[280px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green  bg-white">
                     <NavLink
                       to={`/subcategory-details/${item.category_name}/product-details/${item.id}`}
                     >
@@ -171,22 +151,16 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
                       />
                     </NavLink>
                     <div className="py-4 xs:mb-[-10px]  md:mx-4 xs:mx-4 sm:mx-4 bg-white">
-                      <p className="md:text-sm xs:text-sm sm:text-2xl font-normal bg-white truncate ...">
+                      <p className="md:text-sm xs:text-sm sm:text-2xl font-medium bg-white truncate ...">
                         {item.name}
                       </p>
-                      <button
-                        className="text-black"
-                        onClick={() => console.log(addItem)}
-                      >
-                        Check
-                      </button>
                     </div>
                     {item &&
                       item.variants.map((data) => {
                         return (
                           <div className="md:flex md:justify-evenly sm:flex xs:flex xs:justify-between xs:mr-4">
-                            <div className=" xs:text-left sm:mt-2 md:mt-[15px] md:mx-4 xs:mx-4 sm:mx-4 md:text-left ">
-                              <p className="2xs:text-base xs:text-sm sm:text-xl xs:mt-4 md:mt-[-3px] sm:mt-[12px] md:text-sm text-black font-light bg-white">
+                            <div className=" xs:text-left  sm:mt-2 md:mt-[15px] md:mx-4 xs:mx-4 sm:mx-4 md:text-left ">
+                              <p className="2xs:text-base xs:text-sm t sm:text-xl  xs:mt-4 md:mt-[-3px] sm:mt-[12px] md:text-sm text-gryColour font-light bg-white">
                                 ₹{data.price}{" "}
                               </p>
                             </div>
@@ -200,17 +174,11 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
                                 ) ? (
                                   <>
                                     <div className="md:mt-2 md:ml-6 xs:mt-2.5 sm:mt-4 ">
-                                      {console.log(
-                                        item,
-                                        "Item",
-                                        addItem,
-                                        "addItem",
-                                        "In ProductCarousel, calling CartQuantity"
-                                      )}
                                       <CartQuantity
                                         item={item}
                                         setAddItem={setAddItem}
                                         addItem={addItem}
+                                        user_id={user_id}
                                       />
                                     </div>
                                   </>
@@ -223,7 +191,7 @@ export const ProductCarousel = ({ name, setAddItem, addItem }) => {
                                   </button>
                                 )
                               ) : (
-                                <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:mb-4 sm:text-xs  xs:text-xs">
+                                <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:text-xs  xs:text-xs">
                                   Out of stock
                                 </p>
                               )}

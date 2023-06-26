@@ -14,12 +14,14 @@ function Home({
   setAddItem,
   isOpen,
   setIsOpen,
-})
- {
- 
+  setUser_id,
+  user_id,
+  loggedIn,
+  setLoggedIn
+}) {
   return (
-    <div className="relative">
-      <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} />
+    <div className="relative mt-0.5">
+      <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} setLoggedIn={setLoggedIn} loggedIn={loggedIn} />
       <>
         <div className="md:invisible xs:visible">
           <Search
@@ -27,6 +29,7 @@ function Home({
             data={data}
             addItem={addItem}
             setAddItem={setAddItem}
+            user_id={user_id}
           />
         </div>
 
@@ -64,8 +67,13 @@ function Home({
             <Category
               SubCategory={SubCategory}
               productDetails={productDetails}
+              user_id={user_id}
             />
-            <ProductCarousel addItem={addItem} setAddItem={setAddItem} />
+            <ProductCarousel
+              addItem={addItem}
+              setAddItem={setAddItem}
+              user_id={user_id}
+            />
           </div>
         </div>
       </>

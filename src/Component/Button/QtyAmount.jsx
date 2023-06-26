@@ -4,57 +4,53 @@ import { API_TOKEN } from "../Token/Token";
 
 export const QtyAmount = ({ item, setAddItem, addItem }) => {
   const quantityDecrease = () => {
-    if (addItem.some((cartItem) => cartItem.amount === 1)) {
-      setAddItem(
-        addItem.filter((item) => {
-          return item.id === item.id && item.amount === 0;
-        })
-      );
-    }
-
-    let config = {
+    const config = {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
       },
     };
-    var bodyFormData = new FormData();
+
+    const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
     bodyFormData.append("user_id", "14");
-    bodyFormData.append("product_id", +item.product_id);
-    bodyFormData.append("product_variant_id", +item.id);
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>itmemmmmmmamiyt", item);
+    bodyFormData.append("product_id", item.product_id);
+    bodyFormData.append("product_variant_id", item.product_variant_id);
 
-    const finditem = addItem.find((data) => data.id == item.id);
-
-    const newQty = (+finditem.amount || 0) - 1;
+    const finditem = addItem.find((data) => {
+      console.log(data);
+      return data.product_id === item.product_id;
+    });
+    const newQty = +finditem.amount !== 0 ? +finditem.amount - 1 : 0;
     bodyFormData.append("qty", newQty);
 
     axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
-        config,
-        bodyFormData
+        bodyFormData,
+        config
       )
-      .then((res) => {
-        console.log(res);
-        if (addItem.some((cartItem) => cartItem.id === item.id)) {
-          setAddItem((cart) =>
-            cart.map((data) =>
-              data.id === item.id && data.amount > 1
-                ? {
-                    ...data,
-                    amount: data.amount - 1,
-                  }
-                : data
-            )
-          );
-
-          return;
+      .then(() => {
+        if (
+          addItem.some((cartItem) => cartItem.product_id === item.product_id)
+        ) {
+          if (newQty > 0) {
+            setAddItem((cart) =>
+              cart.map((data) =>
+                data.product_id === item.product_id
+                  ? { ...data, amount: newQty }
+                  : data
+              )
+            );
+          } else {
+            setAddItem((cart) =>
+              cart.filter((data) => data.product_id !== item.product_id)
+            );
+          }
         }
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -69,12 +65,13 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
     bodyFormData.append("user_id", "14");
-    bodyFormData.append("product_id", +item.product_id);
-    bodyFormData.append("product_variant_id", +item.product_variant_id
-    );
-
-    const finditem = addItem.find((data) => data.id == item.id);
-
+    bodyFormData.append("product_id", item.id);
+    bodyFormData.append("product_id", item.product_id);
+    bodyFormData.append("product_variant_id", item.product_variant_id);
+    const finditem = addItem.find((data) => {
+      console.log(data);
+      return data.product_id == item.product_id;
+    });
     const newQty = (+finditem.amount || 0) + 1;
     bodyFormData.append("qty", newQty);
 
@@ -85,10 +82,11 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
         config
       )
       .then((res) => {
-        if (addItem.some((cartItem) => cartItem.product_id === item.id)) {
+        console.log(">>>>>>>>>>>>>>resonse", res);
+        if (addItem.some((cartItem) => cartItem.id === item.id)) {
           setAddItem((cart) =>
             cart.map((data) =>
-              data.product_id === item.id ? { ...data, amount: +data.amount + 1 } : data
+              data.id === item.id ? { ...data, amount: +data.amount + 1 } : data
             )
           );
 
@@ -103,15 +101,9 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
   };
 
   const findAddItem = () => {
-    // console.log("[][][][][][][][][][][][]]",addItem,"addITEM", item, "ITEM")
     let index = addItem.findIndex((i) => +i.id === +item.id);
     return addItem[index].amount;
   };
-  //   let index = addItem.findIndex((i) => +i.product_id === +item.id);
-  //   console.log(addItem[index].amount);
-  //   return addItem[index].amount;
-  // };
-
 
   return (
     <div>

@@ -15,8 +15,7 @@ import { AddressForm } from "./AddressForm";
 import axios from "axios";
 import { API_TOKEN } from "../Token/Token";
 
-export const Address = ({ isOpen, setIsOpen }) => {
-  
+export const Address = ({ isOpen, setIsOpen, user_id }) => {
   const [formOpen, setFormOpen] = useState(false);
   const [addList, setAddlist] = useState([]);
 
@@ -30,7 +29,7 @@ export const Address = ({ isOpen, setIsOpen }) => {
     const data = new FormData();
     data.append("accesskey", "90336");
     data.append("get_addresses", "1");
-    data.append("user_id", "14");
+    data.append("user_id", user_id);
 
     axios
       .post(
@@ -65,15 +64,11 @@ export const Address = ({ isOpen, setIsOpen }) => {
       .catch((err) => console.log(err));
   };
 
-
-
-  const handleEdit = (id)=>{
-    
-  }
+  const handleEdit = (id) => {};
 
   return (
     <>
-      <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2 md:mt-[-22px] bg-white">
+      <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2 xs:mt-0.5 bg-white">
         <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
       <div className="md:flex md:flex-row">
@@ -157,18 +152,18 @@ export const Address = ({ isOpen, setIsOpen }) => {
                       <div className="border border-light_gray w-[800px] px-3 py-3 mt-2">
                         <div className="flex ">
                           <div className="w-[5%]">
-                            {item.type === "Home" ?  (
+                            {item.type === "Home" ? (
                               <FaHome className="inline mr-3" />
-                            ): (
+                            ) : (
                               <HiOfficeBuilding className="inline mr-3" />
                             )}
                           </div>
-                          <div className="w-[85%] flec flex-col">
+                          <div className="w-[85%] flex flex-col">
                             <div>{item.type === "Home" ? "Home" : "work"}</div>
                             <div className="pt-[10px]">
                               <span className="gap-2">{item.name} -</span>
-                              <span className="">{item.address},  </span>
-                              <span className="">{item.area_name},  </span>
+                              <span className="">{item.address}, </span>
+                              <span className="">{item.area_name}, </span>
                               <span className="">{item.city_name}, </span>
                               {/* <span className="">{item.landmark}, </span> */}
                               <span className="">{item.pincode}, </span>
@@ -176,8 +171,11 @@ export const Address = ({ isOpen, setIsOpen }) => {
                             </div>
                           </div>
                           <div className="w-[10%] flex gap-4 items-center">
-                            <button onClick={() => handleEdit(item.id)} className="text-[21px] font-normal">
-                              <AiOutlineEdit  />
+                            <button
+                              onClick={() => handleEdit(item.id)}
+                              className="text-[21px] font-normal"
+                            >
+                              <AiOutlineEdit />
                             </button>
                             <button
                               onClick={() => handleDelete(item.id)}
@@ -196,25 +194,28 @@ export const Address = ({ isOpen, setIsOpen }) => {
         </div>
       </div>
       <div>
-        {formOpen && 
-        
-        <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
-        <div className="bg-white rounded p-8">
-          
-          {/* <h2 className="text-lg font-bold mb-4">Modal Title</h2> */}
-          {/* <p className="mb-4">
+        {formOpen && (
+          <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
+            <div className="bg-white rounded p-8">
+              {/* <h2 className="text-lg font-bold mb-4">Modal Title</h2> */}
+              {/* <p className="mb-4">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
             tincidunt condimentum lectus, ut commodo metus cursus vitae.
           </p> */}
-          <AddressForm setFormOpen={setFormOpen} getAddress={getAddress}/>
-          {/* <button
+              <AddressForm
+                setFormOpen={setFormOpen}
+                getAddress={getAddress}
+                user_id={user_id}
+              />
+              {/* <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             onClick={closeModal}
           >
             Close Modal
           </button> */}
-        </div>
-      </div>}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

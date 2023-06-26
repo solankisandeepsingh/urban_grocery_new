@@ -1,55 +1,56 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaArrowLeft, FaShoppingCart, FaTrash } from "react-icons/fa";
-
 import Form from "./Form/Form";
-import Review from "./Review/Review";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_TOKEN } from "../Token/Token";
 import { QtyAmount } from "../Button/QtyAmount";
-import CartQuantity from "../Button/CartQuantity";
-import { AddressForm } from "../MyAddress/AddressForm";
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import { Login } from "../Login.jsx/Login";
 
-function MyCart({ addItem, setAddItem, formData, setFormdata }) {
+function MyCart({
+  addItem,
+  setAddItem,
+  formData,
+  setFormdata,
+  setNavbarOpen,
+  dispatchLogin,
+  setLoggedIn,
+  user_id,
+  setUser_id,
+  loggedIn
+}) {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const [amount, setAmount] = useState();
+  const [setAmount] = useState();
   const [price, setPrice] = useState(0);
   const [showForm, setShowForm] = useState(false);
   const [Payment, setPayment] = useState(false);
+  const [newUserLog, setNewUserLog] = useState(false);
   const [totalItem, setTotalItem] = useState(0);
-  // const [addList, setAddlist] = useState([]);
+
+  let menuRef = useRef();
 
   const accesskey = "90336";
-  const user_id = "14";
-
-  const hideMOdal = () => {
-    setShowModal(false);
-    setShowForm(false);
-  }; 
 
   const back = () => {
     if (showForm) {
       setShowForm(false);
     }
     if (Payment) {
-      setPayment(false)
+      setPayment(false);
     }
   };
-
-
   const total = () => {
     let price = 0;
     addItem.forEach((cartItem) => {
-      console.log(addItem)
       if (cartItem.amount) {
-        price += parseFloat(cartItem.price) * cartItem.amount;
+        price += parseFloat(cartItem.discounted_price) * cartItem.amount;
       }
     });
     setPrice(price);
-    // console.log(price,"piceeeeeeeeeeeeeeeeeeeeeeeeee")
   };
-  
+
   const totalAmount = () => {
     let totalAmount = 0;
     addItem.forEach((e) => {
@@ -59,26 +60,6 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
     });
     setTotalItem(totalAmount);
   };
-  
-  // const getAddress = () => {
-  //   const data = new FormData();
-  //   data.append("accesskey", "90336");
-  //   data.append("get_addresses", "1");
-  //   data.append("user_id", "14");
-
-  //   axios
-  //     .post(
-  //       "https://grocery.intelliatech.in/api-firebase/user-addresses.php",
-  //       data,
-  //       config
-  //     )
-  //     .then((res) => setAddlist(res.data.data))
-  //     .catch((err) => console.log(err));
-  // };
-
-  // useEffect(() => {
-  //   getAddress();
-  // }, []);
 
   useEffect(() => {
     total();
@@ -95,9 +76,8 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
     var bodyFormdata = new FormData();
     bodyFormdata.append("accesskey", "90336");
     bodyFormdata.append("remove_from_cart", "1");
-    bodyFormdata.append("user_id", "14");
-    bodyFormdata.append("product_variant_id", `${item.product_variant_id
-    }`);
+    bodyFormdata.append("user_id", user_id);
+    bodyFormdata.append("product_variant_id", `${item.product_variant_id}`);
     axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
@@ -114,17 +94,21 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
       });
   };
 
+  const hideMOdal = () => {
+    setShowModal(false);
+    setPayment(false);
+    setShowForm(false);
+  };
+
   const formHandler = () => {
     setShowForm(true);
     setPayment(true);
+    setNewUserLog(false)
   };
 
-  const handlePayment = () => {
-    navigate("/payment");
-    hideMOdal();
+  const handleCloseModal = () => {
+    setPayment(false);
   };
-
-  let menuRef = useRef();
 
   useEffect(() => {
     let handler = (e) => {
@@ -142,7 +126,7 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
     };
   });
 
-  const getUserCarts = () => {
+  const getUserCarts = (user_id) => {
     let config = {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
@@ -154,32 +138,32 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
     bodyFormdata.append("get_user_cart", "1");
     bodyFormdata.append("user_id", user_id);
 
-    return axios.post(
-      "https://grocery.intelliatech.in/api-firebase/cart.php",
-      bodyFormdata,
-      config
-    ).then((res) => {
+    return axios
+      .post(
+        "https://grocery.intelliatech.in/api-firebase/cart.php",
+        bodyFormdata,
+        config
+      )
+      .then((res) => {
+        let addQtyAmount = res.data.data.map((data) => ({
+          ...data,
+          amount: +data.qty,
+        }));
 
-      // console.log(res.data.data, "cart my-response");
-      // console.log(res.data.data.map(data=> ({...data ,amount:+data.qty})), "my-response");
-
-     let addqtytoamount= res.data.data.map(data=> ({...data ,amount:+data.qty}))
-    //  console.log(addqtytoamount, "addqtytoamount");
-      setAddItem( addqtytoamount);
-      total();
-      totalAmount();
-    })
-    .catch((error) => {
-      console.log("hello this error is shown in the program", error);
-    });
+        setAddItem(addQtyAmount);
+        total();
+        totalAmount();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
-  
-  useEffect(() => {
-    getUserCarts()
-      
-  }, [accesskey, user_id]);
 
-  // console.log("addItemmmmmmmmmmmmmmmmmmmmmmmm",addItem)
+  useEffect(() => {
+    getUserCarts(user_id);
+  }, [accesskey]);
+  console.log(addItem," ADD ITEM IN MYCART <><><><><")
+
   return (
     <>
       <button
@@ -238,7 +222,10 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
                     onClick={hideMOdal}
                   >
                     <span className="text-black opacity-6 h-10 w-9 text-2xl block bg-gray-400 py-0 rounded-full bg-white">
-                      x
+                      <AiOutlineCloseCircle
+                        className="text-red text-2xl hover:opacity-50 mt-3"
+                        onClick={handleCloseModal}
+                      />
                     </span>
                   </button>
                 </div>
@@ -247,7 +234,6 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
                   {!showForm && addItem.length
                     ? addItem &&
                       addItem.map((item) => {
-                        // console.log(item,'this is cart item')
                         return (
                           <>
                             <div class="mt-3 bg-white md:p-5 xs:p-4 2xs:p-2  ">
@@ -271,54 +257,38 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
                                           {item.name}
                                         </p>
                                         <br />
-                                        {item.variants &&
-                                          item.variants.map((data) => {
-                                            return (
-                                              <>
-                                                <div className="2xs:flex-col md:flex-col bg-white">
-                                                  <p class=" bg-white md:text-sm xs:text-sm sm:text-2xl font-light float-left">
-                                                    {data.measurement}{" "}
-                                                    {data.measurement_unit_name}
-                                                  </p>
-                                                  <br></br>
-                                                  <p class="bg-white md:text-sm xs:text-sm sm:text-2xl text-gray-500 float-left text-lime">
-                                                    ₹{data.price}{" "}
-                                                  </p>
-                                                  <br></br>
-                                                </div>
-                                              </>
-                                            );
-                                          })}
 
-                                        <div className="bg-white flex justify-between ">
-                                          <div className="bg-white">
-                                            <p class="bg-white md:text-sm xs:text-sm sm:text-2xl font-light float-left">
+                                        <div className="flex justify-between mt-0.5">
+                                          <div>
+                                            <p className="text-lightgray font-semi-bold">
+                                              {item.serve_for}
+                                            </p>
+                                            <p className="text-">
+                                              {" "}
+                                              ₹{item.discounted_price}{" "}
+                                            </p>
+                                            <p class="bg-white text-gryColour">
                                               {" "}
                                               Qty : {item.amount}
                                               {() => setAmount(item.amount)}
                                             </p>
                                           </div>
-
-                                          <div className="bg-white">
-                                            {/* {console.log(item,'Item', addItem,'addItem', 'In mycart, calling QtyAmount')} */}
-                                          <QtyAmount
-                                              item={item}
-                                              setAddItem={setAddItem}
-                                              addItem={addItem}
-                                            />
-                                          {/* <CartQuantity
-                                              item={item}
-                                              setAddItem={setAddItem}
-                                              addItem={addItem}
-                                            /> */}
-                                          </div>
-                                          <div className="bg-white">
-                                            <FaTrash
-                                              onClick={() =>
-                                                removeItemHandler(item)
-                                              }
-                                              className="bg-white cursor-pointer mt-1 md:text-sm xs:text-sm sm:text-3xl text-red"
-                                            />
+                                          <div className="flex items-center justify-center text-center">
+                                            <div className="bg-white md:mt-1.5 mr-14">
+                                              <QtyAmount
+                                                item={item}
+                                                setAddItem={setAddItem}
+                                                addItem={addItem}
+                                              />
+                                            </div>
+                                            <div className="bg-white">
+                                              <FaTrash
+                                                onClick={() =>
+                                                  removeItemHandler(item)
+                                                }
+                                                className="bg-white md:mt-2 hover:bg-RedColour hover:bg-opacity-20 cursor-pointer mt-1 md:text-[18px] xs:text-sm sm:text-3xl text-red"
+                                              />
+                                            </div>
                                           </div>
                                         </div>
                                       </div>
@@ -326,34 +296,43 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
                                   </li>
                                 </ul>
 
-                                {showForm && addItem.length ? null : (
-                                  <div className="fixed bottom-10 bg-white p-3">
-                                    <Review formData={formData} />
-                                  </div>
-                                )}
-
-                                {Payment ? (
-                                  <button
-                                    className="flex justify-between bg-lime text-white  fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
-                                    onClick={handlePayment}
-                                  >
-                                    <p className="p-2 bg-lime rounded-lg">
-                                      Total : ₹ {price}
-                                    </p>
-                                    <p className="p-2 bg-lime rounded-lg">
-                                      Process to Payment{" "}
-                                    </p>
-                                  </button>
+                                {user_id === "14" ? (
+                                  newUserLog ? (
+                                    <Login
+                                      setLoggedIn={setLoggedIn}
+                                      dispatchLogin={dispatchLogin}
+                                      setUser_id={setUser_id}
+                                      user_id={user_id}
+                                      loggedIn={loggedIn}
+                                      // handleLogin={handleLogin}
+                                      addItem={addItem}
+                                      getUserCarts={getUserCarts}
+                                    />
+                                  ) : (
+                                    <>
+                                      <button
+                                        className="flex justify-between bg-lime text-white fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
+                                        onClick={() => setNewUserLog(true)}
+                                      >
+                                        <p className="p-2 bg-lime rounded-lg">
+                                          Total : ₹ {price}
+                                        </p>
+                                        <p className="p-2 bg-lime rounded-lg">
+                                          Proceed
+                                        </p>
+                                      </button>
+                                    </>
+                                  )
                                 ) : (
                                   <button
-                                    className="flex justify-between bg-lime text-white  fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
+                                    className="flex justify-between bg-lime text-white fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
                                     onClick={formHandler}
                                   >
                                     <p className="p-2 bg-lime rounded-lg">
                                       Total : ₹ {price}
                                     </p>
                                     <p className="p-2 bg-lime rounded-lg">
-                                      Proceed{" "}
+                                      Proceed
                                     </p>
                                   </button>
                                 )}
@@ -375,13 +354,13 @@ function MyCart({ addItem, setAddItem, formData, setFormdata }) {
                       back={back}
                       setFormdata={setFormdata}
                       formData={formData}
+                      setShowModal={setShowModal}
+                      setNavbarOpen={setNavbarOpen}
+                      user_id={user_id}
+                      setUser_id={setUser_id}
+                      
                     />
-                    // addList.map((item)=>{
-
-                    // })
-                    // <AddressForm />
                   ) : null}
-
                 </div>
               </div>
             </div>

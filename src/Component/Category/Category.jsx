@@ -35,11 +35,11 @@ export const Category = () => {
   return (
     <>
       <div className="md:-mt-20 flex justify-between">
-        <div className="text-lime text-base font-semibold">
-          <h1>Shop By Catergoy</h1>
+        <div className="text-customBlack text-[24px] ">
+          <h1 className="font-okra font-600">Shop By Category</h1>
         </div>
-        <div className=" text-orange  text-base	font-semibold">
-          <h1 className="cursor-pointer">View All</h1>
+        <div className=" text-customGreen text-[20px]	">
+          <h1 className="cursor-pointer font-okra font-600">View All</h1>
         </div>
       </div>
 

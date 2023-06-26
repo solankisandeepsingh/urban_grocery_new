@@ -40,7 +40,13 @@ module.exports = {
       lava_grey: "#989898",
       lightest_grey : "#e2e2e2",
       light_gray: "#313131",
-      green_light : "#a3183d"
+      gryColour: "#8F8F8F",
+      RedColour: "#ff0000",
+      graycol: "#9A9A9A",
+      green_light : "#a3183d",
+      customGreen: 'rgb(12, 166, 31)',
+      customBlack: 'rgb(28, 28, 28)',
+      lightGrays: 'rgb(41, 61, 41)',
     },
     borderColor: {
       default: "#CDCDCE",
@@ -50,7 +56,11 @@ module.exports = {
       light_green : "#8AFF8A"
 
     },
-    fontFamily: { sans: ["Roboto", "sans-serif"] },
+    fontFamily: { 
+      sans: ["Roboto", "sans-serif"] ,
+      okra : ['Okra-Medium', 'sans-serif']
+    },
+   
   },
   plugins: [],
 };

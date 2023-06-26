@@ -2,7 +2,9 @@ import axios from "axios";
 import React from "react";
 import { API_TOKEN } from "../Token/Token";
 
-function CartQuantity({ item, setAddItem, addItem, user_id }) {
+function CartQuantity({ item, setAddItem, addItem }) {
+  console.log(addItem);
+
   const quantityDecrease = () => {
     const config = {
       headers: {
@@ -13,7 +15,7 @@ function CartQuantity({ item, setAddItem, addItem, user_id }) {
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", user_id);
+    bodyFormData.append("user_id", "14");
     bodyFormData.append("product_id", item.id);
     bodyFormData.append("product_variant_id", item.variants[0].id);
     const finditem = addItem.find((data) => data.product_id == item.id);
@@ -64,11 +66,15 @@ function CartQuantity({ item, setAddItem, addItem, user_id }) {
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", user_id);
+    bodyFormData.append("user_id", "14");
+
     bodyFormData.append("product_id", item.id);
     bodyFormData.append("product_variant_id", item.variants[0].id);
-    const finditem = addItem.find((data) => data.product_id == item.id);
 
+    const finditem = addItem.find((data) => data.product_id == item.id);
+    // console.log(finditem, "[FIND ITEM]")
+
+    // console.log(oldQty)
     const newQty = (+finditem.amount || 0) + 1;
     bodyFormData.append("qty", newQty);
 
@@ -79,6 +85,7 @@ function CartQuantity({ item, setAddItem, addItem, user_id }) {
         config
       )
       .then((res) => {
+        // console.log(">>>>>>>>>>>>>>resonse", res);
         if (addItem.some((cartItem) => cartItem.product_id === item.id)) {
           setAddItem((cart) =>
             cart.map((data) =>
@@ -105,27 +112,29 @@ function CartQuantity({ item, setAddItem, addItem, user_id }) {
   };
 
   return (
-    <div className="rounded-lg bg-lime text-white gap-1 hover:bg-blue-700 font-bold px-2 md:h-[28px] xs:h-[28px]  md:w-14 xs:w-14 sm:w-[70px] sm:h-[36px] flex justify-between ">
-      <button
-        className="md:text-lg xs:text-sm sm:text-4xl"
-        onClick={() => quantityDecrease()}
-      >
-        -
-      </button>
+    <>
+      <div className="rounded-lg bg-lime text-white gap-1 hover:bg-blue-700 font-bold px-2 md:h-[28px] xs:h-[28px] w-[100%] sm:h-[36px] flex justify-around  p-0 items-center ">
+        <button
+          className="xs:text-sm sm:text-4xl md:text-xl"
+          onClick={() => quantityDecrease()}
+        >
+          -
+        </button>
 
-      {
-        <p className="md:text-sm xs:text-sm sm:text-xl mt-1 bg-lime">
-          {findItemNumber()}
-        </p>
-      }
+        {
+          <p className="md:text-xl xs:text-sm sm:text-xl bg-lime">
+            {findItemNumber()}
+          </p>
+        }
 
-      <button
-        className="md:text-lg xs:text-sm sm:text-2xl"
-        onClick={() => quantityIncrease()}
-      >
-        +
-      </button>
-    </div>
+        <button
+          className="md:text-xl xs:text-sm sm:text-2xl"
+          onClick={() => quantityIncrease()}
+        >
+          +
+        </button>
+      </div>
+    </>
   );
 }
 
