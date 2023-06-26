@@ -44,12 +44,7 @@ function App() {
     const NavOpen = localStorage.getItem("NavbarOpen");
     if (NavOpen) {
       setNavbarOpen(JSON.parse(NavOpen));
-    }
-    localStorage.setItem("user_id", "14");
-    const token = localStorage.getItem("user_id");
-    // console.log("USERID IN USE EFFECT", token)
-    setUser_id(token)
-    
+    }    
   }, []);
   
   
@@ -60,15 +55,7 @@ function App() {
   };
   
   const initialLoggedUserName = user_id;
-  useEffect(() => {
-    localStorage.setItem("user_id", `${user_id}`);
-    
-    // if(userName){
-      // console.log(user_id,"USER ID BEING SET TO 14")
-      
-      // }
-      // else setUserName(true)
-    }, [user_id]);
+
     
     
     useEffect(() => {
@@ -117,7 +104,7 @@ function App() {
           setNavbarOpen={setNavbarOpen}
           setLoggedIn={setLoggedIn}
           dispatchLogin={dispatchLogin}
-          user_id={user_id}
+          // user_id={user_id}
           setUser_id={setUser_id}
           loggedIn={loggedIn}
         />

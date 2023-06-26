@@ -7,16 +7,18 @@ import { API_TOKEN } from "../Token/Token";
 import { QtyAmount } from "../Button/QtyAmount";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { Login } from "../Login.jsx/Login";
+import { useCartStore } from "../zustand/useCartStore";
+import { useUserStore } from "../zustand/useUserStore";
 
 function MyCart({
-  addItem,
+  // allCartItems,
   setAddItem,
   formData,
   setFormdata,
   setNavbarOpen,
   dispatchLogin,
   setLoggedIn,
-  user_id,
+  // user_id,
   setUser_id,
   loggedIn
 }) {
@@ -28,6 +30,9 @@ function MyCart({
   const [Payment, setPayment] = useState(false);
   const [newUserLog, setNewUserLog] = useState(false);
   const [totalItem, setTotalItem] = useState(0);
+  const {allCartItems, setAllCartItems} = useCartStore();
+  const {userInfo :{user_id} } = useUserStore();
+
 
   let menuRef = useRef();
 
@@ -43,28 +48,28 @@ function MyCart({
   };
   const total = () => {
     let price = 0;
-    addItem.forEach((cartItem) => {
+    (allCartItems && allCartItems.forEach((cartItem) => {
       if (cartItem.amount) {
         price += parseFloat(cartItem.discounted_price) * cartItem.amount;
       }
-    });
+    }));
     setPrice(price);
   };
 
   const totalAmount = () => {
     let totalAmount = 0;
-    addItem.forEach((e) => {
+    (allCartItems && allCartItems.forEach((e) => {
       if (e.amount) {
         totalAmount += parseFloat(e.amount);
       }
-    });
+    }));
     setTotalItem(totalAmount);
   };
 
   useEffect(() => {
     total();
     totalAmount();
-  }, [addItem]);
+  }, [allCartItems]);
 
   const removeItemHandler = (item) => {
     let config = {
@@ -145,12 +150,15 @@ function MyCart({
         config
       )
       .then((res) => {
-        let addQtyAmount = res.data.data.map((data) => ({
+        console.log(res, "[GET USER CART API RESPONSE]")
+        let addQtyAmount = res?.data?.data?.map((data) => ({
           ...data,
           amount: +data.qty,
         }));
+        console.log(addQtyAmount, '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+        // setAddItem(addQtyAmount);
 
-        setAddItem(addQtyAmount);
+        {addQtyAmount && setAllCartItems(addQtyAmount)};
         total();
         totalAmount();
       })
@@ -162,7 +170,7 @@ function MyCart({
   useEffect(() => {
     getUserCarts(user_id);
   }, [accesskey]);
-  console.log(addItem," ADD ITEM IN MYCART <><><><><")
+  console.log(allCartItems," ADD ITEM IN MYCART <><><><><")
 
   return (
     <>
@@ -172,7 +180,7 @@ function MyCart({
         type="button"
         onClick={() => {
           setShowModal(true);
-          getUserCarts(accesskey, user_id);
+          getUserCarts( user_id);
         }}
       >
         <div
@@ -183,7 +191,7 @@ function MyCart({
           <FaShoppingCart className="xs:text-2xl bg-lime hover:animate-hbeat" />
         </div>
         <div className="bg-lime">
-          {price > 0 ? (
+          {price > 0 && allCartItems ? (
             <div className="xs:block 2xs:hidden md:block sm:block bg-lime text-sm">
               {totalItem} items
             </div>
@@ -192,7 +200,7 @@ function MyCart({
               My Cart
             </div>
           )}
-          {price > 0 ? (
+          {price > 0 && allCartItems  ? (
             <div className="bg-lime text-white text-sm float-left">
               ₹ {price}
             </div>
@@ -231,9 +239,9 @@ function MyCart({
                 </div>
 
                 <div className=" bg-white overflow-y-scroll md:h-[700px] xs:h-[758px] sm:h[985px] 2xs:h-[500px]">
-                  {!showForm && addItem.length
-                    ? addItem &&
-                      addItem.map((item) => {
+                  {!showForm && allCartItems.length
+                    ? allCartItems &&
+                    allCartItems.map((item) => {
                         return (
                           <>
                             <div class="mt-3 bg-white md:p-5 xs:p-4 2xs:p-2  ">
@@ -278,7 +286,7 @@ function MyCart({
                                               <QtyAmount
                                                 item={item}
                                                 setAddItem={setAddItem}
-                                                addItem={addItem}
+                                                allCartItems={allCartItems}
                                               />
                                             </div>
                                             <div className="bg-white">
@@ -305,7 +313,7 @@ function MyCart({
                                       user_id={user_id}
                                       loggedIn={loggedIn}
                                       // handleLogin={handleLogin}
-                                      addItem={addItem}
+                                      // allCartItems={allCartItems}
                                       getUserCarts={getUserCarts}
                                     />
                                   ) : (
@@ -343,7 +351,7 @@ function MyCart({
                       })
                     : null}
 
-                  {!showForm && !addItem.length ? (
+                  {!showForm && !allCartItems.length ? (
                     <div className="relative p-6 flex-auto text-center text-2xl font-medium bg-white">
                       <p className="bg-white">Your cart is empty</p>
                     </div>

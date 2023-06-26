@@ -4,6 +4,7 @@ import MyCart from "../../MyCart/MyCart";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaSistrix } from "react-icons/fa";
 import AccountButton from "../../AccountDropdown/AccountButton";
+import { useCartStore } from "../../zustand/useCartStore";
 
 export const Navbar = ({
   setData,
@@ -22,12 +23,13 @@ export const Navbar = ({
   dispatchLogin,
   setLoggedIn,
   setUser_id,
-  user_id,
+  // user_id,
   handleLogin,
   loggedIn
 }) => {
   const navigate = useNavigate();
   const [showSearch, setShowSearch] = useState(true);
+  const {allCartItems} = useCartStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,7 +69,7 @@ export const Navbar = ({
             // )
             // let text = arr.join(',')
             // console.log(Object.keys(arr))
-            console.log(user_id)
+            console.log(allCartItems)
 
           }}>
             CHECK ADD ITEM LIST</button>
@@ -101,7 +103,7 @@ export const Navbar = ({
                 setNavbarOpen={setNavbarOpen}
                 setLoggedIn={setLoggedIn}
                 dispatchLogin={dispatchLogin}
-                user_id={user_id}
+                // user_id={user_id}
                 setUser_id={setUser_id}
                 loggedIn={loggedIn}
                 // handleLogin={handleLogin}

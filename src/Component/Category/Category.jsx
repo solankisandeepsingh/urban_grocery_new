@@ -3,10 +3,14 @@ import { NavLink } from "react-router-dom";
 import { categoryData } from "../../Models/MockCategoryData";
 import axios from "axios";
 import { API_TOKEN } from "../Token/Token";
+import { useProductsStore } from "../zustand/useProductsStore";
+
 
 export const Category = () => {
+  const {allCategories, setAllCategories} = useProductsStore();
+
   // const [categorydata, setCategorydata] = useState(categoryData.data);
-  const [categorydata, setCategorydata] = useState([]);
+  // const [categorydata, setCategorydata] = useState([]);
 
   const categryData = () => {
     const config = {
@@ -24,7 +28,8 @@ export const Category = () => {
         formData,
         config
       )
-      .then((res) => setCategorydata(res.data.data))
+      // .then((res) => setCategorydata(res.data.data))
+      .then((res) => setAllCategories(res.data.data))
       .catch((err) => console.log(err));
   };
 
@@ -45,8 +50,8 @@ export const Category = () => {
 
       <div className="category xs:mx-1 xs:mt-3 md:mt-5 xs:ml-3">
         <div className=" grid md:grid-cols-4 sm:grid-cols-4 gap-4 xs:grid-cols-2 md:py-3">
-          {categorydata &&
-            categorydata.map((item) => {
+          {allCategories &&
+            allCategories.map((item) => {
               return (
                 <div
                   className="md:w-48 md:ml-2 rounded-xl border border-light_gray  hover:border-light_green  xs:py-2 bg-white"

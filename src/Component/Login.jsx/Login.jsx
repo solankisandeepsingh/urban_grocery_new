@@ -6,12 +6,17 @@ import { API_TOKEN } from "../Token/Token";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { useCartStore } from "../zustand/useCartStore";
+import { useUserStore } from "../zustand/useUserStore";
 
-export const Login = ({ dispatchLogin, setUser_id, handleLogin, addItem,setLoggedIn, getUserCarts }) => {
+
+export const Login = ({ dispatchLogin, setUser_id, handleLogin, setLoggedIn, getUserCarts }) => {
   const [logins, setLogins] = useState({
     phone: "",
     password: "",
   });
+  const {allCartItems, setAllCartItems} = useCartStore();
+const {userInfo, setUserInfo} = useUserStore();
   const [showModals, setShowModals] = useState(false);
   const [LoginFormModals, setLoginFormModals] = useState(true);
   const [loginData, setLoginData] = useState([]);
@@ -25,7 +30,7 @@ export const Login = ({ dispatchLogin, setUser_id, handleLogin, addItem,setLogge
     setLoginFormModals(false);
     navigate("/");
   };
-  console.log(addItem, "INSIDE LOGIN AFERT LOGIN")
+  console.log(allCartItems, "INSIDE LOGIN AFERT LOGIN")
 
   const inputHandler = (e) => {
     let name = e.target.name;
@@ -87,7 +92,7 @@ export const Login = ({ dispatchLogin, setUser_id, handleLogin, addItem,setLogge
         loginItem,
         config
       )
-      .then((res) => {
+      .then((res) => { 
         console.log(res);
 
         if (!res.data.error) {
@@ -98,6 +103,8 @@ export const Login = ({ dispatchLogin, setUser_id, handleLogin, addItem,setLogge
           // handleLogin(e);
           localStorage.setItem("token", `${API_TOKEN}`);
           dispatchLogin({ type: "LOGIN", payload: res.data.name });
+          console.log('LOGIN RESPONSEEEEEEEEEEEEEE', res.data)
+          setUserInfo(res.data)
           let newUserId = res.data.user_id;
           setUser_id(newUserId);
 
@@ -105,8 +112,8 @@ export const Login = ({ dispatchLogin, setUser_id, handleLogin, addItem,setLogge
 
           const addMultipleItems = () => {
             let arr = {};
-            // console.log(addItem)
-            addItem.forEach((item) => {
+            // console.log(allCartItems)
+            allCartItems.forEach((item) => {
               arr[item.product_variant_id] = item.amount;
             });
 
