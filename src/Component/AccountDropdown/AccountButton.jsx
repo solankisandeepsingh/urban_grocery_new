@@ -1,6 +1,7 @@
 import React from "react";
 import { FaCaretDown, FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useUserStore } from "../zustand/useUserStore";
 
 function AccountButton({
   isOpen,
@@ -11,7 +12,10 @@ function AccountButton({
   setLoggedIn,
 }) {
   const navigate = useNavigate();
-   
+   const {userInfo : {user_id, name}} = useUserStore();
+  // const {userInfo : {user_id} } = useUserStore();
+
+   console.log(user_id,name, "[[[[[[[[[[[[[user_id, name in userbutton)");
   const handleLogout = () => {
     localStorage.removeItem("token");
     dispatchLogin({ type: "LOGOUT" });
@@ -33,7 +37,7 @@ function AccountButton({
             className=" text-black sm:text-md md:text-md mt-2"
             onClick={handleLogout}
           >
-            {loggedUsername}
+            {name}
           </button>
           <div className="md:mt-1 xs:mt-1 bg-white ">
             <FaCaretDown className="bg-white md:mt-2 xs:mt-2 " />
@@ -49,7 +53,7 @@ function AccountButton({
         >
           <FaUserCircle className="xs:mt-1 xs:text-3xl text-lime md:mt-1.5 md:text-2xl mr-1 cursor-pointer" />
           <button className=" text-black sm:text-md md:text-md mt-2">
-            User
+            {name}
           </button>
           <div className="md:mt-1 xs:mt-1 bg-white ">
             <FaCaretDown className="bg-white md:mt-2 xs:mt-2 " />

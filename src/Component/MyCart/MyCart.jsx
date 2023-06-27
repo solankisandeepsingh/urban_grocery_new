@@ -90,7 +90,9 @@ function MyCart({
         config
       )
       .then((res) => {
-        setAddItem((cart) => cart.filter((data) => data.id !== item.id));
+        let newArr = allCartItems.filter((data) => data.id !== item.id);
+        console.log(newArr);
+        setAllCartItems(newArr);
         let newPrice = price - item.amount * parseFloat(item.price);
         setPrice(newPrice);
       })
@@ -303,8 +305,8 @@ function MyCart({
                                     </div>
                                   </li>
                                 </ul>
-
-                                {user_id === "14" ? (
+                                {/* {console.log(user_id, "><><><CHECK USER ID BOOLEAN><><><")} */}
+                                {user_id === 14 ? (
                                   newUserLog ? (
                                     <Login
                                       setLoggedIn={setLoggedIn}
