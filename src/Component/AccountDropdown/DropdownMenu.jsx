@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { API_TOKEN } from "../Token/Token";
+import { useUserStore } from "../zustand/useUserStore";
+
 
 function DropdownMenu({
   isOpen,
@@ -10,6 +12,8 @@ function DropdownMenu({
   loggedIn,
 }) {
   const navigate = useNavigate();
+  const {userInfo : {user_id, name}, initialUser, setUserInfo} = useUserStore();
+
   let menuRef = useRef();
   useEffect(() => {
     let handler = (e) => {
@@ -36,9 +40,12 @@ function DropdownMenu({
   // };
   const handleLogout = () => {
     localStorage.removeItem("token");
-    dispatchLogin({ type: "LOGOUT" });
+    // dispatchLogin({ type: "LOGOUT" });
+
     setLoggedIn(false);
+    setUserInfo(initialUser)
     navigate("/");
+
   };
   return (
     <>

@@ -3,8 +3,14 @@ import { NavLink } from "react-router-dom";
 import DropdownMenu from "../../Component/AccountDropdown/DropdownMenu";
 import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
+import { useCartStore } from "../zustand/useCartStore";
 
 function Payment({ isOpen,setIsOpen}) {
+const {clearCartApi} = useCartStore();
+
+console.log(clearCartApi);
+
+
   const handleCashOnDelivery = () => {
     console.log("Cash on Delivery");
  
@@ -68,7 +74,7 @@ function Payment({ isOpen,setIsOpen}) {
   };
 
   const handleSuccessPay =()=>{
-    
+    clearCartApi();
   }
 
   return (

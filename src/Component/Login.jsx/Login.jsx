@@ -15,8 +15,8 @@ export const Login = ({ dispatchLogin, setUser_id, handleLogin, setLoggedIn, get
     phone: "",
     password: "",
   });
-  const {allCartItems, setAllCartItems} = useCartStore();
-const {userInfo, setUserInfo} = useUserStore();
+  const {allCartItems, setAllCartItems, bodyFormData, config, clearCartApi} = useCartStore();
+  const {userInfo : {user_id}, setUserInfo} = useUserStore();
   const [showModals, setShowModals] = useState(false);
   const [LoginFormModals, setLoginFormModals] = useState(true);
   const [loginData, setLoginData] = useState([]);
@@ -38,30 +38,31 @@ const {userInfo, setUserInfo} = useUserStore();
     setLogins({ ...logins, [name]: value });
   };
 
-  const clearCart = (user_id) => {
-    let config = {
-      headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
-      },
-    };
-
-    var bodyFormdata = new FormData();
-    bodyFormdata.append("accesskey", "90336");
-    bodyFormdata.append("remove_from_cart", "1");
-    bodyFormdata.append("user_id", user_id);
-
-    return axios
-      .post(
-        "https://grocery.intelliatech.in/api-firebase/cart.php",
-        bodyFormdata,
-        config
-      )
-      .then((res) => {
+  const clearCart = () => {
+    // let config = {
+    //   headers: {
+    //     Authorization: `Bearer ${API_TOKEN}`,
+    //   },
+    // };
+    // var bodyFormdata = new FormData();
+    // bodyFormdata.append("accesskey", "90336");
+    // bodyFormdata.append("remove_from_cart", "1");
+    // bodyFormdata.append("user_id", user_id);
+    // let bodyFormdata = bodyFormData();
+    // console.log(config, bodyFormData, "0000000000000000 CLEAR CART AFTER LOGIN RES")
+    //  axios
+    //   .post(
+    //     "https://grocery.intelliatech.in/api-firebase/cart.php",
+    //     bodyFormData(),
+    //     config
+    //   )
+    //   .then((res) => {
        
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    clearCartApi();
   };  
 
   const handleSubmit = (e) => {
@@ -74,11 +75,11 @@ const {userInfo, setUserInfo} = useUserStore();
       return;
     }
 
-    let config = {
-      headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
-      },
-    };
+    // let config = {
+    //   headers: {
+    //     Authorization: `Bearer ${API_TOKEN}`,
+    //   },
+    // };
 
     const loginItem = new FormData();
     loginItem.append("accesskey", "90336");
