@@ -5,10 +5,18 @@ import "react-multi-carousel/lib/styles.css";
 import CartQuantity from "../../Button/CartQuantity";
 import axios from "axios";
 import { API_TOKEN } from "../../Token/Token";
+import { useCartStore } from "../../zustand/useCartStore";
+import { useUserStore } from "../../zustand/useUserStore";
 
-export const ProductCarousel = ({ setAddItem, addItem, user_id }) => {
+
+
+export const ProductCarousel = ({  }) => {
+  const {allCartItems, setAllCartItems} = useCartStore();
+  console.log(allCartItems, "After Destructure");
   const [showAllProduct, setShowAllProducts] = useState([]);
   const navigate = useNavigate();
+  const {userInfo :{user_id} } = useUserStore();
+
 
   const productCarousels = () => {
     let config = {
@@ -64,8 +72,8 @@ export const ProductCarousel = ({ setAddItem, addItem, user_id }) => {
         Authorization: `Bearer ${API_TOKEN}`,
       },
     };
-    console.log(data.id, "varaitn id");
-    console.log(item.id, "main id");
+    // console.log(data.id, "varaitn id");
+    // console.log(item.id, "main id");
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
@@ -81,22 +89,34 @@ export const ProductCarousel = ({ setAddItem, addItem, user_id }) => {
         "https://grocery.intelliatech.in/api-firebase/cart.php",
         bodyFormData,
         config
-      )
+      ).then(console.log(allCartItems, '[before some method]'))
       .then((res) => {
-        if (addItem.some((cartItem) => cartItem.product_id === item.id)) {
-          setAddItem((cart) =>
-            cart.map((data) =>
-              data.product_id === item.id
-                ? {
-                    ...data,
-                    amount: data.amount + 1,
-                  }
-                : data
-            )
-          );
+        if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
+          
+         let newArr = allCartItems.map((data) =>
+          data.product_id === item.id
+            ? {
+                ...data,
+                amount: data.amount + 1,
+              }
+            : data
+        )
+              console.log(newArr);
+        setAllCartItems(newArr);
+          // setAllCartItems((cart) =>
+          //   cart.map((data) =>
+          //     data.product_id === item.id
+          //       ? {
+          //           ...data,
+          //           amount: data.amount + 1,
+          //         }
+          //       : data
+          //   )
+          // );
           return;
         }
         console.log(item.id, "Additem Id in product caraousel");
+
         let item1 = {
           amount: 1,
           discounted_price: item.discounted_price,
@@ -107,7 +127,11 @@ export const ProductCarousel = ({ setAddItem, addItem, user_id }) => {
           qty: 1,
           user_id: user_id,
         };
-        setAddItem((cart) => [...cart, { ...item1, amount: 1 }]);
+
+        let newArr = [...allCartItems, {...item1 , amount : 1}]
+        console.log(newArr);
+        // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
+        setAllCartItems(newArr);
       })
       .catch((error) => {
         console.log(error);
@@ -169,16 +193,16 @@ export const ProductCarousel = ({ setAddItem, addItem, user_id }) => {
                               {item.variants.some(
                                 (variant) => variant.stock > 0
                               ) ? (
-                                addItem.find(
+                                allCartItems?.find(
                                   (i) => i.product_id === item.id
                                 ) ? (
                                   <>
                                     <div className="md:mt-2 md:ml-6 xs:mt-2.5 sm:mt-4 ">
                                       <CartQuantity
                                         item={item}
-                                        setAddItem={setAddItem}
-                                        addItem={addItem}
-                                        user_id={user_id}
+                                        // setAllCartItems={setAllCartItems}
+                                        // allCartItems={allCartItems}
+                                        // user_id={user_id}
                                       />
                                     </div>
                                   </>

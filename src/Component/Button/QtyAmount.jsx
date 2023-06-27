@@ -1,8 +1,12 @@
 import axios from "axios";
 import React from "react";
 import { API_TOKEN } from "../Token/Token";
+import { useCartStore } from "../zustand/useCartStore";
 
-export const QtyAmount = ({ item, setAddItem, addItem }) => {
+
+export const QtyAmount = ({ item }) => {
+  const {allCartItems, setAllCartItems} = useCartStore();
+
   const quantityDecrease = () => {
     const config = {
       headers: {
@@ -17,7 +21,7 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
     bodyFormData.append("product_id", item.product_id);
     bodyFormData.append("product_variant_id", item.product_variant_id);
 
-    const finditem = addItem.find((data) => {
+    const finditem = allCartItems.find((data) => {
       console.log(data);
       return data.product_id === item.product_id;
     });
@@ -32,10 +36,10 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
       )
       .then(() => {
         if (
-          addItem.some((cartItem) => cartItem.product_id === item.product_id)
+          allCartItems.some((cartItem) => cartItem.product_id === item.product_id)
         ) {
           if (newQty > 0) {
-            setAddItem((cart) =>
+            setAllCartItems((cart) =>
               cart.map((data) =>
                 data.product_id === item.product_id
                   ? { ...data, amount: newQty }
@@ -43,7 +47,7 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
               )
             );
           } else {
-            setAddItem((cart) =>
+            setAllCartItems((cart) =>
               cart.filter((data) => data.product_id !== item.product_id)
             );
           }
@@ -68,7 +72,7 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
     bodyFormData.append("product_id", item.id);
     bodyFormData.append("product_id", item.product_id);
     bodyFormData.append("product_variant_id", item.product_variant_id);
-    const finditem = addItem.find((data) => {
+    const finditem = allCartItems.find((data) => {
       console.log(data);
       return data.product_id == item.product_id;
     });
@@ -83,8 +87,8 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
       )
       .then((res) => {
         console.log(">>>>>>>>>>>>>>resonse", res);
-        if (addItem.some((cartItem) => cartItem.id === item.id)) {
-          setAddItem((cart) =>
+        if (allCartItems.some((cartItem) => cartItem.id === item.id)) {
+          setAllCartItems((cart) =>
             cart.map((data) =>
               data.id === item.id ? { ...data, amount: +data.amount + 1 } : data
             )
@@ -93,7 +97,7 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
           return;
         }
 
-        setAddItem((cart) => [...cart, { ...item, amount: 1 }]);
+        setAllCartItems((cart) => [...cart, { ...item, amount: 1 }]);
       })
       .catch((error) => {
         console.log(error);
@@ -101,8 +105,8 @@ export const QtyAmount = ({ item, setAddItem, addItem }) => {
   };
 
   const findAddItem = () => {
-    let index = addItem.findIndex((i) => +i.id === +item.id);
-    return addItem[index].amount;
+    let index = allCartItems.findIndex((i) => +i.id === +item.id);
+    return allCartItems[index].amount;
   };
 
   return (

@@ -1,8 +1,14 @@
 import axios from "axios";
 import React from "react";
 import { API_TOKEN } from "../Token/Token";
+import { useCartStore } from "../zustand/useCartStore";
+import { useUserStore } from "../zustand/useUserStore";
 
-function CartQuantity({ item, setAddItem, addItem, user_id }) {
+function CartQuantity({ item }) {
+  const { allCartItems, setAllCartItems } = useCartStore();
+  const {userInfo :{user_id} } = useUserStore();
+  
+
   const quantityDecrease = () => {
     const config = {
       headers: {
@@ -16,7 +22,7 @@ function CartQuantity({ item, setAddItem, addItem, user_id }) {
     bodyFormData.append("user_id", user_id);
     bodyFormData.append("product_id", item.id);
     bodyFormData.append("product_variant_id", item.variants[0].id);
-    const finditem = addItem.find((data) => data.product_id == item.id);
+    const finditem = allCartItems.find((data) => data.product_id == item.id);
     const newQty =
       +finditem.amount !== 0 ? +finditem.amount - 1 : finditem.amount;
     bodyFormData.append("qty", newQty);
@@ -28,16 +34,19 @@ function CartQuantity({ item, setAddItem, addItem, user_id }) {
         config
       )
       .then(() => {
-        if (addItem.some((product) => product.amount === 1))
-          setAddItem(
-            addItem.filter(
-              (pro) => pro.product_id !== item.id || pro.amount !== 1
-            )
-          );
+        if (allCartItems.some((product) => product.amount === 1)){
 
-        if (addItem.some((cartItem) => cartItem.product_id === item.id)) {
-          setAddItem((cart) =>
-            cart.map((data) =>
+
+          let newArr = allCartItems.filter(
+            (pro) => pro.product_id !== item.id || pro.amount !== 1
+          )
+          console.log(newArr, "Cart Quant - 1 ><>>>>>>>><><><<><><><>")
+            setAllCartItems(newArr)
+        }
+
+
+        if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
+          let newArr =allCartItems.map((data) =>
               data.product_id === item.id && data.amount > 1
                 ? {
                     ...data,
@@ -45,7 +54,7 @@ function CartQuantity({ item, setAddItem, addItem, user_id }) {
                   }
                 : data
             )
-          );
+          setAllCartItems(newArr);
 
           return;
         }
@@ -67,7 +76,7 @@ function CartQuantity({ item, setAddItem, addItem, user_id }) {
     bodyFormData.append("user_id", user_id);
     bodyFormData.append("product_id", item.id);
     bodyFormData.append("product_variant_id", item.variants[0].id);
-    const finditem = addItem.find((data) => data.product_id == item.id);
+    const finditem = allCartItems.find((data) => data.product_id == item.id);
 
     const newQty = (+finditem.amount || 0) + 1;
     bodyFormData.append("qty", newQty);
@@ -79,19 +88,23 @@ function CartQuantity({ item, setAddItem, addItem, user_id }) {
         config
       )
       .then((res) => {
-        if (addItem.some((cartItem) => cartItem.product_id === item.id)) {
-          setAddItem((cart) =>
-            cart.map((data) =>
+        if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
+          
+          let newArr = allCartItems.map((data) =>
               data.product_id === item.id
                 ? { ...data, amount: +data.amount + 1 }
                 : data
-            )
-          );
+                );
+        console.log(newArr)
+
+          setAllCartItems(newArr)
 
           return;
         }
-
-        setAddItem((cart) => [...cart, { ...item, amount: 1 }]);
+        let newArr = [...allCartItems, {...item , amount : 1}]
+        console.log(newArr)
+        // setAllCartItems((cart) => [...cart, { ...item, amount: 1 }]);
+        setAllCartItems(newArr);
       })
       .catch((error) => {
         console.log(error);
@@ -99,9 +112,9 @@ function CartQuantity({ item, setAddItem, addItem, user_id }) {
   };
 
   const findItemNumber = () => {
-    let index = addItem.findIndex((i) => +i.product_id === +item.id);
-    console.log(addItem[index].amount);
-    return addItem[index].amount;
+    let index = allCartItems.findIndex((i) => +i.product_id === +item.id);
+    console.log(allCartItems[index].amount);
+    return allCartItems[index].amount;
   };
 
   return (
