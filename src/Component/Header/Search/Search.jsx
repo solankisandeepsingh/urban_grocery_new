@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { mockProduct } from "../../../Models/MockProduct";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_TOKEN } from "../../Token/Token";
 
 const Search = ({ setData, data, name, setName, setAddItem, addItem }) => {
-  // const [searchData, setSearchData] = useState(mockProduct.data);
   const [searchData, setSearchData] = useState([]);
   const [Inputsearch, setInputSearch] = useState("");
   const navigate = useNavigate();
@@ -20,6 +18,7 @@ const Search = ({ setData, data, name, setName, setAddItem, addItem }) => {
     var bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("type", "products-search");
+    bodyFormData.append("limit", "100");
     bodyFormData.append("search", Inputsearch);
 
     axios
@@ -39,7 +38,7 @@ const Search = ({ setData, data, name, setName, setAddItem, addItem }) => {
 
   useEffect(() => {
     serchAPIData();
-  },[]);
+  }, []);
 
   const handleChange = (e) => {
     setInputSearch(e.target.value);
@@ -49,7 +48,10 @@ const Search = ({ setData, data, name, setName, setAddItem, addItem }) => {
     let result;
     if (filteredData.length > 0) {
       result = searchData.filter((item) => {
-        return item.name.toLowerCase().includes(filteredData.toLowerCase());
+        return (
+          item.name.toLowerCase().includes(filteredData.toLowerCase()) ||
+          item.category_name.toLowerCase().includes(filteredData.toLowerCase())
+        );
       });
     } else {
       result = searchData;
@@ -57,7 +59,6 @@ const Search = ({ setData, data, name, setName, setAddItem, addItem }) => {
 
     setData(result);
   };
-
 
   const addItemHandler = (item) => {
     if (addItem.some((cartItem) => cartItem.id === item.id)) {
@@ -125,7 +126,7 @@ const Search = ({ setData, data, name, setName, setAddItem, addItem }) => {
                   item.variants.map((data) => {
                     return (
                       <>
-                        <div className="xs:text-sm xs:text-left sm:mt-2 md:mt-[-12px] ">
+                        <div className="xs:text-sm xs:text-left sm:mt-2 md:mt-[-12px]">
                           <p className="2xs:text-base sm:text-xl md:text-sm text-lime font-semibold mt-1">
                             ₹{data.price}{" "}
                           </p>

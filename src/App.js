@@ -2,7 +2,7 @@ import { Navbar } from "./Component/Header/Navbar/Navbar";
 import { Route, Routes } from "react-router-dom";
 import { ProductDetails } from "./Component/Products/Product-Details/ProductDetails";
 import Home from "./Component/Home";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useState } from "react";
 import Payment from "./Component/Payment/Payment";
 import "./index.css";
 import { SubCategory } from "./Component/Category/Sub-Category/SubCategory";
@@ -15,21 +15,10 @@ import { Wallet } from "./Component/MyWallet/Wallet";
 import { Login } from "./Component/Login.jsx/Login";
 import { ForgetPass } from "./Component/Login.jsx/ForgetPass";
 import { Address } from "./Component/MyAddress/Address";
-import { API_TOKEN } from "./Component/Token/Token";
-import { useUserStore } from "./Component/zustand/useUserStore";
-
-// const initialLoggedUserName = "User";
-
-// const loginReducer = (state, action) => {
-//   console.log(action);
-//   if (action.type === "LOGIN") state = action.payload;
-//   if (action.type === "LOGOUT") state = "User";
-//   return state;
-// };
-
-
-
-
+import { Privacy } from "./Component/Privacy/Privacy";
+import { Coditions } from "./Component/Term & Conditions/Coditions";
+import { Contact } from "./Component/Contact/Contact";
+import { About } from "./Component/About/About";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -42,59 +31,38 @@ function App() {
     phone: "",
     pin: "",
   });
-  
+
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [name, setName] = useState("");
   const [NavbarOpen, setNavbarOpen] = useState(true);
   const [price, setPrice] = useState(0);
   const [loading, setLoading] = useState(true);
   const [user_id, setUser_id] = useState("14");
-  // const initialLoggedUserName = user_id;
-  // const [loggedUsername, dispatchLogin] = useReducer(
-  //   loginReducer,
-  //   initialLoggedUserName
-  //   );
-    
-    
-    
-    
-    
-  //   const loginReducer = (state, action) => {
-  //     if (action.type === "LOGIN") state = action.payload;
-  //     if (action.type === "LOGOUT") state = initialLoggedUserName;
-  //     return state;
-  //   };
-    
-  
-  
 
-    
-    
-    useEffect(() => {
-      localStorage.setItem("NavbarOpen", JSON.stringify(NavbarOpen));
-    }, [NavbarOpen]);
-    
-    useEffect(() => {
-      const LoggedInStatus = () => {
-        const token = localStorage.getItem("token");
-        if (token) {
-          setLoggedIn(true);
-        } else {
-          // dispatchLogin({ type: "LOGOUT" });
-          setLoggedIn(false);
-        }
-        setLoading(false);
-      };
-      LoggedInStatus();
-    });
-  
-      
-    if (loading) {
-      return <div>Loading...</div>;
-    }
-    
-    return (
-      <>
+  useEffect(() => {
+    localStorage.setItem("NavbarOpen", JSON.stringify(NavbarOpen));
+  }, [NavbarOpen]);
+
+  useEffect(() => {
+    const LoggedInStatus = () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        setLoggedIn(true);
+      } else {
+        // dispatchLogin({ type: "LOGOUT" });
+        setLoggedIn(false);
+      }
+      setLoading(false);
+    };
+    LoggedInStatus();
+  });
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <>
       <div>
         <Navbar
           setData={setData}
@@ -112,7 +80,7 @@ function App() {
           // dispatchLogin={dispatchLogin}
           // user_id={user_id}
           setUser_id={setUser_id}
-          
+
           // handleLogin={handleLogin}
         />
         <Routes>
@@ -196,6 +164,10 @@ function App() {
           />
 
           <Route path="/wallet" element={<Wallet />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/conditons" element={<Coditions />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
 
           <Route path="/reset" element={<ForgetPass />} />
 

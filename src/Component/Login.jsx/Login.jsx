@@ -10,13 +10,13 @@ import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 
 
-export const Login = ({ dispatchLogin, setUser_id, handleLogin, setLoggedIn, getUserCarts,setNewUserLog }) => {
+export const Login = ({ setUser_id, setLoggedIn, getUserCarts,setNewUserLog }) => {
   const [logins, setLogins] = useState({
     phone: "",
     password: "",
   });
-  const {allCartItems, setAllCartItems, bodyFormData, config, clearCartApi} = useCartStore();
-  const {userInfo : {user_id}, setUserInfo} = useUserStore();
+  const {allCartItems, config, clearCartApi} = useCartStore();
+  const {setUserInfo} = useUserStore();
   const [showModals, setShowModals] = useState(false);
   const [LoginFormModals, setLoginFormModals] = useState(true);
   const [loginData, setLoginData] = useState([]);
@@ -41,29 +41,6 @@ export const Login = ({ dispatchLogin, setUser_id, handleLogin, setLoggedIn, get
   };
 
   const clearCart = () => {
-    // let config = {
-    //   headers: {
-    //     Authorization: `Bearer ${API_TOKEN}`,
-    //   },
-    // };
-    // var bodyFormdata = new FormData();
-    // bodyFormdata.append("accesskey", "90336");
-    // bodyFormdata.append("remove_from_cart", "1");
-    // bodyFormdata.append("user_id", user_id);
-    // let bodyFormdata = bodyFormData();
-    // console.log(config, bodyFormData, "0000000000000000 CLEAR CART AFTER LOGIN RES")
-    //  axios
-    //   .post(
-    //     "https://grocery.intelliatech.in/api-firebase/cart.php",
-    //     bodyFormData(),
-    //     config
-    //   )
-    //   .then((res) => {
-       
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
     clearCartApi();
   };  
 
@@ -76,13 +53,6 @@ export const Login = ({ dispatchLogin, setUser_id, handleLogin, setLoggedIn, get
       toast.error("Please enter both phone and password!");
       return;
     }
-
-    // let config = {
-    //   headers: {
-    //     Authorization: `Bearer ${API_TOKEN}`,
-    //   },
-    // };
-    console.log(config, "CONFIG FROM useCartStore")
     const loginItem = new FormData();
     loginItem.append("accesskey", "90336");
     loginItem.append("mobile", logins.phone);
@@ -103,7 +73,6 @@ export const Login = ({ dispatchLogin, setUser_id, handleLogin, setLoggedIn, get
           console.log("LOGIN THRU CART<><><><>");
           closeLoginModal();
           navigate("/");
-          // handleLogin(e);
           localStorage.setItem("token", `${API_TOKEN}`);
           // dispatchLogin({ type: "LOGIN", payload: res.data.name });
           console.log('LOGIN RESPONSEEEEEEEEEEEEEE', res.data)
@@ -115,7 +84,6 @@ export const Login = ({ dispatchLogin, setUser_id, handleLogin, setLoggedIn, get
 
           const addMultipleItems = () => {
             let arr = {};
-            // console.log(allCartItems)
             allCartItems.forEach((item) => {
               arr[item.product_variant_id] = item.amount;
             });

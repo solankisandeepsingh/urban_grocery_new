@@ -3,7 +3,6 @@ import Search from "../Search/Search";
 import MyCart from "../../MyCart/MyCart";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaCaretDown, FaSistrix, FaUserCircle } from "react-icons/fa";
-// import { useCartStore } from "../../zustand/useCartStore";
 import { useUserStore } from "../../zustand/useUserStore";
 
 
@@ -22,8 +21,6 @@ export const Navbar = ({
   dispatchLogin,
   setLoggedIn,
   setUser_id,
-  // user_id,
-  handleLogin,
   loggedIn,
 }) => {
   const navigate = useNavigate();
@@ -31,8 +28,8 @@ export const Navbar = ({
   let menuRef = useRef();
   const userButtonClicks = useRef(0);
   const [isOpen, setIsOpen] = useState(false);
-  const {userInfo : {user_id,name}} = useUserStore();
 
+  const {userInfo : {user_id, name}} = useUserStore();
   useEffect(() => {
     let handler = (e) => {
       if (menuRef.current) {
@@ -111,20 +108,41 @@ export const Navbar = ({
 
             {NavbarOpen && (
               <div className="relative">
-                <div>
-                  <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] md:ml-[-145px] rounded-lg md:px-2 md:mt-3 xs:mt-3 bg-white">
-                    <FaUserCircle className="xs:mt-1 xs:text-3xl text-lime md:mt-1.5 md:text-2xl mr-1" />
-                    <button
-                      className=" text-black sm:text-md md:text-md mt-2"
-                      onClick={handleDropdown}
-                    >
-                      {name}
-                    </button>
-                    <div className="md:mt-1 xs:mt-1 bg-white ">
-                      <FaCaretDown className="bg-white md:mt-2 xs:mt-2 " />
-                    </div>
-                  </div>
-                </div>
+                {loggedIn ? (
+        <div
+          className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] md:ml-[-145px] rounded-lg md:px-2 md:mt-3 xs:mt-3 bg-white"
+          onClick={() => {
+            setIsOpen(!isOpen);
+          }}
+        >
+          <FaUserCircle className="xs:mt-1 xs:text-3xl text-lime md:mt-1.5 md:text-2xl mr-1 cursor-pointer" />
+          <button
+            className=" text-black sm:text-md md:text-md mt-2"
+            onClick={handleLogout}
+          >
+            {name}
+          </button>
+          <div className="md:mt-1 xs:mt-1 bg-white ">
+            <FaCaretDown className="bg-white md:mt-2 xs:mt-2 " />
+          </div>
+        </div>
+      ) : (
+        
+        <div
+          className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] md:ml-[-145px] rounded-lg md:px-2 md:mt-3 xs:mt-3 bg-white"
+          onClick={() => {
+            setIsOpen(!isOpen);
+          }}
+        >
+          <FaUserCircle className="xs:mt-1 xs:text-3xl text-lime md:mt-1.5 md:text-2xl mr-1 cursor-pointer" />
+          <button className=" text-black sm:text-md md:text-md mt-2">
+            {name}
+          </button>
+          <div className="md:mt-1 xs:mt-1 bg-white ">
+            <FaCaretDown className="bg-white md:mt-2 xs:mt-2 " />
+          </div>
+        </div>
+      )}
 
                 {isOpen && (
                   <div

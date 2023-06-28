@@ -7,8 +7,6 @@ import { API_TOKEN } from "../Token/Token";
 import { Aside } from "../Aside/Aside";
 
 export const MyOrder = ({
-  isOpen,
-  setIsOpen,
   setAmount,
   setAddItem,
   addItem,
@@ -16,6 +14,8 @@ export const MyOrder = ({
   const [price, setPrice] = useState(0);
 
   const navigate = useNavigate();
+
+
   const removeItemHandler = (item) => {
     let config = {
       headers: {
