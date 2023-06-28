@@ -19,6 +19,8 @@ import { Privacy } from "./Component/Privacy/Privacy";
 import { Coditions } from "./Component/Term & Conditions/Coditions";
 import { Contact } from "./Component/Contact/Contact";
 import { About } from "./Component/About/About";
+import { API_TOKEN } from "./Component/Token/Token";
+import Loader from "./Component/Loader";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -83,6 +85,7 @@ function App() {
 
           // handleLogin={handleLogin}
         />
+      <Loader />
         <Routes>
           <Route
             path="/login"

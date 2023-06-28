@@ -9,6 +9,7 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { Login } from "../Login.jsx/Login";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
+import { useLoaderState } from "../zustand/useLoaderState";
 
 function MyCart({
   // allCartItems,
@@ -32,6 +33,7 @@ function MyCart({
   const [totalItem, setTotalItem] = useState(0);
   const {allCartItems, setAllCartItems} = useCartStore();
   const {userInfo :{user_id} } = useUserStore();
+  const {setisLoading} = useLoaderState();
 
 
   let menuRef = useRef();
@@ -83,6 +85,8 @@ function MyCart({
     bodyFormdata.append("remove_from_cart", "1");
     bodyFormdata.append("user_id", user_id);
     bodyFormdata.append("product_variant_id", `${item.product_variant_id}`);
+
+    setisLoading(true);
     axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
@@ -95,8 +99,10 @@ function MyCart({
         setAllCartItems(newArr);
         let newPrice = price - item.amount * parseFloat(item.price);
         setPrice(newPrice);
+        setisLoading(false);
       })
       .catch((err) => {
+        setisLoading(false);
         console.log(err);
       });
   };

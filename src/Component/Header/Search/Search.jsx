@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_TOKEN } from "../../Token/Token";
+import { useLoaderState } from "../../zustand/useLoaderState";
 
 const Search = ({ setData, data, name, setName, setAddItem, addItem }) => {
   const [searchData, setSearchData] = useState([]);
   const [Inputsearch, setInputSearch] = useState("");
   const navigate = useNavigate();
+  const {setisLoading} = useLoaderState();
 
   const serchAPIData = () => {
     let config = {
@@ -20,7 +22,8 @@ const Search = ({ setData, data, name, setName, setAddItem, addItem }) => {
     bodyFormData.append("type", "products-search");
     bodyFormData.append("limit", "100");
     bodyFormData.append("search", Inputsearch);
-
+        
+    setisLoading(true);
     axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/products-search.php",
@@ -30,9 +33,13 @@ const Search = ({ setData, data, name, setName, setAddItem, addItem }) => {
       .then((res) => {
         // console.log(res.data.data)
         setSearchData(res.data.data);
+    setisLoading(false);
+
       })
       .catch((err) => {
         console.log(err);
+    setisLoading(false);
+
       });
   };
 
