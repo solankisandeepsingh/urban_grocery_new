@@ -16,6 +16,7 @@ import { Login } from "./Component/Login.jsx/Login";
 import { ForgetPass } from "./Component/Login.jsx/ForgetPass";
 import { Address } from "./Component/MyAddress/Address";
 import { API_TOKEN } from "./Component/Token/Token";
+import Loader from "./Component/Loader";
 
 
 function App() {
@@ -108,6 +109,7 @@ function App() {
           setUser_id={setUser_id}
           loggedIn={loggedIn}
         />
+      <Loader />
         <Routes>
           <Route
             path="/login"

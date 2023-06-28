@@ -7,7 +7,7 @@ import axios from "axios";
 import { API_TOKEN } from "../../Token/Token";
 import { useCartStore } from "../../zustand/useCartStore";
 import { useUserStore } from "../../zustand/useUserStore";
-
+import { useLoaderState } from "../../zustand/useLoaderState";
 
 
 export const ProductCarousel = ({  }) => {
@@ -16,6 +16,7 @@ export const ProductCarousel = ({  }) => {
   const [showAllProduct, setShowAllProducts] = useState([]);
   const navigate = useNavigate();
   const {userInfo :{user_id} } = useUserStore();
+  const {setisLoading} = useLoaderState();
 
 
   const productCarousels = () => {
@@ -28,7 +29,7 @@ export const ProductCarousel = ({  }) => {
     bodyFormdata.append("accesskey", "90336");
     bodyFormdata.append("get_all_products", "1");
     bodyFormdata.append("limit", "37");
-
+    setisLoading(true)
     axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/get-all-products.php",
@@ -37,8 +38,11 @@ export const ProductCarousel = ({  }) => {
       )
       .then((res) => {
         setShowAllProducts(res.data.data);
+        setisLoading(false)
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {console.log(err)
+        setisLoading(false)
+      });
   };
 
   useEffect(() => {

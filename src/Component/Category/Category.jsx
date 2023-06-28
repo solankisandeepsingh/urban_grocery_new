@@ -4,11 +4,12 @@ import { categoryData } from "../../Models/MockCategoryData";
 import axios from "axios";
 import { API_TOKEN } from "../Token/Token";
 import { useProductsStore } from "../zustand/useProductsStore";
+import { useLoaderState } from "../zustand/useLoaderState";
 
 
 export const Category = () => {
   const {allCategories, setAllCategories} = useProductsStore();
-
+ const {setisLoading} = useLoaderState();
   // const [categorydata, setCategorydata] = useState(categoryData.data);
   // const [categorydata, setCategorydata] = useState([]);
 
@@ -21,6 +22,7 @@ export const Category = () => {
 
     var formData = new FormData();
     formData.append("accesskey", "90336");
+    setisLoading(true);
 
     axios
       .post(
@@ -29,8 +31,14 @@ export const Category = () => {
         config
       )
       // .then((res) => setCategorydata(res.data.data))
-      .then((res) => setAllCategories(res.data.data))
-      .catch((err) => console.log(err));
+      .then((res) => {setAllCategories(res.data.data)
+    setisLoading(false);      
+      })
+      .catch((err) => {console.log(err)
+    setisLoading(false);
+      
+      });
+      
   };
 
   useEffect(() => {

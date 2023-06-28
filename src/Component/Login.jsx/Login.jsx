@@ -81,6 +81,8 @@ export const Login = ({ dispatchLogin, setUser_id, handleLogin, setLoggedIn, get
     //   },
     // };
 
+    console.log(config, "CONFRIG FROM USECART")
+
     const loginItem = new FormData();
     loginItem.append("accesskey", "90336");
     loginItem.append("mobile", logins.phone);

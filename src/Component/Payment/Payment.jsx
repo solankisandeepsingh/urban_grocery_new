@@ -14,7 +14,7 @@ console.log(clearCartApi);
   const handleCashOnDelivery = () => {
     console.log("Cash on Delivery");
  
-    let config = {
+    let config = {  
       headers:{
         Authorization :`Bearer ${API_TOKEN}`
       }
@@ -74,7 +74,7 @@ console.log(clearCartApi);
   };
 
   const handleSuccessPay =()=>{
-    clearCartApi();
+    clearCartApi();  
   }
 
   return (

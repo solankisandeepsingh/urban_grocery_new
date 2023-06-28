@@ -13,6 +13,8 @@ export const useCartStore = create(
         Authorization :`Bearer ${API_TOKEN}`
       }
     } ,
+    bearer: `${API_TOKEN}`
+    ,
 
     bodyFormData : () => {
       let bodyFormdata = new FormData();
