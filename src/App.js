@@ -16,15 +16,20 @@ import { Login } from "./Component/Login.jsx/Login";
 import { ForgetPass } from "./Component/Login.jsx/ForgetPass";
 import { Address } from "./Component/MyAddress/Address";
 import { API_TOKEN } from "./Component/Token/Token";
+import { useUserStore } from "./Component/zustand/useUserStore";
 
-const initialLoggedUserName = "User";
+// const initialLoggedUserName = "User";
 
-const loginReducer = (state, action) => {
-  console.log(action);
-  if (action.type === "LOGIN") state = action.payload;
-  if (action.type === "LOGOUT") state = "User";
-  return state;
-};
+// const loginReducer = (state, action) => {
+//   console.log(action);
+//   if (action.type === "LOGIN") state = action.payload;
+//   if (action.type === "LOGOUT") state = "User";
+//   return state;
+// };
+
+
+
+
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -37,57 +42,59 @@ function App() {
     phone: "",
     pin: "",
   });
-
+  
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [name, setName] = useState("");
   const [NavbarOpen, setNavbarOpen] = useState(true);
   const [price, setPrice] = useState(0);
   const [loading, setLoading] = useState(true);
   const [user_id, setUser_id] = useState("14");
-  const [loggedUsername, dispatchLogin] = useReducer(
-    loginReducer,
-    initialLoggedUserName
-  );
+  // const initialLoggedUserName = user_id;
+  // const [loggedUsername, dispatchLogin] = useReducer(
+  //   loginReducer,
+  //   initialLoggedUserName
+  //   );
+    
+    
+    
+    
+    
+  //   const loginReducer = (state, action) => {
+  //     if (action.type === "LOGIN") state = action.payload;
+  //     if (action.type === "LOGOUT") state = initialLoggedUserName;
+  //     return state;
+  //   };
+    
+  
+  
 
-
-
-  useEffect(() => {
-    const NavOpen = localStorage.getItem("NavbarOpen");
-    if (NavOpen) {
-      setNavbarOpen(JSON.parse(NavOpen));
+    
+    
+    useEffect(() => {
+      localStorage.setItem("NavbarOpen", JSON.stringify(NavbarOpen));
+    }, [NavbarOpen]);
+    
+    useEffect(() => {
+      const LoggedInStatus = () => {
+        const token = localStorage.getItem("token");
+        if (token) {
+          setLoggedIn(true);
+        } else {
+          // dispatchLogin({ type: "LOGOUT" });
+          setLoggedIn(false);
+        }
+        setLoading(false);
+      };
+      LoggedInStatus();
+    });
+  
+      
+    if (loading) {
+      return <div>Loading...</div>;
     }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("NavbarOpen", JSON.stringify(NavbarOpen));
-  }, [NavbarOpen]);
-
-  useEffect(() => {
-    const LoggedInStatus = () => {
-      const token = localStorage.getItem(`token`);
-      if (token) {
-        setLoggedIn(true);
-      } else {
-        setLoggedIn(false);
-      }
-      setLoading(false);
-    };
-
-    LoggedInStatus();
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-  // const handleLogin = (e) => {
-  //   console.log("HANDLE LOGINNNNNNNNNNNNNN");
-  //   e.preventDefault();
-  //   localStorage.setItem("token", `${API_TOKEN}`);
-  //   setLoggedIn(true);
-  // };
-
-  return (
-    <>
+    
+    return (
+      <>
       <div>
         <Navbar
           setData={setData}
@@ -98,12 +105,12 @@ function App() {
           setShowSearchBar={setShowSearchBar}
           name={name}
           setName={setName}
-          loggedUsername={loggedUsername}
+          // loggedUsername={loggedUsername}
           NavbarOpen={NavbarOpen}
           setNavbarOpen={setNavbarOpen}
           setLoggedIn={setLoggedIn}
-          dispatchLogin={dispatchLogin}
-          user_id={user_id}
+          // dispatchLogin={dispatchLogin}
+          // user_id={user_id}
           setUser_id={setUser_id}
           
           // handleLogin={handleLogin}
@@ -113,7 +120,7 @@ function App() {
             path="/login"
             element={
               <Login
-                dispatchLogin={dispatchLogin}
+                // dispatchLogin={dispatchLogin}
                 setLoggedIn={setLoggedIn}
                 user_id={user_id}
                 setUser_id={setUser_id}

@@ -3,6 +3,8 @@ import Search from "../Search/Search";
 import MyCart from "../../MyCart/MyCart";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaCaretDown, FaSistrix, FaUserCircle } from "react-icons/fa";
+// import { useCartStore } from "../../zustand/useCartStore";
+import { useUserStore } from "../../zustand/useUserStore";
 
 
 export const Navbar = ({
@@ -12,7 +14,7 @@ export const Navbar = ({
   formData,
   setFormdata,
   setShowSearchBar,
-  name,
+  // name,
   setName,
   loggedUsername,
   NavbarOpen,
@@ -20,7 +22,7 @@ export const Navbar = ({
   dispatchLogin,
   setLoggedIn,
   setUser_id,
-  user_id,
+  // user_id,
   handleLogin,
   loggedIn,
 }) => {
@@ -29,6 +31,7 @@ export const Navbar = ({
   let menuRef = useRef();
   const userButtonClicks = useRef(0);
   const [isOpen, setIsOpen] = useState(false);
+  const {userInfo : {user_id,name}} = useUserStore();
 
   useEffect(() => {
     let handler = (e) => {
@@ -45,6 +48,7 @@ export const Navbar = ({
       document.removeEventListener("mousedown", handler);
     };
   });
+  // const {allCartItems} = useCartStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -114,7 +118,7 @@ export const Navbar = ({
                       className=" text-black sm:text-md md:text-md mt-2"
                       onClick={handleDropdown}
                     >
-                      {loggedUsername}
+                      {name}
                     </button>
                     <div className="md:mt-1 xs:mt-1 bg-white ">
                       <FaCaretDown className="bg-white md:mt-2 xs:mt-2 " />
@@ -216,7 +220,7 @@ export const Navbar = ({
                 setNavbarOpen={setNavbarOpen}
                 setLoggedIn={setLoggedIn}
                 dispatchLogin={dispatchLogin}
-                user_id={user_id}
+                // user_id={user_id}
                 setUser_id={setUser_id}
                 loggedIn={loggedIn}
                 // handleLogin={handleLogin}
@@ -225,7 +229,7 @@ export const Navbar = ({
           </div>
           <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1 z-0 bg-white">
             {NavbarOpen && (
-              <Search setData={setData} name={name} setName={setName} />
+              <Search setData={setData}  setName={setName} />
             )}
           </div>
         </div>

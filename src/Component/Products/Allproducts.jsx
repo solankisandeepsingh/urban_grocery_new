@@ -4,9 +4,13 @@ import { mockProduct } from "../../Models/MockProduct";
 import CartQuantity from "../Button/CartQuantity";
 import axios from "axios";
 import { API_TOKEN } from "../Token/Token";
+import { useProductsStore } from "../zustand/useProductsStore";
 
 function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
+  const {allProducts, setAllProducts} = useProductsStore();
+  // const [allproduct, setShowAllProducts] = useState(mockProduct.data);
   const [allproduct, setShowAllProducts] = useState([]);
+  console.log(allProducts, setAllProducts);
 
   let allshowProduct = () => {
     
@@ -26,7 +30,10 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
         bodyFormdata,
         config
       )
-      .then((res) => setShowAllProducts(res.data.data))
+      // .then((res) => setShowAllProducts(res.data.data))
+
+      .then((res) => setAllProducts(res.data.data))
+
       .catch((err) => console.log(err));
   };
   useEffect(() => {
@@ -158,8 +165,9 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
     <>
       
       <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-6 sm:grid-cols-3 flex flex-wrap md:ml-5 ">
-        {allproduct &&
-          allproduct.map((item) => {
+        {allProducts &&
+          allProducts.map((item) => {
+            console.log(item);
             return (
               <>
                 <div className="w-72 xs:w-40 md:w-44  md:h-[263px] sm:w-60 sm:h-[365px]  rounded-xl xs:m-2 xs:my-3 md:mx-5 md:my-4 sm:my-4 container shadow-sm bg border-2 border-light_gray hover:border-light_green">

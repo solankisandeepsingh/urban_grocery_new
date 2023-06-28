@@ -6,12 +6,17 @@ import { API_TOKEN } from "../Token/Token";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { useCartStore } from "../zustand/useCartStore";
+import { useUserStore } from "../zustand/useUserStore";
 
-export const Login = ({ dispatchLogin, setUser_id, handleLogin, addItem,setLoggedIn, getUserCarts }) => {
+
+export const Login = ({ dispatchLogin, setUser_id, handleLogin, setLoggedIn, getUserCarts,setNewUserLog }) => {
   const [logins, setLogins] = useState({
     phone: "",
     password: "",
   });
+  const {allCartItems, setAllCartItems, bodyFormData, config, clearCartApi} = useCartStore();
+  const {userInfo : {user_id}, setUserInfo} = useUserStore();
   const [showModals, setShowModals] = useState(false);
   const [LoginFormModals, setLoginFormModals] = useState(true);
   const [loginData, setLoginData] = useState([]);
@@ -23,9 +28,11 @@ export const Login = ({ dispatchLogin, setUser_id, handleLogin, addItem,setLogge
   };
   const closeLoginModal = () => {
     setLoginFormModals(false);
+
+    setNewUserLog(false)
     navigate("/");
   };
-  console.log(addItem, "INSIDE LOGIN AFERT LOGIN")
+  console.log(allCartItems, "INSIDE LOGIN AFERT LOGIN")
 
   const inputHandler = (e) => {
     let name = e.target.name;
@@ -33,30 +40,31 @@ export const Login = ({ dispatchLogin, setUser_id, handleLogin, addItem,setLogge
     setLogins({ ...logins, [name]: value });
   };
 
-  const clearCart = (user_id) => {
-    let config = {
-      headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
-      },
-    };
-
-    var bodyFormdata = new FormData();
-    bodyFormdata.append("accesskey", "90336");
-    bodyFormdata.append("remove_from_cart", "1");
-    bodyFormdata.append("user_id", user_id);
-
-    return axios
-      .post(
-        "https://grocery.intelliatech.in/api-firebase/cart.php",
-        bodyFormdata,
-        config
-      )
-      .then((res) => {
+  const clearCart = () => {
+    // let config = {
+    //   headers: {
+    //     Authorization: `Bearer ${API_TOKEN}`,
+    //   },
+    // };
+    // var bodyFormdata = new FormData();
+    // bodyFormdata.append("accesskey", "90336");
+    // bodyFormdata.append("remove_from_cart", "1");
+    // bodyFormdata.append("user_id", user_id);
+    // let bodyFormdata = bodyFormData();
+    // console.log(config, bodyFormData, "0000000000000000 CLEAR CART AFTER LOGIN RES")
+    //  axios
+    //   .post(
+    //     "https://grocery.intelliatech.in/api-firebase/cart.php",
+    //     bodyFormData(),
+    //     config
+    //   )
+    //   .then((res) => {
        
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    clearCartApi();
   };  
 
   const handleSubmit = (e) => {
@@ -69,12 +77,12 @@ export const Login = ({ dispatchLogin, setUser_id, handleLogin, addItem,setLogge
       return;
     }
 
-    let config = {
-      headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
-      },
-    };
-
+    // let config = {
+    //   headers: {
+    //     Authorization: `Bearer ${API_TOKEN}`,
+    //   },
+    // };
+    console.log(config, "CONFIG FROM useCartStore")
     const loginItem = new FormData();
     loginItem.append("accesskey", "90336");
     loginItem.append("mobile", logins.phone);
@@ -87,7 +95,7 @@ export const Login = ({ dispatchLogin, setUser_id, handleLogin, addItem,setLogge
         loginItem,
         config
       )
-      .then((res) => {
+      .then((res) => { 
         console.log(res);
 
         if (!res.data.error) {
@@ -97,7 +105,9 @@ export const Login = ({ dispatchLogin, setUser_id, handleLogin, addItem,setLogge
           navigate("/");
           // handleLogin(e);
           localStorage.setItem("token", `${API_TOKEN}`);
-          dispatchLogin({ type: "LOGIN", payload: res.data.name });
+          // dispatchLogin({ type: "LOGIN", payload: res.data.name });
+          console.log('LOGIN RESPONSEEEEEEEEEEEEEE', res.data)
+          setUserInfo(res.data)
           let newUserId = res.data.user_id;
           setUser_id(newUserId);
 
@@ -105,8 +115,8 @@ export const Login = ({ dispatchLogin, setUser_id, handleLogin, addItem,setLogge
 
           const addMultipleItems = () => {
             let arr = {};
-            // console.log(addItem)
-            addItem.forEach((item) => {
+            // console.log(allCartItems)
+            allCartItems.forEach((item) => {
               arr[item.product_variant_id] = item.amount;
             });
 
