@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
-import { mockProduct } from "../../../Models/MockProduct";
-import DropdownMenu from "../../AccountDropdown/DropdownMenu";
 import CartQuantity from "../../Button/CartQuantity";
 import axios from "axios";
 import { API_TOKEN } from "../../Token/Token";
 
-export const SubCategory = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
-  // const [allproducts, setAllProducts] = useState(mockProduct.data);
+export const SubCategory = ({ setAddItem, addItem}) => {
   const [allproducts, setAllProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -168,9 +165,7 @@ export const SubCategory = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
 
   return (
     <>
-      <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2  xs:mt-1 bg-white">
-        <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} />
-      </div>
+      
       <div>
         <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-6 sm:grid-cols-3 flex flex-wrap md:ml-5 ">
           {isLoading ? (

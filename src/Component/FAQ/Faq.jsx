@@ -1,12 +1,8 @@
 import React from "react";
-import DropdownMenu from "../AccountDropdown/DropdownMenu";
 
-export const Faq = ({isOpen,setIsOpen}) => {
+export const Faq = () => {
   return (
     <div>
-      <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2 md:mt-[-22px] xs:mt-3 bg-white">
-        <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} />
-      </div>
       <div className="container my-24 px-6 mx-auto">
         <section className="mb-32 text-gray-800">
           <h2 className="text-3xl font-bold mb-12 text-center">

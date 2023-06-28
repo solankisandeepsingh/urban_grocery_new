@@ -3,7 +3,7 @@ import { Category } from "./Category/Category";
 import CarouselComponent from "./Carousel/Carousel";
 import Search from "./Header/Search/Search";
 import { ProductCarousel } from "./Products/Product-Carousel/ProductCarousel";
-import DropdownMenu from "./AccountDropdown/DropdownMenu";
+
 
 function Home({
   data,
@@ -21,7 +21,7 @@ function Home({
 }) {
   return (
     <div className="relative mt-0.5">
-      <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} setLoggedIn={setLoggedIn} loggedIn={loggedIn} />
+    
       <>
         <div className="md:invisible xs:visible">
           <Search

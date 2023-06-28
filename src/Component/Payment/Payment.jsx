@@ -1,10 +1,10 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import DropdownMenu from "../../Component/AccountDropdown/DropdownMenu";
+
 import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 
-function Payment({ isOpen,setIsOpen}) {
+function Payment() {
   const handleCashOnDelivery = () => {
     console.log("Cash on Delivery");
  
@@ -73,9 +73,7 @@ function Payment({ isOpen,setIsOpen}) {
 
   return (
     <>
-    <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2 xs:mt-0.5 bg-white">
-        <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen}/>
-      </div>
+  
       <div>
         <div className="min-h-screen bg-gray-100 flex items-center justify-center">
           <div className="max-w-md w-full mx-auto p-6 bg-white rounded-lg shadow-md">

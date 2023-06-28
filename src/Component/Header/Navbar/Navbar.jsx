@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Search from "../Search/Search";
 import MyCart from "../../MyCart/MyCart";
 import { NavLink, useNavigate } from "react-router-dom";
-import { FaSistrix } from "react-icons/fa";
-import AccountButton from "../../AccountDropdown/AccountButton";
+import { FaCaretDown, FaSistrix, FaUserCircle } from "react-icons/fa";
+
 
 export const Navbar = ({
   setData,
@@ -14,8 +14,6 @@ export const Navbar = ({
   setShowSearchBar,
   name,
   setName,
-  isOpen,
-  setIsOpen,
   loggedUsername,
   NavbarOpen,
   setNavbarOpen,
@@ -24,10 +22,29 @@ export const Navbar = ({
   setUser_id,
   user_id,
   handleLogin,
-  loggedIn
+  loggedIn,
 }) => {
   const navigate = useNavigate();
   const [showSearch, setShowSearch] = useState(true);
+  let menuRef = useRef();
+  const userButtonClicks = useRef(0);
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    let handler = (e) => {
+      if (menuRef.current) {
+        if (!menuRef.current.contains(e.target)) {
+          setIsOpen(false);
+        }
+      }
+    };
+
+    document.addEventListener("mousedown", handler);
+
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,6 +65,24 @@ export const Navbar = ({
     setNavbarOpen(true);
     navigate("/");
   };
+  const handleDropdown = (e) => {
+    e.preventDefault();
+    if(!isOpen){
+      setIsOpen(true)
+      userButtonClicks.current += 1;
+      setIsOpen(userButtonClicks.current % 2 === 0);
+    }
+    
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    dispatchLogin({ type: "LOGOUT" });
+    setLoggedIn(false);
+    setIsOpen(false);
+    navigate("/");
+  };
+
   return (
     <div className="">
       <nav className=" px-2 sm:px-4 fixed w-full z-20 top-0 left-0 border-b border-light_gray shadow-sm bg-white">
@@ -58,19 +93,7 @@ export const Navbar = ({
             alt="Flowbite Logo"
             onClick={handleClickHome}
           />
-          <button onClick={()=>{
-            // let arr = {};
-            // console.log(...arr)
-            // addItem.forEach((item)=>{
-            //   arr[item.product_variant_id] = item.amount  
-            // }
-            // )
-            // let text = arr.join(',')
-            // console.log(Object.keys(arr))
-            console.log(user_id)
 
-          }}>
-            CHECK ADD ITEM LIST</button>
           <div className="flex md:order-2 z-10 xs:justify-between bg-white">
             {showSearch ? null : (
               <div className="md:hidden xs:visible rounded-lg bg-lime w-8 h-8 xs:w-8 xs:h-8 xs:mt-3.5 xs:mx-2">
@@ -80,15 +103,107 @@ export const Navbar = ({
                 />
               </div>
             )}
+            <div></div>
+
             {NavbarOpen && (
-              <AccountButton
-                loggedUsername={loggedUsername}
-                isOpen={isOpen}
-                setIsOpen={setIsOpen}
-                setLoggedIn={setLoggedIn}
-                loggedIn={loggedIn}
-                dispatchLogin={dispatchLogin}
-              />
+              <div className="relative">
+                <div>
+                  <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] md:ml-[-145px] rounded-lg md:px-2 md:mt-3 xs:mt-3 bg-white">
+                    <FaUserCircle className="xs:mt-1 xs:text-3xl text-lime md:mt-1.5 md:text-2xl mr-1" />
+                    <button
+                      className=" text-black sm:text-md md:text-md mt-2"
+                      onClick={handleDropdown}
+                    >
+                      {loggedUsername}
+                    </button>
+                    <div className="md:mt-1 xs:mt-1 bg-white ">
+                      <FaCaretDown className="bg-white md:mt-2 xs:mt-2 " />
+                    </div>
+                  </div>
+                </div>
+
+                {isOpen && (
+                  <div
+                    className="top-0 right-0 mt-2 w-56 shadow-lg rounded-lg bg-white  xs:mt-[73px] md:ml-[980px] sm:ml-[400px] xs:ml-[100px] z-10 absolute px-4"
+                    ref={menuRef}
+                  >
+                    <ul className="mt-8 bg-white">
+                      <li className=" bg-white cursor-pointer">
+                        <p className="bg-white mt-4 sm:text-2xl md:text-lg">
+                          My Account
+                        </p>
+                      </li>
+                      <li className=" bg-white cursor-pointer">
+                        <NavLink to={"/login"}>
+                          <p
+                            onClick={() => setIsOpen(false)}
+                            className="bg-white sm:text-lg md:text-sm mt-4"
+                          >
+                            LogIn
+                          </p>
+                        </NavLink>
+                      </li>
+                      <li className="bg-white  cursor-pointer">
+                        <NavLink to={"/myorder"}>
+                          <p
+                            onClick={() => setIsOpen(false)}
+                            className="bg-white sm:text-lg md:text-sm mt-4"
+                          >
+                            My Orders
+                          </p>
+                        </NavLink>
+                      </li>
+                      <li className="  bg-white cursor-pointer">
+                        <NavLink to={"/address"}>
+                          <p
+                            onClick={() => setIsOpen(false)}
+                            className="bg-white sm:text-lg md:text-sm mt-4"
+                          >
+                            Saved Address
+                          </p>
+                        </NavLink>
+                      </li>
+                      <li className=" bg-white cursor-pointer">
+                        <div className="flex justify-between mt-4  ">
+                          <NavLink to={"/wallet"}>
+                            <p
+                              onClick={() => setIsOpen(false)}
+                              className="bg-white sm:text-lg md:text-sm"
+                            >
+                              My Wallet
+                            </p>
+                          </NavLink>
+                          <p
+                            onClick={() => setIsOpen(false)}
+                            className="bg-white sm:text-lg md:text-sm"
+                          >
+                            ₹500
+                          </p>
+                        </div>
+                      </li>
+                      <li className="bg-white cursor-pointer">
+                        <NavLink to={"/faq"}>
+                          <p
+                            onClick={() => setIsOpen(false)}
+                            className="bg-white sm:text-lg md:text-sm mt-4"
+                          >
+                            FAQ
+                          </p>
+                        </NavLink>
+                      </li>
+
+                      <li className="bg-white cursor-pointer">
+                        <p
+                          onClick={handleLogout}
+                          className="bg-white sm:text-lg md:text-sm mt-4 cursor-pointer"
+                        >
+                          Log Out
+                        </p>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </div>
             )}
 
             {NavbarOpen && (

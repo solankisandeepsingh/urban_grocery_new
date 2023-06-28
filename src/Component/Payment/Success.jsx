@@ -1,9 +1,9 @@
 import React from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import DropdownMenu from "../AccountDropdown/DropdownMenu";
 
-export const Success = ({ isOpen, setIsOpen, setNavbarOpen }) => {
+
+export const Success = ({  setNavbarOpen }) => {
   const navigate = useNavigate();
   const goToHome = () => {
     setNavbarOpen(true);
@@ -11,9 +11,7 @@ export const Success = ({ isOpen, setIsOpen, setNavbarOpen }) => {
   };
   return (
     <>
-      <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2 xs:mt-0.5 bg-white">
-        <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} />
-      </div>
+  
       <div>
         <div className="flex items-center justify-center h-screen">
           <div>

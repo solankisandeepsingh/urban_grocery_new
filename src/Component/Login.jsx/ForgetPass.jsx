@@ -1,14 +1,8 @@
 import React from "react";
-import DropdownMenu from "../AccountDropdown/DropdownMenu";
 
-export const ForgetPass = ({ isOpen, setIsOpen }) => {
-
-  
+export const ForgetPass = () => {
   return (
     <div>
-      <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2 md:mt-[-22px] xs:mt-3 bg-white">
-        <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} />
-      </div>
       <section className="bg-gray-50 dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <div className="">

@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { FaRegHeart, FaAlignLeft, FaArrowsAlt, FaHeart } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import { mockProduct } from "../../../Models/MockProduct";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Rating from "../../StarRating/Rating";
-import DropdownMenu from "../../AccountDropdown/DropdownMenu";
 import axios from "axios";
 import { API_TOKEN } from "../../Token/Token";
 import ProductBtn from "../../Button/ProductBtn";
 
 export const ProductDetails = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
-  // const [productPageData, setProductPage] = useState(mockProduct.data);
   const [productPageData, setProductPage] = useState([]);
   const [wishlist, setWishlist] = useState(false);
   const { id } = useParams();
@@ -177,9 +174,6 @@ export const ProductDetails = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
 
   return (
     <>
-      <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2 xs:mt-1 bg-white">
-        <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} />
-      </div>
       <div className="2xs:mt-10 xs:mt-10 md:p-20 xs:p-8">
         {filterData &&
           filterData.map((item) => {

@@ -41,19 +41,23 @@ const Search = ({ setData, data, name, setName, setAddItem, addItem }) => {
     serchAPIData();
   },[]);
 
-
   const handleChange = (e) => {
-    setInputSearch(e.target.value); 
+    setInputSearch(e.target.value);
     navigate("/search");
-    const filteredData = e.target.value;
+    const filteredData = e.target.value.trim().toLowerCase();
     setName(filteredData);
     let result;
-    result = searchData.filter((item) => {
-      return item.name.toLowerCase().startsWith(filteredData.toLowerCase());
-    });
+    if (filteredData.length > 0) {
+      result = searchData.filter((item) => {
+        return item.name.toLowerCase().includes(filteredData.toLowerCase());
+      });
+    } else {
+      result = searchData;
+    }
 
     setData(result);
   };
+
 
   const addItemHandler = (item) => {
     if (addItem.some((cartItem) => cartItem.id === item.id)) {

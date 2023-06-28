@@ -43,6 +43,7 @@ function MyCart({
   };
   const total = () => {
     let price = 0;
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     addItem.forEach((cartItem) => {
       if (cartItem.amount) {
         price += parseFloat(cartItem.discounted_price) * cartItem.amount;

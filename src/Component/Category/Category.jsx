@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { categoryData } from "../../Models/MockCategoryData";
 import axios from "axios";
 import { API_TOKEN } from "../Token/Token";
 
 export const Category = () => {
-  // const [categorydata, setCategorydata] = useState(categoryData.data);
   const [categorydata, setCategorydata] = useState([]);
 
   const categryData = () => {

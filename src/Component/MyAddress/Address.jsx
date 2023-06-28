@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from "react";
-import DropdownMenu from "../AccountDropdown/DropdownMenu";
-import { Form, NavLink } from "react-router-dom";
-import {
-  FaBell,
-  FaHome,
-  FaMapMarked,
-  FaPlus,
-  FaRegAddressBook,
-  FaWallet,
-} from "react-icons/fa";
+
+import { FaHome, FaPlus } from "react-icons/fa";
 import { HiOfficeBuilding } from "react-icons/hi";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import { AddressForm } from "./AddressForm";
 import axios from "axios";
 import { API_TOKEN } from "../Token/Token";
+import { Aside } from "../Aside/Aside";
 
 export const Address = ({ isOpen, setIsOpen, user_id }) => {
   const [formOpen, setFormOpen] = useState(false);
@@ -68,65 +61,11 @@ export const Address = ({ isOpen, setIsOpen, user_id }) => {
 
   return (
     <>
-      <div className="flex xs:w-20 sm:mr-3 md:w-24 h-[30px] rounded-lg md:px-2 xs:mt-0.5 bg-white">
-        <DropdownMenu isOpen={isOpen} setIsOpen={setIsOpen} />
-      </div>
       <div className="md:flex md:flex-row">
         <div className="xs:w-72 xs:py-20 xs:px-1 md:h-full md:w-1/4 md:px-12 md:py-36 md:mt-10">
-          <ul className="font-medium xs:invisible md:visible md:fixed">
-            <li className="border border-light_gray mb-2 shadow-lg">
-              <NavLink to={"/address"}>
-                <a
-                  to="/address"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  <FaHome className="text-darkgray text-lg" />
-                  <span className="ml-3 text-light_gray xs:text-xs font-light">
-                    My Address
-                  </span>
-                </a>
-              </NavLink>
-            </li>
-            <li className="border border-light_gray mb-2 shadow-lg ">
-              <NavLink to={"/myorder"}>
-                <a
-                  to="/myorder"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  <FaRegAddressBook className="text-darkgray text-lg" />
-                  <span className="flex-1 ml-3 text-lightgray xs:text-xs font-thin">
-                    My Order
-                  </span>
-                </a>
-              </NavLink>
-            </li>
-            <li className="border border-light_gray mb-2 shadow-lg">
-              <NavLink to={"/wallet"}>
-                <a
-                  to="/wallet"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  <FaWallet className="text-darkgray text-lg" />
-                  <span className="flex-1 ml-3  text-lightgray xs:text-xs font-normal">
-                    My Wallet
-                  </span>
-                </a>
-              </NavLink>
-            </li>
-            <li className="border border-light_gray mb-2 shadow-lg">
-              <NavLink to={"/"}>
-                <a
-                  to="#"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  <FaBell className="text-darkgray text-lg" />
-                  <span className="flex-1 ml-3  text-lightgray xs:text-xs font-normal">
-                    Logout
-                  </span>
-                </a>
-              </NavLink>
-            </li>
-          </ul>
+          <div className="">
+            <Aside />
+          </div>
         </div>
 
         <div className="md:w-3/4 xs:w-full md:mt-[-30px] xs:mt-[-270px]">
