@@ -1,84 +1,52 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { API_TOKEN } from "../Token/Token";
+import axios from "axios";
+import { Aside } from "../Aside/Aside";
 
 export const Faq = () => {
+  const [faqData, setFaqData] = useState("");
+  const handleFaq = () => {
+    let config = {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    };
+    let FaqData = new FormData();
+    FaqData.append("accesskey", "90336");
+    FaqData.append("get_faqs", "1");
+
+    axios
+      .post(
+        `https://grocery.intelliatech.in/api-firebase/get-faqs.php`,
+        FaqData,
+        config
+      )
+      .then((res) => {
+        console.log(res);
+        setFaqData(res.data.message);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    handleFaq();
+  }, []);
   return (
     <div>
-      <div className="container my-24 px-6 mx-auto">
-        <section className="mb-32 text-gray-800">
-          <h2 className="text-3xl font-bold mb-12 text-center">
-            Frequently asked questions
-          </h2>
+      <div class="md:flex md:flex-row">
+        <div class="xs:w-72 xs:py-20 xs:px-1 md:h-full md:w-1/4 md:px-12  md:mt-10">
+          <Aside />
+        </div>
 
-          <div className="grid lg:grid-cols-3 gap-6">
-            <div className="mb-12">
-              <p className="font-bold mb-4">
-                Anim pariatur cliche reprehenderit?
-              </p>
-              <p className="text-gray-500">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt
-                autem numquam dolore molestias aperiam culpa alias veritatis
-                architecto eos, molestiae vitae ex eligendi libero eveniet
-                dolorem, doloremque rem aliquid perferendis.
-              </p>
-            </div>
-
-            <div className="mb-12">
-              <p className="font-bold mb-4">
-                Non cupidatat skateboard dolor brunch?
-              </p>
-              <p className="text-gray-500">
-                Distinctio corporis, iure facere ducimus quos consectetur ipsa
-                ut magnam autem doloremque ex! Id, sequi. Voluptatum magnam sed
-                fugit iusto minus et suscipit? Minima sunt at nulla tenetur,
-                numquam unde quod modi magnam ab deserunt ipsam sint aliquid
-                dolores libero repellendus cupiditate mollitia quidem dolorem
-                odit
-              </p>
-            </div>
-
-            <div className="mb-12">
-              <p className="font-bold mb-4">
-                Praesentium voluptatibus temporibus consequatur non aspernatur?
-              </p>
-              <p className="text-gray-500">
-                Minima sunt at nulla tenetur, numquam unde quod modi magnam ab
-                deserunt ipsam sint aliquid dolores libero repellendus
-                cupiditate mollitia quidem dolorem.
-              </p>
-            </div>
-
-            <div className="col-md-12 mb-12">
-              <p className="font-bold mb-4">
-                Voluptatum magnam sed fugit iusto minus et suscipit?
-              </p>
-              <p className="text-gray-500">
-                Laudantium perferendis, est alias iure ut veniam suscipit
-                dolorem fugit. Et ipsam corporis earum ea ut quae cum non iusto
-                blanditiis ipsum dolor eius reiciendis, velit adipisci quas.
-              </p>
-            </div>
-
-            <div className="mb-12">
-              <p className="font-bold mb-4">Minima sunt at nulla tenetur,?</p>
-              <p className="text-gray-500">
-                Numquam unde quod modi magnam ab deserunt ipsam sint aliquid
-                dolores libero repellendus cupiditate mollitia quidem dolorem
-                odit
-              </p>
-            </div>
-
-            <div className="mb-12">
-              <p className="font-bold mb-4">
-                Distinctio corporis, iure facere ducimus?
-              </p>
-              <p className="text-gray-500">
-                Eaque eos corrupti debitis tenetur repellat, beatae quibusdam
-                incidunt, fuga non iste dignissimos officiis nam officia
-                obcaecati commodi ratione qui nesciunt.
+        <div class="md:w-3/4 xs:w-full md:mt-[-30px] xs:mt-[-270px]">
+          <div class="md:mt-28 ">
+            <div class="bg-white">
+              <p class="md:text-md mt-72 text-center justify-center items-center">
+                {faqData}
               </p>
             </div>
           </div>
-        </section>
+        </div>
       </div>
     </div>
   );

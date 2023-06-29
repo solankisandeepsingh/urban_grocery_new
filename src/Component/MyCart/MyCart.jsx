@@ -10,6 +10,7 @@ import { Login } from "../Login.jsx/Login";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
+import Review from "./Review/Review";
 
 function MyCart({
   // allCartItems,
@@ -29,6 +30,7 @@ function MyCart({
   const [price, setPrice] = useState(0);
   const [showForm, setShowForm] = useState(false);
   const [Payment, setPayment] = useState(false);
+  const [reviewPage, setReviewPage] = useState(false);
   const [newUserLog, setNewUserLog] = useState(false);
   const [totalItem, setTotalItem] = useState(0);
   const {allCartItems, setAllCartItems} = useCartStore();
@@ -115,6 +117,7 @@ function MyCart({
 
   const formHandler = () => {
     setShowForm(true);
+    setReviewPage(false)
     setPayment(true);
     setNewUserLog(false)
   };
@@ -248,8 +251,8 @@ function MyCart({
                 </div>
 
                 <div className=" bg-white overflow-y-scroll md:h-[700px] xs:h-[758px] sm:h[985px] 2xs:h-[500px]">
-                  {!showForm && allCartItems.length
-                    ? allCartItems &&
+                  {!showForm && allCartItems.length && !reviewPage
+                    ? allCartItems && 
                     allCartItems.map((item) => {
                         return (
                           <>
@@ -376,9 +379,16 @@ function MyCart({
                       setNavbarOpen={setNavbarOpen}
                       user_id={user_id}
                       setUser_id={setUser_id}
-                      
+                      setReviewPage={setReviewPage}
+                      setShowForm= {setShowForm}
                     />
                   ) : null}
+
+                  {reviewPage ?(
+                    <Review />
+                  ):null}
+
+
                 </div>
               </div>
             </div>

@@ -35,14 +35,14 @@ export const Coditions = () => {
 
   return <div>
     <div class="md:flex md:flex-row">
-        <div class="xs:w-72 xs:py-20 xs:px-1 md:h-full md:w-1/4 md:px-12 md:py-36 md:mt-10">
+        <div class="xs:w-72 xs:py-20 xs:px-1 md:h-full md:w-1/4 md:px-12  md:mt-10">
           <Aside />
         </div>
 
         <div class="md:w-3/4 xs:w-full md:mt-[-30px] xs:mt-[-270px]">
-          <div class="md:mt-28 md:text-center">
-            <div class="bg-white overflow-y-scroll">
-            <p class="md:text-md mt-44">{stripHTML(conditons)}</p>
+          <div class="md:mt-28 ">
+            <div class="bg-white">
+            <p class="md:text-md mt-72 text-center justify-center items-center">{stripHTML(conditons)}</p>
             </div>
           </div>
         </div>

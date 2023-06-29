@@ -62,13 +62,13 @@ export const Address = ({ isOpen, setIsOpen, user_id }) => {
   return (
     <>
       <div className="md:flex md:flex-row">
-        <div className="xs:w-72 xs:py-20 xs:px-1 md:h-full md:w-1/4 md:px-12 md:py-36 md:mt-10">
+        <div className="xs:w-72 xs:py-20 xs:px-1 md:h-full md:w-1/4 md:px-12 md:mt-10">
           <div className="">
             <Aside />
           </div>
         </div>
 
-        <div className="md:w-3/4 xs:w-full md:mt-[-30px] xs:mt-[-270px]">
+        <div className="md:w-3/4 ml-16 xs:w-full md:mt-[-30px] xs:mt-[-270px]">
           <div className="mt-40">
             <div
               className="flex flex-row border border-light_gray py-3 px-3 w-[800px]"

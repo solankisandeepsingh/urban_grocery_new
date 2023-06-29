@@ -21,6 +21,7 @@ import { Contact } from "./Component/Contact/Contact";
 import { About } from "./Component/About/About";
 import { API_TOKEN } from "./Component/Token/Token";
 import Loader from "./Component/Loader";
+import Review from "./Component/MyCart/Review/Review";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -165,6 +166,19 @@ function App() {
               />
             }
           />
+          
+          {/* <Route
+            path="/review"
+            element={
+              <Review
+                NavbarOpen={NavbarOpen}
+                setNavbarOpen={setNavbarOpen}
+                setData={true}
+                user_id={user_id}
+                setUser_id={setUser_id}
+              />
+            }
+          /> */}
 
           <Route path="/wallet" element={<Wallet />} />
           <Route path="/privacy" element={<Privacy />} />

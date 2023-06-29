@@ -6,7 +6,8 @@ import { HiOfficeBuilding } from "react-icons/hi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AddressForm } from "../../MyAddress/AddressForm";
 
-function Form({ setShowModal, setNavbarOpen, user_id }) {
+function Form({ setShowModal, setNavbarOpen, user_id,setReviewPage, setShowForm}) {
+  console.log("setReviewPage>>>>>>>>>>>>>>>>>>>>",setReviewPage)
   const [addList, setAddlist] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
   const [formOpen, setFormOpen] = useState(false);
@@ -47,10 +48,12 @@ function Form({ setShowModal, setNavbarOpen, user_id }) {
     setFormOpen(true);
   };
 
-  const handleProceedToPay = () => {
-    navigate("/payment");
-    setShowModal(false);
-    setNavbarOpen(false);
+  const handleReview = () => {
+    // navigate("/review");
+    // setShowModal(false);
+    setReviewPage(true)
+    setShowForm(false)
+    // setNavbarOpen(false);
   };
 
   return (
@@ -106,14 +109,27 @@ function Form({ setShowModal, setNavbarOpen, user_id }) {
       )}
 
       {selectedOption ? (
-        <NavLink to={`/payment`}>
+        // <NavLink to={`/payment`}>
+          <>
           <button
-            onClick={handleProceedToPay}
+            onClick={handleReview}
             className="bg-lime text-white hover:opacity-90 sm:w-full md:w-[90%] mx-4 sm:text-2xl md:text-lg px-4 py-1.5 rounded-lg"
           >
-            Proceed to Pay
+            Review Order
           </button>
-        </NavLink>
+          {/* <button
+            onClick={()=> {
+              setReviewPage((prev)=> {
+               return !prev
+              })
+              setShowForm(false)
+            }}
+            className="bg-lime text-white hover:opacity-90 sm:w-full md:w-[90%] mx-4 sm:text-2xl md:text-lg px-4 py-1.5 rounded-lg"
+          >
+            Change State
+          </button> */}
+          </>
+        // </NavLink>
       ) : (
         <button
           onClick={() => handleOpenForm()}
