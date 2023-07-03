@@ -22,7 +22,7 @@ function MyCart({
   setLoggedIn,
   // user_id,
   setUser_id,
-  loggedIn
+  loggedIn,
 }) {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
@@ -33,10 +33,11 @@ function MyCart({
   const [reviewPage, setReviewPage] = useState(false);
   const [newUserLog, setNewUserLog] = useState(false);
   const [totalItem, setTotalItem] = useState(0);
-  const {allCartItems, setAllCartItems} = useCartStore();
-  const {userInfo :{user_id} } = useUserStore();
-  const {setisLoading} = useLoaderState();
-
+  const { allCartItems, setAllCartItems } = useCartStore();
+  const {
+    userInfo: { user_id },
+  } = useUserStore();
+  const { setisLoading } = useLoaderState();
 
   let menuRef = useRef();
 
@@ -52,21 +53,23 @@ function MyCart({
   };
   const total = () => {
     let price = 0;
-    (allCartItems && allCartItems.forEach((cartItem) => {
-      if (cartItem.amount) {
-        price += parseFloat(cartItem.discounted_price) * cartItem.amount;
-      }
-    }));
+    allCartItems &&
+      allCartItems.forEach((cartItem) => {
+        if (cartItem.amount) {
+          price += parseFloat(cartItem.discounted_price) * cartItem.amount;
+        }
+      });
     setPrice(price);
   };
 
   const totalAmount = () => {
     let totalAmount = 0;
-    (allCartItems && allCartItems.forEach((e) => {
-      if (e.amount) {
-        totalAmount += parseFloat(e.amount);
-      }
-    }));
+    allCartItems &&
+      allCartItems.forEach((e) => {
+        if (e.amount) {
+          totalAmount += parseFloat(e.amount);
+        }
+      });
     setTotalItem(totalAmount);
   };
 
@@ -117,14 +120,13 @@ function MyCart({
 
   const formHandler = () => {
     setShowForm(true);
-    setReviewPage(false)
+    setReviewPage(false);
     setPayment(true);
-    setNewUserLog(false)
+    setNewUserLog(false);
   };
 
   const handleCloseModal = () => {
     setPayment(false);
-    
   };
 
   useEffect(() => {
@@ -162,15 +164,17 @@ function MyCart({
         config
       )
       .then((res) => {
-        console.log(res, "[GET USER CART API RESPONSE]")
+        console.log(res, "[GET USER CART API RESPONSE]");
         let addQtyAmount = res?.data?.data?.map((data) => ({
           ...data,
           amount: +data.qty,
         }));
-        console.log(addQtyAmount, '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+        console.log(addQtyAmount, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         // setAddItem(addQtyAmount);
 
-        {addQtyAmount && setAllCartItems(addQtyAmount)};
+        {
+          addQtyAmount && setAllCartItems(addQtyAmount);
+        }
         total();
         totalAmount();
       })
@@ -182,7 +186,7 @@ function MyCart({
   useEffect(() => {
     getUserCarts(user_id);
   }, [accesskey]);
-  console.log(allCartItems," ADD ITEM IN MYCART <><><><><")
+  console.log(allCartItems, " ADD ITEM IN MYCART <><><><><");
 
   return (
     <>
@@ -192,7 +196,7 @@ function MyCart({
         type="button"
         onClick={() => {
           setShowModal(true);
-          getUserCarts( user_id);
+          getUserCarts(user_id);
         }}
       >
         <div
@@ -212,7 +216,7 @@ function MyCart({
               My Cart
             </div>
           )}
-          {price > 0 && allCartItems  ? (
+          {price > 0 && allCartItems ? (
             <div className="bg-lime text-white text-sm float-left">
               ₹ {price}
             </div>
@@ -252,8 +256,8 @@ function MyCart({
 
                 <div className=" bg-white overflow-y-scroll md:h-[700px] xs:h-[758px] sm:h[985px] 2xs:h-[500px]">
                   {!showForm && allCartItems.length && !reviewPage
-                    ? allCartItems && 
-                    allCartItems.map((item) => {
+                    ? allCartItems &&
+                      allCartItems.map((item) => {
                         return (
                           <>
                             <div class="mt-3 bg-white md:p-5 xs:p-4 2xs:p-2  ">
@@ -380,15 +384,11 @@ function MyCart({
                       user_id={user_id}
                       setUser_id={setUser_id}
                       setReviewPage={setReviewPage}
-                      setShowForm= {setShowForm}
+                      setShowForm={setShowForm}
                     />
                   ) : null}
 
-                  {reviewPage ?(
-                    <Review />
-                  ):null}
-
-
+                  {reviewPage ? <Review back={back} /> : null}
                 </div>
               </div>
             </div>

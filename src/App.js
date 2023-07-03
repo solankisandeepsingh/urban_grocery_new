@@ -22,6 +22,7 @@ import { About } from "./Component/About/About";
 import { API_TOKEN } from "./Component/Token/Token";
 import Loader from "./Component/Loader";
 import Review from "./Component/MyCart/Review/Review";
+import { OrderDetails } from "./Component/Order-Details/OrderDetails";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -199,6 +200,7 @@ function App() {
             element={<Address user_id={user_id} setUser_id={setUser_id} />}
           />
           <Route path="/faq" element={<Faq />} />
+          <Route path="/orderdetails" element={<OrderDetails />} />
           <Route
             path="/myorder"
             element={

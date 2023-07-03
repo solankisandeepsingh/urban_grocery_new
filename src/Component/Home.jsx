@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Category } from "./Category/Category";
 import CarouselComponent from "./Carousel/Carousel";
 import Search from "./Header/Search/Search";
 import { ProductCarousel } from "./Products/Product-Carousel/ProductCarousel";
-
+import { API_TOKEN } from "./Token/Token";
+import axios from "axios";
 
 function Home({
   data,
@@ -13,15 +14,41 @@ function Home({
   addItem,
   setAddItem,
   isOpen,
-  setIsOpen,
-  setUser_id,
   user_id,
-  loggedIn,
-  setLoggedIn
 }) {
+  const [HomeImg, setHomeImg] = useState([]);
+
+  console.log(HomeImg, "<<<<<<<<<<<<<<<<<<<<");
+
+  const handleHomeImg = () => {
+    let config = {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    };
+    let imgData = new FormData();
+    imgData.append("accesskey", "90336");
+    imgData.append("get-offer-images", "1");
+    axios
+      .post(
+        `https://grocery.intelliatech.in/api-firebase/offer-images.php`,
+        imgData,
+        config
+      )
+      .then((res) => {
+        console.log(res.data.data);
+        setHomeImg(res.data.data);
+      })
+      .catch((err) => console.log(err));
+  };
+  useEffect(() => {
+    handleHomeImg();
+  }, []);
+
+  const ImageFilter = HomeImg && HomeImg.findIndex((item) => item.id === 27);
+  const FilterImage = HomeImg && HomeImg.findIndex((item) => item.id === 37);
   return (
     <div className="relative mt-0.5">
-    
       <>
         <div className="md:invisible xs:visible">
           <Search
@@ -39,28 +66,62 @@ function Home({
               isOpen ? "opacity-75" : "opacity-100" + "  xs:px-3 sm:px-5 "
             }
           >
+            {/* <div className="mb-4">
+              {HomeImg &&
+                HomeImg.map((item) => {
+                  return (
+                    <img
+                      key={item.id === 37}
+                      src={item.image}
+                      alt={item.image}
+                      className="rounded-xl xs:h-[145px] md:w-full md:h-[270px] xs:w-full sm:h-[232px]"
+                    />
+                  );
+                })}
+            </div> */}
+
             <img
-              src="https://dao54xqhg9jfa.cloudfront.net/oms/d35e223b-0fae-e484-bac5-5f9680387dc4/original/BANNERS-02_(4).jpeg"
+              src="http://grocery.intelliatech.in/upload/offers/1640419150453.jpg"
               alt=""
               className=" rounded-xl xs:h-[145px] md:w-full md:h-[270px] xs:w-full sm:h-[232px]"
             />
 
+            {/* <div>
+              {ImageFilter && (
+                <img
+                  key={ImageFilter.id}
+                  src={ImageFilter.image}
+                  alt={ImageFilter.image}
+                  className="rounded-xl xs:h-[145px] md:w-full md:h-[270px] xs:w-full sm:h-[232px]"
+                />
+              )}
+            </div> */}
+
             <div className="flex md:flex-row justify-between xs:flex-col xs:mt-3">
               <div className="md:w-[453px] md:p-2 md:mt-4 xs:py-2">
                 <img
-                  src="https://www.whatech.com/images/featured/31344/grocery-ct-25.png"
+                  src="http://grocery.intelliatech.in/upload/offers/1643441045328.png"
                   alt=""
                   className="rounded-xl md:h-[228px]  "
                 />
+
+                {/* {ImageFilter && (
+                  <img
+                    key={ImageFilter.id}
+                    src={ImageFilter.image}
+                    alt={ImageFilter.image}
+                    className="rounded-xl xs:h-[145px] md:w-full md:h-[270px] xs:w-full sm:h-[232px]"
+                  />
+                )} */}
               </div>
               <div className="md:w-[453px] md:p-2 md:mt-4 xs:pt-3 sm:h-[400px]">
                 <CarouselComponent />
               </div>
-              <div className="md:w-[453px] md:p-2 xs:-mt-20 md:mt-4 xs:py-2">
+              <div className="md:w-[453px]  md:p-2 xs:-mt-20 md:mt-4 xs:py-2">
                 <img
-                  src="https://m.media-amazon.com/images/S/aplus-media/sota/14f6ba65-28fe-4257-be60-e960c7f1346d.__CR0,0,970,600_PT0_SX970_V1___.png"
+                  src="http://grocery.intelliatech.in/upload/offers/1640419180838.jpg"
                   alt=""
-                  className="rounded-xl"
+                  className="rounded-xl md:h-[230px]"
                 />
               </div>
             </div>

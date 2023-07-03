@@ -47,6 +47,7 @@ module.exports = {
       customGreen: 'rgb(12, 166, 31)',
       customBlack: 'rgb(28, 28, 28)',
       lightGrays: 'rgb(41, 61, 41)',
+      lightSky : '#0072A0'
     },
     borderColor: {
       default: "#CDCDCE",
