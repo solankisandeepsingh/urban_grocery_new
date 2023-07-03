@@ -25,6 +25,7 @@ function CartQuantity({ item }) {
     const finditem = allCartItems.find((data) => data.product_id == item.id);
     const newQty =
       +finditem.amount !== 0 ? +finditem.amount - 1 : finditem.amount;
+      // console.log();
     bodyFormData.append("qty", newQty);
 
     axios

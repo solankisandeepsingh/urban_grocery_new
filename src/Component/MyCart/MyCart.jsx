@@ -33,7 +33,7 @@ function MyCart({
   const [reviewPage, setReviewPage] = useState(false);
   const [newUserLog, setNewUserLog] = useState(false);
   const [totalItem, setTotalItem] = useState(0);
-  const { allCartItems, setAllCartItems } = useCartStore();
+  const { allCartItems, setAllCartItems, setCartTotal } = useCartStore();
   const {
     userInfo: { user_id },
   } = useUserStore();
@@ -60,6 +60,7 @@ function MyCart({
         }
       });
     setPrice(price);
+    setCartTotal(price)
   };
 
   const totalAmount = () => {
@@ -104,6 +105,7 @@ function MyCart({
         setAllCartItems(newArr);
         let newPrice = price - item.amount * parseFloat(item.price);
         setPrice(newPrice);
+        setCartTotal(newPrice)
         setisLoading(false);
       })
       .catch((err) => {
@@ -388,7 +390,7 @@ function MyCart({
                     />
                   ) : null}
 
-                  {reviewPage ? <Review back={back} /> : null}
+                  {reviewPage ? <Review setShowModal={setShowModal} back={back} setShowForm={setShowForm} setReviewPage= {setReviewPage} price={price} totalItem={totalItem} /> : null}
                 </div>
               </div>
             </div>
