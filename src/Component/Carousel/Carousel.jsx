@@ -1,10 +1,46 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { useImgStore } from "../zustand/useImgStore";
+
+import { API_TOKEN } from "../Token/Token";
+import axios from "axios";
+import { useSliderStore } from "../zustand/useSliderStore";
 
 function CarouselComponent() {
-  const {allImg} = useImgStore();
+  const { allCarouselImg, setAllCarouselImg } = useSliderStore();
+  console.log(
+    allCarouselImg,
+    setAllCarouselImg,
+    "allllllllllll image slider will show"
+  );
+
+  const handleSliderImg = () => {
+    let config = {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    };
+    let sliderData = new FormData();
+    sliderData.append("accesskey", "90336");
+    sliderData.append("get-slider-images", "1");
+
+    axios
+      .post(
+        `https://grocery.intelliatech.in/api-firebase/slider-images.php`,
+        sliderData,
+        config
+      )
+      .then((res) => {
+        let newArr = res.data.data;
+        setAllCarouselImg(newArr);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  useEffect(() => {
+    handleSliderImg();
+  }, []);
 
   return (
     <>
@@ -15,27 +51,13 @@ function CarouselComponent() {
           showThumbs={false}
           className="rounded-xl"
         >
-          <div className="h-[300px] rounded-xl">
-            <img
-              alt=""
-              src="https://cdn.metro-online.pk/dashboard/images/754617227.jpg"
-              className="rounded-xl"
-            />
-          </div>
-          <div className="h-[300px] rounded-xl">
-            <img
-              alt=""
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3A0GtgiOfH5GMKk9vD2M5adrPb3zRHbC1noVz0HHyqLQox2QJ3XTOA7qdgzzHGNyuZv0&usqp=CAU"
-              className="rounded-xl"
-            />
-          </div>
-          <div className="h-[300px] rounded-xl">
-            <img
-              alt=""
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLAPX9jmc2P2yeOifRMTOZ3ll1Lpvd9LH7J66t6AUaaf49mvk-0r3TjXDvhaSGPio9BL0&usqp=CAU"
-              className="rounded-xl"
-            />
-          </div>
+          {allCarouselImg.map((item) => {
+            return (
+              <div className="h-[300px] rounded-xl">
+                <img alt="" src={item.image} className="rounded-xl h-[270px]" />
+              </div>
+            );
+          })}
         </Carousel>
       </div>
     </>

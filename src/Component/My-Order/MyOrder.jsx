@@ -1,55 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { FaTrash } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-import { QtyAmount } from "../Button/QtyAmount";
 import axios from "axios";
 import { API_TOKEN } from "../Token/Token";
 import { Aside } from "../Aside/Aside";
 import { OrderDetails } from "../Order-Details/OrderDetails";
+import { GiScooter } from "react-icons/gi";
+import { BsChevronRight } from "react-icons/bs";
+import { BsFillDoorOpenFill } from "react-icons/bs";
 
-export const MyOrder = ({
-  setAmount,
-  setAddItem,
-  addItem,
-  user_id,
-  setUser_id,
-}) => {
+export const MyOrder = ({ addItem, user_id }) => {
   const [price, setPrice] = useState(0);
   const [detailsOrder, setDetailsOrder] = useState(false);
 
-  const navigate = useNavigate();
-
-  // const removeItemHandler = (item) => {
-  //   let config = {
-  //     headers: {
-  //       Authorization: `Bearer ${API_TOKEN}`,
-  //     },
-  //   };
-
-  //   var bodyFormdata = new FormData();
-  //   bodyFormdata.append("accesskey", "90336");
-  //   bodyFormdata.append("remove_from_cart", "1");
-  //   bodyFormdata.append("user_id", "14");
-  //   bodyFormdata.append("product_variant_id", `${item.product_variant_id}`);
-  //   axios
-  //     .post(
-  //       "https://grocery.intelliatech.in/api-firebase/cart.php",
-  //       bodyFormdata,
-  //       config
-  //     )
-  //     .then((res) => {
-  //       setAddItem((cart) => cart.filter((data) => data.id !== item.id));
-  //       let newPrice = price - item.amount * parseFloat(item.price);
-  //       setPrice(newPrice);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
-  const handlePayment = () => {
-    navigate("/payment");
-  };
+  const [orderData, setOrderData] = useState("");
+  const [orderId, setOrderId] = useState("");
 
   const handlemyOrder = () => {
     let config = {
@@ -68,7 +31,8 @@ export const MyOrder = ({
         config
       )
       .then((res) => {
-        setAddItem(res.data.data);
+        console.log(res.data.data, "myorder data will displayyyyyyyyyyy");
+        setOrderData(res.data.data);
       })
       .catch((err) => console.log(err));
   };
@@ -86,10 +50,10 @@ export const MyOrder = ({
 
   useEffect(() => {
     total();
-    // setIsOpen(false)
   }, [total]);
 
-  const handleOrderDetails = () => {
+  const handleOrderDetails = (item) => {
+    setOrderId(item);
     setDetailsOrder((prev) => !prev);
     // setDetailsOrder(true)
   };
@@ -97,80 +61,80 @@ export const MyOrder = ({
   return (
     <>
       <div className="md:flex md:flex-row">
-        <div className="xs:w-72 xs:py-20 xs:px-1 md:h-full md:w-1/4 md:px-12 md:mt-10">
+        <div className="xs:w-72 xs:py-20 xs:px-1 md:h-full md:w-[25%] md:px-12 md:mt-10">
           <Aside />
         </div>
 
         {!detailsOrder ? (
-          <div className="md:w-3/4 ml-16 xs:w-full md:mt-28 ">
-            <div className="bg-white border-light_gray  ">
-              {addItem &&
-                addItem.map((item) => {
+          <div className="md:w-[60%] ml-16 xs:w-full md:mt-28">
+            <div className=" border border-light_gray p-4">
+              {orderData &&
+                orderData.map((item) => {
                   return (
-                    <>
-                      <div className="flex flex-col">
-                        {item.items &&
-                          item.items.map((data) => {
-                            return (
-                              <>
-                                <div className="flex justify-between ">
-                                  <div className="flex gap-8 mt-[20px]">
-                                    <div className="bg-white xs:w-20 xs:h-20 md:h-24 md:w-24 sm:h-48 sm:w-48 flex-shrink-0 overflow-hidden rounded-md">
-                                      <img
-                                        src={data.image}
-                                        alt=""
-                                        className="md:h-full md:w-full sm:w-44 sm:h-36 xs:w-20 xs:h-20 object-cover object-center bg-white"
-                                      />
-                                    </div>
-                                    <div className="">
-                                      <div>
-                                        <p className="text-gryColour">
-                                          {" "}
-                                          {data.product_name}
-                                        </p>
-                                      </div>
-                                      <div>
-                                        <p className="text-gryColour">
-                                          Qty : {data.quantity}
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </div>
+                    <div className="bg">
+                      <div className="flex ml-3 justify-between text-center">
+                        <div>
+                          <p className="font-bold">Order_Id : {item.id}</p>
+                        </div>
+                        <div>
+                          <p className="text-lime font-bold">
+                            Total : ₹{item.total}
+                          </p>
+                        </div>
+                      </div>
 
-                                  <div className="mt-10">
-                                    <p className="text-center text-lime">
-                                      ₹{data.price}
-                                    </p>
-                                  </div>
-                                </div>
-                              </>
-                            );
-                          })}
+                      <div className="flex justify-between text-center mt-3">
+                        <div>
+                          <p className=" ml-3 text-gryColour">
+                            {item.items.length} Items
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-gryColour">
+                            Place-Order : {item.delivery_time}
+                          </p>
+                        </div>
+                      </div>
 
-                        <div className="mt-6 ml-3">
-                          <p> Address : {item.address}</p>
+                      <div className="flex justify-between mt-3">
+                        <div className="flex text-gryColour text-sm">
+                          {item.items &&
+                            item.items.map((data) => (
+                              <p className="ml-3 truncate ... text-center">
+                                {data.product_name}
+                              </p>
+                            ))}
                         </div>
 
-                        <div className="mt-2 ml-3">
-                          <p>Place-Order : {item.delivery_time}</p>
+                        <div
+                          className=" cursor-pointer"
+                          onClick={() => handleOrderDetails(item.id)}
+                        >
+                          <BsChevronRight />
                         </div>
+                      </div>
 
-                        <div className="mt-2">
-                          <button
-                            className="bg-lightSky text-white hover:opacity-90 sm:w-full md:w-[10%] mx-4 sm:text-2xl md:text-lg px-4 py-1.5 rounded-lg"
-                            onClick={handleOrderDetails}
-                          >
-                            Recived
+                      <div className="flex gap-2 mt-2 justify-end ">
+                        <div>
+                          <GiScooter className="text-[20px] mt-1" />
+                        </div>
+                        <div>
+                          <button className="shadow-lg text-[12px] border border-light_gray p-1 rounded-lg">
+                            Door Step Delivery
                           </button>
                         </div>
                       </div>
-                    </>
+                    </div>
                   );
                 })}
             </div>
           </div>
         ) : (
-          <OrderDetails setDetailsOrder={setDetailsOrder} addItem={addItem} />
+          <OrderDetails
+            setDetailsOrder={setDetailsOrder}
+            orderId={orderId}
+            orderData={orderData}
+          />
         )}
       </div>
     </>
