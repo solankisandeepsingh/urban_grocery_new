@@ -4,6 +4,7 @@ import CarouselComponent from "./Carousel/Carousel";
 import Search from "./Header/Search/Search";
 import { ProductCarousel } from "./Products/Product-Carousel/ProductCarousel";
 import { API_TOKEN } from "./Token/Token";
+import { useImgStore } from "./zustand/useImgStore";
 import axios from "axios";
 
 function Home({
@@ -17,8 +18,8 @@ function Home({
   user_id,
 }) {
   const [HomeImg, setHomeImg] = useState([]);
-
-  console.log(HomeImg, "<<<<<<<<<<<<<<<<<<<<");
+  const {allImg, setAllImg} = useImgStore();
+  console.log(allImg, setAllImg, "IMG STORE FROM ZUSTAND")
 
   const handleHomeImg = () => {
     let config = {
@@ -36,8 +37,14 @@ function Home({
         config
       )
       .then((res) => {
-        console.log(res.data.data);
+        let imgObj = {};
+        res.data.data.forEach((item)=>{
+          // console.log(item.id, item.image, "EACH OBJ PROPERTY FROM IMGA API");
+          imgObj[item.id] = item.image; 
+        })
+        setAllImg(imgObj);
         setHomeImg(res.data.data);
+
       })
       .catch((err) => console.log(err));
   };
@@ -45,8 +52,10 @@ function Home({
     handleHomeImg();
   }, []);
 
-  const ImageFilter = HomeImg && HomeImg.findIndex((item) => item.id === 27);
-  const FilterImage = HomeImg && HomeImg.findIndex((item) => item.id === 37);
+  const ImageFilter = HomeImg && HomeImg.findIndex((item) => item.id === '27');
+  console.log(ImageFilter, "HOME IMAGE TOP RED OFFER");
+  // console.log(HomeImg)
+  const FilterImage = HomeImg && HomeImg.findIndex((item) => item.id === '37');
   return (
     <div className="relative mt-0.5">
       <>
@@ -66,25 +75,20 @@ function Home({
               isOpen ? "opacity-75" : "opacity-100" + "  xs:px-3 sm:px-5 "
             }
           >
-            {/* <div className="mb-4">
-              {HomeImg &&
-                HomeImg.map((item) => {
-                  return (
+            <div className="mb-4">
                     <img
-                      key={item.id === 37}
-                      src={item.image}
-                      alt={item.image}
+                      // key={item.id === 37}
+                      src={allImg['27']}
+                      alt={'ALT'}
                       className="rounded-xl xs:h-[145px] md:w-full md:h-[270px] xs:w-full sm:h-[232px]"
-                    />
-                  );
-                })}
-            </div> */}
+                    /> 
+            </div>
 
-            <img
+            {/* <img
               src="http://grocery.intelliatech.in/upload/offers/1640419150453.jpg"
               alt=""
               className=" rounded-xl xs:h-[145px] md:w-full md:h-[270px] xs:w-full sm:h-[232px]"
-            />
+            /> */}
 
             {/* <div>
               {ImageFilter && (
@@ -99,11 +103,18 @@ function Home({
 
             <div className="flex md:flex-row justify-between xs:flex-col xs:mt-3">
               <div className="md:w-[453px] md:p-2 md:mt-4 xs:py-2">
-                <img
-                  src="http://grocery.intelliatech.in/upload/offers/1643441045328.png"
-                  alt=""
-                  className="rounded-xl md:h-[228px]  "
-                />
+                {HomeImg &&
+                  HomeImg.map((item) => {
+                    return (
+                      item.id === '37' ? 
+                      <img
+                        // key={item.id === 37}
+                        src={item.image}
+                        alt={item.image}
+                        className="rounded-xl xs:h-[145px] md:w-full md:h-[270px] xs:w-full sm:h-[232px]"
+                      /> : null
+                    ) ;
+                  })}
 
                 {/* {ImageFilter && (
                   <img
@@ -118,11 +129,29 @@ function Home({
                 <CarouselComponent />
               </div>
               <div className="md:w-[453px]  md:p-2 xs:-mt-20 md:mt-4 xs:py-2">
-                <img
-                  src="http://grocery.intelliatech.in/upload/offers/1640419180838.jpg"
-                  alt=""
-                  className="rounded-xl md:h-[230px]"
-                />
+              <div className="md:w-[453px] md:p-2 md:mt-4 xs:py-2">
+                {HomeImg &&
+                  HomeImg.map((item) => {
+                    return (
+                      item.id === '30' ? 
+                      <img
+                        // key={item.id === 37}
+                        src={item.image}
+                        alt={item.image}
+                        className="rounded-xl xs:h-[145px] md:w-full md:h-[270px] xs:w-full sm:h-[232px]"
+                      /> : null
+                    ) ;
+                  })}
+
+                {/* {ImageFilter && (
+                  <img
+                    key={ImageFilter.id}
+                    src={ImageFilter.image}
+                    alt={ImageFilter.image}
+                    className="rounded-xl xs:h-[145px] md:w-full md:h-[270px] xs:w-full sm:h-[232px]"
+                  />
+                )} */}
+              </div>
               </div>
             </div>
             <Category
