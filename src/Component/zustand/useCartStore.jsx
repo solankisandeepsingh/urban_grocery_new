@@ -15,15 +15,17 @@ export const useCartStore = create(
     } ,
     bearer: `${API_TOKEN}`
     ,
-
-    bodyFormData : () => {
+    cartTotal: 0
+    ,bodyFormData : () => {
       let bodyFormdata = new FormData();
       bodyFormdata.append("accesskey", "90336");
       bodyFormdata.append("remove_from_cart", "1");
       bodyFormdata.append("user_id", useUserStore.getState().userInfo.user_id);
       return bodyFormdata
     },
-
+    setCartTotal: (data) => {
+      set(() => ({ cartTotal: data }));
+    },
     setAllCartItems: (data) => {
       set(() => ({ allCartItems: data }));
     },

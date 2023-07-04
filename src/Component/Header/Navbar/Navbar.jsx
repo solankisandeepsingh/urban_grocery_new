@@ -29,7 +29,7 @@ export const Navbar = ({
   const userButtonClicks = useRef(0);
   const [isOpen, setIsOpen] = useState(false);
 
-  const {userInfo : {user_id, name}} = useUserStore();
+  const {userInfo : {user_id, name}, setUserInfo} = useUserStore();
   useEffect(() => {
     let handler = (e) => {
       if (menuRef.current) {
@@ -77,8 +77,8 @@ export const Navbar = ({
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    dispatchLogin({ type: "LOGOUT" });
+    setUserInfo({user_id : 14,
+      name: "Login/Signup"});
     setLoggedIn(false);
     setIsOpen(false);
     navigate("/");

@@ -6,8 +6,9 @@ import { useUserStore } from "../zustand/useUserStore";
 
 function CartQuantity({ item }) {
   const { allCartItems, setAllCartItems } = useCartStore();
-  const {userInfo :{user_id} } = useUserStore();
-  
+  const {
+    userInfo: { user_id },
+  } = useUserStore();
 
   const quantityDecrease = () => {
     const config = {
@@ -25,6 +26,7 @@ function CartQuantity({ item }) {
     const finditem = allCartItems.find((data) => data.product_id == item.id);
     const newQty =
       +finditem.amount !== 0 ? +finditem.amount - 1 : finditem.amount;
+    // console.log();
     bodyFormData.append("qty", newQty);
 
     axios
@@ -34,31 +36,34 @@ function CartQuantity({ item }) {
         config
       )
       .then(() => {
-        console.log(allCartItems, '-1 CQ >><><><><><><><><><><');
+        console.log(allCartItems, "-1 CQ >><><><><><><><><><><");
 
-        if (allCartItems.some((product) => {
-          console.log(product);
-         return product.amount === 1})){
-
-
+        if (
+          allCartItems.some((product) => {
+            console.log(product);
+            return product.amount === 1;
+          })
+        ) {
           let newArr = allCartItems.filter(
             (pro) => pro.product_id !== item.id || pro.amount !== 1
-          )
-          console.log(newArr, "Cart Quant -1 LAST ITEM ><>>>>>>>><><><<><><><>")
-            setAllCartItems(newArr)
-        }
-
-
-      else if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
-          let newArr =allCartItems.map((data) =>
-              data.product_id === item.id && data.amount > 1
-                ? {
-                    ...data,
-                    amount: data.amount - 1,
-                  }
-                : data
-            )
-          console.log(newArr, "Cart Quant MORE THAN 1 ><>>>>>>>><><><<><><><>")
+          );
+          console.log(
+            newArr,
+            "Cart Quant -1 LAST ITEM ><>>>>>>>><><><<><><><>"
+          );
+          setAllCartItems(newArr);
+        } else if (
+          allCartItems.some((cartItem) => cartItem.product_id === item.id)
+        ) {
+          let newArr = allCartItems.map((data) =>
+            data.product_id === item.id && data.amount > 1
+              ? {
+                  ...data,
+                  amount: data.amount - 1,
+                }
+              : data
+          );
+          console.log(newArr, "Cart Quant MORE THAN 1 ><>>>>>>>><><><<><><><>");
 
           setAllCartItems(newArr);
 
@@ -95,20 +100,19 @@ function CartQuantity({ item }) {
       )
       .then((res) => {
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
-          
           let newArr = allCartItems.map((data) =>
-              data.product_id === item.id
-                ? { ...data, amount: +data.amount + 1 }
-                : data
-                );
-        console.log(newArr)
+            data.product_id === item.id
+              ? { ...data, amount: +data.amount + 1 }
+              : data
+          );
+          console.log(newArr);
 
-          setAllCartItems(newArr)
+          setAllCartItems(newArr);
 
           return;
         }
-        let newArr = [...allCartItems, {...item , amount : 1}]
-        console.log(newArr)
+        let newArr = [...allCartItems, { ...item, amount: 1 }];
+        console.log(newArr);
         // setAllCartItems((cart) => [...cart, { ...item, amount: 1 }]);
         setAllCartItems(newArr);
       })

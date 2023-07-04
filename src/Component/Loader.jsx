@@ -9,10 +9,10 @@ console.log(isLoading)
 
   return (
     <div
-        id= "loader"
-        className='fixed inset-0 bg-opacity-60 bg-[gray] flex justify-center items-center z-50'
+        // id= "loader"
+        className='fixed inset-0 bg-opacity-40 bg-[gray] flex justify-center items-center z-50'
         >
-            <div className='w-10 h-10 border-[3.5px] bg-[gray]  border-b-[pink] rounded-full animate-spin'>
+            <div className='w-10  h-10 border-[3.5px]  bg-transparent border-[white]  border-b-[Green]  border-t-[Green] rounded-full animate-spin'>
             </div>
     </div>
   )

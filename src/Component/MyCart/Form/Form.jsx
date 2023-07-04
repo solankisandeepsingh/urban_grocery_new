@@ -5,19 +5,22 @@ import { FaHome } from "react-icons/fa";
 import { HiOfficeBuilding } from "react-icons/hi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AddressForm } from "../../MyAddress/AddressForm";
+import { useUserStore } from "../../zustand/useUserStore";
 
 function Form({ setShowModal, setNavbarOpen, user_id,setReviewPage, setShowForm}) {
+
   console.log("setReviewPage>>>>>>>>>>>>>>>>>>>>",setReviewPage)
-  const [addList, setAddlist] = useState([]);
+  // const [addList, setAddlist] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
   const [formOpen, setFormOpen] = useState(false);
   const navigate = useNavigate();
-
+  const {deliveryAddress, setDeliveryAddress, addList, setAddList} = useUserStore();
+  console.log(setAddList);
   const handleOptionChange = (event) => {
     console.log(event.target.value);
-    setSelectedOption(event.target.value);
+    setDeliveryAddress(event.target.value);
   };
-
+  
   const config = {
     headers: {
       Authorization: `Bearer ${API_TOKEN}`,
@@ -36,7 +39,7 @@ function Form({ setShowModal, setNavbarOpen, user_id,setReviewPage, setShowForm}
         data,
         config
       )
-      .then((res) => setAddlist(res.data.data))
+      .then((res) => setAddList(res.data.data))
       .catch((err) => console.log(err));
   };
 
@@ -70,7 +73,7 @@ function Form({ setShowModal, setNavbarOpen, user_id,setReviewPage, setShowForm}
                         type="radio"
                         name="options"
                         value={item.id}
-                        checked={selectedOption === item.id}
+                        checked={deliveryAddress === item.id}
                         onChange={handleOptionChange}
                       />
                     </div>
@@ -108,7 +111,7 @@ function Form({ setShowModal, setNavbarOpen, user_id,setReviewPage, setShowForm}
         </>
       )}
 
-      {selectedOption ? (
+      {deliveryAddress ? (
         // <NavLink to={`/payment`}>
           <>
           <button

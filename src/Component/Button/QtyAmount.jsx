@@ -39,17 +39,16 @@ export const QtyAmount = ({ item }) => {
           allCartItems.some((cartItem) => cartItem.product_id === item.product_id)
         ) {
           if (newQty > 0) {
-            setAllCartItems((cart) =>
-              cart.map((data) =>
-                data.product_id === item.product_id
-                  ? { ...data, amount: newQty }
-                  : data
-              )
-            );
+
+            let newArr = allCartItems.map((data) =>
+            data.product_id === item.product_id
+              ? { ...data, amount: newQty }
+              : data
+          )
+            setAllCartItems(newArr);
           } else {
-            setAllCartItems((cart) =>
-              cart.filter((data) => data.product_id !== item.product_id)
-            );
+            let newArr = allCartItems.filter((data) => data.product_id !== item.product_id)
+            setAllCartItems(newArr);
           }
         }
       })
@@ -69,7 +68,7 @@ export const QtyAmount = ({ item }) => {
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
     bodyFormData.append("user_id", "14");
-    bodyFormData.append("product_id", item.id);
+    // bodyFormData.append("product_id", item.id);
     bodyFormData.append("product_id", item.product_id);
     bodyFormData.append("product_variant_id", item.product_variant_id);
     const finditem = allCartItems.find((data) => {
@@ -88,16 +87,17 @@ export const QtyAmount = ({ item }) => {
       .then((res) => {
         console.log(">>>>>>>>>>>>>>resonse", res);
         if (allCartItems.some((cartItem) => cartItem.id === item.id)) {
-          setAllCartItems((cart) =>
-            cart.map((data) =>
-              data.id === item.id ? { ...data, amount: +data.amount + 1 } : data
-            )
-          );
+
+          let newArr = allCartItems.map((data) =>
+          data.id === item.id ? { ...data, amount: +data.amount + 1 } : data
+        )
+          setAllCartItems(newArr);
 
           return;
         }
-
-        setAllCartItems((cart) => [...cart, { ...item, amount: 1 }]);
+        let newArr = [...allCartItems, {...item, amount: 1}]
+        
+        setAllCartItems(newArr);
       })
       .catch((error) => {
         console.log(error);
