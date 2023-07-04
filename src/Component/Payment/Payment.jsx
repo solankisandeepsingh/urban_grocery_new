@@ -7,7 +7,7 @@ import { Aside } from "../Aside/Aside";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 
-function Payment({ isOpen, setIsOpen }) {
+function Payment({ isOpen, setIsOpen }) { 
   const { clearCartApi, setAllCartItems } = useCartStore();
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [chosenPayment, setChosenPayment] = useState("");
@@ -76,8 +76,8 @@ function Payment({ isOpen, setIsOpen }) {
     cashOnData.append("user_id", "46");
     // cashOnData.append("mobile", `${userInfo.mobile}`);
     cashOnData.append("mobile", "+917042719917");
-    cashOnData.append("product_variant_id", ["850","854","877"]);
-    cashOnData.append("quantity", ["1","2","1"]);
+    cashOnData.append("product_variant_id", JSON.stringify(varArr));
+    cashOnData.append("quantity", JSON.stringify(qtyArr));
     cashOnData.append("delivery_charge", "0");
     // cashOnData.append("total", `${cartTotal}`);
     cashOnData.append("total", "790");
