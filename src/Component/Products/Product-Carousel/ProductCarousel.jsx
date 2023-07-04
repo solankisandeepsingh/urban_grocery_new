@@ -9,15 +9,15 @@ import { useCartStore } from "../../zustand/useCartStore";
 import { useUserStore } from "../../zustand/useUserStore";
 import { useLoaderState } from "../../zustand/useLoaderState";
 
-
-export const ProductCarousel = ({  }) => {
-  const {allCartItems, setAllCartItems} = useCartStore();
+export const ProductCarousel = ({}) => {
+  const { allCartItems, setAllCartItems } = useCartStore();
   console.log(allCartItems, "After Destructure");
   const [showAllProduct, setShowAllProducts] = useState([]);
   const navigate = useNavigate();
-  const {userInfo :{user_id} } = useUserStore();
-  const {setisLoading} = useLoaderState();
-
+  const {
+    userInfo: { user_id },
+  } = useUserStore();
+  const { setisLoading } = useLoaderState();
 
   const productCarousels = () => {
     let config = {
@@ -29,7 +29,7 @@ export const ProductCarousel = ({  }) => {
     bodyFormdata.append("accesskey", "90336");
     bodyFormdata.append("get_all_products", "1");
     bodyFormdata.append("limit", "37");
-    setisLoading(true)
+    setisLoading(true);
     axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/get-all-products.php",
@@ -38,10 +38,11 @@ export const ProductCarousel = ({  }) => {
       )
       .then((res) => {
         setShowAllProducts(res.data.data);
-        setisLoading(false)
+        setisLoading(false);
       })
-      .catch((err) => {console.log(err)
-        setisLoading(false)
+      .catch((err) => {
+        console.log(err);
+        setisLoading(false);
       });
   };
 
@@ -87,26 +88,28 @@ export const ProductCarousel = ({  }) => {
     bodyFormData.append("product_variant_id", `${item.id}`);
 
     bodyFormData.append("qty", 1);
+    setisLoading(true);
 
     axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
         bodyFormData,
         config
-      ).then(console.log(allCartItems, '[before some method]'))
+      )
+      .then(console.log(allCartItems, "[before some method]"))
       .then((res) => {
+        // setisLoading(false);
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
-          
-         let newArr = allCartItems.map((data) =>
-          data.product_id === item.id
-            ? {
-                ...data,
-                amount: data.amount + 1,
-              }
-            : data
-        )
-              console.log(newArr);
-        setAllCartItems(newArr);
+          let newArr = allCartItems.map((data) =>
+            data.product_id === item.id
+              ? {
+                  ...data,
+                  amount: data.amount + 1,
+                }
+              : data
+          );
+          console.log(newArr);
+          setAllCartItems(newArr);
           // setAllCartItems((cart) =>
           //   cart.map((data) =>
           //     data.product_id === item.id
@@ -132,13 +135,15 @@ export const ProductCarousel = ({  }) => {
           user_id: user_id,
         };
 
-        let newArr = [...allCartItems, {...item1 , amount : 1}]
+        let newArr = [...allCartItems, { ...item1, amount: 1 }];
         console.log(newArr);
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
         setAllCartItems(newArr);
+        setisLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setisLoading(false);
       });
   };
 

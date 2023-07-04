@@ -8,6 +8,7 @@ import { useImgStore } from "./zustand/useImgStore";
 import axios from "axios";
 import { FoodDelivery } from "../Food Delivery Image/FoodDelivery";
 import { LocallySourced } from "../Food Delivery Image/LocallySourced";
+import { useLoaderState } from "./zustand/useLoaderState";
 
 function Home({
   data,
@@ -21,6 +22,7 @@ function Home({
 }) {
   const { allImg, setAllImg } = useImgStore();
   console.log(allImg, setAllImg, "IMG STORE FROM ZUSTAND");
+  const { setisLoading } = useLoaderState();
 
   const handleHomeImg = () => {
     let config = {
@@ -31,6 +33,7 @@ function Home({
     let imgData = new FormData();
     imgData.append("accesskey", "90336");
     imgData.append("get-offer-images", "1");
+    setisLoading(true);
     axios
       .post(
         `https://grocery.intelliatech.in/api-firebase/offer-images.php`,
@@ -39,13 +42,17 @@ function Home({
       )
       .then((res) => {
         let imgObj = {};
-        res.data.data.forEach((item) => {
+        res?.data?.data?.forEach((item) => {
           imgObj[item.id] = item.image;
         });
         setAllImg(imgObj);
+        setisLoading(false);
         // setHomeImg(res.data.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setisLoading(false);
+      });
   };
   useEffect(() => {
     handleHomeImg();
@@ -91,7 +98,11 @@ function Home({
               </div>
               <div className="md:w-[453px]  md:p-2 xs:-mt-20 md:mt-4 xs:py-2">
                 <div className="md:w-[453px] md:p-2 md:mt-4 xs:py-2">
-                  <img src={allImg["30"]} alt="" className="rounded-xl xs:h-[145px] md:w-full md:h-[270px] xs:w-full sm:h-[232px]" />
+                  <img
+                    src={allImg["30"]}
+                    alt=""
+                    className="rounded-xl xs:h-[145px] md:w-full md:h-[270px] xs:w-full sm:h-[232px]"
+                  />
                 </div>
               </div>
             </div>
@@ -100,16 +111,16 @@ function Home({
               productDetails={productDetails}
               user_id={user_id}
             />
-           
-              <FoodDelivery/>
-          
+
+            <FoodDelivery />
+
             <ProductCarousel
               addItem={addItem}
               setAddItem={setAddItem}
               user_id={user_id}
             />
 
-            <LocallySourced/>
+            <LocallySourced />
           </div>
         </div>
       </>

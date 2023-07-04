@@ -3,9 +3,11 @@ import React from "react";
 import { API_TOKEN } from "../Token/Token";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
+import { useLoaderState } from "../zustand/useLoaderState";
 
 function CartQuantity({ item }) {
   const { allCartItems, setAllCartItems } = useCartStore();
+  const { setisLoading } = useLoaderState();
   const {
     userInfo: { user_id },
   } = useUserStore();
@@ -28,6 +30,7 @@ function CartQuantity({ item }) {
       +finditem.amount !== 0 ? +finditem.amount - 1 : finditem.amount;
     // console.log();
     bodyFormData.append("qty", newQty);
+    setisLoading(true);
 
     axios
       .post(
@@ -66,12 +69,14 @@ function CartQuantity({ item }) {
           console.log(newArr, "Cart Quant MORE THAN 1 ><>>>>>>>><><><<><><><>");
 
           setAllCartItems(newArr);
+          setisLoading(false);
 
           return;
         }
       })
       .catch((error) => {
         console.log(error);
+        setisLoading(false);
       });
   };
 
@@ -91,6 +96,7 @@ function CartQuantity({ item }) {
 
     const newQty = (+finditem.amount || 0) + 1;
     bodyFormData.append("qty", newQty);
+    setisLoading(true);
 
     axios
       .post(
@@ -108,6 +114,7 @@ function CartQuantity({ item }) {
           console.log(newArr);
 
           setAllCartItems(newArr);
+          setisLoading(false);
 
           return;
         }
@@ -118,6 +125,7 @@ function CartQuantity({ item }) {
       })
       .catch((error) => {
         console.log(error);
+        setisLoading(false);
       });
   };
 

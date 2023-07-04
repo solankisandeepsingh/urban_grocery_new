@@ -4,7 +4,7 @@ import CartQuantity from "../../Button/CartQuantity";
 import axios from "axios";
 import { API_TOKEN } from "../../Token/Token";
 
-export const SubCategory = ({ setAddItem, addItem}) => {
+export const SubCategory = ({ setAddItem, addItem }) => {
   const [allproducts, setAllProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -30,7 +30,7 @@ export const SubCategory = ({ setAddItem, addItem}) => {
         )
         .then((res) => {
           console.log(res.data.data);
-          setAllProducts(res.data.data);
+          setAllProducts(res?.data?.data);
           setIsLoading(false);
         })
         .catch((err) => {
@@ -147,13 +147,7 @@ export const SubCategory = ({ setAddItem, addItem}) => {
           product_id: item.product_id,
           product_variant_id: item.id,
           qty: 1,
-          save_for_later: "0",
-          serve_for: "Available",
-          slug: "butterscotch-flavorsome-cake",
-          stock: "29",
 
-          type: "packet",
-          unit: "gm",
           user_id: "14",
         };
         setAddItem((cart) => [...cart, { ...item1, amount: 1 }]);
@@ -165,7 +159,6 @@ export const SubCategory = ({ setAddItem, addItem}) => {
 
   return (
     <>
-      
       <div>
         <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-6 sm:grid-cols-3 flex flex-wrap md:ml-5 ">
           {isLoading ? (

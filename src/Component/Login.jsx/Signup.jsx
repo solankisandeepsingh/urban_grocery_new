@@ -13,6 +13,7 @@ import axios from "axios";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useLoaderState } from "../zustand/useLoaderState";
 
 export const Signup = ({ setLoginFormModals }) => {
   const [userRegistraion, setUserRegistration] = useState({
@@ -23,6 +24,7 @@ export const Signup = ({ setLoginFormModals }) => {
   const [SignUpPhone, setSignUpPhone] = useState([]);
   const [closeSignup, setCloseSignUp] = useState(true);
   const navigate = useNavigate();
+  const { setisLoading} = useLoaderState();
 
   const handleUserSignUp = (e) => {
     let name = e.target.name;
@@ -66,6 +68,7 @@ export const Signup = ({ setLoginFormModals }) => {
     formData.append("referral_code", "QCZYBEXHK5");
     formData.append("latitude", "44.968046");
     formData.append("longitude", "-f");
+    setisLoading(true);
 
     axios
       .post(
@@ -77,10 +80,12 @@ export const Signup = ({ setLoginFormModals }) => {
         console.log(res);
         setSignUpPhone([...SignUpPhone, userRegistraion]);
         toast.success("User successfully registered.");
+        setisLoading(false);
       })
       .catch((err) => {
         console.log(err);
         toast.error("An error occurred. Please try again.");
+        setisLoading(false);
       });
     setUserRegistration({
       name: "",

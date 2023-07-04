@@ -7,11 +7,13 @@ import Rating from "../../StarRating/Rating";
 import axios from "axios";
 import { API_TOKEN } from "../../Token/Token";
 import ProductBtn from "../../Button/ProductBtn";
+import { useLoaderState } from "../../zustand/useLoaderState";
 
 export const ProductDetails = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
   const [productPageData, setProductPage] = useState([]);
   const [wishlist, setWishlist] = useState(false);
   const { id } = useParams();
+  const {setisLoading} = useLoaderState();
 
   const productDetail = () => {
     let config = {
@@ -23,6 +25,7 @@ export const ProductDetails = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
     var bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("product_id", id);
+    setisLoading(true);
 
     axios
       .post(
@@ -32,10 +35,12 @@ export const ProductDetails = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
       )
       .then((res) => {
         // console.log(res)
-        setProductPage(res.data.data);
+        setProductPage(res?.data?.data);
+        setisLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setisLoading(false);
       });
   };
 
@@ -108,7 +113,7 @@ export const ProductDetails = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
     bodyFormData.append("qty", 1);
 
     // console.log("item", qtys);
-
+    setisLoading(true);
     axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
@@ -155,9 +160,11 @@ export const ProductDetails = ({ setAddItem, addItem, isOpen, setIsOpen }) => {
           user_id: "14",
         };
         setAddItem((cart) => [...cart, { ...item1, amount: 1 }]);
+        setisLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setisLoading(false);
       });
   };
   const filterData = productPageData.filter((data) => {

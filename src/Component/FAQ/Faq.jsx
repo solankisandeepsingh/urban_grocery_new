@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 import { Aside } from "../Aside/Aside";
+import { useLoaderState } from "../zustand/useLoaderState";
 
 export const Faq = () => {
   const [faqData, setFaqData] = useState("");
+  const { setisLoading } = useLoaderState();
   const handleFaq = () => {
     let config = {
       headers: {
@@ -14,6 +16,7 @@ export const Faq = () => {
     let FaqData = new FormData();
     FaqData.append("accesskey", "90336");
     FaqData.append("get_faqs", "1");
+    setisLoading(true);
 
     axios
       .post(
@@ -23,9 +26,13 @@ export const Faq = () => {
       )
       .then((res) => {
         console.log(res);
-        setFaqData(res.data.message);
+        setFaqData(res?.data?.message);
+        setisLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setisLoading(false)
+      });
   };
 
   useEffect(() => {

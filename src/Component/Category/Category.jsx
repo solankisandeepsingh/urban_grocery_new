@@ -30,7 +30,7 @@ export const Category = () => {
         config
       )
       // .then((res) => setCategorydata(res.data.data))
-      .then((res) => {setAllCategories(res.data.data)
+      .then((res) => {setAllCategories(res?.data?.data)
     setisLoading(false);      
       })
       .catch((err) => {console.log(err)

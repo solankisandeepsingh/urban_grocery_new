@@ -2,9 +2,12 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { API_TOKEN } from "../Token/Token";
 import { Aside } from "../Aside/Aside";
+import { useLoaderState } from "../zustand/useLoaderState";
 
 export const Contact = () => {
   const [contact, setContact] = useState("");
+  const { setisLoading } = useLoaderState();
+  
   const handleContact = () => {
     let config = {
       headers: {
@@ -15,6 +18,7 @@ export const Contact = () => {
     contactData.append("accesskey", "90336");
     contactData.append("settings", "1");
     contactData.append("get_contact", "1");
+    setisLoading(true);
 
     axios
       .post(
@@ -23,16 +27,19 @@ export const Contact = () => {
         config
       )
       .then((res) => {
-        // console.log(res.data.contact);
-          setContact(res.data.contact)
+        console.log(res.data.contact);
+        setContact(res?.data?.contact);
+        setisLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setisLoading(false);
+      });
   };
   useEffect(() => {
     handleContact();
-  });
+  },[]);
 
-  
   function stripHTML(myString) {
     return myString.replace(/(<([^>]+)>)/gi, "");
   }
@@ -47,7 +54,9 @@ export const Contact = () => {
         <div class="md:w-3/4 xs:w-full md:mt-[-30px] xs:mt-[-270px]">
           <div class="md:mt-28 md:text-center">
             <div class="">
-              <p class="md:text-md mt-72 text-black font-bold">{stripHTML(contact)}</p>
+              <p class="md:text-md mt-72 text-black font-bold">
+                {stripHTML(contact)}
+              </p>
             </div>
           </div>
         </div>

@@ -76,6 +76,7 @@ function App() {
           setFormdata={setFormdata}
           setShowSearchBar={setShowSearchBar}
           name={name}
+          loggedIn={loggedIn}
           setName={setName}
           // loggedUsername={loggedUsername}
           NavbarOpen={NavbarOpen}

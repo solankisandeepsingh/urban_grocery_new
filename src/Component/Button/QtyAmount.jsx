@@ -2,10 +2,12 @@ import axios from "axios";
 import React from "react";
 import { API_TOKEN } from "../Token/Token";
 import { useCartStore } from "../zustand/useCartStore";
+import { useLoaderState } from "../zustand/useLoaderState";
 
 
 export const QtyAmount = ({ item }) => {
   const {allCartItems, setAllCartItems} = useCartStore();
+  const {setisLoading} = useLoaderState();
 
   const quantityDecrease = () => {
     const config = {
@@ -27,6 +29,7 @@ export const QtyAmount = ({ item }) => {
     });
     const newQty = +finditem.amount !== 0 ? +finditem.amount - 1 : 0;
     bodyFormData.append("qty", newQty);
+    setisLoading(true);
 
     axios
       .post(
@@ -35,6 +38,7 @@ export const QtyAmount = ({ item }) => {
         config
       )
       .then(() => {
+        setisLoading(false)
         if (
           allCartItems.some((cartItem) => cartItem.product_id === item.product_id)
         ) {
@@ -46,6 +50,7 @@ export const QtyAmount = ({ item }) => {
               : data
           )
             setAllCartItems(newArr);
+           
           } else {
             let newArr = allCartItems.filter((data) => data.product_id !== item.product_id)
             setAllCartItems(newArr);
@@ -54,6 +59,7 @@ export const QtyAmount = ({ item }) => {
       })
       .catch((error) => {
         console.log(error);
+        setisLoading(false)
       });
   };
 
@@ -77,6 +83,7 @@ export const QtyAmount = ({ item }) => {
     });
     const newQty = (+finditem.amount || 0) + 1;
     bodyFormData.append("qty", newQty);
+    setisLoading(true)
 
     axios
       .post(
@@ -85,7 +92,9 @@ export const QtyAmount = ({ item }) => {
         config
       )
       .then((res) => {
+
         console.log(">>>>>>>>>>>>>>resonse", res);
+        setisLoading(false)
         if (allCartItems.some((cartItem) => cartItem.id === item.id)) {
 
           let newArr = allCartItems.map((data) =>
@@ -101,6 +110,7 @@ export const QtyAmount = ({ item }) => {
       })
       .catch((error) => {
         console.log(error);
+        setisLoading(false)
       });
   };
 

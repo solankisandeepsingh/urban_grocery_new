@@ -3,6 +3,7 @@ import React from "react";
 import { Aside } from "../Aside/Aside";
 
 export const Wallet = () => {
+  
   return (
     <>
       <div>

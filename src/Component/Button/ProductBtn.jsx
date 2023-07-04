@@ -1,10 +1,11 @@
 import axios from "axios";
 import React from "react";
 import { API_TOKEN } from "../Token/Token";
+import { useLoaderState } from "../zustand/useLoaderState";
 
 function CartQuantity({ item, setAddItem, addItem }) {
   console.log(addItem);
-
+const {setisLoading} = useLoaderState();
   const quantityDecrease = () => {
     const config = {
       headers: {
@@ -22,6 +23,7 @@ function CartQuantity({ item, setAddItem, addItem }) {
     const newQty =
       +finditem.amount !== 0 ? +finditem.amount - 1 : finditem.amount;
     bodyFormData.append("qty", newQty);
+    setisLoading(true);
 
     axios
       .post(
@@ -30,6 +32,7 @@ function CartQuantity({ item, setAddItem, addItem }) {
         config
       )
       .then(() => {
+        setisLoading(false);
         if (addItem.some((product) => product.amount === 1))
           setAddItem(
             addItem.filter(
@@ -54,6 +57,7 @@ function CartQuantity({ item, setAddItem, addItem }) {
       })
       .catch((error) => {
         console.log(error);
+        setisLoading(false);
       });
   };
 
@@ -77,6 +81,7 @@ function CartQuantity({ item, setAddItem, addItem }) {
     // console.log(oldQty)
     const newQty = (+finditem.amount || 0) + 1;
     bodyFormData.append("qty", newQty);
+    setisLoading(true);
 
     axios
       .post(
@@ -86,6 +91,7 @@ function CartQuantity({ item, setAddItem, addItem }) {
       )
       .then((res) => {
         // console.log(">>>>>>>>>>>>>>resonse", res);
+        setisLoading(false);
         if (addItem.some((cartItem) => cartItem.product_id === item.id)) {
           setAddItem((cart) =>
             cart.map((data) =>
@@ -102,6 +108,7 @@ function CartQuantity({ item, setAddItem, addItem }) {
       })
       .catch((error) => {
         console.log(error);
+        setisLoading(false);
       });
   };
 

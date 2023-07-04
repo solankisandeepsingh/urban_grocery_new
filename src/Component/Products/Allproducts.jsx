@@ -5,15 +5,16 @@ import CartQuantity from "../Button/CartQuantity";
 import axios from "axios";
 import { API_TOKEN } from "../Token/Token";
 import { useProductsStore } from "../zustand/useProductsStore";
+import { useLoaderState } from "../zustand/useLoaderState";
 
 function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
-  const {allProducts, setAllProducts} = useProductsStore();
+  const { allProducts, setAllProducts } = useProductsStore();
   // const [allproduct, setShowAllProducts] = useState(mockProduct.data);
+  const { setisLoading } = useLoaderState();
   const [allproduct, setShowAllProducts] = useState([]);
   console.log(allProducts, setAllProducts);
 
   let allshowProduct = () => {
-    
     let config = {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
@@ -23,18 +24,28 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
     bodyFormdata.append("accesskey", "90336");
     bodyFormdata.append("get_all_products", "1");
     bodyFormdata.append("limit", "37");
+    setisLoading(true);
 
     axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/get-all-products.php",
         bodyFormdata,
         config
-      )
-      // .then((res) => setShowAllProducts(res.data.data))
+      ).then((res)=>{
+        setAllProducts(res?.data?.data)
+        setisLoading(false)
+      }).catch((err)=>{
+        console.log(err);
+        setisLoading(false)
+      })
+      
 
-      .then((res) => setAllProducts(res.data.data))
+      // .then((res) => 
+      // setAllProducts(res.data.data)
+  
+      // )
 
-      .catch((err) => console.log(err));
+      // .catch((err) => console.log(err));
   };
   useEffect(() => {
     allshowProduct();
@@ -46,7 +57,7 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
   //       Authorization: `Bearer ${API_TOKEN}`,
   //     },
   //   };
-  
+
   //   var bodyFormData = new FormData();
   //   bodyFormData.append("accesskey", "90336");
   //   bodyFormData.append("add_to_cart", "1");
@@ -54,7 +65,7 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
   //   bodyFormData.append("product_id", item.id);
   //   bodyFormData.append("product_variant_id", item.variants[0].product_id);
   //   bodyFormData.append("qty", item.amount);
-  
+
   //   axios
   //     .post(
   //       "https://grocery.intelliatech.in/api-firebase/cart.php",
@@ -76,14 +87,13 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
   //         );
   //         return;
   //       }
-  
+
   //       setAddItem((cart) => [...cart, { ...item, amount: 1 }]);
   //     })
   //     .catch((error) => {
   //       console.log(error);
   //     });
   // };
-
 
   const addItemHandler = (item, data) => {
     // console.log("item1>>>>>>>>>>>>>>", addItem);
@@ -160,10 +170,9 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
         console.log(error);
       });
   };
-  
+
   return (
     <>
-      
       <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-6 sm:grid-cols-3 flex flex-wrap md:ml-5 ">
         {allProducts &&
           allProducts.map((item) => {
@@ -210,42 +219,42 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
                               </div>
 
                               <div>
-                              {item.variants.some(
-                                (variant) => variant.stock > 0
-                              ) ? (
-                                addItem.find(
-                                  (i) => i.product_id === item.id
+                                {item.variants.some(
+                                  (variant) => variant.stock > 0
                                 ) ? (
-                                  <>
-                                    <div className="md:mt-2 md:ml-6 xs:mt-2.5 sm:mt-4 ">
-                                      {console.log(
-                                        item,
-                                        "Item",
-                                        addItem,
-                                        "addItem",
-                                        "In ProductCarousel, calling CartQuantity"
-                                      )}
-                                      <CartQuantity
-                                        item={item}
-                                        setAddItem={setAddItem}
-                                        addItem={addItem}
-                                      />
-                                    </div>
-                                  </>
+                                  addItem.find(
+                                    (i) => i.product_id === item.id
+                                  ) ? (
+                                    <>
+                                      <div className="md:mt-2 md:ml-6 xs:mt-2.5 sm:mt-4 ">
+                                        {console.log(
+                                          item,
+                                          "Item",
+                                          addItem,
+                                          "addItem",
+                                          "In ProductCarousel, calling CartQuantity"
+                                        )}
+                                        <CartQuantity
+                                          item={item}
+                                          setAddItem={setAddItem}
+                                          addItem={addItem}
+                                        />
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <button
+                                      className="md:w-16 md:h-8 mb-3 xs:w-18 sm:ml-2 md:text-xs md:mt-2 xs:mt-2 sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
+                                      onClick={() => addItemHandler(data, item)}
+                                    >
+                                      Add
+                                    </button>
+                                  )
                                 ) : (
-                                  <button
-                                    className="md:w-16 md:h-8 mb-3 xs:w-18 sm:ml-2 md:text-xs md:mt-2 xs:mt-2 sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
-                                    onClick={() => addItemHandler(data, item)}
-                                  >
-                                    Add
-                                  </button>
-                                )
-                              ) : (
-                                <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:mb-4 sm:text-xs xs:text-xs">
-                                  Out of stock
-                                </p>
-                              )}
-                            </div>
+                                  <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:mb-4 sm:text-xs xs:text-xs">
+                                    Out of stock
+                                  </p>
+                                )}
+                              </div>
                             </div>
                           </div>
                         </>

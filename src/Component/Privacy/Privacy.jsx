@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 import { Aside } from "../Aside/Aside";
+import { useLoaderState } from "../zustand/useLoaderState";
 
 export const Privacy = () => {
   const [privacy, setPrivacy] = useState("");
+  const { setisLoading } = useLoaderState();
 
   const handlePrivacy = () => {
     let config = {
@@ -17,6 +19,7 @@ export const Privacy = () => {
     privacyData.append("accesskey", "90336");
     privacyData.append("settings", "1");
     privacyData.append("get_privacy", "1");
+    setisLoading(true);
 
     axios
       .post(
@@ -26,9 +29,13 @@ export const Privacy = () => {
       )
       .then((res) => {
         console.log(res);
-        setPrivacy(res.data.privacy);
+        setPrivacy(res?.data?.privacy);
+        setisLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setisLoading(false);
+      });
   };
 
   useEffect(() => {

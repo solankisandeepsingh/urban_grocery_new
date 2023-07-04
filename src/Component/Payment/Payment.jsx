@@ -51,7 +51,7 @@ function Payment({ isOpen, setIsOpen }) {
         config
       )
       .then((res) => {
-        setPaymentMethods(res.data.payment_methods);
+        setPaymentMethods(res?.data?.payment_methods);
         setisLoading(false);
       })
       .catch((err) => {

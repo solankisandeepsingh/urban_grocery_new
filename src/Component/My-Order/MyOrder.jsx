@@ -5,7 +5,7 @@ import { Aside } from "../Aside/Aside";
 import { OrderDetails } from "../Order-Details/OrderDetails";
 import { GiScooter } from "react-icons/gi";
 import { BsChevronRight } from "react-icons/bs";
-import { BsFillDoorOpenFill } from "react-icons/bs";
+import { useLoaderState } from "../zustand/useLoaderState";
 
 export const MyOrder = ({ addItem, user_id }) => {
   const [price, setPrice] = useState(0);
@@ -13,6 +13,7 @@ export const MyOrder = ({ addItem, user_id }) => {
 
   const [orderData, setOrderData] = useState("");
   const [orderId, setOrderId] = useState("");
+  const { setisLoading } = useLoaderState();
 
   const handlemyOrder = () => {
     let config = {
@@ -24,6 +25,7 @@ export const MyOrder = ({ addItem, user_id }) => {
     myOrderData.append("accesskey", "90336");
     myOrderData.append("get_orders", "1");
     myOrderData.append("user_id", user_id);
+    setisLoading(true);
     axios
       .post(
         `https://grocery.intelliatech.in/api-firebase/order-process.php`,
@@ -31,10 +33,14 @@ export const MyOrder = ({ addItem, user_id }) => {
         config
       )
       .then((res) => {
-        console.log(res.data.data, "myorder data will displayyyyyyyyyyy");
-        setOrderData(res.data.data);
+        // console.log(res.data.data, "myorder data will displayyyyyyyyyyy");
+        setOrderData(res?.data?.data);
+        setisLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setisLoading(false)
+      });
   };
 
   useEffect(() => {
@@ -125,7 +131,7 @@ export const MyOrder = ({ addItem, user_id }) => {
                         </div>
                       </div>
 
-                      <hr  className="mb-2 text-gryColour"/>
+                      <hr className="mb-2 text-gryColour" />
                     </div>
                   );
                 })}

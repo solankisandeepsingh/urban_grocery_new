@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { useLoaderState } from "../zustand/useLoaderState";
 
-export const AddressForm = ({ getAddress, setFormOpen,user_id }) => {
+export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
   const [addressData, setAddressData] = useState({
     name: "",
     address: "",
@@ -17,7 +18,7 @@ export const AddressForm = ({ getAddress, setFormOpen,user_id }) => {
   const [cityDropdown, setCityDropdown] = useState("");
   const [areaDropdown, setAreaDropdown] = useState("");
   const [initialRender, setIntialrender] = useState(true);
-
+  const { setisLoading } = useLoaderState();
   const handleDropdown1Change = (event) => {
     const selectedValue = event.target.value;
     setCityDropdown(selectedValue);
@@ -62,6 +63,7 @@ export const AddressForm = ({ getAddress, setFormOpen,user_id }) => {
     data.append("pincode", `${addressData.pincode}`);
     data.append("state", "Gujrat");
     data.append("country", "India");
+    setisLoading(true);
     axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/user-addresses.php",
@@ -72,9 +74,13 @@ export const AddressForm = ({ getAddress, setFormOpen,user_id }) => {
         console.log(res, "hi");
         getAddress();
         setFormOpen(false);
+        setisLoading(false);
       })
 
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setisLoading(false)
+      });
     setAddressData({
       name: "",
       address: "",

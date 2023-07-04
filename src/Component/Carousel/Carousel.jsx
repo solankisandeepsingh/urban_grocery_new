@@ -5,9 +5,11 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 import { useSliderStore } from "../zustand/useSliderStore";
+import { useLoaderState } from "../zustand/useLoaderState";
 
 function CarouselComponent() {
   const { allCarouselImg, setAllCarouselImg } = useSliderStore();
+  const {setisLoading} = useLoaderState();
   console.log(
     allCarouselImg,
     setAllCarouselImg,
@@ -23,6 +25,7 @@ function CarouselComponent() {
     let sliderData = new FormData();
     sliderData.append("accesskey", "90336");
     sliderData.append("get-slider-images", "1");
+    setisLoading(true);
 
     axios
       .post(
@@ -31,11 +34,13 @@ function CarouselComponent() {
         config
       )
       .then((res) => {
-        let newArr = res.data.data;
+        let newArr = res?.data?.data;
         setAllCarouselImg(newArr);
+        setisLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setisLoading(false);
       });
   };
   useEffect(() => {

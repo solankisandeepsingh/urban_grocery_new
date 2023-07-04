@@ -63,7 +63,7 @@ export const Aside = () => {
             </li>
             
 
-            <li className="border border-light_gray mb-2 shadow-lg">
+            {/* <li className="border border-light_gray mb-2 shadow-lg">
               <NavLink to={"/payment"}>
                 <a
                   to="#"
@@ -75,7 +75,7 @@ export const Aside = () => {
                   </span>
                 </a>
               </NavLink>
-            </li>
+            </li> */}
 
             <li className="border border-light_gray mb-2 shadow-lg">
               <NavLink to={"/wallet"}>

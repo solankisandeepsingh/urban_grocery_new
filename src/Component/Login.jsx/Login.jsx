@@ -8,19 +8,25 @@ import "react-toastify/dist/ReactToastify.css";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
+import { useLoaderState } from "../zustand/useLoaderState";
 
-
-export const Login = ({ setUser_id, setLoggedIn, getUserCarts,setNewUserLog }) => {
+export const Login = ({
+  setUser_id,
+  setLoggedIn,
+  getUserCarts,
+  setNewUserLog,
+}) => {
   const [logins, setLogins] = useState({
     phone: "",
     password: "",
   });
-  const {allCartItems, config, clearCartApi} = useCartStore();
-  const {setUserInfo} = useUserStore();
+  const { allCartItems, config, clearCartApi } = useCartStore();
+  const { setUserInfo } = useUserStore();
   const [showModals, setShowModals] = useState(false);
   const [LoginFormModals, setLoginFormModals] = useState(true);
   const [loginData, setLoginData] = useState([]);
   const navigate = useNavigate();
+  const { setisLoading } = useLoaderState();
 
   const handleShow = (e) => {
     e.preventDefault();
@@ -29,10 +35,10 @@ export const Login = ({ setUser_id, setLoggedIn, getUserCarts,setNewUserLog }) =
   const closeLoginModal = () => {
     setLoginFormModals(false);
 
-    setNewUserLog(false)
+    setNewUserLog(false);
     navigate("/");
   };
-  console.log(allCartItems, "INSIDE LOGIN AFERT LOGIN")
+  console.log(allCartItems, "INSIDE LOGIN AFERT LOGIN");
 
   const inputHandler = (e) => {
     let name = e.target.name;
@@ -42,11 +48,11 @@ export const Login = ({ setUser_id, setLoggedIn, getUserCarts,setNewUserLog }) =
 
   const clearCart = () => {
     clearCartApi();
-  };  
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     setLoggedIn(true);
 
     if (!logins.phone || !logins.password) {
@@ -58,6 +64,7 @@ export const Login = ({ setUser_id, setLoggedIn, getUserCarts,setNewUserLog }) =
     loginItem.append("mobile", logins.phone);
     loginItem.append("password", logins.password);
     loginItem.append("fcm_id", "YOUR_FCM_ID");
+    setisLoading(true);
 
     axios
       .post(
@@ -65,7 +72,7 @@ export const Login = ({ setUser_id, setLoggedIn, getUserCarts,setNewUserLog }) =
         loginItem,
         config
       )
-      .then((res) => { 
+      .then((res) => {
         console.log(res);
 
         if (!res.data.error) {
@@ -75,12 +82,12 @@ export const Login = ({ setUser_id, setLoggedIn, getUserCarts,setNewUserLog }) =
           navigate("/");
           localStorage.setItem("token", `${API_TOKEN}`);
           // dispatchLogin({ type: "LOGIN", payload: res.data.name });
-          console.log('LOGIN RESPONSEEEEEEEEEEEEEE', res.data)
-          setUserInfo(res.data)
-          let newUserId = res.data.user_id;
+          console.log("LOGIN RESPONSEEEEEEEEEEEEEE", res.data);
+          setUserInfo(res.data);
+          let newUserId = res?.data?.user_id;
           setUser_id(newUserId);
-
-          clearCart(newUserId)
+          setisLoading(false);
+          clearCart(newUserId);
 
           const addMultipleItems = () => {
             let arr = {};
@@ -88,10 +95,10 @@ export const Login = ({ setUser_id, setLoggedIn, getUserCarts,setNewUserLog }) =
               arr[item.product_variant_id] = item.amount;
             });
 
-            let variants = (Object.keys(arr)).join(',');
-            let variantQty = (Object.values(arr)).join(',');
-            console.log("variants",variants);
-            console.log("variantQty",variantQty);
+            let variants = Object.keys(arr).join(",");
+            let variantQty = Object.values(arr).join(",");
+            console.log("variants", variants);
+            console.log("variantQty", variantQty);
 
             console.log(config);
             var bodyFormdata = new FormData();
@@ -100,6 +107,7 @@ export const Login = ({ setUser_id, setLoggedIn, getUserCarts,setNewUserLog }) =
             bodyFormdata.append("user_id", newUserId);
             bodyFormdata.append("product_variant_id", variants);
             bodyFormdata.append("qty", variantQty);
+            setisLoading(true);
 
             return axios
               .post(
@@ -108,30 +116,34 @@ export const Login = ({ setUser_id, setLoggedIn, getUserCarts,setNewUserLog }) =
                 config
               )
               .then((res) => {
-   
                 console.log(res, "res<><><><><><><><>");
                 getUserCarts(newUserId);
+                setisLoading(false);
               })
               .catch((error) => {
                 console.log(error);
+                setisLoading(false);
               });
           };
 
-        addMultipleItems();
+          addMultipleItems();
         } else {
           toast.error("Invalid phone OR password! !", {
             position: toast.POSITION.TOP_CENTER,
           });
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setisLoading(false);
+      });
 
     setLogins({
       phone: "",
       password: "",
     });
   };
- 
+
   return (
     <>
       {LoginFormModals && (

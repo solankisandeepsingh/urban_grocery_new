@@ -50,6 +50,9 @@ function MyCart({
     if (Payment) {
       setPayment(false);
     }
+    if (reviewPage) {
+      setReviewPage(false);
+    }
   };
   const total = () => {
     let price = 0;
@@ -60,7 +63,7 @@ function MyCart({
         }
       });
     setPrice(price);
-    setCartTotal(price)
+    setCartTotal(price);
   };
 
   const totalAmount = () => {
@@ -91,7 +94,6 @@ function MyCart({
     bodyFormdata.append("remove_from_cart", "1");
     bodyFormdata.append("user_id", user_id);
     bodyFormdata.append("product_variant_id", `${item.product_variant_id}`);
-
     setisLoading(true);
     axios
       .post(
@@ -105,12 +107,12 @@ function MyCart({
         setAllCartItems(newArr);
         let newPrice = price - item.amount * parseFloat(item.price);
         setPrice(newPrice);
-        setCartTotal(newPrice)
+        setCartTotal(newPrice);
         setisLoading(false);
       })
       .catch((err) => {
-        setisLoading(false);
         console.log(err);
+        setisLoading(false);
       });
   };
 
@@ -129,6 +131,7 @@ function MyCart({
 
   const handleCloseModal = () => {
     setPayment(false);
+    setReviewPage(false);
   };
 
   useEffect(() => {
@@ -158,6 +161,7 @@ function MyCart({
     bodyFormdata.append("accesskey", accesskey);
     bodyFormdata.append("get_user_cart", "1");
     bodyFormdata.append("user_id", user_id);
+    setisLoading(true);
 
     return axios
       .post(
@@ -167,6 +171,7 @@ function MyCart({
       )
       .then((res) => {
         console.log(res, "[GET USER CART API RESPONSE]");
+
         let addQtyAmount = res?.data?.data?.map((data) => ({
           ...data,
           amount: +data.qty,
@@ -177,11 +182,13 @@ function MyCart({
         {
           addQtyAmount && setAllCartItems(addQtyAmount);
         }
+        setisLoading(false);
         total();
         totalAmount();
       })
       .catch((error) => {
         console.log(error);
+        setisLoading(false);
       });
   };
 
@@ -390,7 +397,16 @@ function MyCart({
                     />
                   ) : null}
 
-                  {reviewPage ? <Review setShowModal={setShowModal} back={back} setShowForm={setShowForm} setReviewPage= {setReviewPage} price={price} totalItem={totalItem} /> : null}
+                  {reviewPage ? (
+                    <Review
+                      back={back}
+                      setShowModal={setShowModal}
+                      setShowForm={setShowForm}
+                      setReviewPage={setReviewPage}
+                      price={price}
+                      totalItem={totalItem}
+                    />
+                  ) : null}
                 </div>
               </div>
             </div>

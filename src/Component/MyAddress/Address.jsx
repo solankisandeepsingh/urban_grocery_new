@@ -7,10 +7,12 @@ import { AddressForm } from "./AddressForm";
 import axios from "axios";
 import { API_TOKEN } from "../Token/Token";
 import { Aside } from "../Aside/Aside";
+import { useLoaderState } from "../zustand/useLoaderState";
 
 export const Address = ({ isOpen, setIsOpen, user_id }) => {
   const [formOpen, setFormOpen] = useState(false);
   const [addList, setAddlist] = useState([]);
+  const { setisLoading } = useLoaderState();
 
   const config = {
     headers: {
@@ -23,6 +25,7 @@ export const Address = ({ isOpen, setIsOpen, user_id }) => {
     data.append("accesskey", "90336");
     data.append("get_addresses", "1");
     data.append("user_id", user_id);
+    setisLoading(true);
 
     axios
       .post(
@@ -30,8 +33,14 @@ export const Address = ({ isOpen, setIsOpen, user_id }) => {
         data,
         config
       )
-      .then((res) => setAddlist(res.data.data))
-      .catch((err) => console.log(err));
+      .then((res) => {
+        setAddlist(res?.data?.data);
+        setisLoading(false)
+      })
+      .catch((err) => {
+        console.log(err);
+        setisLoading(false)
+      });
   };
 
   useEffect(() => {

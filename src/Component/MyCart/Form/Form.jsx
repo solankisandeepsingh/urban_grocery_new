@@ -6,21 +6,27 @@ import { HiOfficeBuilding } from "react-icons/hi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AddressForm } from "../../MyAddress/AddressForm";
 import { useUserStore } from "../../zustand/useUserStore";
+import { useLoaderState } from "../../zustand/useLoaderState";
 
-function Form({ setShowModal, setNavbarOpen, user_id,setReviewPage, setShowForm}) {
-
-  console.log("setReviewPage>>>>>>>>>>>>>>>>>>>>",setReviewPage)
+function Form({
+  user_id,
+  setReviewPage,
+  setShowForm,
+}) {
+  console.log("setReviewPage>>>>>>>>>>>>>>>>>>>>", setReviewPage);
   // const [addList, setAddlist] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
   const [formOpen, setFormOpen] = useState(false);
   const navigate = useNavigate();
-  const {deliveryAddress, setDeliveryAddress, addList, setAddList} = useUserStore();
+  const { setisLoading } = useLoaderState();
+  const { deliveryAddress, setDeliveryAddress, addList, setAddList } =
+    useUserStore();
   console.log(setAddList);
   const handleOptionChange = (event) => {
     console.log(event.target.value);
     setDeliveryAddress(event.target.value);
   };
-  
+
   const config = {
     headers: {
       Authorization: `Bearer ${API_TOKEN}`,
@@ -32,6 +38,7 @@ function Form({ setShowModal, setNavbarOpen, user_id,setReviewPage, setShowForm}
     data.append("accesskey", "90336");
     data.append("get_addresses", "1");
     data.append("user_id", user_id);
+    setisLoading(true);
 
     axios
       .post(
@@ -39,8 +46,14 @@ function Form({ setShowModal, setNavbarOpen, user_id,setReviewPage, setShowForm}
         data,
         config
       )
-      .then((res) => setAddList(res.data.data))
-      .catch((err) => console.log(err));
+      .then((res) => {
+        setAddList(res?.data?.data);
+        setisLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setisLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -54,8 +67,8 @@ function Form({ setShowModal, setNavbarOpen, user_id,setReviewPage, setShowForm}
   const handleReview = () => {
     // navigate("/review");
     // setShowModal(false);
-    setReviewPage(true)
-    setShowForm(false)
+    setReviewPage(true);
+    setShowForm(false);
     // setNavbarOpen(false);
   };
 
@@ -113,7 +126,7 @@ function Form({ setShowModal, setNavbarOpen, user_id,setReviewPage, setShowForm}
 
       {deliveryAddress ? (
         // <NavLink to={`/payment`}>
-          <>
+        <>
           <button
             onClick={handleReview}
             className="bg-lime text-white hover:opacity-90 sm:w-full md:w-[90%] mx-4 sm:text-2xl md:text-lg px-4 py-1.5 rounded-lg"
@@ -131,9 +144,9 @@ function Form({ setShowModal, setNavbarOpen, user_id,setReviewPage, setShowForm}
           >
             Change State
           </button> */}
-          </>
-        // </NavLink>
+        </>
       ) : (
+        // </NavLink>
         <button
           onClick={() => handleOpenForm()}
           className="bg-lime text-white hover:opacity-90 sm:w-full md:w-[90%] mx-4 sm:text-2xl md:text-lg px-4 py-1.5  rounded-lg "
@@ -142,7 +155,11 @@ function Form({ setShowModal, setNavbarOpen, user_id,setReviewPage, setShowForm}
         </button>
       )}
       {formOpen && (
-        <AddressForm setFormOpen={setFormOpen} getAddress={getAddress} user_id={user_id} />
+        <AddressForm
+          setFormOpen={setFormOpen}
+          getAddress={getAddress}
+          user_id={user_id}
+        />
       )}
     </>
   );

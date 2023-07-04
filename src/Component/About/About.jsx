@@ -2,9 +2,11 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { API_TOKEN } from "../Token/Token";
 import { Aside } from "../Aside/Aside";
+import { useLoaderState } from "../zustand/useLoaderState";
 
 export const About = () => {
   const [about, setAbout] = useState("");
+  const { setisLoading } = useLoaderState();
   const handleAbout = () => {
     let config = {
       headers: {
@@ -15,6 +17,7 @@ export const About = () => {
     conditonData.append("accesskey", "90336");
     conditonData.append("settings", "1");
     conditonData.append("get_about_us", "1");
+    setisLoading(true);
 
     axios
       .post(
@@ -24,13 +27,17 @@ export const About = () => {
       )
       .then((res) => {
         console.log(res);
-        setAbout(res.data.about);
+        setAbout(res?.data?.about);
+        setisLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setisLoading(false);
+      });
   };
   useEffect(() => {
     handleAbout();
-  },[]);
+  }, []);
 
   function stripHTML(myString) {
     return myString.replace(/(<([^>]+)>)/gi, "");

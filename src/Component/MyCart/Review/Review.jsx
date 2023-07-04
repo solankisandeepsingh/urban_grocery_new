@@ -9,6 +9,7 @@ function Review({
   setShowForm,
   setReviewPage,
   setShowModal,
+  back,
 }) {
   const { allCartItems } = useCartStore();
   const navigate = useNavigate();
