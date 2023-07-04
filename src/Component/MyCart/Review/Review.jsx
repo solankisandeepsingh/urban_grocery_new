@@ -8,10 +8,9 @@ import { currencyFormatter } from "../../../utils/utils";
 function Review({
   price,
   totalItem,
-  setShowForm,
   setReviewPage,
   setShowModal,
-  back,
+
 }) {
   const { allCartItems } = useCartStore();
   const navigate = useNavigate();
@@ -19,17 +18,13 @@ function Review({
     navigate("/payment");
     setReviewPage(false);
     setShowModal(false);
-    // setShowForm(true)
+    
   };
-  const {
-    addList,
-    deliveryAddress,
-  } = useUserStore();
+  const { addList, deliveryAddress } = useUserStore();
 
   let { address, area_name, city_name, country } = addList.find((item) => {
     return item.id == deliveryAddress;
   });
-
 
   return (
     <>
@@ -70,7 +65,9 @@ function Review({
                                         <div className=" w-1/5 text-left">
                                           <p className="text-xs">
                                             {" "}
-                                            {currencyFormatter(item.discounted_price)}{" "}
+                                            {currencyFormatter(
+                                              item.discounted_price
+                                            )}{" "}
                                           </p>
                                         </div>
                                         <p class="bg-white text-xs text-gryColour">
@@ -82,7 +79,9 @@ function Review({
                                       <p class="bg-white text-xs text-gryColour">
                                         {" "}
                                         Total :{" "}
-                                        { currencyFormatter(item.amount * item.discounted_price)}
+                                        {currencyFormatter(
+                                          item.amount * item.discounted_price
+                                        )}
                                         {/* {() => setAmount(item.amount)} */}
                                       </p>
                                     </div>
@@ -103,7 +102,14 @@ function Review({
                   <div>
                     <div>
                       <p className="bg-white  text-sm font-medium ">
-                      <span className="text-[gray]">Deliver to:</span> {address + " " + area_name + " " + city_name + " " + country}
+                        <span className="text-[gray]">Deliver to:</span>{" "}
+                        {address +
+                          " " +
+                          area_name +
+                          " " +
+                          city_name +
+                          " " +
+                          country}
                       </p>
                     </div>
                     <div className="mb-3 flex justify-between px-5 mt-5">

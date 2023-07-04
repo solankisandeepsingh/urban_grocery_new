@@ -66,7 +66,7 @@ export const MyOrder = ({ addItem, user_id }) => {
 
   return (
     <>
-      <div className="md:flex md:flex-row">
+      <div className="md:flex md:flex-row justify-evenly">
         <div className="xs:w-72 xs:py-20 xs:px-1 md:h-full md:w-[25%] md:px-12 md:mt-10">
           <Aside />
         </div>
@@ -120,14 +120,12 @@ export const MyOrder = ({ addItem, user_id }) => {
                         </div>
                       </div>
 
-                      <div className="flex gap-2 mt-2 justify-end ">
-                        <div>
+                      <div className="flex shadow-lg gap-2 mt-2 justify-end ">
+                        <div className="flex">
+                          <div className=" text-[12px] mb-4 border border-light_gray p-1 rounded-lg">
                           <GiScooter className="text-[20px] mt-1" />
-                        </div>
-                        <div>
-                          <button className="shadow-lg text-[12px] mb-4 border border-light_gray p-1 rounded-lg">
-                            Door Step Delivery
-                          </button>
+                           <p>Door Step Delivery</p> 
+                          </div>
                         </div>
                       </div>
 

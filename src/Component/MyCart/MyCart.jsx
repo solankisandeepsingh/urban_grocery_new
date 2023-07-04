@@ -10,7 +10,7 @@ import { Login } from "../Login.jsx/Login";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
-import { BsChevronCompactRight} from "react-icons/bs";
+import { BsChevronCompactRight } from "react-icons/bs";
 import Review from "./Review/Review";
 import { currencyFormatter } from "../../utils/utils";
 
@@ -122,6 +122,7 @@ function MyCart({
     setShowModal(false);
     setPayment(false);
     setShowForm(false);
+    setReviewPage(false);
   };
 
   const formHandler = () => {
@@ -249,9 +250,16 @@ function MyCart({
                         <FaArrowLeft className="bg-white" />
                       </button>
                     ) : null}
+                    {reviewPage ? (
+                      <button className="back-button bg-white" onClick={back}>
+                        <FaArrowLeft className="bg-white" />
+                      </button>
+                    ) : null}
                   </div>
 
-                  <p className="py-2 text-2xl font-semibold bg-white">My Cart</p>
+                  <p className="py-2 text-2xl font-semibold bg-white">
+                    My Cart
+                  </p>
                   <button
                     className="bg-transparent text-black float-right"
                     onClick={hideMOdal}
@@ -351,13 +359,13 @@ function MyCart({
                                         onClick={() => setNewUserLog(true)}
                                       >
                                         <p className="p-2 bg-lime text-xl font-bold rounded-lg">
-                                          Total :  {currencyFormatter(price)}
+                                          Total : {currencyFormatter(price)}
                                         </p>
                                         <div className="flex items-center min-w-max justify-center">
-                                        <p className="p-2 bg-lime text-xl  rounded-lg">
-                                          Proceed
-                                        </p>
-                                        <BsChevronCompactRight className="te"/>
+                                          <p className="p-2 bg-lime text-xl  rounded-lg">
+                                            Proceed
+                                          </p>
+                                          <BsChevronCompactRight className="te" />
                                         </div>
                                       </button>
                                     </>
@@ -368,15 +376,15 @@ function MyCart({
                                     onClick={formHandler}
                                   >
                                     <p className="p-2 bg-lime text-xl font-bold rounded-lg">
-                                          Total :  {currencyFormatter(price)}
-                                        </p>
-                                        <div className="flex items-center justify-center min-w-max">
-                                        <p className="p-2 bg-lime text-xl  rounded-lg">
-                                          Proceed
-                                        </p>
-                                        <BsChevronCompactRight className="te"/>
-                                        </div>
-                                      </button>
+                                      Total : {currencyFormatter(price)}
+                                    </p>
+                                    <div className="flex items-center justify-center min-w-max">
+                                      <p className="p-2 bg-lime text-xl  rounded-lg">
+                                        Proceed
+                                      </p>
+                                      <BsChevronCompactRight className="te" />
+                                    </div>
+                                  </button>
                                 )}
                               </div>
                             </div>
@@ -409,7 +417,6 @@ function MyCart({
                     <Review
                       back={back}
                       setShowModal={setShowModal}
-                      setShowForm={setShowForm}
                       setReviewPage={setReviewPage}
                       price={price}
                       totalItem={totalItem}

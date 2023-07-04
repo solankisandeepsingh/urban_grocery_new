@@ -12,13 +12,13 @@ export const OrderDetails = ({ setDetailsOrder, orderData, orderId }) => {
   console.log(orderId, "orderId");
   return (
     <>
-      <div>
+      <div className="w-[66%]">
         {orderId &&
           orderData.map((item) => {
             console.log(item.id, "itemmmmmmmmmmmmmmm");
             if (item.id === orderId)
               return (
-                <div className="ml-28 w-[100%]">
+                <div className=" w-[100%]">
                   <div className="mt-[80px] flex">
                     <span>
                       <FaArrowLeft
@@ -55,7 +55,7 @@ export const OrderDetails = ({ setDetailsOrder, orderData, orderId }) => {
                                     className="w-28 h-24 rounded-2xl"
                                   />
                                 </div>
-                                <div className=" mb-2">
+                                <div className=" mb-2 flex flex-col items-end">
                                   <p>{data.product_name}</p>
                                   <p className="text-lightgray">
                                     {" "}
@@ -175,22 +175,22 @@ export const OrderDetails = ({ setDetailsOrder, orderData, orderId }) => {
                   <div className="mt-2">
                     <h2 className="font-bold">Order-Staus</h2>
                     <p className="text-center">Order</p>
-                    <p className="text-center">{item.status_name}</p>
-                    <div className="flex justify-center items-center text-lime text-[30px]">
+                    <p className="text-center font-bold">Status: {item.status_name}</p>
+                    {/* <div className="flex justify-center items-center text-lime text-[30px]">
                       <AiFillEye className="text-center" />
-                    </div>
+                    </div> */}
 
                     <p className="text-center">{item.status_time}</p>
                   </div>
                   
-                  <div className="flex justify-around mb-2">
+                  {/* <div className="flex justify-around mb-2">
                     <div>
                       <button className="bg-lime rounded-lg p-2 text-white ">Re-Order</button>
                     </div>
                     <div>
                       <button className="bg-lime rounded-lg p-2 text-white">Get Invoice</button>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               );
             else return null;
