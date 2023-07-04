@@ -10,11 +10,11 @@ import ProductBtn from "../../Button/ProductBtn";
 import { useCartStore } from "../../zustand/useCartStore";
 import CartQuantity from "../../Button/CartQuantity";
 
-export const ProductDetails = ({   isOpen, setIsOpen }) => {
+export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const [productPageData, setProductPage] = useState([]);
   const [wishlist, setWishlist] = useState(false);
   const { id } = useParams();
-  const {allCartItems, setAllCartItems} = useCartStore();
+  const { allCartItems, setAllCartItems } = useCartStore();
 
   const productDetail = () => {
     let config = {
@@ -124,15 +124,15 @@ export const ProductDetails = ({   isOpen, setIsOpen }) => {
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
           // console.log("addtiem", allCartItems);
           let newArr = allCartItems.map((data) =>
-          data.product_id === item.id
-            ? {
-                ...data,
-                amount: data.amount + 1,
-              }
-            : data
-        )
-              console.log(newArr);
-        setAllCartItems(newArr);
+            data.product_id === item.id
+              ? {
+                  ...data,
+                  amount: data.amount + 1,
+                }
+              : data
+          );
+          console.log(newArr);
+          setAllCartItems(newArr);
           return;
         }
         console.log(item.id, "allCartItems Id in product caraousel");
@@ -157,7 +157,7 @@ export const ProductDetails = ({   isOpen, setIsOpen }) => {
           unit: "gm",
           user_id: "14",
         };
-        let newArr = [...allCartItems, {...item1 , amount : 1}]
+        let newArr = [...allCartItems, { ...item1, amount: 1 }];
         console.log(newArr);
         setAllCartItems(newArr);
 
@@ -321,12 +321,12 @@ export const ProductDetails = ({   isOpen, setIsOpen }) => {
                                             setAllCartItems={setAllCartItems}
                                             allCartItems={allCartItems}
                                           /> */}
-                                             <CartQuantity
-                                        item={item}
-                                        // setAllCartItems={setAllCartItems}
-                                        // allCartItems={allCartItems}
-                                        // user_id={user_id}
-                                      />
+                                          <CartQuantity
+                                            item={item}
+                                            // setAllCartItems={setAllCartItems}
+                                            // allCartItems={allCartItems}
+                                            // user_id={user_id}
+                                          />
                                         </div>
                                       </>
                                     ) : (
@@ -360,18 +360,26 @@ export const ProductDetails = ({   isOpen, setIsOpen }) => {
                   <p className="2xs:text-sm  xs:text-sm sm:text-2xl sm:mt-1 md:font-light md:text-sm md:w-[500px] text-secondary">
                     {stripHTML(item.description)}
                   </p>
-                  <p className="font-medium 2xs:mt-2 xs:mt-2 xs:text-lg sm:text-3xl md:text-base md:mt-3 sm:mt-5">
-                    Manufacturer
-                  </p>
-                  <p className="2xs:text-sm xs:text-sm sm:mt-1 sm:text-2xl md:text-xs md:mt-0 font-light text-secondary">
-                    {item.manufacturer}
-                  </p>
-                  <p className="font-medium 2xs:mt-2 xs:mt-2 xs:text-lg  sm:text-3xl md:text-sm sm:mt-4 ">
-                    Made In
-                  </p>
-                  <p className="2xs:text-sm 2xs:mb-2 xs:text-sm sm:mt-1 sm:text-2xl md:text-xs md:mt-0 font-light text-secondary">
-                    {item.made_in}
-                  </p>
+                  {item.manufacturer && (
+                    <>
+                      <p className="font-medium 2xs:mt-2 xs:mt-2 xs:text-lg sm:text-3xl md:text-base md:mt-3 sm:mt-5">
+                        Manufacturer
+                      </p>
+                      <p className="2xs:text-sm xs:text-sm sm:mt-1 sm:text-2xl md:text-xs md:mt-0 font-light text-secondary">
+                        {item.manufacturer}
+                      </p>
+                    </>
+                  )}
+                  {item.made_in && (
+                    <>
+                      <p className="font-medium 2xs:mt-2 xs:mt-2 xs:text-lg  sm:text-3xl md:text-sm sm:mt-4 ">
+                        Made In
+                      </p>
+                      <p className="2xs:text-sm 2xs:mb-2 xs:text-sm sm:mt-1 sm:text-2xl md:text-xs md:mt-0 font-light text-secondary">
+                        {item.made_in}
+                      </p>
+                    </>
+                  )}
                 </div>
               </>
             );

@@ -3,6 +3,7 @@ import { Aside } from "../../Aside/Aside";
 import { useCartStore } from "../../zustand/useCartStore";
 import { useUserStore } from "../../zustand/useUserStore";
 import { useNavigate } from "react-router";
+import { currencyFormatter } from "../../../utils/utils";
 
 function Review({
   price,
@@ -66,21 +67,21 @@ function Review({
                                     <div className="flex justify-between mt-0.5">
                                       <div className="flex gap-6 w-[70%]">
                                         <div className=" w-1/5 text-left">
-                                          <p className=" ">
+                                          <p className="text-xs">
                                             {" "}
-                                            ₹{item.discounted_price}{" "}
+                                            {currencyFormatter(item.discounted_price)}{" "}
                                           </p>
                                         </div>
-                                        <p class="bg-white text-gryColour">
+                                        <p class="bg-white text-xs text-gryColour">
                                           {" "}
                                           Qty : {item.amount}
                                           {/* {() => setAmount(item.amount)} */}
                                         </p>
                                       </div>
-                                      <p class="bg-white text-gryColour">
+                                      <p class="bg-white text-xs text-gryColour">
                                         {" "}
                                         Total :{" "}
-                                        {item.amount * item.discounted_price}
+                                        { currencyFormatter(item.amount * item.discounted_price)}
                                         {/* {() => setAmount(item.amount)} */}
                                       </p>
                                     </div>
@@ -100,8 +101,8 @@ function Review({
                   </div>
                   <div>
                     <div>
-                      <p className="bg-white text-md font-medium text- mt-5black">
-                      Deliver to: {address + " " + area_name + " " + city_name + " " + country}
+                      <p className="bg-white  text-sm font-medium ">
+                      <span className="text-[gray]">Deliver to:</span> {address + " " + area_name + " " + city_name + " " + country}
                       </p>
                     </div>
                     <div className="mb-3 flex justify-between px-5 mt-5">
@@ -109,7 +110,7 @@ function Review({
                         Total Items: {totalItem}
                       </p>
                       <p className="bg-white text-md font-medium text-black">
-                        Total Price: {price}
+                        Total Price: {currencyFormatter(price)}
                       </p>
                     </div>
                     <button

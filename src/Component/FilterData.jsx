@@ -26,7 +26,7 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
         <Search setName={setName} setData={setData} />
       </div>
       {/* <div className="grid md:grid-cols-5 xs:grid-cols-2 sm:ml-6 sm:grid-col-4 "> */}
-      <div className=" xs:grid xs:grid-cols-2 md:grid md:grid-cols-6 sm:grid-cols-3 flex flex-wrap md:ml-5  ">
+      <div className=" xs:grid xs:grid-cols-2 md:grid md:grid-cols-7 sm:grid-cols-3 flex flex-wrap md:ml-5  ">
         {/* show singal product on filter  */}
         {data && data.length > 0 ? (
           data.map((item) => {
@@ -39,7 +39,7 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
                     <img
                       className="w-full h-56 xs:w-32 xs:h-24 xs:m-3 xs:mx-4 md:w-36 md:h-28 md:mx-4 md:m-2 sm:w-40 sm:h-32 sm:m-8 rounded-lg bg-white"
                       src={item.image}
-                      alt={name} 
+                      alt={name}
                     />
                   </NavLink>
                   <div className="md:py-4 px-3 bg-white">
@@ -142,11 +142,13 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
             );
           })
         ) : (
-          <div className="text-center justify-center xs:w-[375px] md:w-[1220px] sm:w-[750px]">
-            <p className="xs:text-xl md:text-2xl">No results found.</p>
-            <p className="xs:text-sm md:text-md">
-              Please Check the spelling or try a differnet word
-            </p>
+          <div className="text-center justify-center items-center h-[100vh] w-[100vw]">
+            <div className="w-[50%] border-[1px] shadow-md  self-center m-auto bg-[#EDEDED] rounded-lg py-[70px]">
+              <p className="xs:text-xl md:text-3xl mb-3">No product found.</p>
+              <p className="xs:text-sm md:text-lg text-[gray]">
+                Please try a differnet search
+              </p>
+            </div>
           </div>
         )}
       </div>

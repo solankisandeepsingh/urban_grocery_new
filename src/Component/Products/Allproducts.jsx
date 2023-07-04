@@ -5,12 +5,20 @@ import CartQuantity from "../Button/CartQuantity";
 import axios from "axios";
 import { API_TOKEN } from "../Token/Token";
 import { useProductsStore } from "../zustand/useProductsStore";
+import { useLoaderState } from "../zustand/useLoaderState";
+import { useCartStore } from "../zustand/useCartStore";
+import { useUserStore } from "../zustand/useUserStore";
 
-function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
+
+function Allproducts({ name, setallCartItems, isOpen, setIsOpen }) {
   const {allProducts, setAllProducts} = useProductsStore();
   // const [allproduct, setShowAllProducts] = useState(mockProduct.data);
   const [allproduct, setShowAllProducts] = useState([]);
   console.log(allProducts, setAllProducts);
+  const { setisLoading } = useLoaderState();
+  const {allCartItems, setAllCartItems} = useCartStore();
+  const {userInfo :{user_id} } = useUserStore();
+
 
   let allshowProduct = () => {
     
@@ -24,6 +32,7 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
     bodyFormdata.append("get_all_products", "1");
     bodyFormdata.append("limit", "37");
 
+    setisLoading(true)
     axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/get-all-products.php",
@@ -32,15 +41,19 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
       )
       // .then((res) => setShowAllProducts(res.data.data))
 
-      .then((res) => setAllProducts(res.data.data))
+      .then((res) => {
+        setisLoading(false)   
+        return setAllProducts(res.data.data)})
 
-      .catch((err) => console.log(err));
+      .catch((err) =>{ 
+      setisLoading(false)   
+      return console.log(err)});
   };
   useEffect(() => {
     allshowProduct();
   }, []);
 
-  // const addItemHandler = (item) => {
+  // const allCartItemsHandler = (item) => {
   //   let config = {
   //     headers: {
   //       Authorization: `Bearer ${API_TOKEN}`,
@@ -63,8 +76,8 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
   //     )
   //     .then((res) => {
   //       console.log(res, "<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-  //       if (addItem.some((cartItem) => cartItem.id === item.id)) {
-  //         setAddItem((cart) =>
+  //       if (allCartItems.some((cartItem) => cartItem.id === item.id)) {
+  //         setallCartItems((cart) =>
   //           cart.map((data) =>
   //             data.id === item.id
   //               ? {
@@ -77,7 +90,7 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
   //         return;
   //       }
   
-  //       setAddItem((cart) => [...cart, { ...item, amount: 1 }]);
+  //       setallCartItems((cart) => [...cart, { ...item, amount: 1 }]);
   //     })
   //     .catch((error) => {
   //       console.log(error);
@@ -85,21 +98,20 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
   // };
 
 
-  const addItemHandler = (item, data) => {
-    // console.log("item1>>>>>>>>>>>>>>", addItem);
+  const allCartItemsHandler = (item, data) => {
+    // console.log("item1>>>>>>>>>>>>>>", allCartItems);
     console.log("item", item);
     const config = {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
       },
     };
-    console.log(data.id, "varaitn id");
-    console.log(item.id, "main id");
+    // console.log(data.id, "varaitn id");
+    // console.log(item.id, "main id");
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", "14");
-
+    bodyFormData.append("user_id", user_id);
     bodyFormData.append("product_id", `${data.id}`);
     bodyFormData.append("product_variant_id", `${item.id}`);
 
@@ -117,22 +129,23 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
       )
       .then((res) => {
         console.log(res, "res add item");
-        // setAddItem(res)
-        if (addItem.some((cartItem) => cartItem.product_id === item.id)) {
-          // console.log("addtiem", addItem);
-          setAddItem((cart) =>
-            cart.map((data) =>
-              data.product_id === item.id
-                ? {
-                    ...data,
-                    amount: data.amount + 1,
-                  }
-                : data
-            )
-          );
+        // setallCartItems(res)
+        if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
+          // console.log("addtiem", allCartItems);
+          let newArr = allCartItems.map((data) =>
+          data.product_id === item.id
+            ? {
+                ...data,
+                amount: data.amount + 1,
+              }
+            : data
+        )
+              console.log(newArr);
+        setAllCartItems(newArr);
           return;
         }
-        console.log(item.id, "Additem Id in product caraousel");
+        console.log(item.id, "allCartItems Id in product caraousel");
+
         let item1 = {
           amount: 1,
           discounted_price: item.discounted_price,
@@ -152,9 +165,15 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
 
           type: "packet",
           unit: "gm",
-          user_id: "14",
+          user_id: user_id,
         };
-        setAddItem((cart) => [...cart, { ...item1, amount: 1 }]);
+
+
+       let newArr = [...allCartItems, {...item1 , amount : 1}]
+        console.log(newArr);
+        // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
+        setAllCartItems(newArr);
+
       })
       .catch((error) => {
         console.log(error);
@@ -213,7 +232,7 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
                               {item.variants.some(
                                 (variant) => variant.stock > 0
                               ) ? (
-                                addItem.find(
+                                allCartItems.find(
                                   (i) => i.product_id === item.id
                                 ) ? (
                                   <>
@@ -221,21 +240,21 @@ function Allproducts({ name, addItem, setAddItem, isOpen, setIsOpen }) {
                                       {console.log(
                                         item,
                                         "Item",
-                                        addItem,
-                                        "addItem",
+                                        allCartItems,
+                                        "allCartItems",
                                         "In ProductCarousel, calling CartQuantity"
                                       )}
                                       <CartQuantity
                                         item={item}
-                                        setAddItem={setAddItem}
-                                        addItem={addItem}
+                                        // setallCartItems={setallCartItems}
+                                        // allCartItems={allCartItems}
                                       />
                                     </div>
                                   </>
                                 ) : (
                                   <button
                                     className="md:w-16 md:h-8 mb-3 xs:w-18 sm:ml-2 md:text-xs md:mt-2 xs:mt-2 sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
-                                    onClick={() => addItemHandler(data, item)}
+                                    onClick={() => allCartItemsHandler(data, item)}
                                   >
                                     Add
                                   </button>

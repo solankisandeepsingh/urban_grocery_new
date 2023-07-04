@@ -95,13 +95,15 @@ function Home({
                 </div>
               </div>
             </div>
+            
+            <FoodDelivery />
+
             <Category
               SubCategory={SubCategory}
               productDetails={productDetails}
               user_id={user_id}
             />
            
-              <FoodDelivery/>
           
             <ProductCarousel
               addItem={addItem}
