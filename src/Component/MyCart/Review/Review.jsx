@@ -1,6 +1,7 @@
 import React from "react";
 import { Aside } from "../../Aside/Aside";
 import { useCartStore } from "../../zustand/useCartStore";
+import { useUserStore } from "../../zustand/useUserStore";
 import { useNavigate } from "react-router";
 
 function Review({
@@ -18,6 +19,15 @@ function Review({
     setShowModal(false);
     // setShowForm(true)
   };
+  const {
+    addList,
+    deliveryAddress,
+  } = useUserStore();
+
+  let { address, area_name, city_name, country } = addList.find((item) => {
+    return item.id == deliveryAddress;
+  });
+
 
   return (
     <>
@@ -29,74 +39,79 @@ function Review({
                 <h2 className="text-2xl font-bold mb-3">Review Details</h2>
                 <div className="flex flex-col justify-between h-[90%]">
                   <div>
-                  {allCartItems.map((item) => {
-                    return (
-                      <div class="mt-3 bg-white  xs:p-4 2xs:p-2  ">
-                        <div class="flow-root">
-                          <ul
-                            role="list"
-                            class="-my-6 divide-y divide-gray-200"
-                          >
-                            <li class="flex py-6 bg-white">
-                              <div class=" bg-white md:h-12 md:w-12 xs:h-24 xs:w-24 sm:h-48 sm:w-48 flex-shrink-0 overflow-hidden rounded-md">
-                                <img
-                                  src={item.image}
-                                  alt="product"
-                                  class="h-full w-full object-cover object-center bg-white"
-                                />
-                              </div>
+                    {allCartItems.map((item) => {
+                      return (
+                        <div class="mt-3 bg-white  xs:p-4 2xs:p-2  ">
+                          <div class="flow-root">
+                            <ul
+                              role="list"
+                              class="-my-6 divide-y divide-gray-200"
+                            >
+                              <li class="flex py-6 bg-white">
+                                <div class=" bg-white md:h-12 md:w-12 xs:h-24 xs:w-24 sm:h-48 sm:w-48 flex-shrink-0 overflow-hidden rounded-md">
+                                  <img
+                                    src={item.image}
+                                    alt="product"
+                                    class="h-full w-full object-cover object-center bg-white"
+                                  />
+                                </div>
 
-                              <div class="bg-white ml-4 flex flex-1 flex-col truncate ...">
-                                <div class=" bg-white md:text-sm xs:text-sm sm:text-3xl font-semibold text-gray-900 ">
-                                  <p className="bg-white float-left truncate ...">
-                                    {item.name}
-                                  </p>
-                                  <br />
+                                <div class="bg-white ml-4 flex flex-1 flex-col truncate ...">
+                                  <div class=" bg-white md:text-sm xs:text-sm sm:text-3xl font-semibold text-gray-900 ">
+                                    <p className="bg-white float-left truncate ...">
+                                      {item.name}
+                                    </p>
+                                    <br />
 
-                                  <div className="flex justify-between mt-0.5">
-                                    <div className="flex gap-6 w-[70%]">
-                                      <div className=" w-1/5 text-left">
-                                        <p className=" ">
+                                    <div className="flex justify-between mt-0.5">
+                                      <div className="flex gap-6 w-[70%]">
+                                        <div className=" w-1/5 text-left">
+                                          <p className=" ">
+                                            {" "}
+                                            ₹{item.discounted_price}{" "}
+                                          </p>
+                                        </div>
+                                        <p class="bg-white text-gryColour">
                                           {" "}
-                                          ₹{item.discounted_price}{" "}
+                                          Qty : {item.amount}
+                                          {/* {() => setAmount(item.amount)} */}
                                         </p>
                                       </div>
                                       <p class="bg-white text-gryColour">
                                         {" "}
-                                        Qty : {item.amount}
+                                        Total :{" "}
+                                        {item.amount * item.discounted_price}
                                         {/* {() => setAmount(item.amount)} */}
                                       </p>
                                     </div>
-                                    <p class="bg-white text-gryColour">
-                                      {" "}
-                                      Total :{" "}
-                                      {item.amount * item.discounted_price}
-                                      {/* {() => setAmount(item.amount)} */}
-                                    </p>
                                   </div>
                                 </div>
-                              </div>
-                            </li>
-                          </ul>
-                          {/* {console.log(user_id, "><><><CHECK USER ID BOOLEAN><><><")} */}
+                              </li>
+                            </ul>
+                            {/* {console.log(user_id, "><><><CHECK USER ID BOOLEAN><><><")} */}
+                          </div>
                         </div>
-                      </div>
-                    );
-                    // <div className="flex gap-3">
-                    //           <img src={item.image} alt="" />
-                    //           <p className=""></p>
-                    //       </div>
-                  })}
+                      );
+                      // <div className="flex gap-3">
+                      //           <img src={item.image} alt="" />
+                      //           <p className=""></p>
+                      //       </div>
+                    })}
                   </div>
                   <div>
-                  <div className="mb-3 flex justify-between px-5 mt-5">
-                    <p className="bg-white text-md font-medium text- mt-5black">
-                      Total Items: {totalItem}
-                    </p>
-                    <p className="bg-white text-md font-medium text-black">
-                      Total Price: {price}
-                    </p>
-                  </div>
+                    <div>
+                      <p className="bg-white text-md font-medium text- mt-5black">
+                      Deliver to: {address + " " + area_name + " " + city_name + " " + country}
+                      </p>
+                    </div>
+                    <div className="mb-3 flex justify-between px-5 mt-5">
+                      <p className="bg-white text-md font-medium text- mt-5black">
+                        Total Items: {totalItem}
+                      </p>
+                      <p className="bg-white text-md font-medium text-black">
+                        Total Price: {price}
+                      </p>
+                    </div>
                     <button
                       onClick={() => {
                         handlePayment();

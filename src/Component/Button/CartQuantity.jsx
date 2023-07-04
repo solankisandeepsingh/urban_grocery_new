@@ -128,7 +128,7 @@ function CartQuantity({ item }) {
   };
 
   return (
-    <div className="rounded-lg bg-lime text-white gap-1 hover:bg-blue-700 font-bold px-2 md:h-[28px] xs:h-[28px]  md:w-14 xs:w-14 sm:w-[70px] sm:h-[36px] flex justify-between ">
+    <div className="rounded-lg bg-lime text-white gap-1 hover:bg-blue-700 font-bold px-2 md:h-[28px] xs:h-[28px] w-full sm:h-[36px] flex justify-between ">
       <button
         className="md:text-lg xs:text-sm sm:text-4xl"
         onClick={() => quantityDecrease()}

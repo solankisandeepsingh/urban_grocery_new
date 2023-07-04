@@ -232,7 +232,7 @@ function MyCart({
             ref={menuRef}
           >
             <div className="relative ">
-              <div className=" min-h-screen md:w-96 sm:w-screen xs:w-screen border-0 rounded-lg shadow-lg relative flex flex-col  bg-white outline-none focus:outline-none">
+              <div className="h-[97vh] min-h-screen md:w-96 sm:w-screen xs:w-screen border-0 rounded-lg shadow-lg relative flex flex-col  bg-white outline-none focus:outline-none">
                 <div className="bg-white flex items-start justify-between px-3 py-3 m-0  border-b border-light_gray shadow-sm">
                   <div className="mt-3 bg-white">
                     {showForm ? (
