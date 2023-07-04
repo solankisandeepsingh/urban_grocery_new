@@ -8,6 +8,7 @@ import { API_TOKEN } from "../../Token/Token";
 import { useCartStore } from "../../zustand/useCartStore";
 import { useUserStore } from "../../zustand/useUserStore";
 import { useLoaderState } from "../../zustand/useLoaderState";
+// import { useNavigate } from "react-router-dom";
 
 export const ProductCarousel = ({}) => {
   const { allCartItems, setAllCartItems } = useCartStore();
@@ -152,7 +153,7 @@ export const ProductCarousel = ({}) => {
   };
 
   return (
-    <div className="mt-14 pb-5">
+    <div className="mt-7 shadow-sm border border-[#e8e8e8] rounded-md p-5 bg-[#fcfff3]">
       <div className="xs:my-5 mt-20 flex justify-between">
         <div className="text-customBlack text-[24px]">
           <h1 className="font-okra font-600">All Proudcts</h1>
@@ -173,16 +174,14 @@ export const ProductCarousel = ({}) => {
             showAllProduct.map((item) => {
               return (
                 <>
-                  <div className="w-72 xs:w-40 xs:h-[265px] md:w-40 md:h-[235px] sm:h-[280px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green  bg-white">
-                    <NavLink
-                      to={`/subcategory-details/${item.category_name}/product-details/${item.id}`}
-                    >
+                  <div className="w-72 xs:w-40 xs:h-[265px] md:w-40 md:h-[235px] sm:h-[280px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green  bg-white cursor-pointer" onClick={()=>{
+                    navigate(`/subcategory-details/${item.category_name}/product-details/${item.id}`)
+                  }}>
                       <img
                         className="w-full h-56 xs:w-32 xs:h-32 xs:m-3 xs:ml-3.5 md:h-24 md:ml-[23px] md:w-28 md:mt-4 rounded-lg bg-white"
                         src={item.image}
                         alt={item.name}
                       />
-                    </NavLink>
                     <div className="py-4 xs:mb-[-10px]  md:mx-4 xs:mx-4 sm:mx-4 bg-white">
                       <p className="md:text-sm xs:text-sm sm:text-2xl font-medium bg-white truncate ...">
                         {item.name}

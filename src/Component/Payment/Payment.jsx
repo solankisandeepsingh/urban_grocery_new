@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 import { useCartStore } from "../zustand/useCartStore";
@@ -19,6 +19,7 @@ function Payment({ isOpen, setIsOpen }) {
     deliveryAddress,
   } = useUserStore();
   const { allCartItems, cartTotal } = useCartStore();
+  const navigate = useNavigate();
 
   let { address, area_name, city_name, country } = addList.find((item) => {
     return item.id == deliveryAddress;
@@ -63,6 +64,7 @@ function Payment({ isOpen, setIsOpen }) {
 
 
   const handleConfirmOrder = () => {
+    
     let config = {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
@@ -72,25 +74,25 @@ function Payment({ isOpen, setIsOpen }) {
     let cashOnData = new FormData();
     cashOnData.append("accesskey", "90336");
     cashOnData.append("place_order", "1");
-    // cashOnData.append("user_id", `${user_id}`);
-    cashOnData.append("user_id", "46");
-    // cashOnData.append("mobile", `${userInfo.mobile}`);
-    cashOnData.append("mobile", "+917042719917");
+    cashOnData.append("user_id", `${user_id}`);
+    // cashOnData.append("user_id", "46");
+    cashOnData.append("mobile", `${userInfo.mobile}`);
+    // cashOnData.append("mobile", "+917042719917");
     cashOnData.append("product_variant_id", JSON.stringify(varArr));
     cashOnData.append("quantity", JSON.stringify(qtyArr));
     cashOnData.append("delivery_charge", "0");
-    // cashOnData.append("total", `${cartTotal}`);
-    cashOnData.append("total", "790");
-    // cashOnData.append("final_total", `${cartTotal}`);
-    cashOnData.append("final_total", "790");
-    // cashOnData.append(
-    //   "address",
-    //   `${address + " " + area_name + " " + city_name + " " + country}`
-    // );
+    cashOnData.append("total", `${cartTotal}`);
+    // cashOnData.append("total", "790");
+    cashOnData.append("final_total", `${cartTotal}`);
+    // cashOnData.append("final_total", "790");
     cashOnData.append(
       "address",
-      "Indore"
+      `${address + " " + area_name + " " + city_name + " " + country}`
     );
+    // cashOnData.append(
+    //   "address",
+    //   "Indore"
+    // );
     cashOnData.append("latitude", "44.456321");
     cashOnData.append("longitude", "12.456987");
     // cashOnData.append("payment_method", `${chosenPayment}`);
@@ -114,6 +116,9 @@ function Payment({ isOpen, setIsOpen }) {
       )
       .then((res) => {
         console.log(res);
+        navigate('/success')
+        clearCartApi();
+       setAllCartItems([]);
       })
       .catch((err) => {
         console.log(err);
@@ -188,8 +193,7 @@ function Payment({ isOpen, setIsOpen }) {
   };
 
   const handleSuccessPay = () => {
-    clearCartApi();
-    setAllCartItems([]);
+    
   };
 
   return (

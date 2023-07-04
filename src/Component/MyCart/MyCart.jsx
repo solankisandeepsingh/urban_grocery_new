@@ -10,7 +10,9 @@ import { Login } from "../Login.jsx/Login";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
+import { BsChevronCompactRight} from "react-icons/bs";
 import Review from "./Review/Review";
+import { currencyFormatter } from "../../utils/utils";
 
 function MyCart({
   // allCartItems,
@@ -239,8 +241,8 @@ function MyCart({
             ref={menuRef}
           >
             <div className="relative ">
-              <div className=" min-h-screen md:w-96 sm:w-screen xs:w-screen border-0 rounded-lg shadow-lg relative flex flex-col  bg-white outline-none focus:outline-none">
-                <div className="bg-white flex items-start justify-between px-3 py-3 m-0  border-b border-light_gray shadow-sm">
+              <div className="h-[97vh] min-h-screen md:w-96 sm:w-screen xs:w-screen border-0 rounded-lg shadow-lg relative flex flex-col  bg-white outline-none focus:outline-none">
+                <div className="bg-white flex items-start justify-between p-3 m-0  border-b border-light_gray shadow-sm">
                   <div className="mt-3 bg-white">
                     {showForm ? (
                       <button className="back-button bg-white" onClick={back}>
@@ -249,7 +251,7 @@ function MyCart({
                     ) : null}
                   </div>
 
-                  <p className="py-2 text-xl font-semibold bg-white">My Cart</p>
+                  <p className="py-2 text-2xl font-semibold bg-white">My Cart</p>
                   <button
                     className="bg-transparent text-black float-right"
                     onClick={hideMOdal}
@@ -266,27 +268,27 @@ function MyCart({
                 <div className=" bg-white overflow-y-scroll md:h-[700px] xs:h-[758px] sm:h[985px] 2xs:h-[500px]">
                   {!showForm && allCartItems.length && !reviewPage
                     ? allCartItems &&
-                      allCartItems.map((item) => {
+                      allCartItems?.map((item) => {
                         return (
                           <>
-                            <div class="mt-3 bg-white md:p-5 xs:p-4 2xs:p-2  ">
+                            <div class="mt-3 bg-white   2xs:p-3 border-b-[2px] border-[#e8e8e8]">
                               <div class="flow-root">
                                 <ul
                                   role="list"
-                                  class="-my-6 divide-y divide-gray-200"
+                                  class=" divide-y divide-gray-200"
                                 >
-                                  <li class="flex py-6 bg-white">
+                                  <li class="flex p-2 bg-white items-center">
                                     <div class=" bg-white md:h-24 md:w-24 xs:h-24 xs:w-24 sm:h-48 sm:w-48 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                       <img
-                                        src={item.image}
+                                        src={item?.image}
                                         alt="product"
                                         class="h-full w-full object-cover object-center bg-white"
                                       />
                                     </div>
 
                                     <div class="bg-white ml-4 flex flex-1 flex-col truncate ...">
-                                      <div class=" bg-white md:text-sm xs:text-sm sm:text-3xl font-semibold text-gray-900 ">
-                                        <p className="bg-white float-left truncate ...">
+                                      <div class=" bg-white md:text-sm xs:text-sm sm:text-3xl  text-gray-900 ">
+                                        <p className="bg-white float-left	 truncate ...">
                                           {item.name}
                                         </p>
                                         <br />
@@ -296,14 +298,14 @@ function MyCart({
                                             <p className="text-lightgray font-semi-bold">
                                               {item.serve_for}
                                             </p>
-                                            <p className="text-">
+                                            <p className="text- text-lime">
                                               {" "}
                                               ₹{item.discounted_price}{" "}
                                             </p>
-                                            <p class="bg-white text-gryColour">
+                                            <p class="bg-white text-gryColour text-[12px] font-bold">
                                               {" "}
-                                              Qty : {item.amount}
-                                              {() => setAmount(item.amount)}
+                                              Qty : {item?.amount}
+                                              {() => setAmount(item?.amount)}
                                             </p>
                                           </div>
                                           <div className="flex items-center justify-center text-center">
@@ -319,7 +321,7 @@ function MyCart({
                                                 onClick={() =>
                                                   removeItemHandler(item)
                                                 }
-                                                className="bg-white md:mt-2 hover:bg-RedColour hover:bg-opacity-20 cursor-pointer mt-1 md:text-[18px] xs:text-sm sm:text-3xl text-red"
+                                                className="bg-white  hover:bg-RedColour hover:bg-opacity-20 cursor-pointer  md:text-[15px] xs:text-sm sm:text-3xl text-red"
                                               />
                                             </div>
                                           </div>
@@ -345,30 +347,36 @@ function MyCart({
                                   ) : (
                                     <>
                                       <button
-                                        className="flex justify-between bg-lime text-white fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
+                                        className="flex justify-between bg-lime p-3   border-3 text-white fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
                                         onClick={() => setNewUserLog(true)}
                                       >
-                                        <p className="p-2 bg-lime rounded-lg">
-                                          Total : ₹ {price}
+                                        <p className="p-2 bg-lime text-xl font-bold rounded-lg">
+                                          Total :  {currencyFormatter(price)}
                                         </p>
-                                        <p className="p-2 bg-lime rounded-lg">
+                                        <div className="flex items-center min-w-max justify-center">
+                                        <p className="p-2 bg-lime text-xl  rounded-lg">
                                           Proceed
                                         </p>
+                                        <BsChevronCompactRight className="te"/>
+                                        </div>
                                       </button>
                                     </>
                                   )
                                 ) : (
                                   <button
-                                    className="flex justify-between bg-lime text-white fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
+                                    className="flex justify-between bg-lime p-3 text-white fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
                                     onClick={formHandler}
                                   >
-                                    <p className="p-2 bg-lime rounded-lg">
-                                      Total : ₹ {price}
-                                    </p>
-                                    <p className="p-2 bg-lime rounded-lg">
-                                      Proceed
-                                    </p>
-                                  </button>
+                                    <p className="p-2 bg-lime text-xl font-bold rounded-lg">
+                                          Total :  {currencyFormatter(price)}
+                                        </p>
+                                        <div className="flex items-center justify-center min-w-max">
+                                        <p className="p-2 bg-lime text-xl  rounded-lg">
+                                          Proceed
+                                        </p>
+                                        <BsChevronCompactRight className="te"/>
+                                        </div>
+                                      </button>
                                 )}
                               </div>
                             </div>
