@@ -6,6 +6,10 @@ export const useUserStore = create(
     userInfo:  {user_id : 14,
                 name: "Login/Signup"},
     deliveryAddress : '',
+    addList: [],
+    setAddList: (data) => {
+      set(() => ({ addList: data }));
+    },
     setUserInfo: (data) => {
       set(() => ({ userInfo: data }));
     },

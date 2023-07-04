@@ -7,14 +7,31 @@ import { Aside } from "../Aside/Aside";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 
-
 function Payment({ isOpen, setIsOpen }) {
   const { clearCartApi, setAllCartItems } = useCartStore();
   const [paymentMethods, setPaymentMethods] = useState([]);
-  const[chosenPayment, setChosenPayment] = useState('');
- const {setisLoading} = useLoaderState();
- const {userInfo :{user_id}, userInfo } = useUserStore();
- const { allCartItems, cartTotal } = useCartStore();
+  const [chosenPayment, setChosenPayment] = useState("");
+  const { setisLoading } = useLoaderState();
+  const {
+    userInfo: { user_id },
+    userInfo,
+    addList,
+    deliveryAddress,
+  } = useUserStore();
+  const { allCartItems, cartTotal } = useCartStore();
+
+  let { address, area_name, city_name, country } = addList.find((item) => {
+    return item.id == deliveryAddress;
+  });
+
+  // console.log(`${address + ' '+ area_name + ' ' + city_name + ' '+ country}`)
+  let varArr = allCartItems.map((item) => {
+    return item.product_variant_id;
+  });
+  let qtyArr = allCartItems.map((item) => {
+    return `${item.amount}`;
+  });
+  console.log(varArr, qtyArr);
 
   useEffect(() => {
     let config = {
@@ -44,53 +61,55 @@ function Payment({ isOpen, setIsOpen }) {
       });
   }, []);
 
-  const handleCashOnDelivery = () => {
-    console.log("Cash on Delivery");
 
+  const handleConfirmOrder = () => {
     let config = {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
       },
     };
 
-    let varArr = allCartItems.map((item)=>{
-      return item.product_variant_id
-    })
-    let qtyArr = allCartItems.map((item)=>{
-      return item.amount
-    }) 
+    let cashOnData = new FormData();
+    cashOnData.append("accesskey", "90336");
+    cashOnData.append("place_order", "1");
+    // cashOnData.append("user_id", `${user_id}`);
+    cashOnData.append("user_id", "46");
+    // cashOnData.append("mobile", `${userInfo.mobile}`);
+    cashOnData.append("mobile", "+917042719917");
+    cashOnData.append("product_variant_id", ["850","854","877"]);
+    cashOnData.append("quantity", ["1","2","1"]);
+    cashOnData.append("delivery_charge", "0");
+    // cashOnData.append("total", `${cartTotal}`);
+    cashOnData.append("total", "790");
+    // cashOnData.append("final_total", `${cartTotal}`);
+    cashOnData.append("final_total", "790");
+    // cashOnData.append(
+    //   "address",
+    //   `${address + " " + area_name + " " + city_name + " " + country}`
+    // );
+    cashOnData.append(
+      "address",
+      "Indore"
+    );
+    cashOnData.append("latitude", "44.456321");
+    cashOnData.append("longitude", "12.456987");
+    // cashOnData.append("payment_method", `${chosenPayment}`);
+    cashOnData.append("payment_method", "COD");
+    // cashOnData.append("discount", "0");
+    // cashOnData.append("tax_percentage", "0");
+    // cashOnData.append("tax_amount", "0");
+    // cashOnData.append("area_id", "1");
+    // cashOnData.append("order_note", "home");
+    // cashOnData.append("order_from", "test ");
+    // cashOnData.append("local_pickup", "0");
+    // cashOnData.append("wallet_used", "false");
+    // cashOnData.append("status", "awaiting_payment ");
+    // cashOnData.append("delivery_time", "Today - Evening (4:00pm to 7:00pm)");
 
-    console.log(varArr, qtyArr);
-
-    let CashOnData = new FormData();
-    CashOnData.append("accesskey", "90336");
-    CashOnData.append("place_order", "1");
-    CashOnData.append("user_id", `${user_id}`);
-    CashOnData.append("mobile", `${userInfo.mobile}`);
-    CashOnData.append("product_variant_id", varArr);
-    CashOnData.append("quantity", qtyArr);
-    CashOnData.append("delivery_charge", "0");
-    CashOnData.append("total", `${cartTotal}`);
-    CashOnData.append("final_total", `${cartTotal}`);
-    CashOnData.append("address", "indore");
-    CashOnData.append("latitude", "44.456321");
-    CashOnData.append("longitude", "12.456987");
-    CashOnData.append("payment_method", "COD");
-    CashOnData.append("discount", "0");
-    CashOnData.append("tax_percentage", "0");
-    CashOnData.append("tax_amount", "0");
-    CashOnData.append("area_id", "1");
-    CashOnData.append("order_note", "home");
-    CashOnData.append("order_from", "test ");
-    CashOnData.append("local_pickup", "1 ");
-    CashOnData.append("wallet_used", "false");
-    CashOnData.append("status", "awaiting_payment ");
-    CashOnData.append("delivery_time", "Today - Evening (4:00pm to 7:00pm)");
-
-    axios
+    return axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/order-process.php",
-        CashOnData,
+        cashOnData,
         config
       )
       .then((res) => {
@@ -208,7 +227,7 @@ function Payment({ isOpen, setIsOpen }) {
                   <div>
                     <button
                       onClick={() => {
-                        // handleConfirmOrder();
+                        handleConfirmOrder();
                       }}
                       disabled={!chosenPayment}
                       className="bg-lime text-white hover:opacity-90 sm:w-full md:w-[90%] mx-4 sm:text-2xl md:text-lg px-4 py-1.5 rounded-lg"
