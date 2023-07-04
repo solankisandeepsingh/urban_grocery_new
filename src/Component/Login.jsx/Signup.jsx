@@ -7,14 +7,14 @@ import {
   FaPhoneAlt,
   FaUserCircle,
 } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export const Signup = () => {
+export const Signup = ({ setLoginFormModals }) => {
   const [userRegistraion, setUserRegistration] = useState({
     name: "",
     password: "",
@@ -22,6 +22,7 @@ export const Signup = () => {
   });
   const [SignUpPhone, setSignUpPhone] = useState([]);
   const [closeSignup, setCloseSignUp] = useState(true);
+  const navigate = useNavigate();
 
   const handleUserSignUp = (e) => {
     let name = e.target.name;
@@ -89,7 +90,10 @@ export const Signup = () => {
   };
 
   const handleCloseSignUp = () => {
-    setCloseSignUp(false);
+    // setCloseSignUp(false);
+    setCloseSignUp((prev) => !prev);
+    setLoginFormModals(false);
+    navigate("/");
   };
 
   return (

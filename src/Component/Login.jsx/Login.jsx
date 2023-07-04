@@ -215,7 +215,7 @@ export const Login = ({ setUser_id, setLoggedIn, getUserCarts,setNewUserLog }) =
           </div>
         </>
       )}
-      {showModals && <Signup />}
+      {showModals && <Signup setLoginFormModals={setLoginFormModals} />}
     </>
   );
 };

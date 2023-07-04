@@ -119,11 +119,13 @@ export const MyOrder = ({ addItem, user_id }) => {
                           <GiScooter className="text-[20px] mt-1" />
                         </div>
                         <div>
-                          <button className="shadow-lg text-[12px] border border-light_gray p-1 rounded-lg">
+                          <button className="shadow-lg text-[12px] mb-4 border border-light_gray p-1 rounded-lg">
                             Door Step Delivery
                           </button>
                         </div>
                       </div>
+
+                      <hr  className="mb-2 text-gryColour"/>
                     </div>
                   );
                 })}
