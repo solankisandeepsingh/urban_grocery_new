@@ -205,7 +205,9 @@ export const ProductCarousel = ({}) => {
                                   (i) => i.product_id === item.id
                                 ) ? (
                                   <>
-                                    <div className="md:mt-2 md:ml-6 xs:mt-2.5 sm:mt-4 ">
+                                    <div className="md:mt-2 md:ml-6 xs:mt-2.5 sm:mt-4" onClick={(e)=>{
+                                      console.log(e, "EVENT IN IMMEDIATE PARENT ELEMENT")
+                                    }}>
                                       <CartQuantity
                                         item={item}
                                         // setAllCartItems={setAllCartItems}
@@ -217,7 +219,9 @@ export const ProductCarousel = ({}) => {
                                 ) : (
                                   <button
                                     className="md:w-16 md:h-8 mb-3 xs:w-18 sm:ml-2 md:text-xs md:mt-2 xs:mt-2 sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
-                                    onClick={() => addItemHandler(data, item)}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      return addItemHandler(data, item)}}
                                   >
                                     Add
                                   </button>

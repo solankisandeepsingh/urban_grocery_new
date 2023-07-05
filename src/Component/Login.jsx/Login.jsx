@@ -11,16 +11,17 @@ import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 
 export const Login = ({
-  setUser_id,
-  setLoggedIn,
+  // setUser_id,
+  // setLoggedIn,
   getUserCarts,
   setNewUserLog,
+  setOpenLogin
 }) => {
   const [logins, setLogins] = useState({
     phone: "",
     password: "",
   });
-  const { allCartItems, config, clearCartApi } = useCartStore();
+  const { allCartItems, config, clearCartApi, } = useCartStore();
   const { setUserInfo } = useUserStore();
   const [showModals, setShowModals] = useState(false);
   const [LoginFormModals, setLoginFormModals] = useState(true);
@@ -34,8 +35,13 @@ export const Login = ({
   };
   const closeLoginModal = () => {
     setLoginFormModals(false);
+    if(setNewUserLog){
+      setNewUserLog(false) 
+    }
 
-    setNewUserLog(false);
+    if(setOpenLogin){
+      setOpenLogin(false)
+    }
     navigate("/");
   };
   console.log(allCartItems, "INSIDE LOGIN AFERT LOGIN");
@@ -53,7 +59,7 @@ export const Login = ({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setLoggedIn(true);
+    // setLoggedIn(true);
 
     if (!logins.phone || !logins.password) {
       toast.error("Please enter both phone and password!");
@@ -75,6 +81,7 @@ export const Login = ({
       .then((res) => {
         console.log(res);
 
+        setisLoading(false);
         if (!res.data.error) {
           setLoginData([...loginData, logins]);
           console.log("LOGIN THRU CART<><><><>");
@@ -85,8 +92,7 @@ export const Login = ({
           console.log("LOGIN RESPONSEEEEEEEEEEEEEE", res.data);
           setUserInfo(res.data);
           let newUserId = res?.data?.user_id;
-          setUser_id(newUserId);
-          setisLoading(false);
+          // setUser_id(newUserId);
           clearCart(newUserId);
 
           const addMultipleItems = () => {
@@ -134,7 +140,7 @@ export const Login = ({
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err, "LOGIN ERROR ><><><><><><><><><");
         setisLoading(false);
       });
 

@@ -16,6 +16,9 @@ export const useUserStore = create(
     setDeliveryAddress: (data) => {
       set(() => ({ deliveryAddress: data }));
     },
+    resetState: () => {
+      set(() => ({ deliveryAddress: '' }));
+    },
   }),
   {
     name: "userStore",

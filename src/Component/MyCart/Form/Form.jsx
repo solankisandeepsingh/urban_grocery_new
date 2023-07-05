@@ -7,12 +7,9 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { AddressForm } from "../../MyAddress/AddressForm";
 import { useUserStore } from "../../zustand/useUserStore";
 import { useLoaderState } from "../../zustand/useLoaderState";
-
-function Form({
-  user_id,
-  setReviewPage,
-  setShowForm,
-}) {
+import { AiOutlinePlusCircle } from "react-icons/ai";
+import { BsChevronCompactRight } from "react-icons/bs";
+function Form({ user_id, setReviewPage, setShowForm }) {
   console.log("setReviewPage>>>>>>>>>>>>>>>>>>>>", setReviewPage);
   // const [addList, setAddlist] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
@@ -76,11 +73,22 @@ function Form({
     <>
       {!formOpen && addList && (
         <>
+          <div className="p-3">
+            <div className="font-bold text-2xl ">Select Delivery Address:</div>
+
+            <div
+              onClick={() => handleOpenForm()}
+              className="border flex gap-3 hover:border-[2px] border-[2px] hover:border-lime py-2 cursor-pointer items-center justify-center border-light_gray m-2  rounded-md"
+            >
+              <AiOutlinePlusCircle className="text-lime text-[20px]" />
+              <p className="text-[#8d9191] text-lg">Add new address</p>
+            </div>
+          </div>
           <form>
             {addList.map((item) => {
               return (
                 <label>
-                  <div className="border flex border-light_gray px-3 py-3 mt-2 gap-1 m-4 rounded-md">
+                  <div className=" hover:border-[2px] border-[2px] hover:border-lime flex cursor-pointer border-light_gray px-3 py-3 mt-1 gap-1 m-4 rounded-md">
                     <div className="">
                       <input
                         type="radio"
@@ -128,11 +136,21 @@ function Form({
         // <NavLink to={`/payment`}>
         <>
           <button
+            className="flex justify-center mt-5 mb-1 bg-lime p-3 text-white fixed bottom-0 right-4 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
+            onClick={handleReview}
+          >
+            <div className="flex items-center justify-center min-w-max">
+              <p className="py-2 bg-lime text-xl  rounded-lg"> Review Order</p>
+              <BsChevronCompactRight className="te" />
+            </div>
+          </button>
+          {/* <button
             onClick={handleReview}
             className="bg-lime text-white hover:opacity-90 sm:w-full md:w-[90%] mx-4 sm:text-2xl md:text-lg px-4 py-1.5 rounded-lg"
           >
             Review Order
-          </button>
+          </button> */}
+
           {/* <button
             onClick={()=> {
               setReviewPage((prev)=> {
@@ -145,15 +163,14 @@ function Form({
             Change State
           </button> */}
         </>
-      ) : (
-        // </NavLink>
-        <button
-          onClick={() => handleOpenForm()}
-          className="bg-lime text-white hover:opacity-90 sm:w-full md:w-[90%] mx-4 sm:text-2xl md:text-lg px-4 py-1.5  rounded-lg "
-        >
-          Add new address
-        </button>
-      )}
+      ) : // </NavLink>
+      // <button
+      //   onClick={() => handleOpenForm()}
+      //   className="bg-lime text-white hover:opacity-90 sm:w-full md:w-[90%] mx-4 sm:text-2xl md:text-lg px-4 py-1.5  rounded-lg "
+      // >
+      //   Add new address
+      // </button>
+      null}
       {formOpen && (
         <AddressForm
           setFormOpen={setFormOpen}

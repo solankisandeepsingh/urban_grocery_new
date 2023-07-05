@@ -40,30 +40,29 @@ function App() {
   const [name, setName] = useState("");
   const [NavbarOpen, setNavbarOpen] = useState(true);
   const [price, setPrice] = useState(0);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [user_id, setUser_id] = useState("14");
 
   useEffect(() => {
     localStorage.setItem("NavbarOpen", JSON.stringify(NavbarOpen));
   }, [NavbarOpen]);
 
-  useEffect(() => {
-    const LoggedInStatus = () => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        setLoggedIn(true);
-      } else {
-        // dispatchLogin({ type: "LOGOUT" });
-        setLoggedIn(false);
-      }
-      setLoading(false);
-    };
-    LoggedInStatus();
-  });
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  // useEffect(() => {
+  //   const LoggedInStatus = () => {
+  //     const token = localStorage.getItem("token");
+  //     if (token) {
+  //       setLoggedIn(true);
+  //     } else {
+  //       // dispatchLogin({ type: "LOGOUT" });
+  //       setLoggedIn(false);
+  //     }
+  //     setLoading(false);
+  //   };
+  //   LoggedInStatus();
+  // });
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <>
@@ -76,7 +75,7 @@ function App() {
           setFormdata={setFormdata}
           setShowSearchBar={setShowSearchBar}
           name={name}
-          loggedIn={loggedIn}
+          // loggedIn={loggedIn}
           setName={setName}
           // loggedUsername={loggedUsername}
           NavbarOpen={NavbarOpen}
@@ -95,8 +94,8 @@ function App() {
             element={
               <Login
                 // dispatchLogin={dispatchLogin}
-                setLoggedIn={setLoggedIn}
-                user_id={user_id}
+                // setLoggedIn={setLoggedIn} 
+                // user_id={user_id}
                 setUser_id={setUser_id}
                 // handleLogin={handleLogin}
               />
