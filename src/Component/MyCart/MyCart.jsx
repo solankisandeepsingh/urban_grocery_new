@@ -10,7 +10,7 @@ import { Login } from "../Login.jsx/Login";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
-import { BsChevronCompactRight} from "react-icons/bs";
+import { BsChevronCompactRight } from "react-icons/bs";
 import Review from "./Review/Review";
 import { currencyFormatter } from "../../utils/utils";
 
@@ -38,6 +38,7 @@ function MyCart({
   const { allCartItems, setAllCartItems, setCartTotal } = useCartStore();
   const {
     userInfo: { user_id },
+    resetState,
   } = useUserStore();
   const { setisLoading } = useLoaderState();
 
@@ -132,6 +133,7 @@ function MyCart({
   };
 
   const handleCloseModal = () => {
+    resetState();
     setPayment(false);
     setReviewPage(false);
   };
@@ -251,7 +253,9 @@ function MyCart({
                     ) : null}
                   </div>
 
-                  <p className="py-2 text-2xl font-semibold bg-white">My Cart</p>
+                  <p className="py-2 text-2xl font-semibold bg-white">
+                    My Cart
+                  </p>
                   <button
                     className="bg-transparent text-black float-right"
                     onClick={hideMOdal}
@@ -268,16 +272,23 @@ function MyCart({
                 <div className=" bg-white overflow-y-scroll md:h-[700px] xs:h-[758px] sm:h[985px] 2xs:h-[500px]">
                   {!showForm && allCartItems.length && !reviewPage
                     ? allCartItems &&
-                      allCartItems?.map((item) => {
+                      allCartItems?.map((item, index) => {
+                        console.log(item, "<><><><><><><><><><><><><><><");
                         return (
                           <>
-                            <div class="mt-3 bg-white   2xs:p-3 border-b-[2px] border-[#e8e8e8]">
+                            <div
+                              class={`mt-3 bg-white ${
+                                index === allCartItems.length - 1
+                                  ? "mb-[80px]"
+                                  : ""
+                              }  2xs:p-3 border-b-[2px] border-[#e8e8e8]`}
+                            >
                               <div class="flow-root">
-                                <ul
+                                <div
                                   role="list"
-                                  class=" divide-y divide-gray-200"
+                                  class=" divide-y divide-gray-200 "
                                 >
-                                  <li class="flex p-2 bg-white items-center">
+                                  <div class="flex p-2 bg-white items-center">
                                     <div class=" bg-white md:h-24 md:w-24 xs:h-24 xs:w-24 sm:h-48 sm:w-48 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                       <img
                                         src={item?.image}
@@ -304,7 +315,8 @@ function MyCart({
                                             </p>
                                             <p class="bg-white text-gryColour text-[12px] font-bold">
                                               {" "}
-                                              Qty : {item?.amount}
+                                              {item?.measurement + " "}
+                                              {item?.unit}
                                               {() => setAmount(item?.amount)}
                                             </p>
                                           </div>
@@ -328,18 +340,18 @@ function MyCart({
                                         </div>
                                       </div>
                                     </div>
-                                  </li>
-                                </ul>
+                                  </div>
+                                </div>
                                 {/* {console.log(user_id, "><><><CHECK USER ID BOOLEAN><><><")} */}
                                 {user_id === 14 ? (
                                   newUserLog ? (
                                     <Login
-                                      setLoggedIn={setLoggedIn}
-                                      dispatchLogin={dispatchLogin}
-                                      setUser_id={setUser_id}
+                                      // setLoggedIn={setLoggedIn}
+                                      // dispatchLogin={dispatchLogin}
+                                      // setUser_id={setUser_id}
                                       user_id={user_id}
                                       setNewUserLog={setNewUserLog}
-                                      loggedIn={loggedIn}
+                                      // loggedIn={loggedIn}
                                       // handleLogin={handleLogin}
                                       // allCartItems={allCartItems}
                                       getUserCarts={getUserCarts}
@@ -347,36 +359,36 @@ function MyCart({
                                   ) : (
                                     <>
                                       <button
-                                        className="flex justify-between bg-lime p-3   border-3 text-white fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
+                                        className="flex justify-between bg-lime p-3 mt-5 mb-1 border-3 text-white fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
                                         onClick={() => setNewUserLog(true)}
                                       >
                                         <p className="p-2 bg-lime text-xl font-bold rounded-lg">
-                                          Total :  {currencyFormatter(price)}
+                                          Total : {currencyFormatter(price)}
                                         </p>
                                         <div className="flex items-center min-w-max justify-center">
-                                        <p className="p-2 bg-lime text-xl  rounded-lg">
-                                          Proceed
-                                        </p>
-                                        <BsChevronCompactRight className="te"/>
+                                          <p className="p-2 bg-lime text-xl  rounded-lg">
+                                            Proceed
+                                          </p>
+                                          <BsChevronCompactRight className="te" />
                                         </div>
                                       </button>
                                     </>
                                   )
                                 ) : (
                                   <button
-                                    className="flex justify-between bg-lime p-3 text-white fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
+                                    className="flex justify-between mt-5 mb-1 bg-lime p-3 text-white fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
                                     onClick={formHandler}
                                   >
                                     <p className="p-2 bg-lime text-xl font-bold rounded-lg">
-                                          Total :  {currencyFormatter(price)}
-                                        </p>
-                                        <div className="flex items-center justify-center min-w-max">
-                                        <p className="p-2 bg-lime text-xl  rounded-lg">
-                                          Proceed
-                                        </p>
-                                        <BsChevronCompactRight className="te"/>
-                                        </div>
-                                      </button>
+                                      Total : {currencyFormatter(price)}
+                                    </p>
+                                    <div className="flex items-center justify-center min-w-max">
+                                      <p className="p-2 bg-lime text-xl  rounded-lg">
+                                        Proceed
+                                      </p>
+                                      <BsChevronCompactRight className="te" />
+                                    </div>
+                                  </button>
                                 )}
                               </div>
                             </div>

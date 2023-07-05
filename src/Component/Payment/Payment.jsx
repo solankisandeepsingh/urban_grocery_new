@@ -6,6 +6,10 @@ import { useCartStore } from "../zustand/useCartStore";
 import { Aside } from "../Aside/Aside";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
+import { BsCashStack } from "react-icons/bs";
+// import {  SiRazorpay } from "../react-icons/si";
+
+
 
 function Payment({ isOpen, setIsOpen }) { 
   const { clearCartApi, setAllCartItems } = useCartStore();
@@ -179,6 +183,10 @@ function Payment({ isOpen, setIsOpen }) {
       labelFor: "paytm",
     },
   ];
+  // const methodIcons = {
+  //   cod_payment_method : "as",
+  //   razorpay_payment_method : 
+  // }
   const handleCreditCardSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -205,14 +213,14 @@ function Payment({ isOpen, setIsOpen }) {
         <div className=" xs:w-full">
           <div>
             <div className="h-[700px] flex items-center justify-center">
-              <div className="max-w-md w-full p-6  rounded-lg shadow-md">
+              <div className="max-w-md w-full p-6 h-[40vh]  rounded-lg shadow-md">
                 <h2 className="text-2xl font-bold mb-3">Payment Details</h2>
                 <div className="mb-3">
                   Select Payment Method
                   {paymentOptionsArray.map((item) => {
                     return (
                       paymentMethods[`${item.id}`] == 1 && (
-                        <div key={item.id} className="flex items-center">
+                        <div key={item.id} className="flex items-center py-2">
                           {console.log(paymentMethods[`${item.id}`])}
                           <input
                             className="mr-2 leading-tight"
@@ -223,6 +231,7 @@ function Payment({ isOpen, setIsOpen }) {
                               handlePaymentMethod(item.code);
                             }}
                           />
+                          {/* <BsCashStack /> */}
                           <label htmlFor={item.labelFor}>{item.label}</label>
                         </div>
                       )
@@ -234,7 +243,7 @@ function Payment({ isOpen, setIsOpen }) {
                         handleConfirmOrder();
                       }}
                       disabled={!chosenPayment}
-                      className="bg-lime text-white hover:opacity-90 sm:w-full md:w-[90%] mx-4 sm:text-2xl md:text-lg px-4 py-1.5 rounded-lg"
+                      className="bg-lime text-white my-4 hover:opacity-90 sm:w-full md:w-[90%] mx-4 sm:text-2xl md:text-lg px-4 py-1.5 rounded-lg"
                     >
                       Proceed to Pay
                     </button>
