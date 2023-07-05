@@ -31,7 +31,7 @@ export const Faq = () => {
       })
       .catch((err) => {
         console.log(err);
-        setisLoading(false)
+        setisLoading(false);
       });
   };
 
@@ -39,22 +39,20 @@ export const Faq = () => {
     handleFaq();
   }, []);
   return (
-    <div>
-      <div class="md:flex md:flex-row">
-        <div class="xs:w-72 xs:py-20 xs:px-1 md:h-full md:w-1/4 md:px-12  md:mt-10">
+    <>
+      <div className="flex flex-row justify-evenly mt-28">
+        <div className="w-[35%] h-full ">
           <Aside />
         </div>
 
-        <div class="md:w-3/4 xs:w-full md:mt-[-30px] xs:mt-[-270px]">
-          <div class="md:mt-28 ">
-            <div class="bg-white">
-              <p class="md:text-md mt-72 text-center justify-center items-center">
-                {faqData}
-              </p>
-            </div>
+        <div class="w-[60%]">
+          <div class="bg-white">
+            <p class="md:text-md  text-center justify-center items-center">
+              {faqData}
+            </p>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

@@ -111,6 +111,7 @@ function Payment({ isOpen, setIsOpen }) {
     // cashOnData.append("wallet_used", "false");
     // cashOnData.append("status", "awaiting_payment ");
     // cashOnData.append("delivery_time", "Today - Evening (4:00pm to 7:00pm)");
+    setisLoading(true);
 
     return axios
       .post(
@@ -123,10 +124,12 @@ function Payment({ isOpen, setIsOpen }) {
         navigate('/success')
         clearCartApi();
        setAllCartItems([]);
+       setisLoading(false);
       })
       .catch((err) => {
         console.log(err);
         console.log(err.message);
+        setisLoading(false);
       });
   };
 

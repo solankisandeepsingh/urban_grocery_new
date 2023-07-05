@@ -120,6 +120,7 @@ function Allproducts({ name, setallCartItems, isOpen, setIsOpen }) {
     bodyFormData.append("qty", 1);
 
     // console.log("item", qtys);
+    setisLoading(true);
 
     axios
       .post(
@@ -128,6 +129,7 @@ function Allproducts({ name, setallCartItems, isOpen, setIsOpen }) {
         config
       )
       .then((res) => {
+        setisLoading(false);
         console.log(res, "res add item");
         // setallCartItems(res)
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
@@ -142,6 +144,7 @@ function Allproducts({ name, setallCartItems, isOpen, setIsOpen }) {
         )
               console.log(newArr);
         setAllCartItems(newArr);
+     
           return;
         }
         console.log(item.id, "allCartItems Id in product caraousel");
@@ -173,10 +176,12 @@ function Allproducts({ name, setallCartItems, isOpen, setIsOpen }) {
         console.log(newArr);
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
         setAllCartItems(newArr);
+        setisLoading(false);
 
       })
       .catch((error) => {
         console.log(error);
+        setisLoading(false);
       });
   };
 

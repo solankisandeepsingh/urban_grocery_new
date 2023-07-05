@@ -13,6 +13,7 @@ function Review({
   totalItem,
   setReviewPage,
   setShowModal,
+  setNavbarOpen
 
 }) {
   const { allCartItems } = useCartStore();
@@ -21,7 +22,7 @@ function Review({
     navigate("/payment");
     setReviewPage(false);
     setShowModal(false);
-    
+    setNavbarOpen(false)    
   };
   const { addList, deliveryAddress } = useUserStore();
   

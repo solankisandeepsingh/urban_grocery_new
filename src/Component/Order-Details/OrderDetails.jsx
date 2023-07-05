@@ -12,14 +12,14 @@ export const OrderDetails = ({ setDetailsOrder, orderData, orderId }) => {
   console.log(orderId, "orderId");
   return (
     <>
-      <div className="w-[66%]">
+      <div className="md:w-[60%]  border border-light_gray p-5 xs:w-full ">
         {orderId &&
           orderData.map((item) => {
             console.log(item.id, "itemmmmmmmmmmmmmmm");
             if (item.id === orderId)
               return (
-                <div className=" w-[100%]">
-                  <div className="mt-[80px] flex">
+                <div className="">
+                  <div className=" flex">
                     <span>
                       <FaArrowLeft
                         className="bg-white text-lime cursor-pointer"
@@ -74,7 +74,7 @@ export const OrderDetails = ({ setDetailsOrder, orderData, orderId }) => {
                         })}
                     </div>
 
-                    <hr />
+                    <hr className=" border-b border-light_gray" />
 
                     <div className="flex flex-col list-none mt-2 mb-4 ">
                       <h2 className="font-bold">Price-Details</h2>
@@ -134,7 +134,7 @@ export const OrderDetails = ({ setDetailsOrder, orderData, orderId }) => {
                       </li>
                     </div>
 
-                    <hr className="mt-2" />
+                    <hr className="mt-2 border-b border-light_gray" />
                     <div className="mt-2">
                       <h2 className="font-bold">Other-Details</h2>
                       <li className=" cursor-pointer list-none">
@@ -172,17 +172,16 @@ export const OrderDetails = ({ setDetailsOrder, orderData, orderId }) => {
                   </div>
                   <hr className="mt-2" />
 
-                  <div className="mt-2">
+                 { item.status_name.length > 0 && <div className="mt-2">
                     <h2 className="font-bold">Order-Staus</h2>
                     <p className="text-center">Order</p>
-                    <p className="text-center font-bold">Status: {item.status_name}</p>
-                    {/* <div className="flex justify-center items-center text-lime text-[30px]">
-                      <AiFillEye className="text-center" />
-                    </div> */}
+                    <p className="text-center font-bold">
+                      Status: {item.status_name}
+                    </p>
 
                     <p className="text-center">{item.status_time}</p>
-                  </div>
-                  
+                  </div>}
+
                   {/* <div className="flex justify-around mb-2">
                     <div>
                       <button className="bg-lime rounded-lg p-2 text-white ">Re-Order</button>

@@ -39,7 +39,7 @@ export const MyOrder = ({ addItem, user_id }) => {
       })
       .catch((err) => {
         console.log(err);
-        setisLoading(false)
+        setisLoading(false);
       });
   };
 
@@ -66,13 +66,14 @@ export const MyOrder = ({ addItem, user_id }) => {
 
   return (
     <>
-      <div className="md:flex md:flex-row justify-evenly">
-        <div className="xs:w-72 xs:py-20 xs:px-1 md:h-full md:w-[25%] md:px-12 md:mt-10">
+      {/* <div className="flex flex-row justify-evenly"> */}
+      <div className="flex flex-row justify-evenly mt-28">
+        <div className="w-[35%] h-full ">
           <Aside />
         </div>
 
         {!detailsOrder ? (
-          <div className="md:w-[60%] ml-16 xs:w-full md:mt-28">
+          <div className="md:w-[60%] xs:w-full ">
             <div className=" border border-light_gray p-4">
               {orderData &&
                 orderData.map((item) => {
@@ -120,14 +121,28 @@ export const MyOrder = ({ addItem, user_id }) => {
                         </div>
                       </div>
 
-                      <div className="flex shadow-lg gap-2 mt-2 justify-end ">
-                        <div className="flex">
-                          <div className=" text-[12px] mb-4 border border-light_gray p-1 rounded-lg">
-                          <GiScooter className="text-[20px] mt-1" />
-                           <p>Door Step Delivery</p> 
+                      <div className="flex justify-end ">
+                        <div className="flex justify-center items-center border mb-4  m-2 border-light_gray p-1 rounded-lg w-28 text-[12px]" >
+                          <p>{item.active_status}</p>
+                        </div>
+                        <div className="flex shadow-lg gap-2 mt-2 w-36 text-[12px] mb-4 border border-light_gray p-1 rounded-lg">
+                          <div className="text-[18px]">
+                            <GiScooter />
+                          </div>
+                          <div>
+                            <p>Door Step Delivery</p>
                           </div>
                         </div>
                       </div>
+
+                      {/* <div className="flex shadow-lg gap-2 mt-2 justify-end ">
+                        <div className="flex">
+                          <div className=" text-[12px] mb-4 border border-light_gray p-1 rounded-lg">
+                            <GiScooter className="text-[20px] mt-1" />
+                            <p>Door Step Delivery</p>
+                          </div>
+                        </div>
+                      </div> */}
 
                       <hr className="mb-2 text-gryColour" />
                     </div>

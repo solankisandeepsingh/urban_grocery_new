@@ -43,20 +43,20 @@ export const About = () => {
     return myString.replace(/(<([^>]+)>)/gi, "");
   }
   return (
-    <div>
-      <div class="md:flex md:flex-row ">
-        <div class="xs:w-72 bg-white xs:py-20 xs:px-1 md:h-full md:w-1/4 md:px-12  md:mt-10">
+    <>
+      <div className="flex flex-row justify-evenly mt-28">
+        <div className="w-[35%] h-full ">
           <Aside />
         </div>
 
-        <div class="md:w-3/4 ml-16 xs:w-full">
-          <div class="md:mt-36">
+        <div class="w-[60%]">
+          
             <div class="bg-white">
               <p class="text-lg font-bold text-black">{stripHTML(about)}</p>
-            </div>
+            
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

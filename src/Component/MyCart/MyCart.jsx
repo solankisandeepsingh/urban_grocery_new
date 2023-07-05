@@ -428,6 +428,7 @@ function MyCart({
                       back={back}
                       setShowModal={setShowModal}
                       setReviewPage={setReviewPage}
+                      setNavbarOpen={setNavbarOpen}
                       price={price}
                       totalItem={totalItem}
                     />

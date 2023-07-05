@@ -5,17 +5,17 @@ import { NavLink } from 'react-router-dom'
 
 export const Aside = () => {
   return (
-    <div>
-         <div className="md:w-1/4 ">
-          <ul className="font-medium xs:invisible md:visible md:fixed w-[22%]">
+    <>
+         <div className='max-w-[100%]'>
+          <ul className="font-medium w-full">
             <li className="border border-light_gray mb-2 shadow-lg">
               <NavLink to={"/address"}>
                 <a
                   to="/address"
-                  className="flex items-center p-2 text-gray-900 rounded-lg  dark:hover:bg-gray-700"
+                  className="flex items-center p-3 text-gray-900 rounded-lg dark:hover:bg-gray-700"
                 >
-                  <FaHome className="text-darkgray text-lg" />
-                  <span className="ml-3 text-light_gray xs:text-xs font-light">
+                  <FaHome className="text-darkgray text-[25px]" />
+                  <span className="ml-3 text-light_gray  text-lg font-light">
                     My Address
                   </span>
                 </a>
@@ -25,10 +25,10 @@ export const Aside = () => {
               <NavLink to={"/myorder"}>
                 <a
                   to="/myorder"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  <FaRegAddressBook className="text-darkgray text-lg" />
-                  <span className="flex-1 ml-3 text-lightgray xs:text-xs font-thin">
+                  <FaRegAddressBook className="text-darkgray text-[25px]" />
+                  <span className="flex-1 ml-3 text-lightgray text-lg  font-thin">
                     My Order
                   </span>
                 </a>
@@ -38,10 +38,10 @@ export const Aside = () => {
               <NavLink to={"/about"}>
                 <a
                   to="#"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  <FaBell className="text-darkgray text-lg" />
-                  <span className="flex-1 ml-3  text-lightgray xs:text-xs font-normal">
+                  <FaBell className="text-darkgray text-[25px]" />
+                  <span className="flex-1 ml-3  text-lightgray text-lg  font-normal">
                     About_Us
                   </span>
                 </a>
@@ -52,10 +52,10 @@ export const Aside = () => {
               <NavLink to={"/contact"}>
                 <a
                   to="#"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  <FaFileContract className="text-darkgray text-lg" />
-                  <span className="flex-1 ml-3  text-lightgray xs:text-xs font-normal">
+                  <FaFileContract className="text-darkgray text-[25px]" />
+                  <span className="flex-1 ml-3  text-lightgray text-lg  font-normal">
                     Contact
                   </span>
                 </a>
@@ -67,7 +67,7 @@ export const Aside = () => {
               <NavLink to={"/payment"}>
                 <a
                   to="#"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   <AiTwotoneBank className="text-darkgray text-lg" />
                   <span className="flex-1 ml-3  text-lightgray xs:text-xs font-normal">
@@ -81,10 +81,10 @@ export const Aside = () => {
               <NavLink to={"/wallet"}>
                 <a
                   to="/wallet"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  <AiTwotoneWallet className="text-darkgray text-lg" />
-                  <span className="flex-1 ml-3  text-lightgray xs:text-xs font-normal">
+                  <AiTwotoneWallet className="text-darkgray text-[25px]" />
+                  <span className="flex-1 ml-3  text-lightgray text-lg  font-normal">
                     My Wallet
                   </span>
                 </a>
@@ -95,10 +95,10 @@ export const Aside = () => {
                 <a
                   to="#"
           
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  <AiTwotoneSafetyCertificate className="text-darkgray text-lg" />
-                  <span className="flex-1 ml-3  text-lightgray xs:text-xs font-normal">
+                  <AiTwotoneSafetyCertificate className="text-darkgray text-[25px]" />
+                  <span className="flex-1 ml-3  text-lightgray text-lg  font-normal">
                     Privacy
                   </span>
                 </a>
@@ -109,10 +109,10 @@ export const Aside = () => {
               <NavLink to={"/conditons"}>
                 <a
                   to="#"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  <FaBell className="text-darkgray text-lg" />
-                  <span className="flex-1 ml-3  text-lightgray xs:text-xs font-normal">
+                  <FaBell className="text-darkgray text-[25px]" />
+                  <span className="flex-1 ml-3  text-lightgray text-lg  font-normal">
                     Term & Conditons
                   </span>
                 </a>
@@ -123,10 +123,10 @@ export const Aside = () => {
               <NavLink to={"/faq"}>
                 <a
                   to="#"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  <FaFoursquare className="text-darkgray text-lg" />
-                  <span className="flex-1 ml-3  text-lightgray xs:text-xs font-normal">
+                  <FaFoursquare className="text-darkgray text-[25px]" />
+                  <span className="flex-1 ml-3  text-lightgray text-lg  font-normal">
                     FAQ
                   </span>
                 </a>
@@ -134,6 +134,6 @@ export const Aside = () => {
             </li>
           </ul>
         </div>
-    </div>
+    </>
   )
 }
