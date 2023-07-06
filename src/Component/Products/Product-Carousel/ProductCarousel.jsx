@@ -8,7 +8,10 @@ import { API_TOKEN } from "../../Token/Token";
 import { useCartStore } from "../../zustand/useCartStore";
 import { useUserStore } from "../../zustand/useUserStore";
 import { useLoaderState } from "../../zustand/useLoaderState";
-// import { useNavigate } from "react-router-dom";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { useFavStore } from "../../zustand/useFavStore";
+
+
 
 export const ProductCarousel = ({}) => {
   const { allCartItems, setAllCartItems } = useCartStore();
@@ -19,8 +22,11 @@ export const ProductCarousel = ({}) => {
     userInfo: { user_id },
   } = useUserStore();
   const { setisLoading } = useLoaderState();
+  const {allFavItems,setAllFavItems} = useFavStore();
 
-  const productCarousels = () => {
+  const [fav, setFav] = useState();
+
+  const getAllProducts = () => {
     let config = {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
@@ -48,8 +54,8 @@ export const ProductCarousel = ({}) => {
   };
 
   useEffect(() => {
-    productCarousels();
-  }, []);
+    getAllProducts();
+  }, [user_id]);
 
   const responsive = {
     superLargeDesktop: {
@@ -70,7 +76,30 @@ export const ProductCarousel = ({}) => {
       items: 2,
     },
   };
+  const handleAddFavorite = (data) => {
+    let config = {
+      headers :{
+        Authorization : `Bearer ${API_TOKEN}`
+      }
+    }
 
+    let favData = new FormData();
+    favData.append("accesskey","90336")
+    favData.append("add_to_favorites","1")
+    favData.append("user_id",user_id)
+    favData.append("product_id",data.product_id)
+
+    axios.post(`https://grocery.intelliatech.in/api-firebase/favorites.php`,
+    
+    favData,
+    config
+    ).then((res)=>{
+      console.log(res,"favdata")
+    }).catch((err)=>{
+      console.log(err);
+    })
+
+  };
   const addItemHandler = (item, data) => {
     console.log("item", item);
     const config = {
@@ -174,14 +203,19 @@ export const ProductCarousel = ({}) => {
             showAllProduct.map((item) => {
               return (
                 <>
-                  <div className="w-72 xs:w-40 xs:h-[265px] md:w-40 md:h-[235px] sm:h-[280px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green  bg-white cursor-pointer" onClick={()=>{
-                    navigate(`/subcategory-details/${item.category_name}/product-details/${item.id}`)
-                  }}>
-                      <img
-                        className="w-full h-56 xs:w-32 xs:h-32 xs:m-3 xs:ml-3.5 md:h-24 md:ml-[23px] md:w-28 md:mt-4 rounded-lg bg-white"
-                        src={item.image}
-                        alt={item.name}
-                      />
+                  <div
+                    className="w-72 relative xs:w-40 xs:h-[265px] md:w-40 md:h-[235px] sm:h-[280px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green  bg-white cursor-pointer"
+                    onClick={() => {
+                      navigate(
+                        `/subcategory-details/${item.category_name}/product-details/${item.id}`
+                      );
+                    }}
+                  >
+                    <img
+                      className="w-full h-56 xs:w-32 xs:h-32 xs:m-3 xs:ml-3.5 md:h-24 md:ml-[23px] md:w-28 md:mt-4 rounded-lg bg-white"
+                      src={item.image}
+                      alt={item.name}
+                    />
                     <div className="py-4 xs:mb-[-10px]  md:mx-4 xs:mx-4 sm:mx-4 bg-white">
                       <p className="md:text-sm xs:text-sm sm:text-2xl font-medium bg-white truncate ...">
                         {item.name}
@@ -189,8 +223,33 @@ export const ProductCarousel = ({}) => {
                     </div>
                     {item &&
                       item.variants.map((data) => {
+
+                        // {console.log(data ,"variatne data")}
                         return (
                           <div className="md:flex md:justify-evenly sm:flex xs:flex xs:justify-between xs:mr-4">
+                            {console.log(allFavItems.find((fav)=>{
+                              console.log(fav.id, item.id, "HEREEEEEEEEEEEEE<><><><><><>");
+                               return fav.id === item.id
+                            }))};
+
+                            {(user_id != 14 && allFavItems.find((fav)=>{
+                               return fav.id === item.id
+                            })) 
+                             
+                            ? 
+                            <FaHeart
+                              className="text-red absolute top-2 text-[49px] right-2 "
+                              // onClick={}
+                            /> :
+                          
+                            <FaRegHeart
+                              className="text-lime absolute top-2 right-2"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleAddFavorite(data)}}
+                            />
+                          }
+                          
                             <div className=" xs:text-left  sm:mt-2 md:mt-[15px] md:mx-4 xs:mx-4 sm:mx-4 md:text-left ">
                               <p className="2xs:text-base xs:text-sm t sm:text-xl  xs:mt-4 md:mt-[-3px] sm:mt-[12px] md:text-sm text-gryColour font-light bg-white">
                                 ₹{data.price}{" "}
@@ -205,9 +264,15 @@ export const ProductCarousel = ({}) => {
                                   (i) => i.product_id === item.id
                                 ) ? (
                                   <>
-                                    <div className="md:mt-2 md:ml-6 xs:mt-2.5 sm:mt-4" onClick={(e)=>{
-                                      console.log(e, "EVENT IN IMMEDIATE PARENT ELEMENT")
-                                    }}>
+                                    <div
+                                      className="md:mt-2 md:ml-6 xs:mt-2.5 sm:mt-4"
+                                      onClick={(e) => {
+                                        console.log(
+                                          e,
+                                          "EVENT IN IMMEDIATE PARENT ELEMENT"
+                                        );
+                                      }}
+                                    >
                                       <CartQuantity
                                         item={item}
                                         // setAllCartItems={setAllCartItems}
@@ -221,7 +286,8 @@ export const ProductCarousel = ({}) => {
                                     className="md:w-16 md:h-8 mb-3 xs:w-18 sm:ml-2 md:text-xs md:mt-2 xs:mt-2 sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
                                     onClick={(e) => {
                                       e.stopPropagation();
-                                      return addItemHandler(data, item)}}
+                                      return addItemHandler(data, item);
+                                    }}
                                   >
                                     Add
                                   </button>

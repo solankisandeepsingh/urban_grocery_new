@@ -9,25 +9,27 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
+import { useFavStore } from "../zustand/useFavStore";
 
 export const Login = ({
   // setUser_id,
   // setLoggedIn,
   getUserCarts,
   setNewUserLog,
-  setOpenLogin
+  setOpenLogin,
 }) => {
   const [logins, setLogins] = useState({
     phone: "",
     password: "",
   });
-  const { allCartItems, config, clearCartApi, } = useCartStore();
+  const { allCartItems, config, clearCartApi } = useCartStore();
   const { setUserInfo } = useUserStore();
   const [showModals, setShowModals] = useState(false);
   const [LoginFormModals, setLoginFormModals] = useState(true);
   const [loginData, setLoginData] = useState([]);
   const navigate = useNavigate();
   const { setisLoading } = useLoaderState();
+  const { setAllFavItems } = useFavStore();
 
   const handleShow = (e) => {
     e.preventDefault();
@@ -35,12 +37,12 @@ export const Login = ({
   };
   const closeLoginModal = () => {
     setLoginFormModals(false);
-    if(setNewUserLog){
-      setNewUserLog(false) 
+    if (setNewUserLog) {
+      setNewUserLog(false);
     }
 
-    if(setOpenLogin){
-      setOpenLogin(false)
+    if (setOpenLogin) {
+      setOpenLogin(false);
     }
     navigate("/");
   };
@@ -54,6 +56,31 @@ export const Login = ({
 
   const clearCart = () => {
     clearCartApi();
+  };
+
+  const getFavItems = (user_id) => {
+    var favData = new FormData();
+    favData.append("accesskey", "90336");
+    favData.append("get_favorites", "1");
+    favData.append("user_id", `${user_id}`);
+
+    setisLoading(true);
+
+    return axios
+      .post(
+        "https://grocery.intelliatech.in/api-firebase/favorites.php",
+        favData,
+        config
+      )
+      .then((res) => {
+        console.log(res, "favrite itemmmmmmmmmmmm");
+        setAllFavItems(res?.data?.data);
+        setisLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setisLoading(false);
+      });
   };
 
   const handleSubmit = (e) => {
@@ -77,7 +104,7 @@ export const Login = ({
         Authorization: `Bearer ${API_TOKEN}`,
       },
     };
-    
+
     axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/login.php",
@@ -100,6 +127,8 @@ export const Login = ({
           let newUserId = res?.data?.user_id;
           // setUser_id(newUserId);
           clearCart(newUserId);
+          getFavItems(newUserId);
+
 
           const addMultipleItems = () => {
             let arr = {};

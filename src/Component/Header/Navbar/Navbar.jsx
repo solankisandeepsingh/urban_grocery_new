@@ -156,16 +156,16 @@ export const Navbar = ({
                         </p>
                         <hr />
                       </li>
-                      {/* <li className=" bg-white cursor-pointer">
-                        <NavLink to={"/login"}>
+                      <li className=" bg-white cursor-pointer">
+                        <NavLink to={"/favorites"}>
                           <p
                             onClick={() => setIsOpen(false)}
                             className="bg-white sm:text-lg md:text-sm mt-4"
                           >
-                            LogIn
+                            Favorites
                           </p>
                         </NavLink>
-                      </li> */}
+                      </li>
                       <li className="bg-white  cursor-pointer">
                         <NavLink to={"/myorder"}>
                           <p
