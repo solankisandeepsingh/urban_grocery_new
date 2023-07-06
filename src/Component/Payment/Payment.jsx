@@ -11,7 +11,7 @@ import { BsCashStack } from "react-icons/bs";
 
 
 
-function Payment({ isOpen, setIsOpen }) { 
+function Payment() { 
   const { clearCartApi, setAllCartItems } = useCartStore();
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [chosenPayment, setChosenPayment] = useState("");
