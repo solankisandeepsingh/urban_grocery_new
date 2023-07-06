@@ -49,7 +49,6 @@ export const Navbar = ({
       document.removeEventListener("mousedown", handler);
     };
   });
-  // const {allCartItems} = useCartStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -81,6 +80,7 @@ export const Navbar = ({
 
   const handleLogout = () => {
     setUserInfo({ user_id: 14, name: "Login/Signup" });
+
     // setLoggedIn(false);
     setIsOpen(false);
     navigate("/");

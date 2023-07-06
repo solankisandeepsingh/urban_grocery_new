@@ -12,7 +12,7 @@ import { BsCashStack } from "react-icons/bs";
 
 
 function Payment({ isOpen, setIsOpen }) { 
-  const { clearCartApi, setAllCartItems } = useCartStore();
+  const { clearCartApi, setAllCartItems, allCartItems, cartTotal  } = useCartStore();
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [chosenPayment, setChosenPayment] = useState("");
   const { setisLoading } = useLoaderState();
@@ -22,7 +22,6 @@ function Payment({ isOpen, setIsOpen }) {
     addList,
     deliveryAddress,
   } = useUserStore();
-  const { allCartItems, cartTotal } = useCartStore();
   const navigate = useNavigate();
 
   let { address, area_name, city_name, country } = addList.find((item) => {
