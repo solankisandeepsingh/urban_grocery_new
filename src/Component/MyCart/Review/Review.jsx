@@ -152,7 +152,7 @@ function Review({
                     <p className="text-[black] text-left px-3 pb-3">
                       Deliver To:{" "}
                     </p>
-                    <div className="  border-[2px] border-lime flex mb-[25%] px-3 py-3 mt-1 gap-1 m-4 rounded-md">
+                    <div className="  border-[2px] border-[#e8e8e8] flex mb-[25%] px-3 py-3 mt-1 gap-1 m-4 rounded-md">
                       <div className="flex gap-2 ">
                         <div className="w-[5%]">
                           {type === "Home" ? (

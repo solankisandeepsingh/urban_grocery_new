@@ -6,10 +6,14 @@ import { OrderDetails } from "../Order-Details/OrderDetails";
 import { GiScooter } from "react-icons/gi";
 import { BsChevronRight } from "react-icons/bs";
 import { useLoaderState } from "../zustand/useLoaderState";
+import { useUserStore } from "../zustand/useUserStore";
 
-export const MyOrder = ({ addItem, user_id }) => {
+export const MyOrder = ({ addItem}) => {
   const [price, setPrice] = useState(0);
   const [detailsOrder, setDetailsOrder] = useState(false);
+  const {
+    userInfo: { user_id },
+  } = useUserStore();
 
   const [orderData, setOrderData] = useState("");
   const [orderId, setOrderId] = useState("");
@@ -46,17 +50,18 @@ export const MyOrder = ({ addItem, user_id }) => {
   useEffect(() => {
     handlemyOrder();
   }, []);
-  const total = () => {
-    let price = 0;
-    addItem.map((e) => {
-      price += parseFloat(e.price) * e.amount;
-    });
-    setPrice(price);
-  };
 
-  useEffect(() => {
-    total();
-  }, [total]);
+  // const total = () => {
+  //   let price = 0;
+  //   addItem.map((e) => {
+  //     price += parseFloat(e.price) * e.amount;
+  //   });
+  //   setPrice(price);
+  // };
+
+  // useEffect(() => {
+  //   total();
+  // }, [total]);
 
   const handleOrderDetails = (item) => {
     setOrderId(item);

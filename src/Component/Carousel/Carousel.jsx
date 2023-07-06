@@ -58,8 +58,8 @@ function CarouselComponent() {
         >
           {allCarouselImg.map((item) => {
             return (
-              <div className="h-[300px] rounded-xl">
-                <img alt="" src={item.image} className="rounded-xl h-[270px]" />
+              <div className="h-auto rounded-xl">
+                <img alt="" src={item.image} className="rounded-xl h-auto" />
               </div>
             );
           })}

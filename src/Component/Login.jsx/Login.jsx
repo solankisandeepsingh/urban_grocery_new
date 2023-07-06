@@ -72,6 +72,12 @@ export const Login = ({
     loginItem.append("fcm_id", "YOUR_FCM_ID");
     setisLoading(true);
 
+    let config = {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    };
+    
     axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/login.php",
