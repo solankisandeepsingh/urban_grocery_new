@@ -10,6 +10,7 @@ import { FoodDelivery } from "../Food Delivery Image/FoodDelivery";
 import { LocallySourced } from "../Food Delivery Image/LocallySourced";
 import { useLoaderState } from "./zustand/useLoaderState";
 import { Link } from "react-router-dom";
+import { FlashSales } from "./Flash_Sales/FlashSales";
 
 function Home({
   data,
@@ -130,6 +131,9 @@ function Home({
             />
 
             <LocallySourced />
+          </div>
+          <div>
+            <FlashSales/>
           </div>
           <div className="bg-[#212122] flex border w-full border-white rounded-md ">
             <footer className="bg-gray-800">

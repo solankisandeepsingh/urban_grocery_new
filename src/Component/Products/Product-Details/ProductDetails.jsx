@@ -15,7 +15,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const [productPageData, setProductPage] = useState([]);
   const [wishlist, setWishlist] = useState(false);
   const { id } = useParams();
-  const {setisLoading} = useLoaderState();
+  const { setisLoading } = useLoaderState();
   const { allCartItems, setAllCartItems } = useCartStore();
 
   const productDetail = () => {
@@ -165,7 +165,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
         console.log(newArr);
         setAllCartItems(newArr);
-setisLoading(false)
+        setisLoading(false);
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
       })
       .catch((error) => {

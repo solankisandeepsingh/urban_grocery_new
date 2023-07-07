@@ -9,16 +9,16 @@ import { useLoaderState } from "../zustand/useLoaderState";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 
-
 function Allproducts({ name, setallCartItems, isOpen, setIsOpen }) {
-  const {allProducts, setAllProducts} = useProductsStore();
+  const { allProducts, setAllProducts } = useProductsStore();
   // const [allproduct, setShowAllProducts] = useState(mockProduct.data);
   const { setisLoading } = useLoaderState();
   const [allproduct, setShowAllProducts] = useState([]);
   console.log(allProducts, setAllProducts);
-  const {allCartItems, setAllCartItems} = useCartStore();
-  const {userInfo :{user_id} } = useUserStore();
-
+  const { allCartItems, setAllCartItems } = useCartStore();
+  const {
+    userInfo: { user_id },
+  } = useUserStore();
 
   let allshowProduct = () => {
     let config = {
@@ -32,7 +32,7 @@ function Allproducts({ name, setallCartItems, isOpen, setIsOpen }) {
     bodyFormdata.append("limit", "37");
     setisLoading(true);
 
-    setisLoading(true)
+    setisLoading(true);
     axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/get-all-products.php",
@@ -42,12 +42,14 @@ function Allproducts({ name, setallCartItems, isOpen, setIsOpen }) {
       // .then((res) => setShowAllProducts(res.data.data))
 
       .then((res) => {
-        setisLoading(false)   
-        return setAllProducts(res.data.data)})
+        setisLoading(false);
+        return setAllProducts(res.data.data);
+      })
 
-      .catch((err) =>{ 
-      setisLoading(false)   
-      return console.log(err)});
+      .catch((err) => {
+        setisLoading(false);
+        return console.log(err);
+      });
   };
   useEffect(() => {
     allshowProduct();
@@ -89,14 +91,13 @@ function Allproducts({ name, setallCartItems, isOpen, setIsOpen }) {
   //         );
   //         return;
   //       }
-  
+
   //       setallCartItems((cart) => [...cart, { ...item, amount: 1 }]);
   //     })
   //     .catch((error) => {
   //       console.log(error);
   //     });
   // };
-
 
   const allCartItemsHandler = (item, data) => {
     // console.log("item1>>>>>>>>>>>>>>", allCartItems);
@@ -135,16 +136,16 @@ function Allproducts({ name, setallCartItems, isOpen, setIsOpen }) {
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
           // console.log("addtiem", allCartItems);
           let newArr = allCartItems.map((data) =>
-          data.product_id === item.id
-            ? {
-                ...data,
-                amount: data.amount + 1,
-              }
-            : data
-        )
-              console.log(newArr);
-        setAllCartItems(newArr);
-     
+            data.product_id === item.id
+              ? {
+                  ...data,
+                  amount: data.amount + 1,
+                }
+              : data
+          );
+          console.log(newArr);
+          setAllCartItems(newArr);
+
           return;
         }
         console.log(item.id, "allCartItems Id in product caraousel");
@@ -171,13 +172,11 @@ function Allproducts({ name, setallCartItems, isOpen, setIsOpen }) {
           user_id: user_id,
         };
 
-
-       let newArr = [...allCartItems, {...item1 , amount : 1}]
+        let newArr = [...allCartItems, { ...item1, amount: 1 }];
         console.log(newArr);
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
         setAllCartItems(newArr);
         setisLoading(false);
-
       })
       .catch((error) => {
         console.log(error);
@@ -232,42 +231,44 @@ function Allproducts({ name, setallCartItems, isOpen, setIsOpen }) {
                               </div>
 
                               <div>
-                              {item.variants.some(
-                                (variant) => variant.stock > 0
-                              ) ? (
-                                allCartItems.find(
-                                  (i) => i.product_id === item.id
+                                {item.variants.some(
+                                  (variant) => variant.stock > 0
                                 ) ? (
-                                  <>
-                                    <div className="md:mt-2 md:ml-6 xs:mt-2.5 sm:mt-4 ">
-                                      {console.log(
-                                        item,
-                                        "Item",
-                                        allCartItems,
-                                        "allCartItems",
-                                        "In ProductCarousel, calling CartQuantity"
-                                      )}
-                                      <CartQuantity
-                                        item={item}
-                                        // setallCartItems={setallCartItems}
-                                        // allCartItems={allCartItems}
-                                      />
-                                    </div>
-                                  </>
+                                  allCartItems.find(
+                                    (i) => i.product_id === item.id
+                                  ) ? (
+                                    <>
+                                      <div className="md:mt-2 md:ml-6 xs:mt-2.5 sm:mt-4 ">
+                                        {console.log(
+                                          item,
+                                          "Item",
+                                          allCartItems,
+                                          "allCartItems",
+                                          "In ProductCarousel, calling CartQuantity"
+                                        )}
+                                        <CartQuantity
+                                          item={item}
+                                          // setallCartItems={setallCartItems}
+                                          // allCartItems={allCartItems}
+                                        />
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <button
+                                      className="md:w-16 md:h-8 mb-3 xs:w-18 sm:ml-2 md:text-xs md:mt-2 xs:mt-2 sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
+                                      onClick={() =>
+                                        allCartItemsHandler(data, item)
+                                      }
+                                    >
+                                      Add
+                                    </button>
+                                  )
                                 ) : (
-                                  <button
-                                    className="md:w-16 md:h-8 mb-3 xs:w-18 sm:ml-2 md:text-xs md:mt-2 xs:mt-2 sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
-                                    onClick={() => allCartItemsHandler(data, item)}
-                                  >
-                                    Add
-                                  </button>
-                                )
-                              ) : (
-                                <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:mb-4 sm:text-xs xs:text-xs">
-                                  Out of stock
-                                </p>
-                              )}
-                            </div>
+                                  <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:mb-4 sm:text-xs xs:text-xs">
+                                    Out of stock
+                                  </p>
+                                )}
+                              </div>
                             </div>
                           </div>
                         </>
