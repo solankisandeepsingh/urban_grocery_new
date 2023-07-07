@@ -40,11 +40,11 @@ function CartQuantity({ item }) {
       )
       .then(() => {
         console.log(allCartItems, "-1 CQ >><><><><><><><><><><");
-
+        
         if (
           allCartItems.some((product) => {
-            console.log(product);
-            return product.amount === 1;
+            console.log(product, item);
+            return (product.amount === 1 && product.product_id === item.id);
           })
         ) {
           let newArr = allCartItems.filter(
@@ -68,7 +68,7 @@ function CartQuantity({ item }) {
                 }
               : data
           );
-          console.log(newArr, "Cart Quant MORE THAN 1 ><>>>>>>>><><><<><><><>");
+          console.log(newArr, "Cart Quant MORE THAN 1 ><>>>><>><><><><>>>><><><<><><><>");
 
           setAllCartItems(newArr);
           setisLoading(false);

@@ -16,6 +16,7 @@ export const ProductCarousel = ({}) => {
   const { allCartItems, setAllCartItems } = useCartStore();
   console.log(allCartItems, "After Destructure");
   const [showAllProduct, setShowAllProducts] = useState([]);
+  const [favPos, setFavPos] = useState(false);
   const navigate = useNavigate();
   const {
     userInfo: { user_id },
@@ -98,7 +99,9 @@ export const ProductCarousel = ({}) => {
       )
       .then((res) => {
         console.log(res, "favdata");
-    setisLoading(false);
+    setisLoading(false);  
+    setFavPos((prev)=> !prev)
+
 
         let newArr = allFavItems.filter((fav)=>{
           return fav.id !== item.id
@@ -135,6 +138,7 @@ export const ProductCarousel = ({}) => {
       )
       .then((res) => {
     setisLoading(false);
+    setFavPos((prev)=> !prev)
 
         console.log(res, "favdata");
         let newArr = [...allFavItems, item];
@@ -285,14 +289,16 @@ export const ProductCarousel = ({}) => {
                                 <FaHeart
                                   className="text-red absolute top-2 text-xl animate-hbeat hover:scale-125 transition-all  right-2 "
                                   onClick={(e) => {
+                                    setFavPos((prev)=> !prev)
                                     e.stopPropagation();
                                     handleRemoveFavorite(item);
                                   }}
                                 />
                               ) : (
                                 <FaRegHeart
-                                  className="text-[light_gray] group-hover:top-2 group-active:top-2 absolute -top-5 text-xl hover:scale-125  transition-all right-2"
+                                  className={`text-[light_gray] group-hover:top-2 group-active:top-2 absolute ${!favPos ? '-top-5' : 'top-2'} text-xl hover:scale-125  transition-all right-2`}
                                   onClick={(e) => {
+                                    setFavPos((prev)=> !prev)
                                     e.stopPropagation();
                                     handleAddFavorite(item);
                                   }}
