@@ -12,7 +12,6 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useFavStore } from "../../zustand/useFavStore";
 
 
-
 export const ProductCarousel = ({}) => {
   const { allCartItems, setAllCartItems } = useCartStore();
   console.log(allCartItems, "After Destructure");
@@ -22,7 +21,7 @@ export const ProductCarousel = ({}) => {
     userInfo: { user_id },
   } = useUserStore();
   const { setisLoading } = useLoaderState();
-  const {allFavItems,setAllFavItems} = useFavStore();
+  const { allFavItems, setAllFavItems } = useFavStore();
 
   const [fav, setFav] = useState();
 
@@ -76,29 +75,77 @@ export const ProductCarousel = ({}) => {
       items: 2,
     },
   };
-  const handleAddFavorite = (data) => {
+  const handleRemoveFavorite = (item) => {
     let config = {
-      headers :{
-        Authorization : `Bearer ${API_TOKEN}`
-      }
-    }
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    };
 
     let favData = new FormData();
-    favData.append("accesskey","90336")
-    favData.append("add_to_favorites","1")
-    favData.append("user_id",user_id)
-    favData.append("product_id",data.product_id)
+    favData.append("accesskey", "90336");
+    favData.append("remove_from_favorites", "1");
+    favData.append("user_id", user_id);
+    favData.append("product_id", item.id);
+    setisLoading(true);
 
-    axios.post(`https://grocery.intelliatech.in/api-firebase/favorites.php`,
-    
-    favData,
-    config
-    ).then((res)=>{
-      console.log(res,"favdata")
-    }).catch((err)=>{
-      console.log(err);
-    })
+    axios
+      .post(
+        `https://grocery.intelliatech.in/api-firebase/favorites.php`,
 
+        favData,
+        config
+      )
+      .then((res) => {
+        console.log(res, "favdata");
+    setisLoading(false);
+
+        let newArr = allFavItems.filter((fav)=>{
+          return fav.id !== item.id
+        });
+        console.log(newArr);
+        setAllFavItems(newArr);
+      })
+      .catch((err) => {
+        console.log(err);
+    setisLoading(false);
+
+      });
+  };
+  const handleAddFavorite = (item) => {
+    let config = {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    };
+
+    let favData = new FormData();
+    favData.append("accesskey", "90336");
+    favData.append("add_to_favorites", "1");
+    favData.append("user_id", user_id);
+    favData.append("product_id", item.id);
+    setisLoading(true);
+
+    axios
+      .post(
+        `https://grocery.intelliatech.in/api-firebase/favorites.php`,
+
+        favData,
+        config
+      )
+      .then((res) => {
+    setisLoading(false);
+
+        console.log(res, "favdata");
+        let newArr = [...allFavItems, item];
+        console.log(newArr);
+        setAllFavItems(newArr);
+      })
+      .catch((err) => {
+    setisLoading(false);
+
+        console.log(err);
+      });
   };
   const addItemHandler = (item, data) => {
     console.log("item", item);
@@ -204,7 +251,7 @@ export const ProductCarousel = ({}) => {
               return (
                 <>
                   <div
-                    className="w-72 relative xs:w-40 xs:h-[265px] md:w-40 md:h-[235px] sm:h-[280px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green  bg-white cursor-pointer"
+                    className="group w-72 relative xs:w-40 xs:h-[265px] md:w-40 md:h-[235px] sm:h-[280px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green  bg-white cursor-pointer overflow-hidden"
                     onClick={() => {
                       navigate(
                         `/subcategory-details/${item.category_name}/product-details/${item.id}`
@@ -223,35 +270,37 @@ export const ProductCarousel = ({}) => {
                     </div>
                     {item &&
                       item.variants.map((data) => {
-
                         // {console.log(data ,"variatne data")}
                         return (
-                          <div className="md:flex md:justify-evenly sm:flex xs:flex xs:justify-between xs:mr-4">
-                            {console.log(allFavItems.find((fav)=>{
+                          <div className=" md:flex md:justify-evenly  sm:flex xs:flex xs:justify-between xs:mr-4">
+                            {/* {console.log(allFavItems.find((fav)=>{
                               console.log(fav.id, item.id, "HEREEEEEEEEEEEEE<><><><><><>");
                                return fav.id === item.id
-                            }))};
+                            }))}; */}
 
-                            {(user_id != 14 && allFavItems.find((fav)=>{
-                               return fav.id === item.id
-                            })) 
-                             
-                            ? 
-                            <FaHeart
-                              className="text-red absolute top-2 text-[49px] right-2 "
-                              // onClick={}
-                            /> :
-                          
-                            <FaRegHeart
-                              className="text-lime absolute top-2 right-2"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                handleAddFavorite(data)}}
-                            />
-                          }
-                          
+                            {user_id != 14 &&
+                              (allFavItems.find((fav) => {
+                                return fav.id === item.id;
+                              }) ? (
+                                <FaHeart
+                                  className="text-red absolute top-2 text-xl animate-hbeat hover:scale-125 transition-all  right-2 "
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleRemoveFavorite(item);
+                                  }}
+                                />
+                              ) : (
+                                <FaRegHeart
+                                  className="text-[light_gray] group-hover:top-2 group-active:top-2 absolute -top-5 text-xl hover:scale-125  transition-all right-2"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleAddFavorite(item);
+                                  }}
+                                />
+                              ))}
+
                             <div className=" xs:text-left  sm:mt-2 md:mt-[15px] md:mx-4 xs:mx-4 sm:mx-4 md:text-left ">
-                              <p className="2xs:text-base xs:text-sm t sm:text-xl  xs:mt-4 md:mt-[-3px] sm:mt-[12px] md:text-sm text-gryColour font-light bg-white">
+                              <p className="2xs:text-base  xs:text-sm t sm:text-xl  xs:mt-4 md:mt-[-3px] sm:mt-[12px] md:text-sm text-gryColour font-light bg-white">
                                 ₹{data.price}{" "}
                               </p>
                             </div>

@@ -5,7 +5,7 @@ import axios from "axios";
 import { useUserStore } from "./useUserStore";
 
 export const useFavStore = create(
- (set) => ({
+ persist((set) => ({
 
     allFavItems: [],
     config:{
@@ -45,6 +45,11 @@ export const useFavStore = create(
     //     console.log(error);
     //   });
     // }
-  })
-  
+  }),
+  {
+    name: "favStore",
+  }
+  )
 );
+  
+
