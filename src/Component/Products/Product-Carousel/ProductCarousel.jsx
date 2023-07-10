@@ -643,12 +643,12 @@ export const ProductCarousel = ({}) => {
                           </p>
                         </div> */}
 
-                        {/* <div>
+                        <div>
                           {item.variants.some(
                             (variant) => variant.stock > 0
                           ) ? (
                             allCartItems?.find(
-                              (i) => i.product_id === item.variants[variant[item.id]].id
+                              (i) => i.product_id === item?.variants?.[variant?.[item?.id]]?.id || false
                             ) ? (
                               <>
                                 <div
@@ -662,7 +662,7 @@ export const ProductCarousel = ({}) => {
                                 >
                                   <CartQuantity
                                     item={item}
-                                    // setAllCartItems={setAllCartItems}
+                                    // setAllCartItems={setAllCartItems}  
                                     // allCartItems={allCartItems}
                                     // user_id={user_id}
                                   />
@@ -673,8 +673,8 @@ export const ProductCarousel = ({}) => {
                                 className="md:w-16 md:h-8 mb-3 xs:w-18 sm:ml-2 md:text-xs md:mt-2 xs:mt-2 sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  addItemUI(data);
-                                  return addItemHandler(data, item);
+                                  // addItemUI(data);
+                                  // return addItemHandler(data, item);
                                 }}
                               >
                                 Add
@@ -685,7 +685,7 @@ export const ProductCarousel = ({}) => {
                               Out of stock
                             </p>
                           )}
-                        </div> */}
+                        </div>
                       </div>
                     }
                   </div>
