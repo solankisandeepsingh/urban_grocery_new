@@ -22,7 +22,7 @@ function Home({
   user_id,
 }) {
   const { allImg, setAllImg } = useImgStore();
-  console.log(allImg, setAllImg, "IMG STORE FROM ZUSTAND");
+  // console.log(allImg, setAllImg, "IMG STORE FROM ZUSTAND");
   const { setisLoading } = useLoaderState();
 
   const handleHomeImg = () => {

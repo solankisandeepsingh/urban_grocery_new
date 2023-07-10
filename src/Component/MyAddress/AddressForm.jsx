@@ -249,7 +249,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
                         onChange={handleDropdown1Change}
                         className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       >
-                        <option value="">City</option>
+                        <option disabled selected value="">City</option>
                         {cities.map((item) => (
                           <option key={item.id} value={item.id}>
                             {item.name}
@@ -265,7 +265,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
                         disabled={!cityDropdown}
                         className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       >
-                        <option value="">Area</option>
+                        <option disabled selected value="">Area</option>
                         {areas &&
                           areas.map((item) => (
                             <option key={item.id} value={item.id}>

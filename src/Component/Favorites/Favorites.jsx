@@ -49,7 +49,8 @@ export const Favorites = () => {
       });
   };
 
-  useEffect(getFavItems,[])      
+  useEffect(()=>{getFavItems()},[])    
+
   return (
     <>
       <div className="mt-20 px-3">
