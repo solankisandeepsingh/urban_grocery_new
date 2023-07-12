@@ -177,15 +177,15 @@ function MyCart({
       .then((res) => {
         console.log(res, "[GET USER CART API RESPONSE]");
 
-        let addQtyAmount = res?.data?.data?.map((data) => ({
+        let newArr = res?.data?.data?.map((data) => ({
           ...data,
           amount: +data.qty,
         }));
-        console.log(addQtyAmount, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        // console.log(addQtyAmount, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         // setAddItem(addQtyAmount);
 
         {
-          addQtyAmount && setAllCartItems(addQtyAmount);
+          newArr && setAllCartItems(newArr);
         }
         setisLoading(false);
         total();
@@ -275,13 +275,15 @@ function MyCart({
                   </button>
                 </div>
 
-                <div className=" bg-white overflow-y-scroll md:h-[700px] xs:h-[758px] sm:h[985px] 2xs:h-[500px]"  style={{
-        overflow: 'scroll',
-        scrollbarWidth: 'none',
-        '-ms-overflow-style': 'none',
-        '&::-webkit-scrollbar': { display: 'none' }
-      }}
-    >
+                <div
+                  className=" bg-white overflow-y-scroll md:h-[700px] xs:h-[758px] sm:h[985px] 2xs:h-[500px]"
+                  style={{
+                    overflow: "scroll",
+                    scrollbarWidth: "none",
+                    "-ms-overflow-style": "none",
+                    "&::-webkit-scrollbar": { display: "none" },
+                  }}
+                >
                   {!showForm && allCartItems.length && !reviewPage
                     ? allCartItems &&
                       allCartItems?.map((item, index) => {
@@ -355,7 +357,7 @@ function MyCart({
                                   </div>
                                 </div>
                                 {/* {console.log(user_id, "><><><CHECK USER ID BOOLEAN><><><")} */}
-                                {user_id === 14 ? (
+                                {user_id == true ? (
                                   newUserLog ? (
                                     <Login
                                       // setLoggedIn={setLoggedIn}

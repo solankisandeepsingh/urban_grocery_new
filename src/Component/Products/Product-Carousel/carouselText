@@ -1,0 +1,210 @@
+  <Carousel responsive={responsive}>
+          {showAllProduct &&
+            showAllProduct.map((item) => {
+              return (
+                <>
+                  <div
+                    className="group w-72 relative xs:w-40 xs:h-[265px] md:w-40 md:h-[235px] sm:h-[280px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green  bg-white cursor-pointer overflow-hidden"
+                    onClick={() => {
+                      navigate(
+                        `/subcategory-details/${item.category_name}/product-details/${item.id}`
+                      );
+                    }}
+                  >
+                    <img
+                      className="w-full h-56 xs:w-32 xs:h-32 xs:m-3 xs:ml-3.5 md:h-24 md:ml-[23px] md:w-28 md:mt-4 rounded-lg bg-white"
+                      src={item.image}
+                      alt={item.name}
+                    />
+                    <div className="py-4 xs:mb-[-10px]  md:mx-4 xs:mx-4 sm:mx-4 bg-white">
+                      <p className="md:text-sm xs:text-sm sm:text-2xl font-medium bg-white truncate ...">
+                        {item.name}
+                      </p>
+                    </div>
+                    {
+                      (item.variants.length ==
+                        1 &&
+                        item.variants.map((data) => {
+                          // {console.log(data ,"variatne data")}
+                          return (
+                            <div className=" md:flex md:justify-evenly  sm:flex xs:flex xs:justify-between xs:mr-4">
+                              {/* {console.log(allFavItems.find((fav)=>{
+                              console.log(fav.id, item.id, "HEREEEEEEEEEEEEE<><><><><><>");
+                               return fav.id === item.id
+                            }))}; */}
+
+                              {/* ADD TO FAVOURITES  */}
+                              {/* {user_id != 14 &&
+                              (allFavItems.find((fav) => {
+                                return fav.id === item.id;
+                              }) ? (
+                                <FaHeart
+                                  className="text-red absolute top-2 text-xl animate-hbeat hover:scale-125 transition-all  right-2 "
+                                  onClick={(e) => {
+                                    setFavPos((prev)=> !prev)
+                                    e.stopPropagation();
+                                    handleRemoveFavorite(item);
+                                  }}
+                                />
+                              ) : (
+                                <FaRegHeart
+                                  className={`text-[light_gray] group-hover:top-2 group-active:top-2 absolute ${!favPos ? '-top-5' : 'top-2'} text-xl hover:scale-125  transition-all right-2`}
+                                  onClick={(e) => {
+                                    setFavPos((prev)=> !prev)
+                                    e.stopPropagation();
+                                    handleAddFavorite(item);
+                                  }}
+                                />
+                              ))} */}
+
+                              <div className=" xs:text-left  sm:mt-2 md:mt-[15px] md:mx-4 xs:mx-4 sm:mx-4 md:text-left ">
+                                <p className="2xs:text-base  xs:text-sm t sm:text-xl  xs:mt-4 md:mt-[-3px] sm:mt-[12px] md:text-sm text-gryColour font-light bg-white">
+                                  ₹{data.price}{" "}
+                                </p>
+                              </div>
+
+                              <div>
+                                {item.variants.some(
+                                  (variant) => variant.stock > 0
+                                ) ? (
+                                  allCartItems?.find(
+                                    (i) => i.product_id === item.id
+                                  ) ? (
+                                    <>
+                                      <div
+                                        className="md:mt-2 md:ml-6 xs:mt-2.5 sm:mt-4"
+                                        onClick={(e) => {
+                                          console.log(
+                                            e,
+                                            "EVENT IN IMMEDIATE PARENT ELEMENT"
+                                          );
+                                        }}
+                                      >
+                                        <CartQuantity
+                                          item={item}
+                                          // setAllCartItems={setAllCartItems}
+                                          // allCartItems={allCartItems}
+                                          // user_id={user_id}
+                                        />
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <button
+                                      className="md:w-16 md:h-8 mb-3 xs:w-18 sm:ml-2 md:text-xs md:mt-2 xs:mt-2 sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        addItemUI(data);
+                                        return addItemHandler(data, item);
+                                      }}
+                                    >
+                                      Add
+                                    </button>
+                                  )
+                                ) : (
+                                  <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:text-xs  xs:text-xs">
+                                    Out of stock
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        }))
+                    }
+                    {
+                      <div className=" md:flex md:justify-evenly  sm:flex xs:flex xs:justify-between xs:mr-4">
+
+                        {/* ADD TO FAVOURITES  */}
+                        {/* {user_id != 14 &&
+                          (allFavItems.find((fav) => {
+                            return fav.id === item.id;
+                          }) ? (
+                            <FaHeart
+                              className="text-red absolute top-2 text-xl animate-hbeat hover:scale-125 transition-all  right-2 "
+                              onClick={(e) => {
+                                setFavPos((prev)=> !prev)
+                                e.stopPropagation();
+                                handleRemoveFavorite(item);
+                              }}
+                            />
+                          ) : (
+                            <FaRegHeart
+                              className={`text-[light_gray] group-hover:top-2 group-active:top-2 absolute ${!favPos ? '-top-5' : 'top-2'} text-xl hover:scale-125  transition-all right-2`}
+                              onClick={(e) => {
+                                setFavPos((prev)=> !prev)
+                                e.stopPropagation();
+                                handleAddFavorite(item);
+                              }}
+                            />
+                          ))} */}
+
+                        <div className="mr-2">
+                          <select
+                            // value={selectedVariant}
+                            // onChange={handleVariantChange}
+                            className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          >
+                            {/* <option value="">City</option> */}
+                            {mockData.variants.map((item) => (
+                              <option key={item.id} value={item.id}>
+                                {item.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div className=" xs:text-left  sm:mt-2 md:mt-[15px] md:mx-4 xs:mx-4 sm:mx-4 md:text-left ">
+                          <p className="2xs:text-base  xs:text-sm t sm:text-xl  xs:mt-4 md:mt-[-3px] sm:mt-[12px] md:text-sm text-gryColour font-light bg-white">
+                            ₹{item.variants[0].price}{" "}
+                          </p>
+                        </div>
+
+                        {/* <div>
+                          {item.variants.some(
+                            (variant) => variant.stock > 0
+                          ) ? (
+                            allCartItems?.find(
+                              (i) => i.product_id === item.id
+                            ) ? (
+                              <>
+                                <div
+                                  className="md:mt-2 md:ml-6 xs:mt-2.5 sm:mt-4"
+                                  // onClick={(e) => {
+                                  //   console.log(
+                                  //     e,
+                                  //     "EVENT IN IMMEDIATE PARENT ELEMENT"
+                                  //   );
+                                  // }}
+                                >
+                                  <CartQuantity
+                                    item={item}
+                                    // setAllCartItems={setAllCartItems}
+                                    // allCartItems={allCartItems}
+                                    // user_id={user_id}
+                                  />
+                                </div>
+                              </>
+                            ) : (
+                              <button
+                                className="md:w-16 md:h-8 mb-3 xs:w-18 sm:ml-2 md:text-xs md:mt-2 xs:mt-2 sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  addItemUI(data);
+                                  return addItemHandler(data, item);
+                                }}
+                              >
+                                Add
+                              </button>
+                            )
+                          ) : (
+                            <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:text-xs  xs:text-xs">
+                              Out of stock
+                            </p>
+                          )}
+                        </div> */}
+                      </div>
+                    }
+                  </div>
+                </>
+              );
+            })}
+            </Carousel>

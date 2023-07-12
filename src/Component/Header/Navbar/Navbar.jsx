@@ -109,7 +109,7 @@ export const Navbar = ({
 
             {NavbarOpen && (
               <div className="relative">
-                {!(user_id === 14) ? (
+                {!(user_id == false) ? (
                   <div
                     className="flex sm:mr-3 items-center h-[30px] md:ml-[-145px] rounded-lg md:px-2 md:mt-5 xs:mt-3 bg-white"
                     onClick={() => {

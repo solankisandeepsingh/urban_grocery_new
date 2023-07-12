@@ -81,8 +81,8 @@ export const ProductCarousel = ({}) => {
         {
           type: "packet",
           id: "871",
-          product_id: "907",
-          // product_id: "906",
+          // product_id: "907",
+          product_id: "906",
           price: "500",
           discounted_price: "100",
           serve_for: "Available",
@@ -153,8 +153,8 @@ export const ProductCarousel = ({}) => {
         {
           type: "packet",
           id: "879",
-          product_id: "915",
-          // product_id: "917",
+          // product_id: "915",
+          product_id: "917",
           price: "500",
           discounted_price: "9",
           serve_for: "Available",
@@ -350,8 +350,8 @@ export const ProductCarousel = ({}) => {
       });
   };
 
-  const addItemUI = (data, item) => {
-    // if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
+  const addItemUI = (mainItem) => {
+    // if (allCartItems.some((cartItem) => cartItem.product_variant_id === mainItem.variants[variant[mainItem.id]].id || 0)) {
     //   let newArr = allCartItems.map((data) =>
     //     data.product_id === item.id
     //       ? {
@@ -365,7 +365,7 @@ export const ProductCarousel = ({}) => {
     //   return;
     // }
 
-    console.log(data);
+    console.log(mainItem);
 
     // let item1 = {
     //   amount: 1,
@@ -378,10 +378,10 @@ export const ProductCarousel = ({}) => {
     //   user_id: user_id,
     // };
 
-    // let newArr = [...allCartItems, { ...item1, amount: 1 }];
-    // console.log(newArr);
+    let newArr = [...allCartItems, { ...mainItem.variants[variant[mainItem.id]||0], amount: 1, name: mainItem.name, image: mainItem.variants[variant[mainItem.id]||0].images[0] }];
+    console.log(newArr, "FROM ADD ITEM UI");
     // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
-    // setAllCartItems(newArr);
+    setAllCartItems(newArr);
   };
 
   const addItemHandler = (item, data) => {
@@ -498,7 +498,7 @@ export const ProductCarousel = ({}) => {
                   >
                     <img
                       className="w-full h-56 xs:w-32 xs:h-32 xs:m-3 xs:ml-3.5 md:h-24 md:ml-[23px] md:w-28 md:mt-4 rounded-lg bg-white"
-                      src={item.variants[variant[item.id] || 0].images[0]}
+                      src={item.variants.length == 1 ? item.image :item.variants[variant[item.id] || 0].images[0]}
                       alt={item.name}
                     />
                     <div className="py-4 xs:mb-[-10px]  md:mx-4 xs:mx-4 sm:mx-4 bg-white">
@@ -565,6 +565,7 @@ export const ProductCarousel = ({}) => {
                                     >
                                       <CartQuantity
                                         item={item}
+                                        variant= {variant}
                                         // setAllCartItems={setAllCartItems}
                                         // allCartItems={allCartItems}
                                         // user_id={user_id}
@@ -576,8 +577,8 @@ export const ProductCarousel = ({}) => {
                                     className="md:w-16 md:h-8 mb-3 xs:w-18 sm:ml-2 md:text-xs md:mt-2 xs:mt-2 sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
                                     onClick={(e) => {
                                       e.stopPropagation();
-                                      addItemUI(data);
-                                      return addItemHandler(data, item);
+                                      addItemUI(item);
+                                      // return addItemHandler(data, item);
                                     }}
                                   >
                                     Add
@@ -648,7 +649,7 @@ export const ProductCarousel = ({}) => {
                             (variant) => variant.stock > 0
                           ) ? (
                             allCartItems?.find(
-                              (i) => i.product_id === item?.variants?.[variant?.[item?.id]]?.id || false
+                              (i) => i.id === item?.variants?.[variant?.[item?.id] || 0]?.id
                             ) ? (
                               <>
                                 <div
@@ -662,6 +663,7 @@ export const ProductCarousel = ({}) => {
                                 >
                                   <CartQuantity
                                     item={item}
+                                    variant= {variant}
                                     // setAllCartItems={setAllCartItems}  
                                     // allCartItems={allCartItems}
                                     // user_id={user_id}
@@ -673,7 +675,7 @@ export const ProductCarousel = ({}) => {
                                 className="md:w-16 md:h-8 mb-3 xs:w-18 sm:ml-2 md:text-xs md:mt-2 xs:mt-2 sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  // addItemUI(data);
+                                  addItemUI(item);
                                   // return addItemHandler(data, item);
                                 }}
                               >
