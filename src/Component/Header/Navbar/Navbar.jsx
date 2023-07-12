@@ -116,33 +116,31 @@ export const Navbar = ({
                       setIsOpen(!isOpen);
                     }}
                   >
-                    <FaUserCircle className=" xs:text-3xl text-lime  md:text-2xl mr-1 cursor-pointer" />
-                    {/* <button className=" text-black sm:text-md md:text-md mt-2"> */}
-                      {name}
-                    {/* </button> */}
+                    {/* <FaUserCircle className=" xs:text-3xl text-lime  md:text-2xl mr-1 cursor-pointer"  /> */}
+                    <img src="https://image.winudf.com/v2/image1/bmV0LndsbHBwci5ib3lzX3Byb2ZpbGVfcGljdHVyZXNfc2NyZWVuXzBfMTY2NzUzNzYxN18wOTk/screen-0.webp?fakeurl=1&type=.webp" className="xs:text-3xl w-[40px] h-[40px] text-lime  md:text-[2px] mr-1 cursor-pointer" alt="" />
+                    {name}
                     <div className="md:mt-1 xs:mt-1 bg-white ">
                       <FaCaretDown className="bg-white" />
                     </div>
                   </div>
                 ) : (
-                    <div
-                      className="xs:w-20  md:w-24 h-[30px] md:ml-[-145px] rounded-lg md:px-2 md:mt-3  bg-white"
-                      onClick={() => {
-                        setOpenLogin(true);
-                      }}
-                    >
-                      <button className=" text-white font-bold bg-lime p-3 rounded-lg sm:text-md md:text-md text-center">
-                        {name}
-                      </button>
-                      {/* <div className="md:mt-1 xs:mt-1 bg-white ">
+                  <div
+                    className="xs:w-20  md:w-24 h-[30px] md:ml-[-145px] rounded-lg md:px-2 md:mt-3  bg-white"
+                    onClick={() => {
+                      console.log("working");
+                      setOpenLogin(true);
+                    }}
+                  >
+                    <button className=" text-white font-bold bg-lime p-3 rounded-lg sm:text-md md:text-md text-center">
+                      {name}
+                    </button>
+                    {/* <div className="md:mt-1 xs:mt-1 bg-white ">
                         <FaCaretDown className="bg-white md:mt-2 xs:mt-2 " />
                       </div> */}
-                    </div>
+                  </div>
                 )}
 
-                {openLogin && 
-                  <Login setOpenLogin= {setOpenLogin}/>
-                }
+                {openLogin && <Login setOpenLogin={setOpenLogin} />}
 
                 {isOpen && (
                   <div
@@ -183,6 +181,16 @@ export const Navbar = ({
                             className="bg-white sm:text-lg md:text-sm mt-4"
                           >
                             Saved Address
+                          </p>
+                        </NavLink>
+                      </li>
+                      <li className="  bg-white cursor-pointer">
+                        <NavLink to={"/profile"}>
+                          <p
+                            onClick={() => setIsOpen(false)}
+                            className="bg-white sm:text-lg md:text-sm mt-4"
+                          >
+                            My Profile
                           </p>
                         </NavLink>
                       </li>

@@ -13,7 +13,6 @@ import { MyOrder } from "./Component/My-Order/MyOrder";
 import { Success } from "./Component/Payment/Success";
 import { Wallet } from "./Component/MyWallet/Wallet";
 import { Login } from "./Component/Login.jsx/Login";
-import { ForgetPass } from "./Component/Login.jsx/ForgetPass";
 import { Address } from "./Component/MyAddress/Address";
 import { Privacy } from "./Component/Privacy/Privacy";
 import { Coditions } from "./Component/Term & Conditions/Coditions";
@@ -23,6 +22,7 @@ import { API_TOKEN } from "./Component/Token/Token";
 import Loader from "./Component/Loader";
 import Review from "./Component/MyCart/Review/Review";
 import { OrderDetails } from "./Component/Order-Details/OrderDetails";
+import { MyProfile } from "./Component/Profile/MyProfile";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -186,8 +186,9 @@ function App() {
           <Route path="/conditons" element={<Coditions />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
+          <Route path="/profile" element={<MyProfile />} />
 
-          <Route path="/reset" element={<ForgetPass />} />
+      
 
           <Route
             path="/success"

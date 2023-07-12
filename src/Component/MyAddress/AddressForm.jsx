@@ -19,6 +19,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
   const [areaDropdown, setAreaDropdown] = useState("");
   const [initialRender, setIntialrender] = useState(true);
   const { setisLoading } = useLoaderState();
+  const [otherField, setOtherField] = useState("");
   const handleDropdown1Change = (event) => {
     const selectedValue = event.target.value;
     setCityDropdown(selectedValue);
@@ -31,15 +32,19 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
     setAreaDropdown(selectedValue);
   };
 
-  const handleInputChange = (event) => {
+  const handleOtherText = (event) => {
     const { name, value } = event.target;
-    console.log(name, value);
-    setAddressData({ ...addressData, [name]: value });
-
-    // setAddList("new");
-    // console.log(addList)
+    // console.log(value);
+    setOtherField(value);
   };
 
+  const handleInputChange = (event) => {
+    console.log(event, "<><><><><><><><><><><>");
+    const { name, value } = event.target;
+    // console.log(name, "><<><><></></>");
+    setAddressData({ ...addressData, [name]: value });
+  };
+  console.log(addressData);
   const config = {
     headers: {
       Authorization: `Bearer ${API_TOKEN}`,
@@ -53,7 +58,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
     data.append("accesskey", "90336");
     data.append("add_address", "1");
     data.append("user_id", user_id);
-    data.append("type", `${addressData.type}`);
+    data.append("type", `${otherField ? otherField : addressData.type}`);
     data.append("name", `${addressData.name}`);
     data.append("mobile", "9131582414");
     data.append("address", `${addressData.address}`);
@@ -75,11 +80,12 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
         getAddress();
         setFormOpen(false);
         setisLoading(false);
+        setOtherField("");
       })
 
       .catch((err) => {
         console.log(err);
-        setisLoading(false)
+        setisLoading(false);
       });
     setAddressData({
       name: "",
@@ -141,37 +147,80 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
             </button>
             <div className="w-full p-8 md:px-12 mr-auto rounded-2xl shadow-2xl">
               <div className="flex justify-between">
-                <h1 className="font-bold uppercase text-3xl">Address : </h1>
+                <h1 className="font-bold text-3xl text-gryColour">
+                  Address :{" "}
+                </h1>
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2 mt-5">
-                  <input
-                    className="w-full border-red-800 bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg  focus:shadow-outline "
-                    type="text"
-                    placeholder=" Name*"
-                    name="name"
-                    value={addressData.name}
-                    onChange={handleInputChange}
-                  />
-                  <textarea
-                    className="w-full bg-gray-100 border-gray-400 text-gray-900 mt-2 p-3 rounded-lg  focus:shadow-outline"
-                    placeholder="Address*"
-                    type="text"
-                    name="address"
-                    value={addressData.address}
-                    onChange={handleInputChange}
-                  />
+                  <div className="">
+                    <input
+                      className="w-full mt-2 p-2 rounded-lg border border-light_gray "
+                      type="text"
+                      placeholder=" Name*"
+                      name="name"
+                      value={addressData.name}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div>
+                    <input
+                      className="w-auto mt-2 p-2 rounded-lg  border border-light_gray"
+                      placeholder="Pincode*"
+                      type="number"
+                      name="pincode"
+                      value={addressData.pincode}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div>
+                    <textarea
+                      className="w-full p-2 h-auto rounded-lg border border-light_gray"
+                      type="text"
+                      placeholder="Address*"
+                      name="address"
+                      value={addressData.address}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
 
-                  <input
-                    className="w-full border-gray-400 bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg  focus:shadow-outline"
-                    placeholder="Pincode*"
-                    type="number"
-                    name="pincode"
-                    value={addressData.pincode}
-                    onChange={handleInputChange}
-                  />
+                <div className="my-5 flex ">
+                  <div className="mr-2">
+                    <select
+                      value={cityDropdown}
+                      onChange={handleDropdown1Change}
+                      className="block w-full py-2 px-3 border border-light_gray bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    >
+                      <option value="">City</option>
+                      {cities.map((item) => (
+                        <option key={item.id} value={item.id}>
+                          {item.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-                  <div className="flex justify-around mt-6">
+                  <div>
+                    <select
+                      value={areaDropdown}
+                      onChange={handleDropdown2Change}
+                      disabled={!cityDropdown}
+                      className="block w-full py-2 px-3 border border-light_gray bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    >
+                      <option value="">Area</option>
+                      {areas &&
+                        areas.map((item) => (
+                          <option key={item.id} value={item.id}>
+                            {item.name}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div className="flex my-2 justify-between items-center text-center">
+                  <div className=" flex gap-2">
                     <label>
                       <input
                         type="radio"
@@ -180,7 +229,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
                         checked={addressData.type === "Home"}
                         onChange={handleInputChange}
                       />
-                      <span className="ml-2">Home</span>
+                      <span className="ml-2 text-gryColour">Home</span>
                     </label>
 
                     <label>
@@ -191,96 +240,37 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
                         checked={addressData.type === "Work"}
                         onChange={handleInputChange}
                       />
-                      <span className="ml-2">Work</span>
+                      <span className="ml-2 text-gryColour">Work</span>
+                    </label>
+
+                    <label>
+                      <input
+                        type="radio"
+                        name="type"
+                        value="Other"
+                        checked={addressData.type === "Other"}
+                        onChange={handleInputChange}
+                      />
+                      <span className="ml-2 text-gryColour">Others</span>
                     </label>
                   </div>
-                </div>
 
-                {/* <div className="flex gap-2.5 ml-3 mt-1">
-                  <div>
-                    <button
-                      onClick={(e) => {
-                        setPressed(false);
-                        e.preventDefault();
-                      }}
-                      className="bg-lime text-xs font-bold h-[36px] w-[60px]  rounded-lg"
-                    >
-                      Home
-                    </button>
-                  </div>
-                  <div>
-                    <button
-                      onClick={(e) => {
-                        setPressed(false);
-                        e.preventDefault();
-                      }}
-                      className="bg-candy text-xs font-bold h-[36px] w-[60px] text-gray-100  rounded-lg"
-                    >
-                      Office
-                    </button>
-                  </div>
-                  <div>
-                    <button
-                      className="bg-RedColour text-xs font-bold h-[36px] w-[60px] text-gray-100  rounded-lg"
-                      onClick={(e) => handleShowInput(e)}
-                    >
-                      Others
-                    </button>
-                  </div>
-                </div>
-                {pressed && (
-                  <div>
-                    <fieldset className="border border-bg-lime ">
-                      <legend className="font-semibold">Address Others</legend>
-                      <input
-                      className="w-72 border mt-3 ml-3 h-10 rounded-lg"
-                      type="text"
-                    />
-                    </fieldset>
-                    
-                  </div>
-                )} */}
-
-                <div className="mt-[-60px] flex justify-between">
-                  <div className="my-1 flex mt-24">
-                    <div className="mr-2">
-                      <select
-                        value={cityDropdown}
-                        onChange={handleDropdown1Change}
-                        className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      >
-                        <option value="">City</option>
-                        {cities.map((item) => (
-                          <option key={item.id} value={item.id}>
-                            {item.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <select
-                        value={areaDropdown}
-                        onChange={handleDropdown2Change}
-                        disabled={!cityDropdown}
-                        className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      >
-                        <option value="">Area</option>
-                        {areas &&
-                          areas.map((item) => (
-                            <option key={item.id} value={item.id}>
-                              {item.name}
-                            </option>
-                          ))}
-                      </select>
-                    </div>
-                  </div>
-                  <div className="flex mt-[90px]">
-                    <button className="uppercase text-[10px] font-bold h-[40px] w-[78px] bg-lime text-gray-100 rounded-lg">
+                  <div className="">
+                    <button className="uppercase text-[10px] text-white font-bold h-[30px] w-[90px] bg-lime rounded-lg">
                       Save Address
                     </button>
                   </div>
                 </div>
+                {addressData.type === "Other" && (
+                  <div className="">
+                    <input
+                      onChange={handleOtherText}
+                      name="type"
+                      type="text"
+                      className="block w-full py-2 px-3 border border-light_gray  bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    />
+                  </div>
+                )}
               </form>
             </div>
           </div>

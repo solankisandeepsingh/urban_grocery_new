@@ -2,10 +2,16 @@ import axios from "axios";
 import React from "react";
 import { API_TOKEN } from "../Token/Token";
 import { useLoaderState } from "../zustand/useLoaderState";
+import { useUserStore } from "../zustand/useUserStore";
+import { useCartStore } from "../zustand/useCartStore";
 
-function CartQuantity({ item, setAddItem, addItem }) {
-  console.log(addItem);
-const {setisLoading} = useLoaderState();
+function CartQuantity({ item }) {
+  const { allCartItems, setAllCartItems } = useCartStore();
+  const { setisLoading } = useLoaderState();
+  const {
+    userInfo: { user_id },
+  } = useUserStore();
+
   const quantityDecrease = () => {
     const config = {
       headers: {
@@ -16,12 +22,13 @@ const {setisLoading} = useLoaderState();
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", "14");
+    bodyFormData.append("user_id", user_id);
     bodyFormData.append("product_id", item.id);
     bodyFormData.append("product_variant_id", item.variants[0].id);
-    const finditem = addItem.find((data) => data.product_id == item.id);
+    const finditem = allCartItems.find((data) => data.product_id == item.id);
     const newQty =
       +finditem.amount !== 0 ? +finditem.amount - 1 : finditem.amount;
+    // console.log();
     bodyFormData.append("qty", newQty);
     setisLoading(true);
 
@@ -32,25 +39,39 @@ const {setisLoading} = useLoaderState();
         config
       )
       .then(() => {
-        setisLoading(false);
-        if (addItem.some((product) => product.amount === 1))
-          setAddItem(
-            addItem.filter(
-              (pro) => pro.product_id !== item.id || pro.amount !== 1
-            )
-          );
+        console.log(allCartItems, "-1 CQ >><><><><><><><><><><");
 
-        if (addItem.some((cartItem) => cartItem.product_id === item.id)) {
-          setAddItem((cart) =>
-            cart.map((data) =>
-              data.product_id === item.id && data.amount > 1
-                ? {
-                    ...data,
-                    amount: data.amount - 1,
-                  }
-                : data
-            )
+        if (
+          allCartItems.some((product) => {
+            console.log(product);
+            return product.amount === 1;
+          })
+        ) {
+          let newArr = allCartItems.filter(
+            (pro) => pro.product_id !== item.id || pro.amount !== 1
           );
+          console.log(
+            newArr,
+            "Cart Quant -1 LAST ITEM ><>>>>>>>><><><<><><><>"
+          );
+          setisLoading(false);
+
+          setAllCartItems(newArr);
+        } else if (
+          allCartItems.some((cartItem) => cartItem.product_id === item.id)
+        ) {
+          let newArr = allCartItems.map((data) =>
+            data.product_id === item.id && data.amount > 1
+              ? {
+                  ...data,
+                  amount: data.amount - 1,
+                }
+              : data
+          );
+          console.log(newArr, "Cart Quant MORE THAN 1 ><>>>>>>>><><><<><><><>");
+
+          setAllCartItems(newArr);
+          setisLoading(false);
 
           return;
         }
@@ -70,15 +91,11 @@ const {setisLoading} = useLoaderState();
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", "14");
-
+    bodyFormData.append("user_id", user_id);
     bodyFormData.append("product_id", item.id);
     bodyFormData.append("product_variant_id", item.variants[0].id);
+    const finditem = allCartItems.find((data) => data.product_id == item.id);
 
-    const finditem = addItem.find((data) => data.product_id == item.id);
-    // console.log(finditem, "[FIND ITEM]")
-
-    // console.log(oldQty)
     const newQty = (+finditem.amount || 0) + 1;
     bodyFormData.append("qty", newQty);
     setisLoading(true);
@@ -90,21 +107,23 @@ const {setisLoading} = useLoaderState();
         config
       )
       .then((res) => {
-        // console.log(">>>>>>>>>>>>>>resonse", res);
-        setisLoading(false);
-        if (addItem.some((cartItem) => cartItem.product_id === item.id)) {
-          setAddItem((cart) =>
-            cart.map((data) =>
-              data.product_id === item.id
-                ? { ...data, amount: +data.amount + 1 }
-                : data
-            )
+        if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
+          let newArr = allCartItems.map((data) =>
+            data.product_id === item.id
+              ? { ...data, amount: +data.amount + 1 }
+              : data
           );
+          console.log(newArr);
+
+          setAllCartItems(newArr);
+          setisLoading(false);
 
           return;
         }
-
-        setAddItem((cart) => [...cart, { ...item, amount: 1 }]);
+        let newArr = [...allCartItems, { ...item, amount: 1 }];
+        console.log(newArr);
+        // setAllCartItems((cart) => [...cart, { ...item, amount: 1 }]);
+        setAllCartItems(newArr);
       })
       .catch((error) => {
         console.log(error);
@@ -113,9 +132,9 @@ const {setisLoading} = useLoaderState();
   };
 
   const findItemNumber = () => {
-    let index = addItem.findIndex((i) => +i.product_id === +item.id);
-    console.log(addItem[index].amount);
-    return addItem[index].amount;
+    let index = allCartItems.findIndex((i) => +i.product_id === +item.id);
+    console.log(allCartItems[index].amount);
+    return allCartItems[index].amount;
   };
 
   return (

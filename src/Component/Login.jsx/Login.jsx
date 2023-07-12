@@ -15,15 +15,16 @@ export const Login = ({
   // setLoggedIn,
   getUserCarts,
   setNewUserLog,
-  setOpenLogin
+  setOpenLogin,
 }) => {
   const [logins, setLogins] = useState({
     phone: "",
     password: "",
   });
-  const { allCartItems, config, clearCartApi, } = useCartStore();
+  const { allCartItems, config, clearCartApi } = useCartStore();
   const { setUserInfo } = useUserStore();
-  const [showModals, setShowModals] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(false);
+  const [showForgot, setShowForgot] = useState(false);
   const [LoginFormModals, setLoginFormModals] = useState(true);
   const [loginData, setLoginData] = useState([]);
   const navigate = useNavigate();
@@ -31,16 +32,18 @@ export const Login = ({
 
   const handleShow = (e) => {
     e.preventDefault();
-    setShowModals(true);
+    setShowSignUp(true);
+    // setOpenLogin(false)
+    // setLoginFormModals(false);
   };
   const closeLoginModal = () => {
-    setLoginFormModals(false);
-    if(setNewUserLog){
-      setNewUserLog(false) 
+    // setLoginFormModals(false);
+    if (setNewUserLog) {
+      setNewUserLog(false);
     }
 
-    if(setOpenLogin){
-      setOpenLogin(false)
+    if (setOpenLogin) {
+      setOpenLogin(false);
     }
     navigate("/");
   };
@@ -77,7 +80,7 @@ export const Login = ({
         Authorization: `Bearer ${API_TOKEN}`,
       },
     };
-    
+
     axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/login.php",
@@ -99,7 +102,7 @@ export const Login = ({
           setUserInfo(res.data);
           let newUserId = res?.data?.user_id;
           // setUser_id(newUserId);
-          clearCart(newUserId);
+          // clearCart(newUserId);
 
           const addMultipleItems = () => {
             let arr = {};
@@ -155,10 +158,10 @@ export const Login = ({
       password: "",
     });
   };
-
+const handleForgotPassword = ()=>{}
   return (
     <>
-      {LoginFormModals && (
+      {!showSignUp && (
         <>
           <ToastContainer />
           <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
@@ -212,11 +215,11 @@ export const Login = ({
                         >
                           Login
                         </button>
-                        <NavLink to={"/reset"}>
-                          <a className="cursor-pointer xs:ml-8">
+                        <div className="" onClick={handleForgotPassword}>
+                          <p className="cursor-pointer xs:ml-8">
                             Forgot password?
-                          </a>
-                        </NavLink>
+                          </p>
+                        </div>
                       </div>
 
                       <div className="text-center lg:text-left">
@@ -224,7 +227,7 @@ export const Login = ({
                           Don't have an account?
                           <a
                             href=""
-                            className="text-danger transition duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
+                            className="text-danger transition ml-2 duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
                             onClick={handleShow}
                           >
                             Register
@@ -239,7 +242,7 @@ export const Login = ({
           </div>
         </>
       )}
-      {showModals && <Signup setLoginFormModals={setLoginFormModals} />}
+      {showSignUp && <Signup setOpenLogin={setOpenLogin} />}
     </>
   );
 };

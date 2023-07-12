@@ -3,18 +3,14 @@ import { API_TOKEN } from "../../Token/Token";
 import axios from "axios";
 import { FaHome } from "react-icons/fa";
 import { HiOfficeBuilding } from "react-icons/hi";
-import { NavLink, useNavigate } from "react-router-dom";
 import { AddressForm } from "../../MyAddress/AddressForm";
 import { useUserStore } from "../../zustand/useUserStore";
 import { useLoaderState } from "../../zustand/useLoaderState";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { BsChevronCompactRight } from "react-icons/bs";
+
 function Form({ user_id, setReviewPage, setShowForm }) {
-  console.log("setReviewPage>>>>>>>>>>>>>>>>>>>>", setReviewPage);
-  // const [addList, setAddlist] = useState([]);
-  const [selectedOption, setSelectedOption] = useState("");
   const [formOpen, setFormOpen] = useState(false);
-  const navigate = useNavigate();
   const { setisLoading } = useLoaderState();
   const { deliveryAddress, setDeliveryAddress, addList, setAddList } =
     useUserStore();
@@ -78,7 +74,7 @@ function Form({ user_id, setReviewPage, setShowForm }) {
 
             <div
               onClick={() => handleOpenForm()}
-              className="border flex gap-3 hover:border-[2px] border-[2px] hover:border-lime py-2 cursor-pointer items-center justify-center border-light_gray m-2  rounded-md"
+              className=" flex gap-3 hover:border-[2px] border-[2px] hover:border-lime py-2 cursor-pointer items-center justify-center border-light_gray m-2  rounded-md"
             >
               <AiOutlinePlusCircle className="text-lime text-[20px]" />
               <p className="text-[#8d9191] text-lg">Add new address</p>

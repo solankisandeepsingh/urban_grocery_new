@@ -7,6 +7,7 @@ import { GiScooter } from "react-icons/gi";
 import { BsChevronRight } from "react-icons/bs";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useUserStore } from "../zustand/useUserStore";
+import { useOrderDetails } from "../zustand/useOrderDetails";
 
 export const MyOrder = ({ addItem }) => {
   const [price, setPrice] = useState(0);
@@ -15,7 +16,8 @@ export const MyOrder = ({ addItem }) => {
     userInfo: { user_id },
   } = useUserStore();
 
-  const [orderData, setOrderData] = useState("");
+  // const [orderData, setOrderData] = useState("");
+  const {allOrderDetails,setAllOrderDetails} = useOrderDetails();
   const [orderId, setOrderId] = useState("");
   const { setisLoading } = useLoaderState();
 
@@ -38,7 +40,7 @@ export const MyOrder = ({ addItem }) => {
       )
       .then((res) => {
         // console.log(res.data.data, "myorder data will displayyyyyyyyyyy");
-        setOrderData(res?.data?.data);
+        setAllOrderDetails(res?.data?.data);
         setisLoading(false);
       })
       .catch((err) => {
@@ -80,8 +82,8 @@ export const MyOrder = ({ addItem }) => {
         {!detailsOrder ? (
           <div className="md:w-[60%] xs:w-full ">
             <div className=" border border-light_gray p-4">
-              {orderData &&
-                orderData.map((item) => {
+              {allOrderDetails &&
+                allOrderDetails.map((item) => {
                   return (
                     <div className="bg border-b flex justify-between items-center  border-[#e8e8e8] py-3">
                       <div className="w-[95%]">
@@ -155,9 +157,9 @@ export const MyOrder = ({ addItem }) => {
           </div>
         ) : (
           <OrderDetails
-            setDetailsOrder={setDetailsOrder}
+          // setAllOrderDetails={setAllOrderDetails}
             orderId={orderId}
-            orderData={orderData}
+            // orderData={orderData}
           />
         )}
       </div>

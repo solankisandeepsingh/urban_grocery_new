@@ -13,6 +13,7 @@ import { useLoaderState } from "../zustand/useLoaderState";
 import { BsChevronCompactRight } from "react-icons/bs";
 import Review from "./Review/Review";
 import { currencyFormatter } from "../../utils/utils";
+import { usePaymentStore } from "../zustand/usePaymentStore";
 
 function MyCart({
   // allCartItems,
@@ -41,6 +42,7 @@ function MyCart({
     resetState,
   } = useUserStore();
   const { setisLoading } = useLoaderState();
+  const {  setTotalPrice, setTotalMRPPrice, setTotalItems } = usePaymentStore();
 
   let menuRef = useRef();
 
@@ -57,6 +59,17 @@ function MyCart({
       setReviewPage(false);
     }
   };
+
+  const unDiscountedTotel = () => {
+    let total = 0;
+    allCartItems.forEach((item) => {
+      total += parseFloat(item.price) * item.amount;
+    });
+    console.log(total,"tooooooooooooooooooooooooooooooooooooooo");
+    setTotalMRPPrice(total);
+  };
+ 
+  
   const total = () => {
     let price = 0;
     allCartItems &&
@@ -66,6 +79,7 @@ function MyCart({
         }
       });
     setPrice(price);
+    setTotalPrice(price);
     setCartTotal(price);
   };
 
@@ -78,11 +92,13 @@ function MyCart({
         }
       });
     setTotalItem(totalAmount);
+    setTotalItems(totalAmount)
   };
 
   useEffect(() => {
     total();
     totalAmount();
+    unDiscountedTotel();
   }, [allCartItems]);
 
   const removeItemHandler = (item) => {
@@ -275,13 +291,15 @@ function MyCart({
                   </button>
                 </div>
 
-                <div className=" bg-white overflow-y-scroll md:h-[700px] xs:h-[758px] sm:h[985px] 2xs:h-[500px]"  style={{
-        overflow: 'scroll',
-        scrollbarWidth: 'none',
-        '-ms-overflow-style': 'none',
-        '&::-webkit-scrollbar': { display: 'none' }
-      }}
-    >
+                <div
+                  className=" bg-white overflow-y-scroll md:h-[700px] xs:h-[758px] sm:h[985px] 2xs:h-[500px]"
+                  style={{
+                    overflow: "scroll",
+                    scrollbarWidth: "none",
+                    "-ms-overflow-style": "none",
+                    "&::-webkit-scrollbar": { display: "none" },
+                  }}
+                >
                   {!showForm && allCartItems.length && !reviewPage
                     ? allCartItems &&
                       allCartItems?.map((item, index) => {
@@ -301,7 +319,7 @@ function MyCart({
                                   class=" divide-y divide-gray-200 "
                                 >
                                   <div class="flex p-2 bg-white items-center">
-                                    <div class=" bg-white md:h-24 md:w-24 xs:h-24 xs:w-24 sm:h-48 sm:w-48 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                    <div class=" bg-white md:h-[80px] md:w-[72px] xs:h-24 xs:w-24 sm:h-48 sm:w-48 flex-shrink-0 overflow-hidden rounded-md ">
                                       <img
                                         src={item?.image}
                                         alt="product"
@@ -310,8 +328,8 @@ function MyCart({
                                     </div>
 
                                     <div class="bg-white ml-4 flex flex-1 flex-col truncate ...">
-                                      <div class=" bg-white md:text-sm xs:text-sm sm:text-3xl  text-gray-900 ">
-                                        <p className="bg-white float-left	 truncate ...">
+                                      <div class=" bg-white md:text-xs xs:text-sm sm:text-3xl ">
+                                        <p className="bg-white float-left	text-lightgray truncate ...">
                                           {item.name}
                                         </p>
                                         <br />
@@ -321,10 +339,14 @@ function MyCart({
                                             <p className="text-lightgray font-semi-bold">
                                               {item.serve_for}
                                             </p>
-                                            <p className="text- text-lime">
-                                              {" "}
-                                              ₹{item.discounted_price}{" "}
+
+                                            <p className="2xs:text-base xs:text-sm  sm:text-xl md:text-xs text-gryColour  font-medium inline line-through bg-white">
+                                              ₹{item.price}.00{" "}
                                             </p>
+                                            <span className="text-xs sm:text-xl xs:text-sm xs:ml-1 md:text-xs text-black  bg-white">
+                                              ₹{item.discounted_price}.00{" "}
+                                            </span>
+
                                             <p class="bg-white text-gryColour text-[12px] font-bold">
                                               {" "}
                                               {item?.measurement + " "}

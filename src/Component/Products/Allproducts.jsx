@@ -11,9 +11,7 @@ import { useUserStore } from "../zustand/useUserStore";
 
 function Allproducts({ name, setallCartItems, isOpen, setIsOpen }) {
   const { allProducts, setAllProducts } = useProductsStore();
-  // const [allproduct, setShowAllProducts] = useState(mockProduct.data);
   const { setisLoading } = useLoaderState();
-  const [allproduct, setShowAllProducts] = useState([]);
   console.log(allProducts, setAllProducts);
   const { allCartItems, setAllCartItems } = useCartStore();
   const {

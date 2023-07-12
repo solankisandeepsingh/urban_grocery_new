@@ -2,8 +2,14 @@ import React from "react";
 import { AiFillEye } from "react-icons/ai";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useOrderDetails } from "../zustand/useOrderDetails";
+import { currencyFormatter } from "../../utils/utils";
+import { usePaymentStore } from "../zustand/usePaymentStore";
 
 export const OrderDetails = ({ setDetailsOrder, orderData, orderId }) => {
+  const { allOrderDetails } = useOrderDetails();
+
+  const { totalPrice, totalMRPPrice, totalItems } = usePaymentStore();
   const navigate = useNavigate();
   const handleBack = () => {
     navigate("/myorder");
@@ -14,7 +20,7 @@ export const OrderDetails = ({ setDetailsOrder, orderData, orderId }) => {
     <>
       <div className="md:w-[60%]  border border-light_gray p-5 xs:w-full ">
         {orderId &&
-          orderData.map((item) => {
+          allOrderDetails.map((item) => {
             console.log(item.id, "itemmmmmmmmmmmmmmm");
             if (item.id === orderId)
               return (
@@ -76,59 +82,46 @@ export const OrderDetails = ({ setDetailsOrder, orderData, orderId }) => {
 
                     <hr className=" border-b border-light_gray" />
 
-                    <div className="flex flex-col list-none mt-2 mb-4 ">
-                      <h2 className="font-bold">Price-Details</h2>
-                      <li className="cursor-pointer">
-                        <div className="flex justify-between mt-2 ">
-                          <p className=" sm:text-lg md:text-sm ">Items</p>
+                    <div className="flex flex-col list-none mt-2 mb-4">
+                      <h2 className="font-bold text-start">Payment_Details</h2>
 
-                          <p className=" sm:text-lg md:text-sm">₹500</p>
+                      <li className="cursor-pointer">
+                        <div className="flex justify-between mt-2">
+                          <p className="sm:text-lg md:text-sm">Items</p>
+                          <p className="sm:text-lg md:text-sm text-customGreen font-bold">
+                            {currencyFormatter(totalMRPPrice)}
+                          </p>
                         </div>
                       </li>
-                      <li className="  cursor-pointer ">
-                        <div className="flex justify-between mt-4  ">
-                          <p className=" sm:text-lg md:text-sm">
+                      <li className="cursor-pointer">
+                        <div className="flex justify-between mt-2">
+                          <p className="sm:text-lg md:text-sm">Discount</p>
+                          <p className="sm:text-lg md:text-sm text-customGreen font-bold">
+                            - {currencyFormatter(totalMRPPrice - totalPrice)}
+                          </p>
+                        </div>
+                      </li>
+
+                      <li className="cursor-pointer">
+                        <div className="flex justify-between mt-2">
+                          <p className="sm:text-lg md:text-sm">
                             Delivery Charge
                           </p>
+                          <p className="sm:text-lg md:text-sm text-customGreen font-bold">
+                            ₹50
+                          </p>
+                        </div>
+                      </li>
 
-                          <p className=" sm:text-lg md:text-sm">
-                            +₹{item.delivery_charge}
-                          </p>
-                        </div>
-                      </li>
-                      <li className="  cursor-pointer">
-                        <div className="flex justify-between mt-4  ">
-                          <p className=" sm:text-lg md:text-sm">Discount(0%)</p>
+                      <div className="border-b border-light_gray my-2 "></div>
 
-                          <p className=" sm:text-lg md:text-sm">
-                            ₹{item.discount}
-                          </p>
-                        </div>
-                      </li>
-                      <li className=" cursor-pointer">
-                        <div className="flex justify-between mt-4  ">
-                          <p className=" sm:text-lg md:text-sm">Promo Code</p>
-
-                          <p className=" sm:text-lg md:text-sm">
-                            ₹{item.promo_code}
-                          </p>
-                        </div>
-                      </li>
-                      <li className=" cursor-pointer">
-                        <div className="flex justify-between mt-4  ">
-                          <p className=" sm:text-lg md:text-sm">Wallet</p>
-                          <p className=" sm:text-lg md:text-sm">
-                            ₹{item.wallet_balance}
-                          </p>
-                        </div>
-                      </li>
-                      <li className=" cursor-pointer">
-                        <div className="flex justify-between mt-4  ">
-                          <p className=" sm:text-lg md:text-sm font-bold">
+                      <li className="cursor-pointer">
+                        <div className="flex justify-between mt-4">
+                          <p className="sm:text-lg md:text-xl font-bold">
                             Final Total
                           </p>
-                          <p className=" sm:text-lg md:text-sm font-bold">
-                            ₹{item.final_total}
+                          <p className="sm:text-lg md:text-xl text-customGreen font-bold">
+                            ₹{totalPrice + 50}
                           </p>
                         </div>
                       </li>
@@ -172,15 +165,17 @@ export const OrderDetails = ({ setDetailsOrder, orderData, orderId }) => {
                   </div>
                   <hr className="mt-2" />
 
-                 { item.status_name.length > 0 && <div className="mt-2">
-                    <h2 className="font-bold">Order-Staus</h2>
-                    <p className="text-center">Order</p>
-                    <p className="text-center font-bold">
-                      Status: {item.status_name}
-                    </p>
+                  {item.status_name.length > 0 && (
+                    <div className="mt-2">
+                      <h2 className="font-bold">Order-Staus</h2>
+                      <p className="text-center">Order</p>
+                      <p className="text-center font-bold">
+                        Status: {item.status_name}
+                      </p>
 
-                    <p className="text-center">{item.status_time}</p>
-                  </div>}
+                      <p className="text-center">{item.status_time}</p>
+                    </div>
+                  )}
 
                   {/* <div className="flex justify-around mb-2">
                     <div>

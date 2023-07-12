@@ -5,51 +5,55 @@ import axios from "axios";
 import { useUserStore } from "./useUserStore";
 
 export const useCartStore = create(
-  persist((set) => ({
+  persist(
+    (set) => ({
+      allCartItems: [],
+      config: {
+        headers: {
+          Authorization: `Bearer ${API_TOKEN}`,
+        },
+      },
+      bearer: `${API_TOKEN}`,
+      cartTotal: 0,
+      bodyFormData: () => {
+        let bodyFormdata = new FormData();
+        bodyFormdata.append("accesskey", "90336");
+        bodyFormdata.append("remove_from_cart", "1");
+        bodyFormdata.append(
+          "user_id",
+          useUserStore.getState().userInfo.user_id
+        );
+        return bodyFormdata;
+      },
+      setCartTotal: (data) => {
+        set(() => ({ cartTotal: data }));
+      },
+      setAllCartItems: (data) => {
+        set(() => ({ allCartItems: data }));
+      },
+      clearCartApi: () => {
+        // set({ isLoading: true, error: null });
 
-    allCartItems: [],
-    config:{
-      headers:{
-        Authorization :`Bearer ${API_TOKEN}`
-      }
-    } ,
-    bearer: `${API_TOKEN}`
-    ,
-    cartTotal: 0
-    ,bodyFormData : () => {
-      let bodyFormdata = new FormData();
-      bodyFormdata.append("accesskey", "90336");
-      bodyFormdata.append("remove_from_cart", "1");
-      bodyFormdata.append("user_id", useUserStore.getState().userInfo.user_id);
-      return bodyFormdata
-    },
-    setCartTotal: (data) => {
-      set(() => ({ cartTotal: data }));
-    },
-    setAllCartItems: (data) => {
-      set(() => ({ allCartItems: data }));
-    },
-    clearCartApi: () => {
-      // set({ isLoading: true, error: null });
+        axios
+          .post(
+            "https://grocery.intelliatech.in/api-firebase/cart.php",
+            useCartStore.getState().bodyFormData(),
+            useCartStore.getState().config
+          )
+          .then((res) => {
+            console.log(
+              res,
+              "CART CLEAR RESPONSE ZUSTAND[[[[[[[[[[[[]]]]]]]]]]]]"
+            );
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      },
+    }),
 
-      axios
-      .post(
-        "https://grocery.intelliatech.in/api-firebase/cart.php",
-        useCartStore.getState().bodyFormData(),
-        useCartStore.getState().config
-      )
-      .then((res) => {
-        console.log(res, 'CART CLEAR RESPONSE ZUSTAND[[[[[[[[[[[[]]]]]]]]]]]]')
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    {
+      name: "cartStore",
     }
-  }),
-
-  {
-    name: "cartStore",
-  }
-
   )
 );

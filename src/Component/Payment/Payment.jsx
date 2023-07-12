@@ -3,16 +3,19 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 import { useCartStore } from "../zustand/useCartStore";
-import { Aside } from "../Aside/Aside";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
-import { BsCashStack } from "react-icons/bs";
+import { BsChevronCompactRight } from "react-icons/bs";
+import { HiOfficeBuilding } from "react-icons/hi";
+import { FaHome } from "react-icons/fa";
+import { currencyFormatter } from "../../utils/utils";
+import { usePaymentStore } from "../zustand/usePaymentStore";
+
 // import {  SiRazorpay } from "../react-icons/si";
 
-
-
-function Payment({ isOpen, setIsOpen }) { 
-  const { clearCartApi, setAllCartItems, allCartItems, cartTotal  } = useCartStore();
+function Payment({ price }) {
+  const { clearCartApi, setAllCartItems, allCartItems, cartTotal } =
+    useCartStore();
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [chosenPayment, setChosenPayment] = useState("");
   const { setisLoading } = useLoaderState();
@@ -24,9 +27,12 @@ function Payment({ isOpen, setIsOpen }) {
   } = useUserStore();
   const navigate = useNavigate();
 
-  let { address, area_name, city_name, country } = addList.find((item) => {
-    return item.id == deliveryAddress;
-  });
+  const { totalPrice, totalMRPPrice, totalItems } = usePaymentStore();
+
+  let { address, area_name, city_name, type, name, pincode, country } =
+    addList.find((item) => {
+      return item.id == deliveryAddress;
+    });
 
   // console.log(`${address + ' '+ area_name + ' ' + city_name + ' '+ country}`)
   let varArr = allCartItems.map((item) => {
@@ -65,9 +71,7 @@ function Payment({ isOpen, setIsOpen }) {
       });
   }, []);
 
-
   const handleConfirmOrder = () => {
-    
     let config = {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
@@ -120,10 +124,10 @@ function Payment({ isOpen, setIsOpen }) {
       )
       .then((res) => {
         console.log(res);
-        navigate('/success')
+        navigate("/success");
         clearCartApi();
-       setAllCartItems([]);
-       setisLoading(false);
+        setAllCartItems([]);
+        setisLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -187,7 +191,7 @@ function Payment({ isOpen, setIsOpen }) {
   ];
   // const methodIcons = {
   //   cod_payment_method : "as",
-  //   razorpay_payment_method : 
+  //   razorpay_payment_method :
   // }
   const handleCreditCardSubmit = (e) => {
     e.preventDefault();
@@ -202,56 +206,173 @@ function Payment({ isOpen, setIsOpen }) {
     console.log("CVV:", cvv);
   };
 
-  const handleSuccessPay = () => {
-    
-  };
+  const handleSuccessPay = () => {};
+  console.log(allCartItems, "allcartitem");
 
   return (
     <>
-      <div className="md:flex md:flex-row">
-        {/* <div className="xs:w-72 xs:py-20 xs:px-1 md:h-full md:w-1/4 md:px-12  md:mt-10">
-          <Aside />
-        </div> */}
-        <div className=" xs:w-full">
+      <div className="flex justify-evenly items-center text-center">
+        <div className=" flex w-[50%] items-center justify-center">
+          <div className=" w-full p-6 h-[40vh]  rounded-lg shadow-2xl">
+            <h2 className="text-2xl font-bold mb-3">Payment</h2>
+            <div className="mb-3">
+              Select Payment Method
+              {paymentOptionsArray.map((item) => {
+                return (
+                  paymentMethods[`${item.id}`] == 1 && (
+                    <div key={item.id} className="flex items-center py-2">
+                      {console.log(paymentMethods[`${item.id}`])}
+                      <input
+                        className="mr-2 leading-tight"
+                        type="radio"
+                        name={item.labelFor}
+                        id={item.id}
+                        onClick={() => {
+                          handlePaymentMethod(item.code);
+                        }}
+                      />
+                      {/* <BsCashStack /> */}
+                      <label htmlFor={item.labelFor}>{item.label}</label>
+                    </div>
+                  )
+                );
+              })}
+              <div>
+                <button
+                  onClick={() => {
+                    handleConfirmOrder();
+                  }}
+                  disabled={!chosenPayment}
+                  className="bg-lime text-white my-4 hover:opacity-90 sm:w-full md:w-[90%] mx-4 sm:text-2xl md:text-lg px-4 py-1.5 rounded-lg"
+                >
+                  Proceed to Pay
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
           <div>
-            <div className="h-[700px] flex items-center justify-center">
-              <div className="max-w-md w-full p-6 h-[40vh]  rounded-lg shadow-md">
-                <h2 className="text-2xl font-bold mb-3">Payment Details</h2>
-                <div className="mb-3">
-                  Select Payment Method
-                  {paymentOptionsArray.map((item) => {
-                    return (
-                      paymentMethods[`${item.id}`] == 1 && (
-                        <div key={item.id} className="flex items-center py-2">
-                          {console.log(paymentMethods[`${item.id}`])}
-                          <input
-                            className="mr-2 leading-tight"
-                            type="radio"
-                            name={item.labelFor}
-                            id={item.id}
-                            onClick={() => {
-                              handlePaymentMethod(item.code);
-                            }}
-                          />
-                          {/* <BsCashStack /> */}
-                          <label htmlFor={item.labelFor}>{item.label}</label>
-                        </div>
-                      )
-                    );
-                  })}
-                  <div>
-                    <button
-                      onClick={() => {
-                        handleConfirmOrder();
-                      }}
-                      disabled={!chosenPayment}
-                      className="bg-lime text-white my-4 hover:opacity-90 sm:w-full md:w-[90%] mx-4 sm:text-2xl md:text-lg px-4 py-1.5 rounded-lg"
-                    >
-                      Proceed to Pay
-                    </button>
+            <div className="mt-28 border border-light_gray p-3 h-auto w-[350px]">
+              <h2 className="text-[black] font-bold">Order Summary</h2>
+              <div className="my-4">
+                <p className="text-[black] text-left font-bold">
+                  Delivery Address:{" "}
+                </p>
+                <div className="  flex  gap-1 rounded-md">
+                  <div className="flex gap-2 ">
+                    {/* <div className="w-[5%]">
+                      {type === "Home" ? (
+                        <FaHome className="inline ml-3 mb-1" />
+                      ) : (
+                        <HiOfficeBuilding className="inline ml-3 mb-1" />
+                      )}
+                    </div> */}
+                    <div className="w-[85%] flex flex-col">
+                      {/* <div className="font-medium text-left">
+                        {type === "Home" ? "Home" : "Work"}
+                      </div> */}
+                      <div className=" text-left font-light text-[#8d9191] ">
+                        <p className="gap-2 ">{name}, </p>
+                        <span className="">{address}, </span>
+                        <span className="">{area_name}, </span>
+                        <span className="">{city_name}, </span>
+                        <span className="">{pincode}, </span>
+                        <span className="">{country} </span>
+                      </div>
+                    </div>
+                    <div className="w-[10%] flex gap-4 items-center"></div>
                   </div>
                 </div>
               </div>
+
+              <div className="border-b border-light_gray my-2 "></div>
+
+              <div className="flex flex-col list-none mt-2 mb-4">
+                <h2 className="font-bold text-start">Payment Details</h2>
+
+                {/* {allCartItems.map((item, index) => (
+                  <li key={index} className="cursor-pointer">
+                    <div className="flex justify-between mt-2">
+                      <p className="sm:text-lg md:text-sm">Item</p>
+                      <p className="sm:text-lg md:text-sm">
+                        ₹{item.totalPrice}.00
+                      </p>
+                    </div>
+                  </li>
+                ))} */}
+                <li className="cursor-pointer">
+                  <div className="flex justify-between mt-2">
+                    <p className="sm:text-lg md:text-sm">Items</p>
+                    <p className="sm:text-lg md:text-sm text-customGreen font-bold">
+                      {currencyFormatter(totalMRPPrice)}
+                    </p>
+                  </div>
+                </li>
+                <li className="cursor-pointer">
+                  <div className="flex justify-between mt-2">
+                    <p className="sm:text-lg md:text-sm">Discount</p>
+                    <p className="sm:text-lg md:text-sm text-customGreen font-bold">
+                      - {currencyFormatter(totalMRPPrice - totalPrice)}
+                    </p>
+                  </div>
+                </li>
+                {/* 
+                <li className="cursor-pointer">
+                  <div className="flex justify-between mt-4">
+                    <p className="sm:text-lg md:text-sm">Discounted Price</p>
+                    <p className="sm:text-lg md:text-sm">
+                      {currencyFormatter(totalPrice)}
+                    </p>
+                  </div>
+                </li> */}
+
+                <li className="cursor-pointer">
+                  <div className="flex justify-between mt-2">
+                    <p className="sm:text-lg md:text-sm">Delivery Charge</p>
+                    <p className="sm:text-lg md:text-sm text-customGreen font-bold">
+                      ₹50
+                    </p>
+                  </div>
+                </li>
+
+                {/* <li className="cursor-pointer">
+                  <div className="flex justify-between mt-2">
+                    <p className="sm:text-lg md:text-sm">Number of Items</p>
+                    <p className="sm:text-lg md:text-sm text-customGreen">
+                    {totalItems}
+                    </p>
+                  </div>
+                </li> */}
+
+                {/* FOR PROMO CODE */}
+
+                {/* <li className="cursor-pointer">
+                  <div className="flex justify-between mt-2">
+                    <p className="sm:text-lg md:text-sm">Promo Code</p>
+                    <p className="sm:text-lg md:text-sm">
+                      {allCartItems[0].promo_code}
+                    </p>
+                  </div>
+                </li> */}
+                <div className="border-b border-light_gray my-2 "></div>
+
+                <li className="cursor-pointer">
+                  <div className="flex justify-between mt-4">
+                    <p className="sm:text-lg md:text-xl font-bold">
+                      Order Total
+                    </p>
+                    <p className="sm:text-lg md:text-xl text-customGreen font-bold">
+                      ₹{totalPrice + 50}
+                    </p>
+                  </div>
+                </li>
+              </div>
+
+              {/* <div className="flex justify-between font-bold text-[12px] mt-[-36px]">
+                <p className="text-[#8d9191] px-3">Final_Amount</p>
+                <p className="mr-4 text-customGreen ">₹{totalPrice}</p>
+              </div> */}
             </div>
           </div>
         </div>

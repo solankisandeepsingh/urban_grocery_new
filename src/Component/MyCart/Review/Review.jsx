@@ -13,8 +13,7 @@ function Review({
   totalItem,
   setReviewPage,
   setShowModal,
-  setNavbarOpen
-
+  setNavbarOpen,
 }) {
   const { allCartItems } = useCartStore();
   const navigate = useNavigate();
@@ -22,10 +21,9 @@ function Review({
     navigate("/payment");
     setReviewPage(false);
     setShowModal(false);
-    setNavbarOpen(false)    
+    setNavbarOpen(false);
   };
   const { addList, deliveryAddress } = useUserStore();
-  
 
   let { address, area_name, city_name, country, type, name, pincode } =
     addList.find((item) => {
@@ -34,34 +32,34 @@ function Review({
 
   return (
     <>
-      <div className="border flex border-light_gray  gap-1 m-4 rounded-md">
+      <div className="flex border border-light_gray gap-1 m-4 rounded-md">
         <div className=" xs:w-full">
           <div>
-            <div className="h-[700px] flex text-center">
-              <div className="max-w-md w-full pt-2  rounded-lg shadow-md">
-                <h2 className="text-2xl font-bold mb-3">Review Details</h2>
+            <div className="h-auto flex text-center">
+              <div className="">
+                <h2 className="text-2xl font-bold mt-4">Review Details</h2>
                 <div className="flex flex-col justify-between h-[90%]">
                   <div>
                     {allCartItems.map((item, index) => {
                       return (
                         <div
-                          class={`mt-3 bg-white ${
+                          className={` bg-white ${
                             index === allCartItems.length - 1 ? "mb-[50px]" : ""
                           }  2xs:p-3 border-b-[2px] border-[#e8e8e8]`}
                         >
-                          <div class="flow-root">
-                            <div role="list" class=" divide-y divide-gray-200 ">
-                              <div class="flex p-2 bg-white items-center">
-                                <div class=" bg-white md:h-24 md:w-24 xs:h-24 xs:w-24 sm:h-48 sm:w-48 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                          <div className="flow-root">
+                            <div role="list" className=" ">
+                              <div className="flex p-2 bg-white items-center">
+                                <div className=" bg-white md:h-24 md:w-24 xs:h-24 xs:w-24 sm:h-48 sm:w-48 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                   <img
                                     src={item?.image}
                                     alt="product"
-                                    class="h-full w-full object-cover object-center bg-white"
+                                    className="h-full w-full object-cover object-center bg-white"
                                   />
                                 </div>
 
-                                <div class="bg-white ml-4 flex flex-1 flex-col truncate ...">
-                                  <div class=" bg-white md:text-sm xs:text-sm sm:text-3xl  text-gray-900 ">
+                                <div className="bg-white ml-4 flex flex-1 flex-col truncate ...">
+                                  <div className=" bg-white md:text-sm xs:text-sm sm:text-3xl  text-gray-900 ">
                                     <p className="bg-white float-left	 truncate ...">
                                       {item.name}
                                     </p>
@@ -72,12 +70,22 @@ function Review({
                                         {item.serve_for}
                                       </p> */}
                                       <div>
-                                        <p className="text-left text-lime">
+                                        {/* <p className="text-left text-lime">
                                           {" "}
                                           {currencyFormatter(
                                             item.discounted_price
                                           )}{" "}
+                                        </p> */}
+
+                                        <p className="2xs:text-base xs:text-sm  sm:text-xl md:text-xs text-gryColour  font-medium inline line-through bg-white">
+                                          ₹{item.price}.00{" "}
                                         </p>
+                                        <span className="text-xs sm:text-xl xs:text-sm xs:ml-1 md:text-xs text-black  bg-white">
+                                          {/* ₹{item.discounted_price}.00{" "} */}
+                                          {currencyFormatter(
+                                            item.discounted_price
+                                          )}
+                                        </span>
                                         <p className="bg-white text-gryColour text-left text-[12px] font-bold">
                                           {" "}
                                           {item?.measurement + " "}
@@ -95,23 +103,23 @@ function Review({
                             {/* {console.log(user_id, "><><><CHECK USER ID BOOLEAN><><><")} */}
                           </div>
                         </div>
-                        // <div class="mt-3 bg-white  xs:p-4 2xs:p-2  ">
-                        //   <div class="flow-root">
+                        // <div className="mt-3 bg-white  xs:p-4 2xs:p-2  ">
+                        //   <div className="flow-root">
                         //     <ul
                         //       role="list"
-                        //       class="-my-6 divide-y divide-gray-200"
+                        //       className="-my-6 divide-y divide-gray-200"
                         //     >
-                        //       <li class="flex py-6 bg-white">
-                        //         <div class=" bg-white md:h-12 md:w-12 xs:h-24 xs:w-24 sm:h-48 sm:w-48 flex-shrink-0 overflow-hidden rounded-md">
+                        //       <li className="flex py-6 bg-white">
+                        //         <div className=" bg-white md:h-12 md:w-12 xs:h-24 xs:w-24 sm:h-48 sm:w-48 flex-shrink-0 overflow-hidden rounded-md">
                         //           <img
                         //             src={item.image}
                         //             alt="product"
-                        //             class="h-full w-full object-cover object-center bg-white"
+                        //             className="h-full w-full object-cover object-center bg-white"
                         //           />
                         //         </div>
 
-                        //         <div class="bg-white ml-4 flex flex-1 flex-col truncate ...">
-                        //           <div class=" bg-white md:text-sm xs:text-sm sm:text-3xl font-semibold text-gray-900 ">
+                        //         <div className="bg-white ml-4 flex flex-1 flex-col truncate ...">
+                        //           <div className=" bg-white md:text-sm xs:text-sm sm:text-3xl font-semibold text-gray-900 ">
                         //             <p className="bg-white float-left truncate ...">
                         //               {item.name}
                         //             </p>
@@ -125,13 +133,13 @@ function Review({
                         //                     {currencyFormatter(item.discounted_price)}{" "}
                         //                   </p>
                         //                 </div>
-                        //                 <p class="bg-white text-xs text-gryColour">
+                        //                 <p className="bg-white text-xs text-gryColour">
                         //                   {" "}
                         //                   Qty : {item.amount}
                         //                   {/* {() => setAmount(item.amount)} */}
                         //                 </p>
                         //               </div>
-                        //               <p class="bg-white text-xs text-gryColour">
+                        //               <p className="bg-white text-xs text-gryColour">
                         //                 {" "}
                         //                 Total :{" "}
                         //                 { currencyFormatter(item.amount * item.discounted_price)}
@@ -174,7 +182,7 @@ function Review({
                             <span className="">{country} </span>
                           </div>
                         </div>
-                        <div className="w-[10%] flex gap-4 items-center"></div>
+                        {/* <div className="w-[10%] flex gap-4 items-center"></div> */}
                       </div>
                     </div>
 
@@ -199,6 +207,7 @@ function Review({
                         Total Price: {currencyFormatter(price)}
                       </p>
                     </div> */}
+
                     <button
                       className="flex justify-between mt-5 mb-1 bg-lime p-3 text-white fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
                       onClick={() => {
@@ -215,6 +224,7 @@ function Review({
                         <BsChevronCompactRight className="te" />
                       </div>
                     </button>
+
                     {/* <button
                       onClick={() => {
                         handlePayment();
