@@ -133,7 +133,7 @@ export const Login = ({
           const addMultipleItems = () => {
             let arr = {};
             allCartItems.forEach((item) => {
-              arr[item.product_variant_id] = item.amount;
+              arr[item.product_variant_id || item.id] = item.amount;
             });
 
             let variants = Object.keys(arr).join(",");

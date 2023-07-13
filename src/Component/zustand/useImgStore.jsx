@@ -5,7 +5,6 @@ export const useImgStore = create(
   persist(
     (set) => ({
       allImg: {},
-
       setAllImg: (data) => {
         set(() => ({ allImg: data }));
       },

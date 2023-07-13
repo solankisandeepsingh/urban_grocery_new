@@ -209,6 +209,7 @@ function CartQuantity({ item, variant }) {
     console.log(variant);
     let index = allCartItems.findIndex((i) => {
       // console.log(variant[item.id || 0], +i.id, "FINDDDDD>>>>><");
+      
       return +i.id === +item.variants[variant[item.id] || 0].id;
     });
  

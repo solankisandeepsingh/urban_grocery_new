@@ -3,20 +3,22 @@ import { FaRegHeart, FaAlignLeft, FaArrowsAlt, FaHeart } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import Rating from "../../StarRating/Rating";
+// import Rating from "../../StarRating/Rating";
 import axios from "axios";
 import { API_TOKEN } from "../../Token/Token";
 import ProductBtn from "../../Button/ProductBtn";
 import { useLoaderState } from "../../zustand/useLoaderState";
 import { useCartStore } from "../../zustand/useCartStore";
 import CartQuantity from "../../Button/CartQuantity";
+import { Rating } from "@mui/material/";
 
 export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const [productPageData, setProductPage] = useState([]);
   const [wishlist, setWishlist] = useState(false);
   const { id } = useParams();
-  const {setisLoading} = useLoaderState();
+  const { setisLoading } = useLoaderState();
   const { allCartItems, setAllCartItems } = useCartStore();
+  const [value, setValue] = React.useState(2);
 
   const productDetail = () => {
     let config = {
@@ -165,7 +167,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
         console.log(newArr);
         setAllCartItems(newArr);
-setisLoading(false)
+        setisLoading(false);
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
       })
       .catch((error) => {
@@ -257,10 +259,10 @@ setisLoading(false)
                       </p>
 
                       <div className="flex text-yellow_rating mt-2 sm:mt-3 sm:text-2xl md:text-sm">
-                        <Rating
+                        {/* <Rating
                           star={item.ratings}
                           reviews={item.number_of_ratings}
-                        />
+                        /> */}
                       </div>
 
                       {item &&
@@ -351,6 +353,14 @@ setisLoading(false)
                                     </p>
                                   )}
                                 </div>
+                                <Rating
+                                  name="simple-controlled"
+                                  value={value}
+                                  onChange={(event, newValue) => {
+                                    console.log(newValue)
+                                    setValue(newValue);
+                                  }}
+                                />
                               </div>
                             </>
                           );

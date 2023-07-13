@@ -378,7 +378,7 @@ export const ProductCarousel = ({}) => {
     //   user_id: user_id,
     // };
 
-    let newArr = [...allCartItems, { ...mainItem.variants[variant[mainItem.id]||0], amount: 1, name: mainItem.name, image: mainItem.variants[variant[mainItem.id]||0].images[0] }];
+    let newArr = [...allCartItems, { ...mainItem.variants[variant[mainItem.id]||0], amount: 1, name: mainItem.name, image: mainItem.variants[variant[mainItem.id]||0].images[0], product_variant_id: mainItem.variants[variant[mainItem.id]||0].id }];
     console.log(newArr, "FROM ADD ITEM UI");
     // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
     setAllCartItems(newArr);
