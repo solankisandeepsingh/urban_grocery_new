@@ -185,6 +185,8 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
     setWishlist((prev) => !prev);
   };
 
+  console.log(filterData,"filetdata")
+
   return (
     <>
       <div className="2xs:mt-10 xs:mt-10 md:p-20 xs:p-8">

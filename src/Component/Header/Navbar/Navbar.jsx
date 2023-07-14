@@ -29,11 +29,12 @@ export const Navbar = ({
   const userButtonClicks = useRef(0);
   const [isOpen, setIsOpen] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
-
+  const [isValidImg, setisValidImg] = useState(false);
   const {
-    userInfo: { user_id, name },
+    userInfo: { user_id, name ,profile,mobile},
     setUserInfo,
   } = useUserStore();
+
   useEffect(() => {
     let handler = (e) => {
       if (menuRef.current) {
@@ -50,16 +51,38 @@ export const Navbar = ({
     };
   });
 
+  
+
   useEffect(() => {
     const handleScroll = () => {
       const isScrollingDown = window.scrollY > 0;
       setShowSearch(!isScrollingDown);
     };
     window.addEventListener("scroll", handleScroll);
+   
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
+
   }, []);
+
+
+  useEffect(
+    ()=>{
+      const img = new Image();
+      img.src = profile;
+      
+      img.onload = () =>{
+        setisValidImg(true)
+      }
+
+      img.onerror = () =>{
+        setisValidImg(false)
+      }
+    }
+    ,[profile])
+
 
   const handleShowSearchBar = () => {
     setShowSearchBar(true);
@@ -116,8 +139,14 @@ export const Navbar = ({
                       setIsOpen(!isOpen);
                     }}
                   >
-                    {/* <FaUserCircle className=" xs:text-3xl text-lime  md:text-2xl mr-1 cursor-pointer"  /> */}
-                    <img src="https://image.winudf.com/v2/image1/bmV0LndsbHBwci5ib3lzX3Byb2ZpbGVfcGljdHVyZXNfc2NyZWVuXzBfMTY2NzUzNzYxN18wOTk/screen-0.webp?fakeurl=1&type=.webp" className="xs:text-3xl w-[40px] h-[40px] text-lime  md:text-[2px] mr-1 cursor-pointer" alt="" />
+                    {isValidImg ?
+                    
+                    <img src={profile} className="xs:text-3xl w-[40px] h-[40px] text-lime object-cover rounded-full md:text-[2px] mr-1 cursor-pointer" alt="" />
+                      :
+                    <FaUserCircle className=" xs:text-3xl text-lime  md:text-2xl mr-1 cursor-pointer"  />
+                  }
+                    
+                    
                     {name}
                     <div className="md:mt-1 xs:mt-1 bg-white ">
                       <FaCaretDown className="bg-white" />
@@ -131,7 +160,7 @@ export const Navbar = ({
                       setOpenLogin(true);
                     }}
                   >
-                    <button className=" text-white font-bold bg-lime p-3 rounded-lg sm:text-md md:text-md text-center">
+                    <button className=" text-white font-bold bg-lime w-20 h-10  rounded-lg sm:text-md md:text-md text-center">
                       {name}
                     </button>
                     {/* <div className="md:mt-1 xs:mt-1 bg-white ">
@@ -147,10 +176,13 @@ export const Navbar = ({
                     className="top-0 p-5 pt-0 right-0 mt-2 w-56 shadow-lg rounded-lg bg-white  xs:mt-[73px] md:ml-[980px] sm:ml-[400px] xs:ml-[100px] z-10 absolute px-4"
                     ref={menuRef}
                   >
-                    <ul className="mt-8 bg-white">
+                    <ul className="mt-4 bg-white">
                       <li className=" bg-white cursor-pointer">
-                        <p className="bg-white mt-4 mb-3 sm:text-2xl md:text-lg">
+                        <p className="bg-white mt-4 sm:text-2xl md:text-lg">
                           My Account
+                        </p>
+                        <p className="bg-white sm:text-2xl md:text-[15px] font-bold">
+                          {mobile}
                         </p>
                         <hr />
                       </li>
