@@ -5,6 +5,7 @@ import axios from "axios";
 import { FaUserCircle } from "react-icons/fa";
 import { AiFillEdit } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
+import { useLoaderState } from "../zustand/useLoaderState";
 
 export const MyProfile = () => {
   // const [editBtn, setEditBtn] = useState(false);
@@ -15,6 +16,7 @@ export const MyProfile = () => {
     userInfo,
   } = useUserStore();
   const [isValidImg, setisValidImg] = useState(false);
+  const {setisLoading} = useLoaderState();
 
   // const [nameUpdate, setNameUpdate] = useState(userInfo.name)
 
@@ -59,6 +61,7 @@ export const MyProfile = () => {
       formData.append("user_id", user_id);
       // formData.append("profile", `${updateUser.profile}`);
       formData.append("profile", file);
+      setisLoading(true);
 
       axios
         .post(
@@ -68,10 +71,12 @@ export const MyProfile = () => {
         )
         .then((res) => {
           console.log(res, "upload image");
+          
           getUserData();
           toast.success("Profile successfully uploaded!", {
             position: toast.POSITION.TOP_CENTER,
           });
+          setisLoading(false);
         })
         .catch((err) => {
           console.log(err);
@@ -91,6 +96,7 @@ export const MyProfile = () => {
     updateProfileData.append("accesskey", "90336");
     updateProfileData.append("get_user_data", "1");
     updateProfileData.append("user_id", user_id);
+    setisLoading(true);
 
     axios
       .post(
@@ -104,7 +110,9 @@ export const MyProfile = () => {
         //   position: toast.POSITION.TOP_CENTER
         // });
 
+
         setUserInfo(res.data);
+        setisLoading(false);
         // setUserInfo(res.data)
       })
       .catch((err) => {

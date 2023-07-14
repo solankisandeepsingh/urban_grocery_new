@@ -6,7 +6,7 @@ import { useOrderDetails } from "../zustand/useOrderDetails";
 import { currencyFormatter } from "../../utils/utils";
 import { usePaymentStore } from "../zustand/usePaymentStore";
 
-export const OrderDetails = ({ setDetailsOrder, orderData, orderId }) => {
+export const OrderDetails = ({ setDetailsOrder, orderId }) => {
   const { allOrderDetails } = useOrderDetails();
 
   const { totalPrice, totalMRPPrice, totalItems } = usePaymentStore();

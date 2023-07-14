@@ -23,6 +23,7 @@ import Loader from "./Component/Loader";
 import Review from "./Component/MyCart/Review/Review";
 import { OrderDetails } from "./Component/Order-Details/OrderDetails";
 import { MyProfile } from "./Component/Profile/MyProfile";
+import { OrderDetailsPage } from "./Component/Order-Details/OrderDetailsPage";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -187,6 +188,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
           <Route path="/profile" element={<MyProfile />} />
+          <Route path="/orderdetailspage" element={<OrderDetailsPage />} />
 
       
 
@@ -215,6 +217,7 @@ function App() {
               />
             }
           />
+          
           <Route
             path="/allproducts"
             element={

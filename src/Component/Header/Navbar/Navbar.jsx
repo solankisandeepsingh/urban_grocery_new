@@ -31,7 +31,7 @@ export const Navbar = ({
   const [openLogin, setOpenLogin] = useState(false);
   const [isValidImg, setisValidImg] = useState(false);
   const {
-    userInfo: { user_id, name ,profile,mobile},
+    userInfo: { user_id, name, profile, mobile },
     setUserInfo,
   } = useUserStore();
 
@@ -51,38 +51,30 @@ export const Navbar = ({
     };
   });
 
-  
-
   useEffect(() => {
     const handleScroll = () => {
       const isScrollingDown = window.scrollY > 0;
       setShowSearch(!isScrollingDown);
     };
     window.addEventListener("scroll", handleScroll);
-   
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-
   }, []);
 
+  useEffect(() => {
+    const img = new Image();
+    img.src = profile;
 
-  useEffect(
-    ()=>{
-      const img = new Image();
-      img.src = profile;
-      
-      img.onload = () =>{
-        setisValidImg(true)
-      }
+    img.onload = () => {
+      setisValidImg(true);
+    };
 
-      img.onerror = () =>{
-        setisValidImg(false)
-      }
-    }
-    ,[profile])
-
+    img.onerror = () => {
+      setisValidImg(false);
+    };
+  }, [profile]);
 
   const handleShowSearchBar = () => {
     setShowSearchBar(true);
@@ -139,14 +131,16 @@ export const Navbar = ({
                       setIsOpen(!isOpen);
                     }}
                   >
-                    {isValidImg ?
-                    
-                    <img src={profile} className="xs:text-3xl w-[40px] h-[40px] text-lime object-cover rounded-full md:text-[2px] mr-1 cursor-pointer" alt="" />
-                      :
-                    <FaUserCircle className=" xs:text-3xl text-lime  md:text-2xl mr-1 cursor-pointer"  />
-                  }
-                    
-                    
+                    {isValidImg ? (
+                      <img
+                        src={profile}
+                        className="xs:text-3xl w-[40px] h-[40px] text-lime object-cover rounded-full md:text-[2px] mr-1 cursor-pointer"
+                        alt=""
+                      />
+                    ) : (
+                      <FaUserCircle className=" xs:text-3xl text-lime  md:text-2xl mr-1 cursor-pointer" />
+                    )}
+
                     {name}
                     <div className="md:mt-1 xs:mt-1 bg-white ">
                       <FaCaretDown className="bg-white" />
@@ -160,7 +154,7 @@ export const Navbar = ({
                       setOpenLogin(true);
                     }}
                   >
-                    <button className=" text-white font-bold bg-lime w-20 h-10  rounded-lg sm:text-md md:text-md text-center">
+                    <button className=" text-white font-bold bg-lime p-3  rounded-lg sm:text-md md:text-md text-center">
                       {name}
                     </button>
                     {/* <div className="md:mt-1 xs:mt-1 bg-white ">
@@ -251,6 +245,16 @@ export const Navbar = ({
                             className="bg-white sm:text-lg md:text-sm mt-4"
                           >
                             FAQ
+                          </p>
+                        </NavLink>
+                      </li>
+                      <li className="bg-white cursor-pointer">
+                        <NavLink to={"/myorderdetails"}>
+                          <p
+                            onClick={() => setIsOpen(false)}
+                            className="bg-white sm:text-lg md:text-sm mt-4"
+                          >
+                            New Order Details
                           </p>
                         </NavLink>
                       </li>
