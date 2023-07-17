@@ -39,7 +39,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
         config
       )
       .then((res) => {
-        // console.log(res)
+        console.log(res, "PRODUCT DETAILS")
         setProductPage(res?.data?.data);
         setisLoading(false);
       })
