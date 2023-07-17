@@ -64,6 +64,12 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
           // setReviewList(res.data.product_review);
           setisLoading(false);
           setReviewOpen(false)
+          res.data.error? 
+          toast.error(`${res.data.message}`, {
+            position: toast.POSITION.TOP_RIGHT
+        })
+        
+        :
           toast.success('Review Added Successfully  !', {
             position: toast.POSITION.TOP_RIGHT
         })
@@ -74,7 +80,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
         .catch((error) => {
           console.log(error)
           setisLoading(false);
-          
+
         });
     }
     else{
@@ -105,7 +111,9 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
         config
       )
       .then((res) => {
+        console.log(res.data);
         setReviewList(res.data.product_review);
+        // checkImageValidity(res.data.product_review[1].user_profile)
         setisLoading(false);
       })
       .catch((error) => {
@@ -119,16 +127,20 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
     setReview(value);
   };
 
-  function checkImageValidity(url) {
-    var img = new Image();
-    img.src = url;
-    img.onload = function () {
-      setisValidImg(true); // Image is valid
-    };
-    img.onerror = function () {
-      setisValidImg(false); // Image is broken or invalid
-    };
-  }
+//  function checkImageValidity(url) {
+//     console.log(url, "RUNNING");
+//     var img = new Image();
+//     img.onload = function () {
+//       console.log('IMG VALID');
+//       // setisValidImg(true); // Image is valid
+//     };
+//     img.onerror = function () {
+//       // setisValidImg(false); // Image is broken or invalid
+//       console.log('IMG INVALID');
+//     };
+//     img.src = url;
+//   }
+
 
   const productDetail = () => {
     let config = {
@@ -497,23 +509,25 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                       {reviewList?.length > 0 ? (
                         reviewList.map((review) => {
                           // const img = new Image();
-                          // let validImg;
+                          // // let validImg;
                           // img.src = review.user_profile;
 
                           // img.onload = () => {
-                          //   validImg = 1;
+                          //   setisValidImg(true);
                           // };
                           // img.onerror = () => {
-                          //   validImg = 0;
-                          // };
+                          //   // validImg = 0;
+                          //   setisValidImg(false);
 
+                          // };
+                          // console.log("AFTER REVIEWLIST POPULATED");
                           // checkImageValidity(review.user_profile)
 
                           return (
                             <div className="border-b px-3 border-[#e8e8e8e8] mb-3">
                               <div className="flex items-center gap-3">
                                 {isValidImg ? (
-                                  <img src={review.user_profile} alt="" />
+                                  <img className="h-10 w-10" src={review.user_profile} alt="" />
                                 ) : (
                                   <FaUserCircle className="text-2xl" />
                                 )}
@@ -604,7 +618,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                     <div className="gap-5 mt-5">
                       <div className="border border-[#e8e8e8] p-3 rounded-lg">
 
-                      <p className="  text-[gray] text-lg">Rate your product: </p>
+                      <p className="  text-[gray] font-bold text-lg">Rate your product: </p>
                       <div className="flex mt-1 items-center">
                         <MUIRating
                           name="simple-controlled"
@@ -623,23 +637,29 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                         <div className="text-xl">({value})</div>
                       </div>
                       </div>
+
+                      <label className=" text-[gray] font-bold text-lg pl-3 inline-block mt-5" htmlFor="images">Add product images</label>
                       <input
-                        className="w-full border border-[#e8e8e8] bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg  focus:border-[black] "
-                        type="text"
-                        onChange={inputHandler}
-                        name="text"
-                        value={review.text}
-                        placeholder="Write your review"
-                      />
-                      <label className=" text-[gray] text-lg mt-3" htmlFor="images">Add product images</label>
-                      <input
-                        className="w-full bg-gray-100 border-gray-400 text-gray-900 mt-2 p-3 rounded-lg  focus:shadow-outline"
+                        className="w-full bg-gray-100 border-gray-400 text-gray-900  p-3 rounded-lg  focus:shadow-outline"
                         type="file"
                         accept="image/*"
                         // onChange={inputHandler}
                         // value={logins.password}
-                        name="images"
+                        name="review images"
+                        id="images"
                       />
+
+                      <label className=" text-[gray] font-bold pl-3 text-lg inline-block mt-5" htmlFor="text">Add your Review</label>
+                      <textarea
+                        className="w-full border border-[#e8e8e8] bg-gray-100 text-gray-900 mt-1 p-3 rounded-lg  focus:border-[black] "
+                        type="text"
+                        onChange={inputHandler}
+                        name="review"
+                        id="text"
+                        value={review.text}
+                        placeholder="Write your review"
+                      />
+
                     </div>
 
                     <div className="mb-8 mt-6 flex items-center justify-between">
@@ -651,27 +671,6 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                       >
                         Submit Review
                       </button>
-                      <div
-                        className=""
-                        // onClick={handleForgotPassword}
-                      >
-                        <p className="cursor-pointer xs:ml-8">
-                          Forgot password?
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="text-center lg:text-left">
-                      <p className="mb-0 mt-2 pt-1 text-sm font-semibold">
-                        Don't have an account?
-                        <a
-                          href=""
-                          className="text-danger transition ml-2 duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
-                          // onClick={handleShow}
-                        >
-                          Register
-                        </a>
-                      </p>
                     </div>
                   </form>
                 </div>
