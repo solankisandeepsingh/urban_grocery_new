@@ -57,7 +57,7 @@ export const Signup = ({ setOpenLogin }) => {
     formData.append("accesskey", "90336");
     formData.append("type", "register");
     formData.append("name", userRegistraion.name);
-    formData.append("email", "singh@yahoo.com");
+    // formData.append("email", "singh@yahoo.com");
     formData.append("password", userRegistraion.password);
     formData.append("country_code", "91");
     formData.append("mobile", userRegistraion.phoneNumber);

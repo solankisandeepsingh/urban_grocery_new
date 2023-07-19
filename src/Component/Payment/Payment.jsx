@@ -10,6 +10,7 @@ import { HiOfficeBuilding } from "react-icons/hi";
 import { FaHome } from "react-icons/fa";
 import { currencyFormatter } from "../../utils/utils";
 import { usePaymentStore } from "../zustand/usePaymentStore";
+import CryptoJS, {HmacSHA256} from "crypto-js";
 
 // import {  SiRazorpay } from "../react-icons/si";
 
@@ -73,52 +74,52 @@ function Payment({ price }) {
 
   function loadScript(src) {
     return new Promise((resolve) => {
-        const script = document.createElement("script");
-        script.src = src;
-        script.onload = () => {
-            resolve(true);
-        };
-        script.onerror = () => {
-            resolve(false);
-        };
-        document.body.appendChild(script);
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
     });
-}
-
-async function displayRazorpay() {
-  const res = await loadScript(
-      "https://checkout.razorpay.com/v1/checkout.js"
-  );
-
-  if (!res) {
-      alert("Razorpay SDK failed to load. Are you online?");
-      return;
-  };
-
-  
-  let createRazorpayId = new FormData();
-  createRazorpayId.append("accesskey", "90336");
-  createRazorpayId.append("amount", `${totalPrice * 100}`);
-
-  let config = {
-    headers: {
-      Authorization: `Bearer ${API_TOKEN}`,
-    },
-  };
-
-  const result = await axios.post("https://grocery.intelliatech.in/api-firebase/create-razorpay-order.php",
-  createRazorpayId,
-  config
-);
-
-  if (!result) {
-      alert("Server error. Are you online?");
-      return;
   }
 
-  const { amount, id: order_id, currency } = result.data;
+  async function displayRazorpay() {
+    const res = await loadScript(
+      "https://checkout.razorpay.com/v1/checkout.js"
+    );
 
-  const options = {
+    if (!res) {
+      alert("Razorpay SDK failed to load. Are you online?");
+      return;
+    }
+
+    let createRazorpayId = new FormData();
+    createRazorpayId.append("accesskey", "90336");
+    createRazorpayId.append("amount", `${totalPrice * 100}`);
+
+    let config = {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    };
+
+    const result = await axios.post(
+      "https://grocery.intelliatech.in/api-firebase/create-razorpay-order.php",
+      createRazorpayId,
+      config
+    );
+
+    if (!result) {
+      alert("Server error. Are you online?");
+      return;
+    }
+
+    const { amount, id: order_id, currency } = result.data;
+
+    const options = {
       key: "rzp_test_kYyI51d6qc5O2x", // Enter the Key ID generated from the Dashboard
       amount: amount.toString(),
       currency: currency,
@@ -126,96 +127,118 @@ async function displayRazorpay() {
       description: "Test Transaction",
       image: "http://grocery.intelliatech.in/dist/img/logo.png",
       order_id: order_id,
-      "handler": function (response){
+      handler: function (response) {
         alert(response.razorpay_payment_id);
         alert(response.razorpay_order_id);
-        alert(response.razorpay_signature)
-    },
+        alert(response.razorpay_signature);
+        console.log(order_id, response.razorpay_payment_id);
+
+        let generated_signature = HmacSHA256(
+          order_id + "|" + response.razorpay_payment_id,
+          "7ELzexJmKgjV6Oq67Vpot3hI"
+        );
+        console.log(generated_signature, response.razorpay_signature);
+
+        if (generated_signature == response.razorpay_signature) {
+
+          placeOrder().then((res) => {
+            console.log(res);
+            navigate("/success");
+            clearCartApi();
+            setAllCartItems([]);
+            setisLoading(false);
+          })
+          .catch((err) => {
+            console.log(err.message);
+            setisLoading(false);
+          });
+
+        }
+      },
       prefill: {
-          name: "Soumya Dey",
-          email: "SoumyaDey@example.com",
-          contact: "9999999999",
+        name: "Soumya Dey",
+        email: "SoumyaDey@example.com",
+        contact: "9999999999",
       },
       notes: {
-          address: "Soumya Dey Corporate Office",
+        address: "Soumya Dey Corporate Office",
       },
       theme: {
-          color: "#61dafb",
+        color: "#61dafb",
       },
-  };
+    };
 
-  const paymentObject = new window.Razorpay(options);
-  paymentObject.open();
-}
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+  }
+
+  let placeOrder = ()=>{
+    let config = {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    };
+
+
+    let orderData = new FormData();
+    orderData.append("accesskey", "90336");
+    orderData.append("place_order", "1");
+    orderData.append("user_id", `${user_id}`);
+    orderData.append("mobile", `${userInfo.mobile}`);
+    orderData.append("product_variant_id", JSON.stringify(varArr));
+    orderData.append("quantity", JSON.stringify(qtyArr));
+    orderData.append("delivery_charge", "0");
+    orderData.append("total", `${cartTotal}`);
+    orderData.append("final_total", `${cartTotal}`);
+    orderData.append(
+      "address",
+      `${address + " " + area_name + " " + city_name + " " + country}`
+    );
+    orderData.append("latitude", "44.456321");
+    orderData.append("longitude", "12.456987");
+    orderData.append("payment_method", `${chosenPayment}`);
+    // orderData.append("discount", "0");
+    // orderData.append("tax_percentage", "0");
+    // orderData.append("tax_amount", "0");
+    // orderData.append("area_id", "1");
+    // orderData.append("order_note", "home");
+    // orderData.append("order_from", "test ");
+    // orderData.append("local_pickup", "0");
+    // orderData.append("wallet_used", "false");
+    // orderData.append("status", "awaiting_payment ");
+    // orderData.append("delivery_time", "Today - Evening (4:00pm to 7:00pm)");
+
+    
+    setisLoading(true);
+
+    return axios
+      .post(
+        "https://grocery.intelliatech.in/api-firebase/order-process.php",
+        orderData,
+        config
+      )
+
+  }
 
   const handleConfirmOrder = () => {
-if(chosenPayment === 'COD'){
-  let config = {
-    headers: {
-      Authorization: `Bearer ${API_TOKEN}`,
-    },
-  };
-
-  let cashOnData = new FormData();
-  cashOnData.append("accesskey", "90336");
-  cashOnData.append("place_order", "1");
-  cashOnData.append("user_id", `${user_id}`);
-  // cashOnData.append("user_id", "46");
-  cashOnData.append("mobile", `${userInfo.mobile}`);
-  // cashOnData.append("mobile", "+917042719917");
-  cashOnData.append("product_variant_id", JSON.stringify(varArr));
-  cashOnData.append("quantity", JSON.stringify(qtyArr));
-  cashOnData.append("delivery_charge", "0");
-  cashOnData.append("total", `${cartTotal}`);
-  // cashOnData.append("total", "790");
-  cashOnData.append("final_total", `${cartTotal}`);
-  // cashOnData.append("final_total", "790");
-  cashOnData.append(
-    "address",
-    `${address + " " + area_name + " " + city_name + " " + country}`
-  );
-  // cashOnData.append(
-  //   "address",
-  //   "Indore"
-  // );
-  cashOnData.append("latitude", "44.456321");
-  cashOnData.append("longitude", "12.456987");
-  // cashOnData.append("payment_method", `${chosenPayment}`);
-  cashOnData.append("payment_method", "COD");
-  // cashOnData.append("discount", "0");
-  // cashOnData.append("tax_percentage", "0");
-  // cashOnData.append("tax_amount", "0");
-  // cashOnData.append("area_id", "1");
-  // cashOnData.append("order_note", "home");
-  // cashOnData.append("order_from", "test ");
-  // cashOnData.append("local_pickup", "0");
-  // cashOnData.append("wallet_used", "false");
-  // cashOnData.append("status", "awaiting_payment ");
-  // cashOnData.append("delivery_time", "Today - Evening (4:00pm to 7:00pm)");
-  // setisLoading(true);
-
-  return axios
-    .post(
-      "https://grocery.intelliatech.in/api-firebase/order-process.php",
-      cashOnData,
-      config
-    )
-    .then((res) => {
-      console.log(res);
-      navigate("/success");
-      clearCartApi();
-      setAllCartItems([]);
-      setisLoading(false);
-    })
-    .catch((err) => {
-      console.log(err);
-      console.log(err.message);
-      setisLoading(false);
-    })
-}
-else if(chosenPayment === "razorpay"){
-  displayRazorpay();
-}
+    if (chosenPayment === "COD") {
+      
+        placeOrder().then((res) => {
+          console.log(res);
+          navigate("/success");
+          clearCartApi();
+          setAllCartItems([]);
+          setisLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log(err.message);
+          setisLoading(false);
+        });
+        
+    } else if (chosenPayment === "razorpay") {
+      displayRazorpay();
+    }
   };
 
   const handlePaymentMethod = (id) => {
@@ -307,7 +330,7 @@ else if(chosenPayment === "razorpay"){
                       <input
                         className="mr-2 leading-tight"
                         type="radio"
-                        name={'payment method '}
+                        name={"payment method "}
                         id={item.id}
                         onClick={() => {
                           handlePaymentMethod(item.code);
