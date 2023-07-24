@@ -11,6 +11,8 @@ import { LocallySourced } from "../Food Delivery Image/LocallySourced";
 import { useLoaderState } from "./zustand/useLoaderState";
 import { Link } from "react-router-dom";
 import { FlashSales } from "./Flash_Sales/FlashSales";
+import { SignJWT } from "jose";
+import axioss from "../api/axios";
 
 function Home({
   data,
@@ -23,13 +25,58 @@ function Home({
   user_id,
 }) {
   const { allImg, setAllImg } = useImgStore();
+  const [token, setToken ] = useState('');
   console.log(allImg, setAllImg, "IMG STORE FROM ZUSTAND");
   const { setisLoading } = useLoaderState();
+
+// console.log(axioss);
+
+  // async function getData () {    
+  //   try{
+  //     let imgData = new FormData();
+  //     imgData.append("accesskey", "90336");
+  //     imgData.append("get_user_data", "1");
+  //     imgData.append("user_id", "14");
+
+  //     const resp = await axioss.post("/get-user-data.php", imgData)
+  //     console.log(resp);
+  //   } catch (err){
+  //     console.log(err);
+  //   }
+  // }
+
+  // getData();
+
+  // axioss.interceptors.request.use(
+  //   (config) => {
+
+  //     const token = TokenService.getLocalAccessToken();
+  //     if (token) {
+  //       // config.headers["Authorization"] = 'Bearer ' + token;  // for Spring Boot back-end
+  //       config.headers["x-access-token"] = token; // for Node.js Express back-end
+  //     }
+  //     return config;
+  //   },
+  //   (error) => {
+  //     return Promise.reject(error);
+  //   }
+  // );
+  
+
+  // const instance = axios.create({
+  //   baseURL: "https://grocery.intelliatech.in/api-firebase/get-user-data.php",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  // });
+
+
+  
 
   const handleHomeImg = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     };
     let imgData = new FormData();
@@ -56,9 +103,33 @@ function Home({
         setisLoading(false);
       });
   };
+
   useEffect(() => {
-    handleHomeImg();
+    (async function createJwt(){
+      const alg = 'HS256'
+      const secret = new TextEncoder().encode(
+        'replace_with_your_strong_jwt_secret_key',
+        )
+        
+        const jwt = await new SignJWT({ 'urn:example:claim': true })
+        .setProtectedHeader({ alg })
+        // .setIssuedAt()
+        .setIssuer('eKart')
+        .setAudience('eKart Authentication')
+        
+        .sign(secret);
+        
+        console.log(jwt);
+        
+        setToken(jwt)      
+        // console.log(jwt.sign(secret, {iss : "eKart", sub : 'eKart Authentication' }).then((res)=> console.log(res)))
+      })()
+
   }, []);
+
+  useEffect(()=>{
+ if (token) handleHomeImg();
+  },[token])
 
   return (
     <div className=" mt-0.5">
