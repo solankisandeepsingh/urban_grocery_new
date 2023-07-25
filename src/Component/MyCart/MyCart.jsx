@@ -14,6 +14,7 @@ import { BsChevronCompactRight } from "react-icons/bs";
 import Review from "./Review/Review";
 import { currencyFormatter } from "../../utils/utils";
 import { usePaymentStore } from "../zustand/usePaymentStore";
+import { useApiStore } from "../zustand/useApiStore";
 
 function MyCart({
   // allCartItems,
@@ -42,6 +43,7 @@ function MyCart({
     resetState,
   } = useUserStore();
   const { setisLoading } = useLoaderState();
+  const { jwt, setJwt } = useApiStore();
   const {  setTotalPrice, setTotalMRPPrice, setTotalItems } = usePaymentStore();
 
   let menuRef = useRef();
@@ -104,7 +106,7 @@ function MyCart({
   const removeItemHandler = (item) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 
@@ -174,7 +176,7 @@ function MyCart({
   const getUserCarts = (user_id) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 

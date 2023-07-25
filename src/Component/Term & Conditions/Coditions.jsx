@@ -3,15 +3,18 @@ import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 import { Aside } from "../Aside/Aside";
 import { useLoaderState } from "../zustand/useLoaderState";
+import { useApiStore } from "../zustand/useApiStore";
 
 export const Coditions = () => {
   const [conditons, setConditons] = useState("");
   const { setisLoading } = useLoaderState();
+  const { jwt, setJwt } = useApiStore();
+
 
   const handleConditons = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     let conditonData = new FormData();

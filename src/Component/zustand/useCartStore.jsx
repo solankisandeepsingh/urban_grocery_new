@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 import { useUserStore } from "./useUserStore";
+import { useApiStore } from "./useApiStore";
 
 export const useCartStore = create(
   persist(
@@ -10,10 +11,10 @@ export const useCartStore = create(
       allCartItems: [],
       config: {
         headers: {
-          Authorization: `Bearer ${API_TOKEN}`,
+          Authorization: `Bearer ${useUserStore.getState().userInfo.user_id}`,
         },
       },
-      bearer: `${API_TOKEN}`,
+      bearer: `${useUserStore.getState().userInfo.user_id}`,
       cartTotal: 0,
       bodyFormData: () => {
         let bodyFormdata = new FormData();

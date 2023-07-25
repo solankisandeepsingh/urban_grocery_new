@@ -17,6 +17,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useLoaderState } from "../zustand/useLoaderState";
+import { useApiStore } from "../zustand/useApiStore";
 
 export const Signup = ({ setOpenLogin }) => {
   const [userRegistraion, setUserRegistration] = useState({
@@ -28,6 +29,8 @@ export const Signup = ({ setOpenLogin }) => {
   const [closeSignup, setCloseSignUp] = useState(true);
   const navigate = useNavigate();
   const { setisLoading } = useLoaderState();
+  const { jwt, setJwt } = useApiStore();
+
 
   const handleUserSignUp = (e) => {
     let name = e.target.name;
@@ -49,7 +52,7 @@ export const Signup = ({ setOpenLogin }) => {
 
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 

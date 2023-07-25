@@ -8,6 +8,8 @@ import { BsChevronRight } from "react-icons/bs";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useUserStore } from "../zustand/useUserStore";
 import { useOrderDetails } from "../zustand/useOrderDetails";
+import { useApiStore } from "../zustand/useApiStore";
+
 
 export const MyOrder = ({ addItem }) => {
   const [price, setPrice] = useState(0);
@@ -20,11 +22,13 @@ export const MyOrder = ({ addItem }) => {
   const {allOrderDetails,setAllOrderDetails} = useOrderDetails();
   const [orderId, setOrderId] = useState("");
   const { setisLoading } = useLoaderState();
+  const { jwt, setJwt } = useApiStore();
+
 
   const handlemyOrder = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     let myOrderData = new FormData();

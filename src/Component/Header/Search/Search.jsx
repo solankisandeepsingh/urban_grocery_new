@@ -6,6 +6,7 @@ import { useLoaderState } from "../../zustand/useLoaderState";
 import { useCartStore } from "../../zustand/useCartStore";
 import { useUserStore } from "../../zustand/useUserStore";
 import CartQuantity from "../../Button/ProductBtn";
+import { useApiStore } from "../../zustand/useApiStore";
 
 const Search = ({ setData, data, name, setName, setAddItem, addItem }) => {
   const [searchData, setSearchData] = useState([]);
@@ -16,11 +17,13 @@ const Search = ({ setData, data, name, setName, setAddItem, addItem }) => {
   const {
     userInfo: { user_id },
   } = useUserStore();
+  const { jwt, setJwt } = useApiStore();
+
 
   const serchAPIData = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 
@@ -77,7 +80,7 @@ const Search = ({ setData, data, name, setName, setAddItem, addItem }) => {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     // console.log(data.id, "varaitn id");

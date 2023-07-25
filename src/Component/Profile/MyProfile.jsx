@@ -5,6 +5,7 @@ import axios from "axios";
 import { FaUserCircle } from "react-icons/fa";
 import { AiFillEdit } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
+import { useApiStore } from "../zustand/useApiStore";
 
 export const MyProfile = () => {
   // const [editBtn, setEditBtn] = useState(false);
@@ -15,6 +16,8 @@ export const MyProfile = () => {
     userInfo,
   } = useUserStore();
   const [isValidImg, setisValidImg] = useState(false);
+  const { jwt, setJwt } = useApiStore();
+
 
   // const [nameUpdate, setNameUpdate] = useState(userInfo.name)
 
@@ -49,7 +52,7 @@ export const MyProfile = () => {
     if (file) {
       let config = {
         headers: {
-          Authorization: `Bearer ${API_TOKEN}`,
+          Authorization: `Bearer ${jwt}`,
         },
       };
       let formData = new FormData();
@@ -83,7 +86,7 @@ export const MyProfile = () => {
   const getUserData = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 
@@ -120,7 +123,7 @@ export const MyProfile = () => {
     // setEditBtn((prev) => !prev);
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     let updateProfileData = new FormData();

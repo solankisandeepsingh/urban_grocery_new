@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { FlashSales } from "./Flash_Sales/FlashSales";
 import { SignJWT } from "jose";
 import axioss from "../api/axios";
+import { useApiStore } from "./zustand/useApiStore";
 
 function Home({
   data,
@@ -25,6 +26,7 @@ function Home({
   user_id,
 }) {
   const { allImg, setAllImg } = useImgStore();
+  const { jwt, setJwt } = useApiStore();
   const [token, setToken ] = useState('');
   console.log(allImg, setAllImg, "IMG STORE FROM ZUSTAND");
   const { setisLoading } = useLoaderState();
@@ -76,7 +78,7 @@ function Home({
   const handleHomeImg = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     let imgData = new FormData();
@@ -120,7 +122,7 @@ function Home({
         .sign(secret);
         
         console.log(jwt);
-        
+        setJwt(jwt)
         setToken(jwt)      
         // console.log(jwt.sign(secret, {iss : "eKart", sub : 'eKart Authentication' }).then((res)=> console.log(res)))
       })()
@@ -128,8 +130,8 @@ function Home({
   }, []);
 
   useEffect(()=>{
- if (token) handleHomeImg();
-  },[token])
+ if (jwt) handleHomeImg();
+  },[jwt])
 
   return (
     <div className=" mt-0.5">

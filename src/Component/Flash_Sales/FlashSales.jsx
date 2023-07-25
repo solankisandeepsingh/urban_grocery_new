@@ -6,20 +6,23 @@ import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
+import { useApiStore } from "../zustand/useApiStore";
 
 export const FlashSales = () => {
   const [salesProducts, setSalesProducts] = useState([]);
   const { allCartItems, setAllCartItems } = useCartStore();
+  const { jwt, setJwt } = useApiStore();
   const {
     userInfo: { user_id },
   } = useUserStore();
   const { setisLoading } = useLoaderState();
   const navigate = useNavigate();
 
+
   const handleSalesClick = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 
@@ -53,7 +56,7 @@ export const FlashSales = () => {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     // console.log(data.id, "varaitn id");

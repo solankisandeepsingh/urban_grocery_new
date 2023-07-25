@@ -3,6 +3,7 @@ import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useLoaderState } from "../zustand/useLoaderState";
+import { useApiStore } from "../zustand/useApiStore";
 
 export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
   const [addressData, setAddressData] = useState({
@@ -18,6 +19,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
   const [cityDropdown, setCityDropdown] = useState("");
   const [areaDropdown, setAreaDropdown] = useState("");
   const [initialRender, setIntialrender] = useState(true);
+  const { jwt, setJwt } = useApiStore();
   const { setisLoading } = useLoaderState();
   const [otherField, setOtherField] = useState("");
   const handleDropdown1Change = (event) => {
@@ -47,7 +49,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
   console.log(addressData);
   const config = {
     headers: {
-      Authorization: `Bearer ${API_TOKEN}`,
+      Authorization: `Bearer ${jwt}`,
     },
   };
   const handleSubmit = (event) => {

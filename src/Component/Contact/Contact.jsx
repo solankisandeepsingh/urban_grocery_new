@@ -3,15 +3,17 @@ import React, { useEffect, useState } from "react";
 import { API_TOKEN } from "../Token/Token";
 import { Aside } from "../Aside/Aside";
 import { useLoaderState } from "../zustand/useLoaderState";
+import { useApiStore } from "../zustand/useApiStore";
 
 export const Contact = () => {
   const [contact, setContact] = useState("");
   const { setisLoading } = useLoaderState();
+  const { jwt, setJwt } = useApiStore();
 
   const handleContact = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     let contactData = new FormData();

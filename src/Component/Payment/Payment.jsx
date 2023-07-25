@@ -11,6 +11,7 @@ import { FaHome } from "react-icons/fa";
 import { currencyFormatter } from "../../utils/utils";
 import { usePaymentStore } from "../zustand/usePaymentStore";
 import CryptoJS, {HmacSHA256} from "crypto-js";
+import { useApiStore } from "../zustand/useApiStore";
 
 // import {  SiRazorpay } from "../react-icons/si";
 
@@ -20,6 +21,7 @@ function Payment({ price }) {
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [chosenPayment, setChosenPayment] = useState("");
   const { setisLoading } = useLoaderState();
+  const { jwt, setJwt } = useApiStore();
   const {
     userInfo: { user_id },
     userInfo,
@@ -47,7 +49,7 @@ function Payment({ price }) {
   useEffect(() => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     let paymentMethod = new FormData();
@@ -102,7 +104,7 @@ function Payment({ price }) {
 
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 
@@ -175,7 +177,7 @@ function Payment({ price }) {
   let placeOrder = ()=>{
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 

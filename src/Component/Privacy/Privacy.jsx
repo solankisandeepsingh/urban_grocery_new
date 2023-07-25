@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { API_TOKEN } from "../Token/Token";
+import {  } from "../Token/Token";
 import axios from "axios";
 import { Aside } from "../Aside/Aside";
 import { useLoaderState } from "../zustand/useLoaderState";
+import { useApiStore } from "../zustand/useApiStore";
 
 export const Privacy = () => {
   const [privacy, setPrivacy] = useState("");
   const { setisLoading } = useLoaderState();
+  const { jwt, setJwt } = useApiStore();
+
 
   const handlePrivacy = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 

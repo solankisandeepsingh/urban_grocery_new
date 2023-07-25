@@ -3,14 +3,16 @@ import React, { useEffect, useState } from "react";
 import { API_TOKEN } from "../Token/Token";
 import { Aside } from "../Aside/Aside";
 import { useLoaderState } from "../zustand/useLoaderState";
+import { useApiStore } from "../zustand/useApiStore";
 
 export const About = () => {
   const [about, setAbout] = useState("");
   const { setisLoading } = useLoaderState();
+  const { jwt, setJwt } = useApiStore();
   const handleAbout = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     let conditonData = new FormData();

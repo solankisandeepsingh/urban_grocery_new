@@ -4,17 +4,19 @@ import axios from "axios";
 import { API_TOKEN } from "../Token/Token";
 import { useProductsStore } from "../zustand/useProductsStore";
 import { useLoaderState } from "../zustand/useLoaderState";
-
+import { useApiStore } from "../zustand/useApiStore";
 export const Category = () => {
   const { allCategories, setAllCategories } = useProductsStore();
   const { setisLoading } = useLoaderState();
+  const { jwt, setJwt } = useApiStore();
+
   // const [categorydata, setCategorydata] = useState(categoryData.data);
   // const [categorydata, setCategorydata] = useState([]);
 
   const categryData = () => {
     const config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 

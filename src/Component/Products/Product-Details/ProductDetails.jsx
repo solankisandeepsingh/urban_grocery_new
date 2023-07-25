@@ -12,6 +12,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Rating from "../../StarRating/Rating";
 import axios from "axios";
 import { API_TOKEN } from "../../Token/Token";
+import { useApiStore } from "../../zustand/useApiStore";
 import ProductBtn from "../../Button/ProductBtn";
 import { useLoaderState } from "../../zustand/useLoaderState";
 import { useCartStore } from "../../zustand/useCartStore";
@@ -35,11 +36,13 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const [value, setValue] = React.useState(0);
   const [isValidImg, setisValidImg] = useState(false);
   const [review, setReview] = useState("");
+  const { jwt, setJwt } = useApiStore();
+
 
   const addReview = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 
@@ -94,7 +97,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const productReviews = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 
@@ -145,7 +148,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const productDetail = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 
@@ -174,51 +177,10 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
     productReviews();
   }, []);
 
-  // const allCartItemsHandler = (item) => {
-  //   let config = {
-  //     headers: {
-  //       Authorization: `Bearer ${API_TOKEN}`,
-  //     },
-  //   };
-
-  //   var bodyFormData = new FormData();
-  //   bodyFormData.append("accesskey", "90336");
-  //   bodyFormData.append("add_to_cart", "1");
-  //   bodyFormData.append("user_id", "14");
-  //   bodyFormData.append("product_id", item.variants[0].product_id);
-  //   bodyFormData.append("product_variant_id", item.variants[0].id);
-
-  //   axios
-  //     .post(
-  //       "https://grocery.intelliatech.in/api-firebase/cart.php",
-  //       bodyFormData,
-  //       config
-  //     )
-  //     .then((res) => {
-  //       if (allCartItems.some((cartItem) => cartItem.id === item.id)) {
-  //         setAllCartItems((cart) =>
-  //           cart.map((data) =>
-  //             data.id === item.id
-  //               ? {
-  //                   ...data,
-  //                   amount: data.amount + 1,
-  //                 }
-  //               : data
-  //           )
-  //         );
-  //         return;
-  //       }
-
-  //       setAllCartItems((cart) => [...cart, { ...item, amount: 1 }]);
-  //     })
-  //     .catch((error) => {
-  //     });
-  // };
-
   const allCartItemsHandler = (item, data) => {
     const config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 
@@ -504,7 +466,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                     </div>
                     <div className="">
                       <h2 className="font-bold text-[20px] mb-4">
-                        Customer reviews ({item.number_of_ratings})
+                        Customer reviews ({reviewList?.length || 0})
                       </h2>
                       {reviewList?.length > 0 ? (
                         reviewList.map((review) => {
@@ -547,7 +509,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                                     return (
                                       <img
                                         src={image}
-                                        className="w-24 h-24 object-contain"
+                                        className="w-24 h-24 rounded-lg object-cover"
                                       />
                                     );
                                   })}

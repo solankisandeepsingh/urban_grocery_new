@@ -9,6 +9,7 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
+import { useApiStore } from "../zustand/useApiStore";
 
 export const Login = ({
   // setUser_id,
@@ -29,6 +30,7 @@ export const Login = ({
   const [loginData, setLoginData] = useState([]);
   const navigate = useNavigate();
   const { setisLoading } = useLoaderState();
+  const { jwt, setJwt } = useApiStore();
 
   const handleShow = (e) => {
     e.preventDefault();
@@ -77,7 +79,7 @@ export const Login = ({
 
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 
@@ -96,7 +98,7 @@ export const Login = ({
           console.log("LOGIN THRU CART<><><><>");
           closeLoginModal();
           navigate("/");
-          localStorage.setItem("token", `${API_TOKEN}`);
+          localStorage.setItem("token", `${jwt}`);
           // dispatchLogin({ type: "LOGIN", payload: res.data.name });
           console.log("LOGIN RESPONSEEEEEEEEEEEEEE", res.data);
           setUserInfo(res.data);

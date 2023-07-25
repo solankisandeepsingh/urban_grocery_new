@@ -9,12 +9,15 @@ import { API_TOKEN } from "../Token/Token";
 import { Aside } from "../Aside/Aside";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useUserStore } from "../zustand/useUserStore";
+import { useApiStore } from "../zustand/useApiStore";
 
 export const Address = ({ isOpen, setIsOpen }) => {
   const [formOpen, setFormOpen] = useState(false);
   // const [addList, setAddlist] = useState([]);
   const { setisLoading } = useLoaderState();
   const { user_id, addList, setAddList } = useUserStore();
+  const { jwt, setJwt } = useApiStore();
+
   console.log(setAddList);
   // const handleOptionChange = (event) => {
   //   console.log(event.target.value);
@@ -23,7 +26,7 @@ export const Address = ({ isOpen, setIsOpen }) => {
 
   const config = {
     headers: {
-      Authorization: `Bearer ${API_TOKEN}`,
+      Authorization: `Bearer ${jwt}`,
     },
   };
 

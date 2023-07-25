@@ -8,6 +8,7 @@ import { API_TOKEN } from "../../Token/Token";
 import { useCartStore } from "../../zustand/useCartStore";
 import { useUserStore } from "../../zustand/useUserStore";
 import { useLoaderState } from "../../zustand/useLoaderState";
+import { useApiStore } from "../../zustand/useApiStore";
 // import { useNavigate } from "react-router-dom";
 
 export const ProductCarousel = ({}) => {
@@ -15,6 +16,8 @@ export const ProductCarousel = ({}) => {
   console.log(allCartItems, "After Destructure");
   const [showAllProduct, setShowAllProducts] = useState([]);
   const navigate = useNavigate();
+  const { jwt, setJwt } = useApiStore();
+
   const {
     userInfo: { user_id },
   } = useUserStore();
@@ -23,7 +26,7 @@ export const ProductCarousel = ({}) => {
   const productCarousels = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     var bodyFormdata = new FormData();
@@ -75,7 +78,7 @@ export const ProductCarousel = ({}) => {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     // console.log(data.id, "varaitn id");
