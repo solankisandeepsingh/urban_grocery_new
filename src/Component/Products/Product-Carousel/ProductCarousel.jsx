@@ -67,7 +67,7 @@ export const ProductCarousel = ({}) => {
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
-      items: 2,
+      items: 3,
     },
   };
 
@@ -153,7 +153,7 @@ export const ProductCarousel = ({}) => {
   };
 
   return (
-    <div className="mt-7 shadow-sm border border-[#e8e8e8] rounded-md p-5 bg-[#fcfff3]">
+    <div className="xs:mt-4 xs:p-2 md:mt-7 shadow-sm border border-[#e8e8e8] rounded-md md:p-5 bg-[#fcfff3]">
       <div className="xs:my-5 mt-20 flex justify-between">
         <div className="text-customBlack text-[24px]">
           <h1 className="font-okra font-600">All Proudcts</h1>
@@ -174,25 +174,30 @@ export const ProductCarousel = ({}) => {
             showAllProduct.map((item) => {
               return (
                 <>
-                  <div className="w-72 xs:w-40 xs:h-[265px] md:w-40 md:h-[235px] sm:h-[280px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green  bg-white cursor-pointer" onClick={()=>{
-                    navigate(`/subcategory-details/${item.category_name}/product-details/${item.id}`)
-                  }}>
-                      <img
-                        className="w-full h-56 xs:w-32 xs:h-32 xs:m-3 xs:ml-3.5 md:h-24 md:ml-[23px] md:w-28 md:mt-4 rounded-lg bg-white"
-                        src={item.image}
-                        alt={item.name}
-                      />
-                    <div className="py-4 xs:mb-[-10px]  md:mx-4 xs:mx-4 sm:mx-4 bg-white">
-                      <p className="md:text-sm xs:text-sm sm:text-2xl font-medium bg-white truncate ...">
+                  <div
+                    className="w-72 xs:w-24  xs:h-auto md:w-40 md:h-[235px] sm:h-[270px] sm:w-[170px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green  bg-white cursor-pointer"
+                    onClick={() => {
+                      navigate(
+                        `/subcategory-details/${item.category_name}/product-details/${item.id}`
+                      );
+                    }}
+                  >
+                    <img
+                      className="w-full h-56 xs:w-[65%] xs:h-16 xs:m-2 xs:ml-2.5 md:h-24 md:ml-[23px] md:w-28 md:mt-4 sm:w-[88%]  rounded-lg bg-white"
+                      src={item.image}
+                      alt={item.name}
+                    />
+                    <div className=" xs:py-2 md:mx-4 xs:mx-2 sm:mx-4 bg-white">
+                      <p className="md:text-sm xs:text-sm sm:text-[20px]  font-medium bg-white truncate ...">
                         {item.name}
                       </p>
                     </div>
                     {item &&
                       item.variants.map((data) => {
                         return (
-                          <div className="md:flex md:justify-evenly sm:flex xs:flex xs:justify-between xs:mr-4">
-                            <div className=" xs:text-left  sm:mt-2 md:mt-[15px] md:mx-4 xs:mx-4 sm:mx-4 md:text-left ">
-                              <p className="2xs:text-base xs:text-sm t sm:text-xl  xs:mt-4 md:mt-[-3px] sm:mt-[12px] md:text-sm text-gryColour font-light bg-white">
+                          <div className="flex flex-col sm:flex-row md:justify-evenly xs:justify-between sm:ml-0  sm:mr-4 ">
+                            <div className=" xs:text-left sm:mt-2 md:mt-[15px] md:mx-4 xs:mx-4 sm:mx-4 md:text-left ">
+                              <p className="2xs:text-base xs:text-sm t sm:text-xl md:mt-[-3px] sm:mt-[12px] md:text-sm text-gryColour font-light bg-white">
                                 ₹{data.price}{" "}
                               </p>
                             </div>
@@ -205,29 +210,31 @@ export const ProductCarousel = ({}) => {
                                   (i) => i.product_id === item.id
                                 ) ? (
                                   <>
-                                    <div className="md:mt-2 md:ml-6 xs:mt-2.5 sm:mt-4" onClick={(e)=>{
-                                      console.log(e, "EVENT IN IMMEDIATE PARENT ELEMENT")
-                                    }}>
-                                      <CartQuantity
-                                        item={item}
-                                        // setAllCartItems={setAllCartItems}
-                                        // allCartItems={allCartItems}
-                                        // user_id={user_id}
-                                      />
+                                    <div
+                                      className="md:mt-2 md:ml-6 sm:mt-4"
+                                      onClick={(e) => {
+                                        console.log(
+                                          e,
+                                          "EVENT IN IMMEDIATE PARENT ELEMENT"
+                                        );
+                                      }}
+                                    >
+                                      <CartQuantity item={item} />
                                     </div>
                                   </>
                                 ) : (
                                   <button
-                                    className="md:w-16 md:h-8 mb-3 xs:w-18 sm:ml-2 md:text-xs md:mt-2 xs:mt-2 sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
+                                    className="md:w-16 md:h-8 mb-3 xs:w-18 sm:ml-2 md:text-xs md:mt-2 xs:mt-[-10px] sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
                                     onClick={(e) => {
                                       e.stopPropagation();
-                                      return addItemHandler(data, item)}}
+                                      return addItemHandler(data, item);
+                                    }}
                                   >
                                     Add
                                   </button>
                                 )
                               ) : (
-                                <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:text-xs  xs:text-xs">
+                                <p className=" bg-white text-orange md:text-[11px] text-sm font-medium md:mt-4 pb-4 sm:text-xs  xs:text-[9px] sm:my-[25px] sm:text-[12px] sm:break-normal">
                                   Out of stock
                                 </p>
                               )}

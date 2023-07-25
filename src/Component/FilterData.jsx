@@ -4,6 +4,7 @@ import Search from "./Header/Search/Search";
 import CartQuantity from "./Button/CartQuantity";
 
 function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
+  
   const addItemHandler = (item) => {
     if (addItem.some((cartItem) => cartItem.id === item.id)) {
       setAddItem((cart) =>
@@ -21,7 +22,7 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
     setAddItem((cart) => [...cart, { ...item, amount: 1 }]);
   };
   return (
-    <div className="md:mt-10">
+    <div className="md:mt-10 pb-[1000px]">
       <div className="md:invisible xs:visible ">
         <Search setName={setName} setData={setData} />
       </div>
@@ -114,24 +115,7 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
                                 </div>
                               </div>
 
-                              {/* <div className="mb-3 xs:pb-5 bg-white">
-                                {data.stock > 0 && (
-                                  <button
-                                    className="text-lime border border-lightgreen bg-transparent 2xs:px-2 2xs:mt-2 2xs:rounded xs:w-16 xs:rounded-lg xs:py-1 md:mt-3 md:w-24 sm:w-28 sm:mt-5 md:font-bold md:py-3 sm:text-lg md:text-sm md:px-4 md:rounded-lg md:hover:opacity-90"
-                                    onClick={() => addItemHandler(item)}
-                                  >
-                                    Add
-                                  </button>
-                                )}
-                                {item &&
-                                  item.variants.map((item) =>
-                                    item.stock > 0 ? null : (
-                                      <p className="text-orange text-sm md:text-sm  md:mt-5 font-medium sm:mt-4 sm:text-2xl bg-white">
-                                        Out of stock
-                                      </p>
-                                    )
-                                  )}
-                              </div> */}
+                              
                             </div>
                           </div>
                         </>

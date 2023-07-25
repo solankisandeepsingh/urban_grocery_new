@@ -141,7 +141,7 @@ export const SubCategory = ({ setAddItem, addItem }) => {
       <div>
         <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-6 sm:grid-cols-3 flex flex-wrap md:ml-5 ">
           {isLoading ? (
-            <p className="m-auto">Loading...</p>
+            <p className="m-auto">Loadinglklk...</p>
           ) : allproducts && allproducts.length > 0 ? (
             allproducts.map((item) => {
               return (

@@ -32,12 +32,16 @@ function Review({
 
   return (
     <>
+      {/* <div className="flex border border-light_gray gap-1 m-4 rounded-md"> */}
       <div className="flex border border-light_gray gap-1 m-4 rounded-md">
         <div className=" xs:w-full">
           <div>
-            <div className="h-auto flex text-center">
+            {/* <div className="h-auto flex text-center"> */}
+            <div className="h-auto">
               <div className="">
-                <h2 className="text-2xl font-bold mt-4">Review Details</h2>
+                <h2 className="text-2xl font-bold mt-4 xs:text-center">
+                  Review Details
+                </h2>
                 <div className="flex flex-col justify-between h-[90%]">
                   <div>
                     {allCartItems.map((item, index) => {
@@ -100,59 +104,8 @@ function Review({
                                 </div>
                               </div>
                             </div>
-                            {/* {console.log(user_id, "><><><CHECK USER ID BOOLEAN><><><")} */}
                           </div>
                         </div>
-                        // <div className="mt-3 bg-white  xs:p-4 2xs:p-2  ">
-                        //   <div className="flow-root">
-                        //     <ul
-                        //       role="list"
-                        //       className="-my-6 divide-y divide-gray-200"
-                        //     >
-                        //       <li className="flex py-6 bg-white">
-                        //         <div className=" bg-white md:h-12 md:w-12 xs:h-24 xs:w-24 sm:h-48 sm:w-48 flex-shrink-0 overflow-hidden rounded-md">
-                        //           <img
-                        //             src={item.image}
-                        //             alt="product"
-                        //             className="h-full w-full object-cover object-center bg-white"
-                        //           />
-                        //         </div>
-
-                        //         <div className="bg-white ml-4 flex flex-1 flex-col truncate ...">
-                        //           <div className=" bg-white md:text-sm xs:text-sm sm:text-3xl font-semibold text-gray-900 ">
-                        //             <p className="bg-white float-left truncate ...">
-                        //               {item.name}
-                        //             </p>
-                        //             <br />
-
-                        //             <div className="flex justify-between mt-0.5">
-                        //               <div className="flex gap-6 w-[70%]">
-                        //                 <div className=" w-1/5 text-left">
-                        //                   <p className="text-xs">
-                        //                     {" "}
-                        //                     {currencyFormatter(item.discounted_price)}{" "}
-                        //                   </p>
-                        //                 </div>
-                        //                 <p className="bg-white text-xs text-gryColour">
-                        //                   {" "}
-                        //                   Qty : {item.amount}
-                        //                   {/* {() => setAmount(item.amount)} */}
-                        //                 </p>
-                        //               </div>
-                        //               <p className="bg-white text-xs text-gryColour">
-                        //                 {" "}
-                        //                 Total :{" "}
-                        //                 { currencyFormatter(item.amount * item.discounted_price)}
-                        //                 {/* {() => setAmount(item.amount)} */}
-                        //               </p>
-                        //             </div>
-                        //           </div>
-                        //         </div>
-                        //       </li>
-                        //     </ul>
-                        //     {/* {console.log(user_id, "><><><CHECK USER ID BOOLEAN><><><")} */}
-                        //   </div>
-                        // </div>
                       );
                     })}
                   </div>

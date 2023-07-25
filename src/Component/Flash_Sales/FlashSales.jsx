@@ -134,16 +134,16 @@ export const FlashSales = () => {
   };
   return (
     <>
-      <div className="mt-7 shadow-sm border border-[#e8e8e8] rounded-md p-5 bg-[#fcfff3] mb-3">
+      <div className="md:mt-7 xs:mt-7 shadow-sm border border-[#e8e8e8] rounded-md p-5 bg-[#fcfff3] mb-3">
         <div className="text-customBlack text-[24px]">
           <h1 className="font-okra font-600">Flash Sales</h1>
         </div>
-        <div className="md:my-2 flex gap-4 flex-wrap">
+        <div className="md:my-2 md:flex md:gap-4 md:flex-wrap xs:flex xs:gap-3 ">
           {salesProducts &&
             salesProducts.map((item) => {
               return (
                 <>
-                  <div className="w-72 xs:w-40 xs:h-[265px] md:w-40 md:h-[270px] sm:h-[280px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green  bg-white cursor-pointer">
+                  <div className="w-72 xs:w-40 xs:h-[280px] md:w-40 md:h-[270px] sm:h-[370px] sm:w-[230px]  rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green  bg-white cursor-pointer">
                     <div
                       className="p-2 xs:mb-[-10px]  md:mx-4 xs:mx-4 sm:mx-4 bg-white"
                       onClick={() => {
@@ -157,7 +157,7 @@ export const FlashSales = () => {
                       </p>
                     </div>
                     <img
-                      className="w-full h-56 xs:w-32 xs:h-32 xs:m-3 xs:ml-3.5 md:h-24 md:ml-[23px] md:w-28 md:mt-4 rounded-lg bg-white"
+                      className="w-full h-56 xs:w-[85%] xs:h-28 xs:m-2 xs:ml-2.5 md:h-24 md:w-32 md:mt-4 sm:w-[80%] sm:h-[150px] sm:m-auto sm:mt-3 rounded-lg bg-white"
                       src={item.image}
                       alt={item.name}
                       onClick={() => {
@@ -166,8 +166,9 @@ export const FlashSales = () => {
                         );
                       }}
                     />
-                    <div className="xs:mb-[-10px]  md:mx-4 xs:mx-4 sm:mx-4 bg-white">
-                      <p className="md:text-sm xs:text-sm sm:text-2xl font-medium bg-white truncate ...">
+                    {/* <div className="xs:mb-[-10px]  md:mx-4 xs:mx-4 sm:mx-6 bg-white"> */}
+                    <div className="xs:mx-4 md:mx-4 sm:mx-6 sm:my-3 md:my-2 bg-white">
+                      <p className="md:text-sm xs:text-sm sm:text-[20px]  text-gryColour  font-medium bg-white truncate ...">
                         {item.name}
                       </p>
                     </div>
@@ -175,21 +176,22 @@ export const FlashSales = () => {
                       item.variants.map((data) => {
                         return (
                           <>
-                            <div>
-                              <p className="text-lime  md:mx-4 py-3  text-lg font-bold xs:text-sm  sm:text-xl md:text-xs bg-white">
+                            <div className="">
+                              <div className="flex gap-2 mx-4 md:mx-4 sm:gap-3 sm:mx-6 ">
+                                <p className="2xs:text-base xs:text-sm sm:text-xl md:text-sm text-gryColour  font-medium inline line-through bg-white">
+                                  ₹{data.price}.00{" "}
+                                </p>
+                                <p className="text-xs sm:text-xl xs:text-sm  md:text-sm text-black  bg-white">
+                                  ₹{data.discounted_price}.00{" "}
+                                </p>
+                              </div>
+                              <p className="text-lime xs:mx-4 md:mx-4 md:my-0.5 md:text-[15px] sm:mx-6 text-lg font-bold xs:text-sm  sm:text-xl md:text-xs bg-white">
                                 You save ₹{data.price - data.discounted_price}
                                 .00
                               </p>
-                              <p className="2xs:text-base xs:text-sm  md:ml-4  sm:text-xl md:text-sm text-gryColour  font-medium inline line-through bg-white">
-                              ₹{data.price}.00{" "}
-                           
-                              </p>
-                                <span className="text-xs sm:text-xl xs:text-sm xs:ml-1 md:text-sm text-black  bg-white">
-                                  ₹{data.discounted_price}.00{" "}
-                                </span>
                             </div>
-                            <div className="flex justify-between text-center items-center">
-                              <div className="md:ml-2">
+                            <div className="flex xs:my-2 mx-3 sm:my-0 sm:mx-4 justify-between text-center items-center sm:justify-around sm:text-center sm:items-center">
+                              <div className="md:ml-2 xs:mb-3">
                                 <p>{data.serve_for}</p>
                               </div>
                               <div>
@@ -198,13 +200,13 @@ export const FlashSales = () => {
                                   (i) => i.product_id === item.id
                                 ) ? (
                                   <>
-                                    <div className="md:mt-2 md:ml-6 xs:mt-2.5 sm:mt-4 w-14 ">
+                                    <div className="md:mt-2 md:ml-6  sm:mt-4 w-14 ">
                                       <CartQuantity item={item} />
                                     </div>
                                   </>
                                 ) : (
                                   <button
-                                    className="md:w-14 md:h-8 mb-3 xs:w-18 sm:ml-2 md:mr-2 md:text-xs md:mt-2 xs:mt-2 sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
+                                    className="md:w-14 md:h-8 mb-3 xs:w-18 sm:ml-2 md:mr-2 md:text-xs md:mt-2  sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
                                     onClick={() =>
                                       allCartItemsHandler(data, item)
                                     }

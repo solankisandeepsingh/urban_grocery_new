@@ -54,6 +54,9 @@ module.exports = {
       graycolor: "rgba(0,0,0,.6)",
       blackColour: "#000",
       GreenColour: "#00b259",
+      lightGrayBlinkit: "#333",
+      GrayBlinkit: "#666",
+      colorGray: "rgb(255, 255, 255)",
     },
     borderColor: {
       default: "#CDCDCE",
@@ -63,6 +66,8 @@ module.exports = {
       lime: "#3BB143",
       light_green: "#8AFF8A",
       border_gray: "rgba(0,0,0,.1)",
+      GrayBlinkit: "#666",
+      GreenBlinkit: "rgb(12, 131, 31)",
     },
     fontFamily: {
       sans: ["Roboto", "sans-serif"],

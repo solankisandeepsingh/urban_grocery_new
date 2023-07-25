@@ -72,6 +72,7 @@ function Payment({ price }) {
   }, []);
 
   const handleConfirmOrder = () => {
+    console.log("click ho ja")
     let config = {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
@@ -211,9 +212,11 @@ function Payment({ price }) {
 
   return (
     <>
-      <div className="flex justify-evenly items-center text-center">
-        <div className=" flex w-[50%] items-center justify-center">
-          <div className=" w-full p-6 h-[40vh]  rounded-lg shadow-2xl">
+      {/* <div className="flex justify-evenly items-center text-center"> */}
+      <div className="xs:flex xs:flex-col xs:my-[60px] md:flex md:flex-row md:justify-evenly md:items-center md:text-center xs:mx-3 sm:mx-7">
+        {/* <div className=" flex w-[50%] items-center justify-center"> */}
+        <div className="xs:w-[350px] sm:w-[700px] md:w-[50%]">
+          <div className="p-6 xs:h-[40vh] sm:h-[26vh] md:h-[40vh] rounded-lg shadow-2xl">
             <h2 className="text-2xl font-bold mb-3">Payment</h2>
             <div className="mb-3">
               Select Payment Method
@@ -253,8 +256,9 @@ function Payment({ price }) {
         </div>
         <div>
           <div>
-            <div className="mt-28 border border-light_gray p-3 h-auto w-[350px]">
-              <h2 className="text-[black] font-bold">Order Summary</h2>
+            {/* <div className="mt-28 border border-light_gray p-3 h-auto w-[350px]"> */}
+            <div className="xs:my-16  border border-light_gray p-3 h-auto w-[350px] sm:w-[700px] md:w-[350px]">
+              <h2 className="text-[black] font-bold sm:text-center">Order Summary</h2>
               <div className="my-4">
                 <p className="text-[black] text-left font-bold">
                   Delivery Address:{" "}

@@ -34,3 +34,27 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+
+.custom-phone-input {
+  border: 5px solid red;
+  outline: none !important;
+}
+
+.custom-phone-input {
+  border: 1px solid #ccc;
+}
+
+.custom-phone-input:focus {
+  border-color: #007bff;
+}
+
+.custom-phone-input:active {
+  border-color: #007bff;
+}
+
+.custom-phone-inpu:focus-visible {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+}

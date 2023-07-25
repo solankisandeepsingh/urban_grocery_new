@@ -111,6 +111,7 @@ export const Navbar = ({
             alt="Flowbite Logo"
             onClick={handleClickHome}
           />
+          
 
           <div className="flex md:order-2 z-10 xs:justify-between bg-white">
             {showSearch ? null : (
@@ -154,12 +155,10 @@ export const Navbar = ({
                       setOpenLogin(true);
                     }}
                   >
-                    <button className=" text-white font-bold bg-lime p-3  rounded-lg sm:text-md md:text-md text-center">
+                    <button className=" text-white font-bold bg-lime md:p-2 md:mb-2.5  xs:p-1  xs:mr-16 xs:mt-3  rounded-lg sm:text-md md:text-md text-center">
                       {name}
                     </button>
-                    {/* <div className="md:mt-1 xs:mt-1 bg-white ">
-                        <FaCaretDown className="bg-white md:mt-2 xs:mt-2 " />
-                      </div> */}
+                   
                   </div>
                 )}
 

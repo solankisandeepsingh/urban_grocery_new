@@ -42,7 +42,7 @@ function MyCart({
     resetState,
   } = useUserStore();
   const { setisLoading } = useLoaderState();
-  const {  setTotalPrice, setTotalMRPPrice, setTotalItems } = usePaymentStore();
+  const { setTotalPrice, setTotalMRPPrice, setTotalItems } = usePaymentStore();
 
   let menuRef = useRef();
 
@@ -65,11 +65,10 @@ function MyCart({
     allCartItems.forEach((item) => {
       total += parseFloat(item.price) * item.amount;
     });
-    console.log(total,"tooooooooooooooooooooooooooooooooooooooo");
+    console.log(total, "tooooooooooooooooooooooooooooooooooooooo");
     setTotalMRPPrice(total);
   };
- 
-  
+
   const total = () => {
     let price = 0;
     allCartItems &&
@@ -92,7 +91,7 @@ function MyCart({
         }
       });
     setTotalItem(totalAmount);
-    setTotalItems(totalAmount)
+    setTotalItems(totalAmount);
   };
 
   useEffect(() => {
@@ -319,7 +318,7 @@ function MyCart({
                                   class=" divide-y divide-gray-200 "
                                 >
                                   <div class="flex p-2 bg-white items-center">
-                                    <div class=" bg-white md:h-[80px] md:w-[72px] xs:h-24 xs:w-24 sm:h-48 sm:w-48 flex-shrink-0 overflow-hidden rounded-md ">
+                                    <div class=" bg-white md:h-[80px] md:w-[72px]  xs:h-24 xs:w-24 sm:h-44 sm:w-44 sm:rounded-lg flex-shrink-0 overflow-hidden rounded-md ">
                                       <img
                                         src={item?.image}
                                         alt="product"
@@ -335,27 +334,28 @@ function MyCart({
                                         <br />
 
                                         <div className="flex justify-between mt-0.5">
-                                          <div>
-                                            <p className="text-lightgray font-semi-bold">
+                                          <div className="w-[50%]" > 
+                                            <p className="text-lightgray font-semi-bold md:text-[14px] sm:text-[24px] sm:text-darkgray">  
                                               {item.serve_for}
                                             </p>
 
-                                            <p className="2xs:text-base xs:text-sm  sm:text-xl md:text-xs text-gryColour  font-medium inline line-through bg-white">
+                                            <p className="2xs:text-base xs:text-sm  sm:text-xl md:text-xs text-gryColour  font-medium inline line-through bg-white sm:text-[21px]">
                                               ₹{item.price}.00{" "}
                                             </p>
-                                            <span className="text-xs sm:text-xl xs:text-sm xs:ml-1 md:text-xs text-black  bg-white">
+                                            <span className="text-xs sm:text-xl xs:text-sm xs:ml-1 md:text-xs text-black  bg-white sm:text-[21px]">
                                               ₹{item.discounted_price}.00{" "}
                                             </span>
 
-                                            <p class="bg-white text-gryColour text-[12px] font-bold">
+                                            <p class="bg-white text-gryColour text-[12px] md:text-[12px] font-bold sm:text-[21px]">
                                               {" "}
                                               {item?.measurement + " "}
                                               {item?.unit}
                                               {() => setAmount(item?.amount)}
                                             </p>
                                           </div>
-                                          <div className="flex items-center justify-center text-center">
-                                            <div className="bg-white md:mt-1.5 mr-14">
+                                          <div className="flex items-center justify-evenly xs:gap-4 md:justify-around sm:justify-between text-center w-[50%]">
+                                          {/* <div className=""> */}
+                                            <div className="bg-white">
                                               <QtyAmount
                                                 item={item}
                                                 setAddItem={setAddItem}
@@ -367,7 +367,7 @@ function MyCart({
                                                 onClick={() =>
                                                   removeItemHandler(item)
                                                 }
-                                                className="bg-white  hover:bg-RedColour hover:bg-opacity-20 cursor-pointer  md:text-[15px] xs:text-sm sm:text-3xl text-red"
+                                                className="bg-white hover:bg-RedColour hover:bg-opacity-20 cursor-pointer xs:text-[18px]  md:text-[15px] xs:text-sm sm:text-3xl text-red"
                                               />
                                             </div>
                                           </div>

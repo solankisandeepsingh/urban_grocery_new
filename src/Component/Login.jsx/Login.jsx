@@ -9,6 +9,7 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
+import { SignUpwithOtp } from "./SignUpwithOtp";
 
 export const Login = ({
   // setUser_id,
@@ -24,14 +25,17 @@ export const Login = ({
   const { allCartItems, config, clearCartApi } = useCartStore();
   const { setUserInfo } = useUserStore();
   const [showSignUp, setShowSignUp] = useState(false);
-  const [showForgot, setShowForgot] = useState(false);
-  const [LoginFormModals, setLoginFormModals] = useState(true);
+  const [loginForm, setLoginForm] = useState(true);
+  const [showRegisterForm, setShowRegisterForm] = useState(false);
+  const countryCode = "+91";
+  const [phoneNumber, setPhoneNumber] = useState(countryCode);
   const [loginData, setLoginData] = useState([]);
   const navigate = useNavigate();
   const { setisLoading } = useLoaderState();
 
   const handleShow = (e) => {
     e.preventDefault();
+    setLoginForm(false)
     setShowSignUp(true);
     // setOpenLogin(false)
     // setLoginFormModals(false);
@@ -158,13 +162,13 @@ export const Login = ({
       password: "",
     });
   };
-const handleForgotPassword = ()=>{}
+  const handleForgotPassword = () => {};
   return (
     <>
-      {!showSignUp && (
+      {loginForm && (
         <>
           <ToastContainer />
-          <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
+          <div className="fixed  z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
             <div className="bg-white rounded top-[5%] left-[5%]">
               <div className="flex justify-center items-center relative">
                 <div className="container relative  opacity-70">
@@ -242,7 +246,20 @@ const handleForgotPassword = ()=>{}
           </div>
         </>
       )}
-      {showSignUp && <Signup setOpenLogin={setOpenLogin} />}
+      {showRegisterForm && <Signup setOpenLogin={setOpenLogin} setLoginForm={setLoginForm} setShowRegisterForm={setShowRegisterForm} phoneNumber={phoneNumber} />}
+      
+      {/* {showSignUp && <SignUpOtp setOpenLogin={setOpenLogin}/>} */}
+      {showSignUp && (
+        <SignUpwithOtp
+          setShowRegisterForm={setShowRegisterForm}
+          setPhoneNumber={setPhoneNumber}
+          phoneNumber={phoneNumber}
+          setShowSignUp={setShowSignUp}
+          setOpenLogin={setOpenLogin}
+        
+        />
+      )}
+      {/* <SignUpwithOtp setOpenLogin={setOpenLogin}/> */}
     </>
   );
 };

@@ -5,4 +5,7 @@ export const currencyFormatter = (value)=>{
         style: 'currency'
     })
     return formatNumber.format(value)
+
+
+    
 }

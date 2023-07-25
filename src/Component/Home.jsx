@@ -61,7 +61,7 @@ function Home({
   }, []);
 
   return (
-    <div className=" mt-0.5">
+    <div className=" md:mt-0.5 xs:mt-14">
       <>
         {/* <div className="md:invisible xs:visible">
           <Search
@@ -72,118 +72,122 @@ function Home({
             user_id={user_id}
           />
         </div> */}
-      <div className="flex justify-center md:mt-16 items-center mx-auto "> 
-
-        <div className="container   w-full items-center">
-          <div
-            className={
-              isOpen ? "opacity-75" : "opacity-100" + "  xs:px-3 sm:px-5 "
-            }
-          >
-            <div className="md:w-auto text-center m-auto   xs:pt-3 sm:h-auto">
-              <CarouselComponent />
-            </div>
-
-            <div className="flex justify-between items-center">
-              <div className="md:w-auto md:p-2 md:mt-4 xs:py-2">
-                <img
-                  src={allImg["30"]}
-                  alt=""
-                  className="rounded-xl xs:h-[145px] md:w-full md:h-auto xs:w-full sm:h-[232px]"
-                />
+        <div className="flex justify-center md:mt-16 items-center mx-auto xs:py-4 ">
+          <div className="container w-full items-center">
+            <div
+              className={
+                isOpen ? "opacity-75" : "opacity-100" + "  xs:px-3 sm:px-5 "
+              }
+            >
+              <div className="md:w-auto text-center m-auto xs:py-2 sm:h-auto">
+                <CarouselComponent />
               </div>
 
-              {/* <div className="md:w-auto md:p-2 md:mt-4 xs:py-2">
-                <img
-                  src={allImg["37"]}
-                  alt=""
-                  className="rounded-xl xs:h-[145px] md:w-full md:h-auto xs:w-full sm:h-[232px]"
-                />
-              </div> */}
-              <div className="md:w-auto md:p-2 md:mt-4 xs:py-2">
-                <img
-                  src={allImg["32"]}
-                  alt=""
-                  className="rounded-xl xs:h-[145px] md:w-full md:h-auto xs:w-full sm:h-[232px]"
-                />
+              <div className="md:flex md:justify-between md:items-center">
+                <div className="md:w-auto md:p-2 md:my-4 ">
+                  <img
+                    src={allImg["30"]}
+                    alt=""
+                    className="rounded-xl xs:h-[145px] md:w-full md:h-auto xs:w-full sm:h-[232px]"
+                  />
+                </div>
+
+                <div className="md:w-auto md:p-2 md:mt-4 xs:py-2">
+                  <img
+                    src={allImg["32"]}
+                    alt=""
+                    className="rounded-xl xs:h-[145px] md:w-full md:h-auto xs:w-full sm:h-[232px]"
+                  />
+                </div>
               </div>
-            </div>
 
-            <Category
-              SubCategory={SubCategory}
-              productDetails={productDetails}
-              user_id={user_id}
-            />
-
-            <div className="my-8">
-              <img
-                src={allImg["27"]}
-                alt={"ALT"}
-                className="rounded-xl xs:h-[145px] md:w-full md:h-auto xs:w-full sm:h-[232px]"
+              <Category
+                SubCategory={SubCategory}
+                productDetails={productDetails}
+                user_id={user_id}
               />
-            </div>
-            {/* <FoodDelivery /> */}
 
-            <ProductCarousel
-              addItem={addItem}
-              setAddItem={setAddItem}
-              user_id={user_id}
-            />
-
-            <LocallySourced />
-          </div>
-          <div>
-            <FlashSales/>
-          </div>
-          <div className="bg-[#212122] flex border w-full border-white rounded-md ">
-            <footer className="bg-gray-800">
-              <div className="container mx-auto px-6 py-12">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                  <div className="text-white">
-                    <h3 className="text-lg font-semibold mb-4">About Us</h3>
-                    <p className="text-sm">
-                    About Us Urban-Grocery is one of the most selling and trending&nbsp; Grocery, Food Delivery, Fruits &amp; Vegetable store, Full Android eCommerce &amp; Website. which is helps to create your own app and web with your brand name. 
-                    </p>
-                  </div>
-                  <div className="text-white">
-                    <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-                    <ul className="space-y-2">
-                      <li>
-                        <Link to={"/"} className="text-gray-300 hover:text-white">
-                          Home
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to={"/allproducts"} className="text-gray-300 hover:text-white">
-                          Products
-                        </Link>
-                      </li>
-                      <li>
-                        <a to="#" className="text-gray-300 hover:text-white">
-                          Services
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="text-white">
-                    <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
-                    <p className="text-sm">123 Street, City, State</p>
-                    <p className="text-sm">Email: info@example.com</p>
-                    <p className="text-sm">Phone: 123-456-7890</p>
-                  
-                  </div>
-                </div>
-                {/* <hr className="border-gray-700 my-8" /> */}
-                <div className="text-white text-sm text-center mt-6">
-                  <p>&copy; 2023 Urban Grocery. All rights reserved.</p>
-                  <p>Terms of Service | Privacy Policy</p>
-                </div>
+              <div className="md:w-auto md:p-2 md:mt-4">
+                <img
+                  src={allImg["27"]}
+                  alt={"ALT"}
+                  className="rounded-xl xs:h-[145px] md:w-full md:h-auto xs:w-full sm:h-[232px]"
+                />
               </div>
-            </footer>
+
+              {/* <FoodDelivery /> */}
+              <div className="">
+                <ProductCarousel
+                  addItem={addItem}
+                  setAddItem={setAddItem}
+                  user_id={user_id}
+                />
+              </div>
+
+              <LocallySourced />
+            </div>
+            <div>
+              <FlashSales />
+            </div>
+            <div className="bg-[#212122] flex border w-full border-white rounded-md ">
+              <footer className="bg-gray-800">
+                <div className="container mx-auto px-6 py-12">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div className="text-white">
+                      <h3 className="text-lg font-semibold mb-4">About Us</h3>
+                      <p className="text-sm">
+                        About Us Urban-Grocery is one of the most selling and
+                        trending&nbsp; Grocery, Food Delivery, Fruits &amp;
+                        Vegetable store, Full Android eCommerce &amp; Website.
+                        which is helps to create your own app and web with your
+                        brand name.
+                      </p>
+                    </div>
+                    <div className="text-white">
+                      <h3 className="text-lg font-semibold mb-4">
+                        Quick Links
+                      </h3>
+                      <ul className="space-y-2">
+                        <li>
+                          <Link
+                            to={"/"}
+                            className="text-gray-300 hover:text-white"
+                          >
+                            Home
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to={"/allproducts"}
+                            className="text-gray-300 hover:text-white"
+                          >
+                            Products
+                          </Link>
+                        </li>
+                        <li>
+                          <a to="#" className="text-gray-300 hover:text-white">
+                            Services
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="text-white">
+                      <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
+                      <p className="text-sm">123 Street, City, State</p>
+                      <p className="text-sm">Email: info@example.com</p>
+                      <p className="text-sm">Phone: 123-456-7890</p>
+                    </div>
+                  </div>
+                  {/* <hr className="border-gray-700 my-8" /> */}
+                  <div className="text-white text-sm text-center mt-6">
+                    <p>&copy; 2023 Urban Grocery. All rights reserved.</p>
+                    <p>Terms of Service | Privacy Policy</p>
+                  </div>
+                </div>
+              </footer>
+            </div>
           </div>
         </div>
-
-      </div>
       </>
     </div>
   );

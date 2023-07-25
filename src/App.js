@@ -24,6 +24,7 @@ import Review from "./Component/MyCart/Review/Review";
 import { OrderDetails } from "./Component/Order-Details/OrderDetails";
 import { MyProfile } from "./Component/Profile/MyProfile";
 import { OrderDetailsPage } from "./Component/Order-Details/OrderDetailsPage";
+import Search from "./Component/Header/Search/Search";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);

@@ -29,8 +29,9 @@ export const Category = () => {
         config
       )
       // .then((res) => setCategorydata(res.data.data))
-      .then((res) => {setAllCategories(res?.data?.data)
-    setisLoading(false);      
+      .then((res) => {
+        setAllCategories(res?.data?.data);
+        setisLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -44,34 +45,43 @@ export const Category = () => {
 
   return (
     <>
-      <div className="shadow-sm border border-[#e8e8e8] p-5 md:mt-7 bg-[#fcfff3] rounded-md">
-        <div className=" flex justify-between">
-          <div className="text-customBlack text-[24px] ">
+      <div className="shadow-sm border xs:h-36 border-[#e8e8e8] xs:my-3 md:p-5 md:mt-7 bg-[#fcfff3] rounded-md">
+        {/* <div className=" flex  xs:py-2 md:justify-between md:text-[24px] xs:text-[16px]">
+          <div className="text-customBlack">
+            <h1 className="font-okra font-600 xs:mx-1">Shop By Category</h1>
+          </div>
+          <div className=" text-customGreen">
+            <h1 className=" font-okra font-600 xs:mx-16">View All</h1>
+          </div>
+        </div> */}
+
+        <div className="xs:my-2 xs:mx-2 mt-20 flex justify-between">
+          <div className="text-customBlack text-[16px]">
             <h1 className="font-okra font-600">Shop By Category</h1>
           </div>
-          <div className=" text-customGreen text-[20px]	">
-            <h1 className=" font-okra font-600">View All</h1>
+          <div className=" text-customGreen text-[16px]	">
+            <h1 className="cursor-pointer font-okra font-600">View All</h1>
           </div>
         </div>
 
-        <div className="category xs:mx-1 xs:mt-3 md:mt-5 xs:ml-3">
-          <div className=" grid md:grid-cols-4 sm:grid-cols-4 gap-4 xs:grid-cols-2 md:py-3">
+        <div className="category xs:mt-3 md:mt-5">
+          <div className=" grid md:grid-cols-4 sm:grid-cols-4 gap-4 xs:grid-cols-4 xs:mx-1  md:py-3">
             {allCategories &&
               allCategories.map((item) => {
                 return (
                   <div
-                    className="md:w-48 md:ml-2 rounded-xl border border-light_gray cursor-pointer hover:border-light_green hover:border-[2px] hover:shadow-sm border-[2px]  xs:py-2 bg-white "
+                    className="xs:w-18 md:w-48 md:ml-2 rounded-xl border-light_gray cursor-pointer hover:border-light_green hover:border-[2px] hover:shadow-sm border-[2px]  xs:py-2 bg-white "
                     key={item.id}
                   >
                     <NavLink to={`/subcategory-details/${item.id}`}>
                       <img
-                        className="xs:w-32 xs:h-28 xs:ml-2.5 sm:w-36 sm:h-32 md:w-32 md:h-28 md:ml-8 md:mt-2 object-cover md:rounded-3xl xs:rounded-lg bg-white sm:rounded-lg"
+                        className="xs:w-[55px] xs:h-[42px] xs:ml-1.5  sm:w-36 sm:h-32 md:w-32 md:h-28 md:ml-8 md:mt-2 object-cover md:rounded-3xl xs:rounded-lg bg-white sm:rounded-lg"
                         src={item.image}
                         alt="item"
                       />
                     </NavLink>
-                    <div className="xs:text-center md:text-center bg-white ">
-                      <p className="md:text-sm sm:text-md md:font-medium md:ml-2 sm:py-2 bg-white">
+                    <div className="xs:text-center md:text-center xs:py-0.5 bg-white ">
+                      <p className="xs:text-[12px] xs:font-light md:text-sm sm:text-md md:font-medium md:ml-2 sm:py-2 bg-white">
                         {item.name}
                       </p>
                     </div>

@@ -14,12 +14,12 @@ export const Address = ({ isOpen, setIsOpen }) => {
   const [formOpen, setFormOpen] = useState(false);
   // const [addList, setAddlist] = useState([]);
   const { setisLoading } = useLoaderState();
-  const { user_id, addList, setAddList } = useUserStore();
+  const { addList, setAddList } = useUserStore();
+  const {
+    userInfo: { user_id },
+  } = useUserStore();
   console.log(setAddList);
-  // const handleOptionChange = (event) => {
-  //   console.log(event.target.value);
-  //   setDeliveryAddress(event.target.value);
-  // };
+  console.log(user_id,"usriddddddddd");
 
   const config = {
     headers: {

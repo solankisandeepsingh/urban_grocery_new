@@ -228,8 +228,9 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
                         value="Home"
                         checked={addressData.type === "Home"}
                         onChange={handleInputChange}
+                        className="hidden"
                       />
-                      <span className="ml-2 text-gryColour">Home</span>
+                      <span className="ml-2 text-lightGrayBlinkit bg-colorGray border border-light_gray hover:border-GreenBlinkit cursor-pointer p-2 rounded-lg text-[13px]">Home</span>
                     </label>
 
                     <label>
@@ -239,8 +240,9 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
                         value="Work"
                         checked={addressData.type === "Work"}
                         onChange={handleInputChange}
+                        className="hidden p-3 bg-lime"
                       />
-                      <span className="ml-2 text-gryColour">Work</span>
+                      <span className="ml-2 text-lightGrayBlinkit bg-colorGray border border-light_gray hover:border-GreenBlinkit cursor-pointer p-2 rounded-lg text-[13px]">Work</span>
                     </label>
 
                     <label>
@@ -250,8 +252,9 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
                         value="Other"
                         checked={addressData.type === "Other"}
                         onChange={handleInputChange}
+                        className="hidden"
                       />
-                      <span className="ml-2 text-gryColour">Others</span>
+                      <span className="ml-2 text-lightGrayBlinkit bg-colorGray border border-light_gray hover:border-GreenBlinkit cursor-pointer p-2 rounded-lg text-[13px]">Others</span>
                     </label>
                   </div>
 
