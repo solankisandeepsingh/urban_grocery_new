@@ -2,9 +2,15 @@ import axios from "axios";
 import React from "react";
 import { API_TOKEN } from "../Token/Token";
 import { useLoaderState } from "../zustand/useLoaderState";
+import { useUserStore } from "../zustand/useUserStore";
+
 
 function CartQuantity({ item, setAddItem, addItem }) {
   console.log(addItem);
+  const {
+    userInfo: { user_id },
+  } = useUserStore();
+
 const {setisLoading} = useLoaderState();
   const quantityDecrease = () => {
     const config = {
@@ -16,13 +22,14 @@ const {setisLoading} = useLoaderState();
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", "14");
+    bodyFormData.append("user_id", `${user_id}`);
     bodyFormData.append("product_id", item.id);
     bodyFormData.append("product_variant_id", item.variants[0].id);
     const finditem = addItem.find((data) => data.product_id == item.id);
     const newQty =
       +finditem.amount !== 0 ? +finditem.amount - 1 : finditem.amount;
     bodyFormData.append("qty", newQty);
+    
     setisLoading(true);
 
     axios
@@ -70,7 +77,7 @@ const {setisLoading} = useLoaderState();
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", "14");
+    bodyFormData.append("user_id", `${user_id}`);
 
     bodyFormData.append("product_id", item.id);
     bodyFormData.append("product_variant_id", item.variants[0].id);

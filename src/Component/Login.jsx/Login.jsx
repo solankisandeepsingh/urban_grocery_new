@@ -126,7 +126,7 @@ export const Login = ({
           setUserInfo(res.data);
           let newUserId = res?.data?.user_id;
           // setUser_id(newUserId);
-          clearCart(newUserId);
+          // clearCart(newUserId);
           getFavItems(newUserId);
 
 
@@ -169,7 +169,7 @@ export const Login = ({
 
           addMultipleItems();
         } else {
-          toast.error("Invalid phone OR password! !", {
+          toast.error("Invalid phone OR password!", {
             position: toast.POSITION.TOP_CENTER,
           });
         }

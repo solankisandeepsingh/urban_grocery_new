@@ -42,7 +42,7 @@ function App() {
   const [NavbarOpen, setNavbarOpen] = useState(true);
   const [price, setPrice] = useState(0);
   // const [loading, setLoading] = useState(true);
-  const [user_id, setUser_id] = useState("14");
+  const [user_id, setUser_id] = useState("");
 
   useEffect(() => {
     localStorage.setItem("NavbarOpen", JSON.stringify(NavbarOpen));

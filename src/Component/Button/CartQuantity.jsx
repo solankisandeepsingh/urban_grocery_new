@@ -12,6 +12,9 @@ function CartQuantity({ item, variant }) {
     userInfo: { user_id },
   } = useUserStore();
 
+
+  console.log(user_id);
+
   const quantityDecrease = () => {
     const config = {
       headers: {
@@ -24,10 +27,16 @@ function CartQuantity({ item, variant }) {
     bodyFormData.append("add_to_cart", "1");
     bodyFormData.append("user_id", user_id);
     bodyFormData.append("product_id", item.id);
+    
+    
+    console.log(item, variant,  "bodyForm APPEMND");
     bodyFormData.append(
       "product_variant_id",
-      item.variants[variant[item.id || 0]].id
+      item.variants[variant[item.variants.length >  1? item.id : 0 || 0]].id
     );
+
+
+
     const finditem = allCartItems.find((data) => data.product_id == item.id);
     const newQty =
       +finditem.amount !== 0 ? +finditem.amount - 1 : finditem.amount;
@@ -93,7 +102,7 @@ function CartQuantity({ item, variant }) {
     if (
       allCartItems.some((product) => {
         console.log(product, item);
-        console.log(product.amount === 1 && product.id === item.variants[variant[item.id]|| 0].id);
+        console.log(product.amount === 1,  product.id === item.variants[variant[item.id]|| 0].id);
         return product.amount === 1 && product.id === item.variants[variant[item.id]|| 0].id;
       })
     ) {
@@ -120,7 +129,7 @@ function CartQuantity({ item, variant }) {
     } else if (
       allCartItems.some((cartItem) => {
         console.log(cartItem, item);
-          console.log(cartItem.id === item.variants[variant[item.id]|| 0].id);
+          console.log(cartItem.id , item.variants[variant[item.id]|| 0].id);
           return cartItem.id === item.variants[variant[item.id]|| 0].id
       } 
       )
@@ -146,7 +155,7 @@ function CartQuantity({ item, variant }) {
 
   const quantityIncreaseUI = () => {
     let newArr = allCartItems.map((i) => {
-      console.log(i.id, item.variants[variant[item.id] || 0].id, "YELLOOOO");
+      console.log(i.id, item.variants[variant[item.product_variant_id] || 0].id, "YELLOOOO");
       if (i.id == item.variants[variant[item.id] || 0].id) {
         console.log("RUnning");
         return { ...i, amount: +i.amount + 1 };
@@ -157,6 +166,7 @@ function CartQuantity({ item, variant }) {
   };
 
   const quantityIncrease = () => {
+    console.log("USER LOGGED IN");
     const config = {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
@@ -183,7 +193,7 @@ function CartQuantity({ item, variant }) {
       .then((res) => {
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
           let newArr = allCartItems.map((data) =>
-            data.product_id === item.id
+            data.product_variant_id === item.product_variant_id
               ? { ...data, amount: +data.amount + 1 }
               : data
           );
@@ -209,10 +219,10 @@ function CartQuantity({ item, variant }) {
     console.log(variant);
     let index = allCartItems.findIndex((i) => {
       // console.log(variant[item.id || 0], +i.id, "FINDDDDD>>>>><");
-      
-      return +i.id === +item.variants[variant[item.id] || 0].id;
+      return +i.product_variant_id === +item.variants[variant[item.id] || 0].id;
     });
- 
+    console.log(index);
+    console.log(allCartItems);
     console.log(allCartItems[index].amount);
 
     return allCartItems[index].amount;
@@ -225,7 +235,9 @@ function CartQuantity({ item, variant }) {
     >
       <button
         className="md:text-lg xs:text-sm sm:text-4xl"
-        onClick={() => (user_id ? quantityDecrease() : quantityDecreaseUI())}
+        onClick={() => {
+          console.log(user_id);
+          (user_id ? quantityDecrease() : quantityDecreaseUI())}}
       >
         -
       </button>
@@ -239,6 +251,7 @@ function CartQuantity({ item, variant }) {
       <button
         className="md:text-lg xs:text-sm sm:text-2xl"
         onClick={() => {
+          console.log(user_id);
           user_id ? quantityIncrease() : quantityIncreaseUI();
         }}
       >

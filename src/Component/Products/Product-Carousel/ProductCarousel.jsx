@@ -379,6 +379,7 @@ export const ProductCarousel = ({}) => {
     // };
 
     let newArr = [...allCartItems, { ...mainItem.variants[variant[mainItem.id]||0], amount: 1, name: mainItem.name, image: mainItem.variants[variant[mainItem.id]||0].images[0], product_variant_id: mainItem.variants[variant[mainItem.id]||0].id }];
+
     console.log(newArr, "FROM ADD ITEM UI");
     // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
     setAllCartItems(newArr);
@@ -422,6 +423,7 @@ export const ProductCarousel = ({}) => {
                 }
               : data
           );
+
           console.log(newArr);
           setAllCartItems(newArr);
           // setAllCartItems((cart) =>
@@ -436,6 +438,7 @@ export const ProductCarousel = ({}) => {
           // );
           return;
         }
+
         console.log(item.id, "Additem Id in product caraousel");
 
         let item1 = {
@@ -484,8 +487,8 @@ export const ProductCarousel = ({}) => {
 
       <div className="md:my-2 ">
         <Carousel responsive={responsive}>
-          {mockData &&
-            mockData.map((item) => {
+          {showAllProduct &&
+            showAllProduct.map((item) => {
               return (
                 <>
                   <div

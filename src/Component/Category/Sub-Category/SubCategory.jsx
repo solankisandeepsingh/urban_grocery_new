@@ -3,10 +3,14 @@ import { NavLink, useParams } from "react-router-dom";
 import CartQuantity from "../../Button/CartQuantity";
 import axios from "axios";
 import { API_TOKEN } from "../../Token/Token";
+import { useUserStore } from "../../zustand/useUserStore";
 
 export const SubCategory = ({ setAddItem, addItem }) => {
   const [allproducts, setAllProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const {
+    userInfo: { user_id },
+  } = useUserStore();
 
   const { category_id } = useParams();
 
@@ -100,7 +104,7 @@ export const SubCategory = ({ setAddItem, addItem }) => {
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", "14");
+    bodyFormData.append("user_id", `${user_id}`);
 
     bodyFormData.append("product_id", `${data.id}`);
     bodyFormData.append("product_variant_id", `${item.id}`);
@@ -148,7 +152,7 @@ export const SubCategory = ({ setAddItem, addItem }) => {
           product_variant_id: item.id,
           qty: 1,
 
-          user_id: "14",
+          user_id: `${user_id}`,
         };
         setAddItem((cart) => [...cart, { ...item1, amount: 1 }]);
       })

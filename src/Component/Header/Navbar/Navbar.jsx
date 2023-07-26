@@ -79,7 +79,7 @@ export const Navbar = ({
   };
 
   const handleLogout = () => {
-    setUserInfo({ user_id: 14, name: "Login/Signup" });
+    setUserInfo({ user_id: '', name: "Login/Signup" });
 
     // setLoggedIn(false);
     setIsOpen(false);

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_TOKEN } from "../Token/Token";
 import { QtyAmount } from "../Button/QtyAmount";
+import CartQuantity from "../Button/CartQuantity";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { Login } from "../Login.jsx/Login";
 import { useCartStore } from "../zustand/useCartStore";
@@ -200,6 +201,7 @@ function MyCart({
   useEffect(() => {
     getUserCarts(user_id);
   }, [accesskey]);
+  
   console.log(allCartItems, " ADD ITEM IN MYCART <><><><><");
 
   return (
@@ -336,7 +338,7 @@ function MyCart({
                                           </div>
                                           <div className="flex items-center justify-center text-center">
                                             <div className="bg-white md:mt-1.5 mr-14">
-                                              <QtyAmount
+                                              <QtyAmount ount
                                                 item={item}
                                                 setAddItem={setAddItem}
                                                 allCartItems={allCartItems}
