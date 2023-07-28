@@ -2,8 +2,11 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import Search from "./Header/Search/Search";
 import CartQuantity from "./Button/CartQuantity";
+import { useCartStore } from "./zustand/useCartStore";
 
 function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
+  const {allCartItems,setAllCartItems}= useCartStore();
+  console.log(allCartItems,"allcartitem is here")
   
   const addItemHandler = (item) => {
     if (addItem.some((cartItem) => cartItem.id === item.id)) {
@@ -26,9 +29,9 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
       <div className="md:invisible xs:visible ">
         <Search setName={setName} setData={setData} />
       </div>
-      {/* <div className="grid md:grid-cols-5 xs:grid-cols-2 sm:ml-6 sm:grid-col-4 "> */}
+     
       <div className=" xs:grid xs:grid-cols-2 md:grid md:grid-cols-7 sm:grid-cols-3 flex flex-wrap md:ml-5  ">
-        {/* show singal product on filter  */}
+     
         {data && data.length > 0 ? (
           data.map((item) => {
             return (

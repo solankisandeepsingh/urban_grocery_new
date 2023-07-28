@@ -28,6 +28,7 @@ export const Navbar = ({
   let menuRef = useRef();
   const userButtonClicks = useRef(0);
   const [isOpen, setIsOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
   const [isValidImg, setisValidImg] = useState(false);
   const {
@@ -35,32 +36,36 @@ export const Navbar = ({
     setUserInfo,
   } = useUserStore();
 
+  // useEffect(() => {
+  //   let handler = (e) => {
+  //     if (menuRef.current) {
+  //       if (!menuRef.current.contains(e.target)) {
+  //         setIsOpen(false);
+  //         setMobileOpen(false);
+  //       }
+  //     }
+  //   };
+  //   document.addEventListener("mousedown", handler);
+
+  //   return () => {
+  //     document.removeEventListener("mousedown", handler);
+  //   };
+  // });
+
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const isScrollingDown = window.scrollY > 0;
+  //     setShowSearch(!isScrollingDown);
+  //   };
+  //   window.addEventListener("scroll", handleScroll);
+
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, []);
+
   useEffect(() => {
-    let handler = (e) => {
-      if (menuRef.current) {
-        if (!menuRef.current.contains(e.target)) {
-          setIsOpen(false);
-        }
-      }
-    };
-
-    document.addEventListener("mousedown", handler);
-
-    return () => {
-      document.removeEventListener("mousedown", handler);
-    };
-  });
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const isScrollingDown = window.scrollY > 0;
-      setShowSearch(!isScrollingDown);
-    };
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    setShowSearch(true);
   }, []);
 
   useEffect(() => {
@@ -76,28 +81,29 @@ export const Navbar = ({
     };
   }, [profile]);
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+      /* you can also use 'auto' behaviour
+         in place of 'smooth' */
+    });
+  };
   const handleShowSearchBar = () => {
     setShowSearchBar(true);
+
     navigate("/search");
+    scrollToTop();
   };
   const handleClickHome = () => {
-    setNavbarOpen(true);
     navigate("/");
-  };
-  const handleDropdown = (e) => {
-    e.preventDefault();
-    if (!isOpen) {
-      setIsOpen(true);
-      userButtonClicks.current += 1;
-      setIsOpen(userButtonClicks.current % 2 === 0);
-    }
   };
 
   const handleLogout = () => {
-    setUserInfo({ user_id: 14, name: "Login/Signup" });
-
+    setUserInfo({ user_id: 14, name: "Login" });
     // setLoggedIn(false);
     setIsOpen(false);
+    setMobileOpen(false);
     navigate("/");
   };
 
@@ -105,37 +111,34 @@ export const Navbar = ({
     <div className="">
       <nav className=" px-2 sm:px-4 fixed w-full z-20 top-0 left-0 border-b border-light_gray shadow-sm bg-white">
         <div className="bg-white flex flex-wrap items-center justify-between mx-auto ">
-          <img
-            src="http://grocery.intelliatech.in/dist/img/logo.png"
-            className="h-6 md:w-[150px] md:h-[50px] md:ml-8 mr-3 mt-2 sm:h-9 bg-white cursor-pointer"
-            alt="Flowbite Logo"
-            onClick={handleClickHome}
-          />
-          
-
-          <div className="flex md:order-2 z-10 xs:justify-between bg-white">
-            {showSearch ? null : (
-              <div className="md:hidden xs:visible rounded-lg bg-lime w-8 h-8 xs:w-8 xs:h-8 xs:mt-3.5 xs:mx-2">
-                <FaSistrix
-                  className=" text-white m-1 text-2xl bg-lime"
-                  onClick={handleShowSearchBar}
-                />
-              </div>
-            )}
-
-            {NavbarOpen && (
-              <div className="relative">
+          <div>
+            <img
+              src="http://grocery.intelliatech.in/dist/img/logo.png"
+              className="h-6 md:w-[150px] md:h-[50px] md:ml-8 mr-3 mt-2 sm:h-9 bg-white cursor-pointer"
+              alt="Flowbite Logo"
+              onClick={handleClickHome}
+            />
+          </div>
+          {NavbarOpen && (
+            <div className="">
+              <div
+                // className="relative xs:my-2 ml-[-145px]  md:hidden sm:hidden"
+                className="relative xs:my-2 ml-[-100px]  md:hidden sm:hidden"
+                onClick={() => {
+                  setMobileOpen(!mobileOpen);
+                }}
+              >
                 {!(user_id === 14) ? (
                   <div
-                    className="flex sm:mr-3 items-center h-[30px] md:ml-[-145px] rounded-lg md:px-2 md:mt-5 xs:mt-3 bg-white"
+                    className="flex items-center justify-center text-center h-[30px] rounded-lg md:px-2 md:mt-5 xs:mt-3 bg-white"
                     onClick={() => {
-                      setIsOpen(!isOpen);
+                      setMobileOpen(!mobileOpen);
                     }}
                   >
                     {isValidImg ? (
                       <img
                         src={profile}
-                        className="xs:text-3xl w-[40px] h-[40px] text-lime object-cover rounded-full md:text-[2px] mr-1 cursor-pointer"
+                        className="xs:text-2xl w-[30px] h-[30px] mx-[5px] text-lime object-cover rounded-full cursor-pointer"
                         alt=""
                       />
                     ) : (
@@ -155,10 +158,195 @@ export const Navbar = ({
                       setOpenLogin(true);
                     }}
                   >
-                    <button className=" text-white font-bold bg-lime md:p-2 md:mb-2.5  xs:p-1  xs:mr-16 xs:mt-3  rounded-lg sm:text-md md:text-md text-center">
+                    {/* <button className=" text-white font-bold bg-lime md:p-2 md:mb-2.5  xs:p-1  xs:mr-16 xs:mt-3  rounded-lg sm:text-md md:text-md text-center">
+                    {name}
+                  </button> */}
+                    <button
+                      className="flex justify-center items-center text-center my-2.5 text-lime"
+                      // onClick={() => setMobileOpen((prev) => !prev)}
+                    >
                       {name}
                     </button>
-                   
+                  </div>
+                )}
+
+                {openLogin && <Login setOpenLogin={setOpenLogin} />}
+
+                {mobileOpen && (
+                  <div
+                    className="top-0 p-5 pt-0 left-[-140px] mt-2 w-56 shadow-lg rounded-lg bg-white  xs:my-[39px] md:ml-[980px] sm:ml-[400px] xs:ml-[100px] z-10 absolute px-4"
+                    ref={menuRef}
+                  >
+                    <ul className="mt-4 bg-white ">
+                      <li className=" bg-white cursor-pointer">
+                        <p className="bg-white mt-4 sm:text-2xl md:text-lg">
+                          My Account
+                        </p>
+                        <p className="bg-white sm:text-2xl md:text-[15px] font-bold">
+                          {mobile}
+                        </p>
+                        <hr />
+                      </li>
+
+                      <li className="bg-white text-red cursor-pointer">
+                        <NavLink to="/myorder">
+                          <p
+                            onClick={() => setMobileOpen(false)}
+                            className="bg-white sm:text-lg md:text-sm text-red mt-4"
+                          >
+                            My Orders
+                          </p>
+                        </NavLink>
+                      </li>
+                      <li className="  bg-white cursor-pointer">
+                        <NavLink to={"/address"}>
+                          <p
+                            onClick={() => setMobileOpen(false)}
+                            className="bg-white sm:text-lg md:text-sm mt-4"
+                          >
+                            Saved Address
+                          </p>
+                        </NavLink>
+                      </li>
+                      <li className="  bg-white cursor-pointer">
+                        <NavLink to={"/profile"}>
+                          <p
+                            onClick={() => setMobileOpen(false)}
+                            className="bg-white sm:text-lg md:text-sm mt-4"
+                          >
+                            My Profile
+                          </p>
+                        </NavLink>
+                      </li>
+                      <li className=" bg-white cursor-pointer">
+                        <div className="flex justify-between mt-4  ">
+                          <NavLink to={"/wallet"}>
+                            <p
+                              onClick={() => setMobileOpen(false)}
+                              className="bg-white sm:text-lg md:text-sm"
+                            >
+                              My Wallet
+                            </p>
+                          </NavLink>
+                          <p
+                            onClick={() => setMobileOpen(false)}
+                            className="bg-white sm:text-lg md:text-sm"
+                          >
+                            ₹500
+                          </p>
+                        </div>
+                      </li>
+                      <li className="bg-white cursor-pointer">
+                        <NavLink to={"/faq"}>
+                          <p
+                            onClick={() => setMobileOpen(false)}
+                            className="bg-white sm:text-lg md:text-sm mt-4"
+                          >
+                            FAQ
+                          </p>
+                        </NavLink>
+                      </li>
+                      <li className="bg-white cursor-pointer">
+                        <NavLink to={"/about"}>
+                          <p
+                            onClick={() => setMobileOpen(false)}
+                            className="bg-white sm:text-lg md:text-sm mt-4"
+                          >
+                            About_Us
+                          </p>
+                        </NavLink>
+                      </li>
+                      <li className="bg-white cursor-pointer">
+                        <NavLink to={"/contact"}>
+                          <p
+                            onClick={() => setMobileOpen(false)}
+                            className="bg-white sm:text-lg md:text-sm mt-4"
+                          >
+                            Contact_Us
+                          </p>
+                        </NavLink>
+                      </li>
+                      <li className="bg-white cursor-pointer">
+                        <NavLink to={"/privacy"}>
+                          <p
+                            onClick={() => setMobileOpen(false)}
+                            className="bg-white sm:text-lg md:text-sm mt-4"
+                          >
+                            Privacy
+                          </p>
+                        </NavLink>
+                      </li>
+
+                      <li className="bg-white cursor-pointer">
+                        <p
+                          onClick={handleLogout}
+                          className="bg-white sm:text-lg md:text-sm mt-4 cursor-pointer"
+                        >
+                          Log Out
+                        </p>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          <div className="flex md:order-2 z-10 xs:justify-between bg-white">
+            {/* {showSearch ? null : (
+              // <div className="md:hidden xs:visible rounded-lg bg-lime w-8 h-8 xs:w-8 xs:h-8 xs:mt-3.5 xs:mx-2">
+              <div className="md:hidden xs:visible rounded-lg bg-skyblue w-8 h-8 xs:w-8 xs:h-8 xs:mt-3.5 xs:mx-2">
+                <FaSistrix
+                  className="xs:mx-3 xs:my-[-2px] text-2xl text-lime"
+                  onClick={handleShowSearchBar}
+                />
+              </div>
+            )} */}
+            <div className="md:hidden xs:visible rounded-lg bg-skyblue w-8 h-8 xs:w-8 xs:h-8 xs:mt-3.5 xs:mx-2">
+              <FaSistrix
+                className="xs:mx-3 xs:my-[-2px] text-2xl text-lime"
+                onClick={handleShowSearchBar}
+              />
+            </div>
+
+            {NavbarOpen && (
+              <div className="relative hidden md:block sm:block">
+                {!(user_id === 14) ? (
+                  <div
+                    // className="flex sm:mr-3 items-center h-[30px] md:ml-[-145px] rounded-lg md:px-2 md:mt-5 xs:mt-3 bg-white"
+                    className="flex sm:mr-3 justify-center items-center text-center rounded-lg md:px-2 bg-white"
+                    onClick={() => {
+                      setIsOpen(!isOpen);
+                    }}
+                  >
+                    {isValidImg ? (
+                      <img
+                        src={profile}
+                        className="xs:text-3xl w-[40px] h-[40px] text-lime object-cover rounded-full md:text-[2px] mr-1 cursor-pointer"
+                        alt=""
+                      />
+                    ) : (
+                      <FaUserCircle className=" xs:text-3xl text-lime  md:text-2xl mr-1 cursor-pointer" />
+                    )}
+                    <div className="">{name}</div>
+
+                    <div className=" bg-white ">
+                      <FaCaretDown className="bg-white" />
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    className="xs:w-20 md:w-24 h-[32px]  rounded-lg md:ml-[-75px] md:px-4  bg-white"
+                    onClick={() => {
+                      console.log("working");
+                      setOpenLogin(true);
+                    }}
+                  >
+                    {/* <button className=" text-white font-bold bg-lime md:p-2 md:mb-2.5  xs:p-1  xs:mr-16 xs:mt-3  rounded-lg sm:text-md md:text-md text-center"> */}
+                    {/* <button className=" text-white font-bold bg-lime  rounded-lg sm:text-md md:text-md text-center"> */}
+                    <button className="bg-lime text-white items-center flex font-bold rounded shadow p-3 py-1.5 ">
+                      {name}
+                    </button>
                   </div>
                 )}
 
@@ -179,16 +367,7 @@ export const Navbar = ({
                         </p>
                         <hr />
                       </li>
-                      {/* <li className=" bg-white cursor-pointer">
-                        <NavLink to={"/login"}>
-                          <p
-                            onClick={() => setIsOpen(false)}
-                            className="bg-white sm:text-lg md:text-sm mt-4"
-                          >
-                            LogIn
-                          </p>
-                        </NavLink>
-                      </li> */}
+
                       <li className="bg-white  cursor-pointer">
                         <NavLink to={"/myorder"}>
                           <p
@@ -199,7 +378,8 @@ export const Navbar = ({
                           </p>
                         </NavLink>
                       </li>
-                      <li className="  bg-white cursor-pointer">
+
+                      <li className="bg-white  cursor-pointer">
                         <NavLink to={"/address"}>
                           <p
                             onClick={() => setIsOpen(false)}
@@ -209,6 +389,7 @@ export const Navbar = ({
                           </p>
                         </NavLink>
                       </li>
+
                       <li className="  bg-white cursor-pointer">
                         <NavLink to={"/profile"}>
                           <p

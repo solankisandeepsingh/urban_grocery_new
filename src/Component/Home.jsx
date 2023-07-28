@@ -11,6 +11,9 @@ import { LocallySourced } from "../Food Delivery Image/LocallySourced";
 import { useLoaderState } from "./zustand/useLoaderState";
 import { Link } from "react-router-dom";
 import { FlashSales } from "./Flash_Sales/FlashSales";
+import { SignJWT } from "jose";
+import axioss from "../api/axios";
+import { useApiStore } from "./zustand/useApiStore";
 
 function Home({
   data,
@@ -23,13 +26,76 @@ function Home({
   user_id,
 }) {
   const { allImg, setAllImg } = useImgStore();
+  const { jwt, setJwt } = useApiStore();
+  const [token, setToken] = useState("");
   console.log(allImg, setAllImg, "IMG STORE FROM ZUSTAND");
   const { setisLoading } = useLoaderState();
+  const [visible, setVisible] = useState(false);
+
+  // console.log(axioss);
+
+  // async function getData () {
+  //   try{
+  //     let imgData = new FormData();
+  //     imgData.append("accesskey", "90336");
+  //     imgData.append("get_user_data", "1");
+  //     imgData.append("user_id", "14");
+
+  //     const resp = await axioss.post("/get-user-data.php", imgData)
+  //     console.log(resp);
+  //   } catch (err){
+  //     console.log(err);
+  //   }
+  // }
+
+  // getData();
+
+  // axioss.interceptors.request.use(
+  //   (config) => {
+
+  //     const token = TokenService.getLocalAccessToken();
+  //     if (token) {
+  //       // config.headers["Authorization"] = 'Bearer ' + token;  // for Spring Boot back-end
+  //       config.headers["x-access-token"] = token; // for Node.js Express back-end
+  //     }
+  //     return config;
+  //   },
+  //   (error) => {
+  //     return Promise.reject(error);
+  //   }
+  // );
+
+  // const instance = axios.create({
+  //   baseURL: "https://grocery.intelliatech.in/api-firebase/get-user-data.php",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  // });
+
+  const toggleVisible = () => {
+    const scrolled = document.documentElement.scrollTop;
+    if (scrolled > 300) {
+      setVisible(true);
+    } else if (scrolled <= 300) {
+      setVisible(false);
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+      /* you can also use 'auto' behaviour
+         in place of 'smooth' */
+    });
+  };
+
+  window.addEventListener("scroll", toggleVisible);
 
   const handleHomeImg = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     let imgData = new FormData();
@@ -56,9 +122,32 @@ function Home({
         setisLoading(false);
       });
   };
+
   useEffect(() => {
-    handleHomeImg();
+    (async function createJwt() {
+      const alg = "HS256";
+      const secret = new TextEncoder().encode(
+        "replace_with_your_strong_jwt_secret_key"
+      );
+
+      const jwt = await new SignJWT({ "urn:example:claim": true })
+        .setProtectedHeader({ alg })
+        // .setIssuedAt()
+        .setIssuer("eKart")
+        .setAudience("eKart Authentication")
+
+        .sign(secret);
+
+      console.log(jwt);
+      setJwt(jwt);
+      setToken(jwt);
+      // console.log(jwt.sign(secret, {iss : "eKart", sub : 'eKart Authentication' }).then((res)=> console.log(res)))
+    })();
   }, []);
+
+  useEffect(() => {
+    if (jwt) handleHomeImg();
+  }, [jwt]);
 
   return (
     <div className=" md:mt-0.5 xs:mt-14">
@@ -107,7 +196,7 @@ function Home({
                 user_id={user_id}
               />
 
-              <div className="md:w-auto md:p-2 md:mt-4">
+              <div className="md:w-auto md:p-2 md:my-1">
                 <img
                   src={allImg["27"]}
                   alt={"ALT"}
@@ -125,13 +214,20 @@ function Home({
               </div>
 
               <LocallySourced />
+              <div className="md:w-auto md:p-2 md:mt-4 xs:py-2">
+                <img
+                  src={allImg["37"]}
+                  alt=""
+                  className="rounded-xl xs:h-[145px] md:w-full md:h-auto xs:w-full sm:h-[232px]"
+                />
+              </div>
             </div>
-            <div>
+            <div className="">
               <FlashSales />
             </div>
-            <div className="bg-[#212122] flex border w-full border-white rounded-md ">
-              <footer className="bg-gray-800">
-                <div className="container mx-auto px-6 py-12">
+            <div className="bg-[#212122] border w-full border-white text-center rounded-md ">
+              <footer className="bg-gray-800 ">
+                {/* <div className="container mx-auto px-6 py-12">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
                     <div className="text-white">
                       <h3 className="text-lg font-semibold mb-4">About Us</h3>
@@ -178,11 +274,16 @@ function Home({
                       <p className="text-sm">Phone: 123-456-7890</p>
                     </div>
                   </div>
-                  {/* <hr className="border-gray-700 my-8" /> */}
+              
                   <div className="text-white text-sm text-center mt-6">
                     <p>&copy; 2023 Urban Grocery. All rights reserved.</p>
                     <p>Terms of Service | Privacy Policy</p>
                   </div>
+                </div> */}
+
+                <div className="text-white text-sm mt-4 mb-4">
+                  <p>&copy; 2023 Urban Grocery. All rights reserved.</p>
+                  <p>Terms of Service | Privacy Policy</p>
                 </div>
               </footer>
             </div>

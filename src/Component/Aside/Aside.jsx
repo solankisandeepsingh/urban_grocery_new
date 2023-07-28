@@ -1,6 +1,6 @@
 import React from 'react'
 import { AiTwotoneBank, AiTwotoneSafetyCertificate, AiTwotoneWallet } from 'react-icons/ai'
-import { FaBell, FaFileContract, FaFoursquare, FaHome, FaMoneyBill, FaRegAddressBook, FaWallet } from 'react-icons/fa'
+import { FaBell, FaFileContract, FaFoursquare, FaHome, FaRegAddressBook } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
 
 export const Aside = () => {

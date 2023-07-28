@@ -23,7 +23,7 @@ export const OrderDetailsPage = () => {
           if (item.id == orderId)
             return (
               <div className="flex my-28 justify-around">
-                <div className="w-[40%]">
+                <div className="md:w-[40%] sm:w-[40%] xs:w-[80%]">
                   <div className="flex gap-8 font-bold text-center items-center ">
                     <p>
                       <FaArrowLeft
@@ -89,7 +89,7 @@ export const OrderDetailsPage = () => {
                     </>
                   </div>
                 </div>
-                <div className="w-[40%]">
+                <div className="w-[40%] xs:hidden md:block sm:block">
                   {/* <h1 className="font-bold justify-center items-center text-center ">
                     Track Order
                   </h1> */}

@@ -11,6 +11,7 @@ import "../../../src/index.css";
 import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 import { useLoaderState } from "../zustand/useLoaderState";
+import { useApiStore } from "../zustand/useApiStore";
 
 export const SignUpwithOtp = ({
   setOpenLogin,
@@ -23,6 +24,7 @@ export const SignUpwithOtp = ({
   const [expandForm, setExpandForm] = useState(false);
   const [OTP, setOTP] = useState("");
   const { setisLoading } = useLoaderState();
+  const { jwt, setJwt } = useApiStore();
 
   const [showSignUpForm, setShowSignUpForm] = useState(false);
 
@@ -30,7 +32,7 @@ export const SignUpwithOtp = ({
     console.log("ver");
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt }`,
       },
     };
 
@@ -49,7 +51,7 @@ export const SignUpwithOtp = ({
         // console.log(res, "res this is aleredy resgeistere");
         console.log(res);
         if (res.data.error) {
-          toast.error("This mobile is already registered. Please login!", {
+          toast.error(res.data.message, {
             position: toast.POSITION.TOP_CENTER,
           });
           console.log(res.data.message);

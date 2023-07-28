@@ -14,6 +14,8 @@ import { BsChevronCompactRight } from "react-icons/bs";
 import Review from "./Review/Review";
 import { currencyFormatter } from "../../utils/utils";
 import { usePaymentStore } from "../zustand/usePaymentStore";
+import { useApiStore } from "../zustand/useApiStore";
+import { useMediaQuery } from "react-responsive";
 
 function MyCart({
   // allCartItems,
@@ -42,7 +44,10 @@ function MyCart({
     resetState,
   } = useUserStore();
   const { setisLoading } = useLoaderState();
+  const { jwt, setJwt } = useApiStore();
   const { setTotalPrice, setTotalMRPPrice, setTotalItems } = usePaymentStore();
+
+  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 767px)" });
 
   let menuRef = useRef();
 
@@ -103,7 +108,7 @@ function MyCart({
   const removeItemHandler = (item) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 
@@ -173,7 +178,7 @@ function MyCart({
   const getUserCarts = (user_id) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 
@@ -220,8 +225,10 @@ function MyCart({
   return (
     <>
       <button
-        className="relative bg-lime text-white float-right flex gap-1
-        font-bold py-1 rounded shadow xs:my-2 xs:px-2 2xs:my-2 2xs:py-2 2xs:px-1"
+        // className="relative md:bg-lime sm:bg-lime xs:bg-skyblue  text-white items-center float-right flex gap-1
+        // font-bold py-1 rounded shadow xs:my-2 xs:px-2 2xs:my-2 2xs:py-2 2xs:px-1"
+        className="relative md:bg-lime sm:bg-lime xs:bg-skyblue  text-white items-center float-right flex gap-1
+        font-bold md:px-2 rounded shadow  "
         type="button"
         onClick={() => {
           setShowModal(true);
@@ -229,29 +236,37 @@ function MyCart({
         }}
       >
         <div
-          className={
-            price > 0 ? "mt-3" : null + "relative xs:px-2 2xs:px-2 bg-lime"
-          }
+          className={" xs:p-2 md:relative md:bg-lime sm:bg-lime xs:bg-white"}
         >
-          <FaShoppingCart className="xs:text-2xl bg-lime hover:animate-hbeat" />
+          <div className={`${totalItem > 0 ? "visible":"invisible"}`+ " " + "hidden md:block  absolute top-1 right-0 px-1 rounded-full bg-red text-xs"}>
+            {totalItem}
+          </div>
+          {/* <div className="absolute top-0">O</div> */}
+          <FaShoppingCart className="xs:text-2xl md:bg-lime sm:bg-lime md:text-white sm:text-white xs:text-lime hover:animate-hbeat" />
         </div>
-        <div className="bg-lime">
+        <div className="md:bg-lime sm:bg-lime xs:bg-white">
           {price > 0 && allCartItems ? (
-            <div className="xs:block 2xs:hidden md:block sm:block bg-lime text-sm">
-              {totalItem} items
-            </div>
+            <>
+              {/* <div className=" hidden md:block sm:block bg-lime text-sm">
+                {totalItem} items
+              </div> */}
+              <div className="block md:hidden absolute top-1 right-1 px-1 rounded-full bg-red text-xs">
+                {totalItem}
+              </div>
+            </>
           ) : (
             <div className="xs:hidden 2xs:hidden md:block sm:block bg-lime ">
               My Cart
             </div>
           )}
           {price > 0 && allCartItems ? (
-            <div className="bg-lime text-white text-sm float-left">
+            <div className="md:bg-lime md:text-white hidden md:block text-sm float-left">
               ₹ {price}
             </div>
           ) : null}
         </div>
       </button>
+
       {showModal ? (
         <>
           <div
@@ -334,8 +349,8 @@ function MyCart({
                                         <br />
 
                                         <div className="flex justify-between mt-0.5">
-                                          <div className="w-[50%]" > 
-                                            <p className="text-lightgray font-semi-bold md:text-[14px] sm:text-[24px] sm:text-darkgray">  
+                                          <div className="w-[50%]">
+                                            <p className="text-lightgray font-semi-bold md:text-[14px] sm:text-[24px] sm:text-darkgray">
                                               {item.serve_for}
                                             </p>
 
@@ -354,7 +369,7 @@ function MyCart({
                                             </p>
                                           </div>
                                           <div className="flex items-center justify-evenly xs:gap-4 md:justify-around sm:justify-between text-center w-[50%]">
-                                          {/* <div className=""> */}
+                                            {/* <div className=""> */}
                                             <div className="bg-white">
                                               <QtyAmount
                                                 item={item}

@@ -9,21 +9,25 @@ import { API_TOKEN } from "../Token/Token";
 import { Aside } from "../Aside/Aside";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useUserStore } from "../zustand/useUserStore";
+import { useApiStore } from "../zustand/useApiStore";
+import { ToastContainer, toast } from "react-toastify";
 
 export const Address = ({ isOpen, setIsOpen }) => {
   const [formOpen, setFormOpen] = useState(false);
   // const [addList, setAddlist] = useState([]);
   const { setisLoading } = useLoaderState();
   const { addList, setAddList } = useUserStore();
+  const { jwt, setJwt } = useApiStore();
+
   const {
     userInfo: { user_id },
   } = useUserStore();
   console.log(setAddList);
-  console.log(user_id,"usriddddddddd");
+  console.log(user_id, "usriddddddddd");
 
   const config = {
     headers: {
-      Authorization: `Bearer ${API_TOKEN}`,
+      Authorization: `Bearer ${jwt}`,
     },
   };
 
@@ -68,6 +72,9 @@ export const Address = ({ isOpen, setIsOpen }) => {
       )
       .then((res) => {
         console.log("delete response:", res);
+        toast.info("Address Deleted Successfully !", {
+          position: toast.POSITION.TOP_CENTER,
+        });
         getAddress();
       })
       .catch((err) => console.log(err));
@@ -77,15 +84,22 @@ export const Address = ({ isOpen, setIsOpen }) => {
 
   return (
     <>
-      <div className="flex flex-row justify-evenly mt-28">
+      {/* <div className="flex flex-row justify-evenly mt-28">
         <div className="w-[35%] h-full ">
           <Aside />
         </div>
 
-        <div className="md:w-[60%]">
+        <div className="md:w-[60%]"> */}
+      <ToastContainer />
+      <div className="flex flex-col mt-24 xs:justify-center xs:items-center md:items-start sm:items-start md:flex-row md:justify-evenly sm:justify-evenly sm:flex sm:flex-row ">
+        <div className="xs:w-[85%] md:w-[35%] sm:w-[30%] xs:hidden md:block sm:block h-full">
+          <Aside />
+        </div>
+
+        <div className="md:w-[60%] sm:w-[60%] w-[90%] ">
           <div className="">
             <div
-              className="flex flex-row border border-light_gray py-3 px-3 w-[800px]"
+              className="flex flex-row border border-light_gray py-3 px-3 md:w-[800px] sm:w-[450px] xs:w-full "
               onClick={() => setFormOpen(!formOpen)}
             >
               <span className="cursor-pointer rounded-full border-2 border-lime text-lime py-1 px-1 text-xs">
@@ -102,9 +116,9 @@ export const Address = ({ isOpen, setIsOpen }) => {
                 addList.map((item) => {
                   return (
                     <>
-                      <div className="border border-light_gray w-[800px] px-3 py-3 mt-2">
-                        <div className="flex ">
-                          <div className="w-[5%]">
+                      <div className="border border-light_gray md:w-[800px] sm:w-[450px] xs:w-full px-3 py-3 mt-2">
+                        <div className="flex gap-2">
+                          <div className="w-[5%] ">
                             {item.type === "Home" ? (
                               <FaHome className="inline mr-3" />
                             ) : item.type === "Work" ? (
@@ -127,13 +141,13 @@ export const Address = ({ isOpen, setIsOpen }) => {
                               <span className="">{item.country} </span>
                             </div>
                           </div>
-                          <div className="w-[10%] flex gap-4 items-center">
-                            <button
+                          <div className="w-[10%] flex gap-1 items-center">
+                            {/* <button
                               onClick={() => handleEdit(item.id)}
                               className="text-[21px] font-normal"
                             >
                               <AiOutlineEdit />
-                            </button>
+                            </button> */}
                             <button
                               onClick={() => handleDelete(item.id)}
                               className="text-red text-[21px] font-normal"

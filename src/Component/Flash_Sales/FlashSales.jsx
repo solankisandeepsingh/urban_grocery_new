@@ -6,20 +6,23 @@ import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
+import { useApiStore } from "../zustand/useApiStore";
 
 export const FlashSales = () => {
   const [salesProducts, setSalesProducts] = useState([]);
   const { allCartItems, setAllCartItems } = useCartStore();
+  const { jwt, setJwt } = useApiStore();
   const {
     userInfo: { user_id },
   } = useUserStore();
   const { setisLoading } = useLoaderState();
   const navigate = useNavigate();
 
+
   const handleSalesClick = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 
@@ -53,7 +56,7 @@ export const FlashSales = () => {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     // console.log(data.id, "varaitn id");
@@ -134,8 +137,8 @@ export const FlashSales = () => {
   };
   return (
     <>
-      <div className="md:mt-7 xs:mt-7 shadow-sm border border-[#e8e8e8] rounded-md p-5 bg-[#fcfff3] mb-3">
-        <div className="text-customBlack text-[24px]">
+      <div className="md:mt-7  shadow-sm border border-[#e8e8e8] rounded-md p-2 bg-[#fcfff3]">
+        <div className="text-customBlack text-[24px] p-2">
           <h1 className="font-okra font-600">Flash Sales</h1>
         </div>
         <div className="md:my-2 md:flex md:gap-4 md:flex-wrap xs:flex xs:gap-3 ">

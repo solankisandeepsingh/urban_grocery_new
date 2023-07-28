@@ -3,16 +3,18 @@ import React from "react";
 import { API_TOKEN } from "../Token/Token";
 import { useCartStore } from "../zustand/useCartStore";
 import { useLoaderState } from "../zustand/useLoaderState";
-
+import { useApiStore } from "../zustand/useApiStore";
 
 export const QtyAmount = ({ item }) => {
   const {allCartItems, setAllCartItems} = useCartStore();
   const {setisLoading} = useLoaderState();
+  const { jwt, setJwt } = useApiStore();
+
 
   const quantityDecrease = () => {
     const config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 
@@ -66,7 +68,7 @@ export const QtyAmount = ({ item }) => {
   const quantityIncrease = () => {
     const config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 

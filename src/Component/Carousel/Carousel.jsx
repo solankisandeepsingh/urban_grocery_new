@@ -6,10 +6,12 @@ import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 import { useSliderStore } from "../zustand/useSliderStore";
 import { useLoaderState } from "../zustand/useLoaderState";
+import { useApiStore } from "../zustand/useApiStore";
 
 function CarouselComponent() {
   const { allCarouselImg, setAllCarouselImg } = useSliderStore();
   const {setisLoading} = useLoaderState();
+  const { jwt, setJwt } = useApiStore();
   console.log(
     allCarouselImg,
     setAllCarouselImg,
@@ -19,7 +21,7 @@ function CarouselComponent() {
   const handleSliderImg = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     let sliderData = new FormData();
@@ -56,7 +58,7 @@ function CarouselComponent() {
           showThumbs={false}
           className="rounded-xl"
         >
-          {allCarouselImg.map((item) => {
+          {allCarouselImg?.map((item) => {
             return (
               <div className="h-auto rounded-xl">
                 <img alt="" src={item.image} className="rounded-xl h-auto" />

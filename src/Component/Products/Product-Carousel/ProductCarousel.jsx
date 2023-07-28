@@ -8,6 +8,7 @@ import { API_TOKEN } from "../../Token/Token";
 import { useCartStore } from "../../zustand/useCartStore";
 import { useUserStore } from "../../zustand/useUserStore";
 import { useLoaderState } from "../../zustand/useLoaderState";
+import { useApiStore } from "../../zustand/useApiStore";
 // import { useNavigate } from "react-router-dom";
 
 export const ProductCarousel = ({}) => {
@@ -15,15 +16,18 @@ export const ProductCarousel = ({}) => {
   console.log(allCartItems, "After Destructure");
   const [showAllProduct, setShowAllProducts] = useState([]);
   const navigate = useNavigate();
+  const { jwt, setJwt } = useApiStore();
+
   const {
     userInfo: { user_id },
   } = useUserStore();
   const { setisLoading } = useLoaderState();
 
+
   const productCarousels = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     var bodyFormdata = new FormData();
@@ -75,7 +79,7 @@ export const ProductCarousel = ({}) => {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     // console.log(data.id, "varaitn id");
@@ -84,10 +88,8 @@ export const ProductCarousel = ({}) => {
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
     bodyFormData.append("user_id", user_id);
-
     bodyFormData.append("product_id", `${data.id}`);
     bodyFormData.append("product_variant_id", `${item.id}`);
-
     bodyFormData.append("qty", 1);
     setisLoading(true);
 
@@ -175,7 +177,7 @@ export const ProductCarousel = ({}) => {
               return (
                 <>
                   <div
-                    className="w-72 xs:w-24  xs:h-auto md:w-40 md:h-[235px] sm:h-[270px] sm:w-[170px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green  bg-white cursor-pointer"
+                    className="w-72 xs:w-24  xs:h-auto md:w-40 md:h-[235px] sm:h-[250px] sm:w-[170px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green  bg-white cursor-pointer"
                     onClick={() => {
                       navigate(
                         `/subcategory-details/${item.category_name}/product-details/${item.id}`
@@ -183,7 +185,7 @@ export const ProductCarousel = ({}) => {
                     }}
                   >
                     <img
-                      className="w-full h-56 xs:w-[65%] xs:h-16 xs:m-2 xs:ml-2.5 md:h-24 md:ml-[23px] md:w-28 md:mt-4 sm:w-[88%]  rounded-lg bg-white"
+                      className="w-full h-56 xs:w-48 xs:h-16 md:h-24 md:ml-[23px] md:w-28 md:mt-4 sm:w-48 sm:h-32 rounded-lg bg-white"
                       src={item.image}
                       alt={item.name}
                     />
@@ -195,8 +197,8 @@ export const ProductCarousel = ({}) => {
                     {item &&
                       item.variants.map((data) => {
                         return (
-                          <div className="flex flex-col sm:flex-row md:justify-evenly xs:justify-between sm:ml-0  sm:mr-4 ">
-                            <div className=" xs:text-left sm:mt-2 md:mt-[15px] md:mx-4 xs:mx-4 sm:mx-4 md:text-left ">
+                          <div className="flex flex-col xs:justify-center xs:items-center xs:text-center sm:flex-row md:justify-evenly sm:ml-0  sm:mr-4 ">
+                            <div className=" xs:text-left sm:mt-2 md:mt-[15px] md:mx-4  sm:mx-4 md:text-left ">
                               <p className="2xs:text-base xs:text-sm t sm:text-xl md:mt-[-3px] sm:mt-[12px] md:text-sm text-gryColour font-light bg-white">
                                 ₹{data.price}{" "}
                               </p>
@@ -224,7 +226,7 @@ export const ProductCarousel = ({}) => {
                                   </>
                                 ) : (
                                   <button
-                                    className="md:w-16 md:h-8 mb-3 xs:w-18 sm:ml-2 md:text-xs md:mt-2 xs:mt-[-10px] sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
+                                    className="md:w-16 md:h-8 mb-3 xs:w-14 sm:ml-2 md:text-xs md:mt-2  sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       return addItemHandler(data, item);
@@ -234,7 +236,7 @@ export const ProductCarousel = ({}) => {
                                   </button>
                                 )
                               ) : (
-                                <p className=" bg-white text-orange md:text-[11px] text-sm font-medium md:mt-4 pb-4 sm:text-xs  xs:text-[9px] sm:my-[25px] sm:text-[12px] sm:break-normal">
+                                <p className=" bg-white text-orange md:text-[11px] text-sm font-medium md:mt-4 pb-4 sm:text-xs xs:text-[11px] sm:my-[25px] sm:text-[11px]  sm:break-normal">
                                   Out of stock
                                 </p>
                               )}

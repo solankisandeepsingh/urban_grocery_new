@@ -8,6 +8,7 @@ import { useProductsStore } from "../zustand/useProductsStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
+import { useApiStore } from "../zustand/useApiStore";
 
 function Allproducts({ name, setallCartItems, isOpen, setIsOpen }) {
   const { allProducts, setAllProducts } = useProductsStore();
@@ -17,11 +18,13 @@ function Allproducts({ name, setallCartItems, isOpen, setIsOpen }) {
   const {
     userInfo: { user_id },
   } = useUserStore();
+  const { jwt, setJwt } = useApiStore();
+
 
   let allshowProduct = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     var bodyFormdata = new FormData();
@@ -53,56 +56,13 @@ function Allproducts({ name, setallCartItems, isOpen, setIsOpen }) {
     allshowProduct();
   }, []);
 
-  // const allCartItemsHandler = (item) => {
-  //   let config = {
-  //     headers: {
-  //       Authorization: `Bearer ${API_TOKEN}`,
-  //     },
-  //   };
-
-  //   var bodyFormData = new FormData();
-  //   bodyFormData.append("accesskey", "90336");
-  //   bodyFormData.append("add_to_cart", "1");
-  //   bodyFormData.append("user_id", "14");
-  //   bodyFormData.append("product_id", item.id);
-  //   bodyFormData.append("product_variant_id", item.variants[0].product_id);
-  //   bodyFormData.append("qty", item.amount);
-
-  //   axios
-  //     .post(
-  //       "https://grocery.intelliatech.in/api-firebase/cart.php",
-  //       bodyFormData,
-  //       config
-  //     )
-  //     .then((res) => {
-  //       console.log(res, "<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-  //       if (allCartItems.some((cartItem) => cartItem.id === item.id)) {
-  //         setallCartItems((cart) =>
-  //           cart.map((data) =>
-  //             data.id === item.id
-  //               ? {
-  //                   ...data,
-  //                   amount: data.amount + 1,
-  //                 }
-  //               : data
-  //           )
-  //         );
-  //         return;
-  //       }
-
-  //       setallCartItems((cart) => [...cart, { ...item, amount: 1 }]);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
 
   const allCartItemsHandler = (item, data) => {
     // console.log("item1>>>>>>>>>>>>>>", allCartItems);
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     // console.log(data.id, "varaitn id");

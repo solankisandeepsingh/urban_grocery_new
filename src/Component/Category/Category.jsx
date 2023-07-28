@@ -4,17 +4,19 @@ import axios from "axios";
 import { API_TOKEN } from "../Token/Token";
 import { useProductsStore } from "../zustand/useProductsStore";
 import { useLoaderState } from "../zustand/useLoaderState";
-
+import { useApiStore } from "../zustand/useApiStore";
 export const Category = () => {
   const { allCategories, setAllCategories } = useProductsStore();
   const { setisLoading } = useLoaderState();
+  const { jwt, setJwt } = useApiStore();
+
   // const [categorydata, setCategorydata] = useState(categoryData.data);
   // const [categorydata, setCategorydata] = useState([]);
 
   const categryData = () => {
     const config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 
@@ -45,7 +47,7 @@ export const Category = () => {
 
   return (
     <>
-      <div className="shadow-sm border xs:h-36 border-[#e8e8e8] xs:my-3 md:p-5 md:mt-7 bg-[#fcfff3] rounded-md">
+      <div className="shadow-sm border xs:h-36 md:h-72 sm:h-72 border-[#e8e8e8] xs:my-3 md:p-5 md:mt-7 bg-[#fcfff3] rounded-md">
         {/* <div className=" flex  xs:py-2 md:justify-between md:text-[24px] xs:text-[16px]">
           <div className="text-customBlack">
             <h1 className="font-okra font-600 xs:mx-1">Shop By Category</h1>
@@ -70,12 +72,12 @@ export const Category = () => {
               allCategories.map((item) => {
                 return (
                   <div
-                    className="xs:w-18 md:w-48 md:ml-2 rounded-xl border-light_gray cursor-pointer hover:border-light_green hover:border-[2px] hover:shadow-sm border-[2px]  xs:py-2 bg-white "
+                    className="xs:w-18 md:w-44 md:ml-2 rounded-xl border-light_gray cursor-pointer hover:border-light_green hover:border-[2px] hover:shadow-sm border-[2px] bg-white "
                     key={item.id}
                   >
                     <NavLink to={`/subcategory-details/${item.id}`}>
                       <img
-                        className="xs:w-[55px] xs:h-[42px] xs:ml-1.5  sm:w-36 sm:h-32 md:w-32 md:h-28 md:ml-8 md:mt-2 object-cover md:rounded-3xl xs:rounded-lg bg-white sm:rounded-lg"
+                        className="xs:w-28 xs:h-12 sm:w-44 sm:h-32 md:w-32 md:h-28  md:ml-5 md:mt-2 object-cover md:rounded-3xl xs:rounded-lg bg-white sm:rounded-lg"
                         src={item.image}
                         alt="item"
                       />

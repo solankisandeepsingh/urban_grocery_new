@@ -6,6 +6,7 @@ import { API_TOKEN } from "../../Token/Token";
 import { useCartStore } from "../../zustand/useCartStore";
 import { useUserStore } from "../../zustand/useUserStore";
 import { useLoaderState } from "../../zustand/useLoaderState";
+import { useApiStore } from "../../zustand/useApiStore";
 
 export const SubCategory = ({ setAddItem, addItem }) => {
   const [allproducts, setAllProducts] = useState([]);
@@ -15,12 +16,12 @@ export const SubCategory = ({ setAddItem, addItem }) => {
     userInfo: { user_id },
   } = useUserStore();
   const { setisLoading } = useLoaderState();
-
+  const { jwt, setJwt } = useApiStore();
   const { category_id } = useParams();
 
   let config = {
     headers: {
-      Authorization: `Bearer ${API_TOKEN}`,
+      Authorization: `Bearer ${jwt}`,
     },
   };
 
@@ -56,7 +57,7 @@ export const SubCategory = ({ setAddItem, addItem }) => {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     // console.log(data.id, "varaitn id");

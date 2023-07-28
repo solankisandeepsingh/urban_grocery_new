@@ -3,31 +3,36 @@ import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_TOKEN } from "../../Token/Token";
 import { useLoaderState } from "../../zustand/useLoaderState";
-import { useCartStore } from "../../zustand/useCartStore";
 import { useUserStore } from "../../zustand/useUserStore";
 import CartQuantity from "../../Button/ProductBtn";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDebounce } from "../../../utils/useDebounce";
+import { useApiStore } from "../../zustand/useApiStore";
+import { FaArrowCircleUp } from "react-icons/fa";
+import { useCartStore } from "../../zustand/useCartStore";
 
 const Search = ({ setData, name }) => {
   const [searchData, setSearchData] = useState("");
   const [Inputsearch, setInputSearch] = useState("");
   const [arrayy, setArray] = useState([]);
   const [newItemsArray, setNewItemsArray] = useState(arrayy);
-
+  const [visible, setVisible] = useState(false);
   const [offset, setOffset] = useState(0);
   const navigate = useNavigate();
   const { setisLoading } = useLoaderState();
-  const { allCartItems, setAllCartItems } = useCartStore();
   const {
     userInfo: { user_id },
   } = useUserStore();
-  const isInitialMount = useRef(true);
+  const { jwt} = useApiStore();
+
+
+  const {allCartItems,setAllCartItems}= useCartStore();
+  console.log(allCartItems,"allcartitems is not present")
 
   const serchAPIData = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 
@@ -57,6 +62,26 @@ const Search = ({ setData, name }) => {
         setisLoading(false);
       });
   };
+
+  const toggleVisible = () => {
+    const scrolled = document.documentElement.scrollTop;
+    if (scrolled > 300) {
+      setVisible(true);
+    } else if (scrolled <= 300) {
+      setVisible(false);
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+      /* you can also use 'auto' behaviour
+         in place of 'smooth' */
+    });
+  };
+
+  window.addEventListener("scroll", toggleVisible);
 
   const debouncedSearchTerm = useDebounce(Inputsearch, 800);
 
@@ -114,13 +139,13 @@ const Search = ({ setData, name }) => {
         setisLoading(false);
       });
   };
-
+  console.log("item1>>>>>>>>>>>>>>", allCartItems);
   const allCartItemsHandler = (item, data) => {
     // console.log("item1>>>>>>>>>>>>>>", allCartItems);
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     // console.log(data.id, "varaitn id");
@@ -208,10 +233,17 @@ const Search = ({ setData, name }) => {
         <input
           type="text"
           className=" bg-white input xs:w-[330px] sm:h-16 xs:overflow-x-hidden xs:h-auto p-2 pl-10 md:text-sm  md:w-96 md:h-12 sm:w-[500px]  font-light rounded-2xl border border-light_gray focus:bg-white focus:outline-none focus:ring-1 focus:border-transparent sm:text-xl sm:pl-14"
-          placeholder="Search by Product Name"
+          placeholder="Search Here......."
           onChange={handleChange}
           value={name}
         />
+
+        <button className="fixed right-0 bottom-0 text-[20px]">
+          <FaArrowCircleUp
+            onClick={scrollToTop}
+            style={{ display: visible ? "inline" : "none" }}
+          />
+        </button>
 
         <svg
           className="xs:w-6 sm:h-12 sm:w-10 xs:h-5 xs:text-white md:w-6 md:h-6 absolute xs:left-2 xs:top-2.5 md:left-2.5 md:top-3.5 bg-white"

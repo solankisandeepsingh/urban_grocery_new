@@ -6,6 +6,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { AiFillEdit } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
 import { useLoaderState } from "../zustand/useLoaderState";
+import { useApiStore } from "../zustand/useApiStore";
 
 export const MyProfile = () => {
   // const [editBtn, setEditBtn] = useState(false);
@@ -17,6 +18,8 @@ export const MyProfile = () => {
   } = useUserStore();
   const [isValidImg, setisValidImg] = useState(false);
   const {setisLoading} = useLoaderState();
+  const { jwt, setJwt } = useApiStore();
+
 
   // const [nameUpdate, setNameUpdate] = useState(userInfo.name)
 
@@ -51,7 +54,7 @@ export const MyProfile = () => {
     if (file) {
       let config = {
         headers: {
-          Authorization: `Bearer ${API_TOKEN}`,
+          Authorization: `Bearer ${jwt}`,
         },
       };
       let formData = new FormData();
@@ -88,7 +91,7 @@ export const MyProfile = () => {
   const getUserData = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
 
@@ -128,7 +131,7 @@ export const MyProfile = () => {
     // setEditBtn((prev) => !prev);
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${jwt}`,
       },
     };
     let updateProfileData = new FormData();
@@ -198,7 +201,7 @@ export const MyProfile = () => {
         <p className="font-bold">My Profile</p>
       </div>
       <ToastContainer />
-      <div className="w-[50%] m-auto my-10 border border-light_gray h-auto px-6 py-4 rounded-lg">
+      <div className="xs:w-[90%] md:w-[50%] sm:w-[50%] m-auto my-10 border border-light_gray h-auto px-6 py-4 rounded-lg">
         <div className=" justify-between">
           <div className="flex justify-center items-center">
             {isValidImg ? (
@@ -206,10 +209,10 @@ export const MyProfile = () => {
                 <a href="#!">
                   <div class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsl(0,0%,98.4%,0.2)] bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-100"></div>
                 </a>
-                <AiFillEdit  onClick={() => inputRef.current.click()} className="absolute cursor-pointer text-[20px] text-white top-5 bg-black rounded-full  right-0.5  opacity-[50%] group-hover:opacity-[100%] transition-all " />
+                <AiFillEdit  onClick={() => inputRef.current.click()} className="absolute cursor-pointer text-[20px] text-white md:top-5 sm:top-5 xs:top-7 bg-black rounded-full xs:right-3  md:right-0.5 sm:right-0.5 opacity-[50%] group-hover:opacity-[100%] transition-all " />
                 <img
                   src={profile}
-                  className="rounded-full object-cover  w-[100px] h-[100px] border-2 border-[#e8e8e8] shadow-lg"
+                  className="rounded-full object-cover xs:w-[150px] xs:h-[150px] md:w-[100px] md:h-[100px] sm:w-[100px] sm:h-[100px] border-2 border-[#e8e8e8] shadow-lg"
                   alt=""
                  
                 />
@@ -270,41 +273,7 @@ export const MyProfile = () => {
               </div>
             </div>
 
-            {/* <div className=" justify-between border-b border-b-light_gray py-2">
-              <div className="flex flex-col">
-                <label htmlFor="" className="text-start">
-                  Upload Profile:{" "}
-                </label>
-                <input
-                  name="profile"
-                  type="file"
-                  onChange={handleInputChange}
-                  value={updateUser?.password}
-                  disabled={!editBtn}
-                  className="block w-full py-2 px-3 border border-light_gray bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
-              </div>
-            </div> */}
-            {/* <div className="flex justify-around  mt-5">
-              {!editBtn ? (
-                <button
-                  className="w-24 bg-lime rounded-lg py-2"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleEditAPI();
-                  }}
-                >
-                  Edit
-                </button>
-              ) : (
-                <button className="w-24 bg-lightest_grey rounded-lg py-2"  onClick={(e) => {
-                  e.preventDefault();
-                  handleEditAPI();
-                }}>
-                  Save
-                </button>
-              )}
-            </div> */}
+           
 
             <div className="flex justify-around  mt-5">
               <button className="w-24 bg-lightest_grey rounded-lg py-2">
