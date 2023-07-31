@@ -25,7 +25,6 @@ const Search = ({ setData, name }) => {
   } = useUserStore();
   const { jwt} = useApiStore();
 
-
   const {allCartItems,setAllCartItems}= useCartStore();
   console.log(allCartItems,"allcartitems is not present")
 

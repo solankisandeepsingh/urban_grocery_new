@@ -292,7 +292,7 @@ export const Navbar = ({
             </div>
           )}
 
-          <div className="flex md:order-2 z-10 xs:justify-between bg-white">
+          <div className="flex md:order-2 z-10 xs:justify-between bg-white  justify-center gap-1 items-center">
             {/* {showSearch ? null : (
               // <div className="md:hidden xs:visible rounded-lg bg-lime w-8 h-8 xs:w-8 xs:h-8 xs:mt-3.5 xs:mx-2">
               <div className="md:hidden xs:visible rounded-lg bg-skyblue w-8 h-8 xs:w-8 xs:h-8 xs:mt-3.5 xs:mx-2">
@@ -302,9 +302,9 @@ export const Navbar = ({
                 />
               </div>
             )} */}
-            <div className="md:hidden xs:visible rounded-lg bg-skyblue w-8 h-8 xs:w-8 xs:h-8 xs:mt-3.5 xs:mx-2">
+            <div className="md:hidden xs:visible rounded-lg bg-skyblue flex items-center justify-center xs:w-10 xs:h-10 ">
               <FaSistrix
-                className="xs:mx-3 xs:my-[-2px] text-2xl text-lime"
+                className=" text-2xl text-lime"
                 onClick={handleShowSearchBar}
               />
             </div>
@@ -336,7 +336,7 @@ export const Navbar = ({
                   </div>
                 ) : (
                   <div
-                    className="xs:w-20 md:w-24 h-[32px]  rounded-lg md:ml-[-75px] md:px-4  bg-white"
+                    className="xs:w-20  md:w-24 h-[32px]  rounded-lg md:ml-[-75px] md:px-4 !leading-tight  bg-white"
                     onClick={() => {
                       console.log("working");
                       setOpenLogin(true);
@@ -344,7 +344,7 @@ export const Navbar = ({
                   >
                     {/* <button className=" text-white font-bold bg-lime md:p-2 md:mb-2.5  xs:p-1  xs:mr-16 xs:mt-3  rounded-lg sm:text-md md:text-md text-center"> */}
                     {/* <button className=" text-white font-bold bg-lime  rounded-lg sm:text-md md:text-md text-center"> */}
-                    <button className="bg-lime text-white items-center flex font-bold rounded shadow p-3 py-1.5 ">
+                    <button className=" text-lime items-center flex font-bold rounded  p-3 py-1.5 ">
                       {name}
                     </button>
                   </div>

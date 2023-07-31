@@ -29,7 +29,7 @@ export const ProductCarousel = ({}) => {
   const { setisLoading } = useLoaderState();
   const { allFavItems, setAllFavItems } = useFavStore();
   const [fav, setFav] = useState();
- 
+
   const handleVariantChange = (id, e) => {
     console.log(e.target.value);
     setVariant((prev) => {
@@ -354,7 +354,6 @@ export const ProductCarousel = ({}) => {
   };
 
   const addItemUI = (mainItem) => {
-  
     console.log(mainItem);
 
     let newArr = [
@@ -474,7 +473,7 @@ export const ProductCarousel = ({}) => {
               return (
                 <>
                   <div
-                    className="w-72 xs:w-24  xs:h-auto md:w-40 md:h-[235px] sm:h-[250px] sm:w-[170px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green  bg-white cursor-pointer"
+                    className="w-72 xs:w-[100px]  xs:h-auto md:w-40 md:h-[235px] sm:h-[250px] sm:w-[170px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green  bg-white cursor-pointer"
                     onClick={() => {
                       navigate(
                         `/subcategory-details/${item.category_name}/product-details/${item.id}`
@@ -483,21 +482,23 @@ export const ProductCarousel = ({}) => {
                   >
                     <img
                       className="w-full h-56 xs:w-48 xs:h-16 md:h-24 md:ml-[23px] md:w-28 md:mt-4 sm:w-48 sm:h-32 rounded-lg bg-white"
-                      src={ item.variants.length == 1
-                        ? item.image
-                        : item.variants[variant[item.id] || 0].images[0]}
+                      src={
+                        item.variants.length == 1
+                          ? item.image
+                          : item.variants[variant[item.id] || 0].images[0]
+                      }
                       alt={item.name}
                     />
-                    <div className=" xs:py-2 md:mx-4 xs:mx-2 sm:mx-4 bg-white">
-                      <p className="md:text-sm xs:text-sm sm:text-[20px]  font-medium bg-white truncate ...">
+                    <div className=" pt-2 md:py-2 md:mx-4 xs:mx-2 sm:mx-4 bg-white">
+                      <p className="md:text-sm xs:text-sm sm:text-[20px]  font-medium bg-white  truncate ">
                         {item.name}
                       </p>
                     </div>
                     {item.variants.length == 1 &&
                       item.variants.map((data) => {
                         return (
-                          <div className="flex flex-col xs:justify-center xs:items-center xs:text-center sm:flex-row md:justify-evenly sm:ml-0  sm:mr-4 ">
-                                 {/* {console.log(allFavItems.find((fav)=>{
+                          <div className="flex p-1 md:px-3 flex-col xs:justify-center xs:items-center xs:text-center md:justify-evenly sm:ml-0   ">
+                            {/* {console.log(allFavItems.find((fav)=>{
                               console.log(fav.id, item.id, "HEREEEEEEEEEEEEE<><><><><><>");
                                return fav.id === item.id
                             }))}; */}
@@ -525,13 +526,23 @@ export const ProductCarousel = ({}) => {
                                   }}
                                 />
                               ))} */}
-                            <div className=" xs:text-left sm:mt-2 md:mt-[15px] md:mx-4  sm:mx-4 md:text-left ">
-                              <p className="2xs:text-base xs:text-sm t sm:text-xl md:mt-[-3px] sm:mt-[12px] md:text-sm text-gryColour font-light bg-white">
-                                ₹{data.price}{" "}
+                            <div className="  w-full md:px-3 ">
+                              <p className="2xs:text-base xs:text-sm t sm:text-xl  md:text-sm font-light bg-white px-1 py-1 flex md:flex-row xs:flex-col justify-between items-center">
+                                <span className=" font-bold text-xs">
+                                  {currencyFormatter(data.price)}{" "}
+                                </span>
+                                <div>
+                                  <span className="text-gryColour text-xs">
+                                    {data.measurement}{" "}
+                                  </span>
+                                  <span className="font-normal text-gryColour text-xs  ">
+                                    {data.measurement_unit_name}
+                                  </span>
+                                </div>
                               </p>
                             </div>
 
-                            <div>
+                            <div className="w-full ">
                               {item.variants.some(
                                 (variant) => variant.stock > 0
                               ) ? (
@@ -540,7 +551,7 @@ export const ProductCarousel = ({}) => {
                                 ) ? (
                                   <>
                                     <div
-                                      className="md:mt-2 md:ml-6 sm:mt-4"
+                                      className="mt-3"
                                       onClick={(e) => {
                                         console.log(
                                           e,
@@ -548,17 +559,20 @@ export const ProductCarousel = ({}) => {
                                         );
                                       }}
                                     >
-                                      <CartQuantity item={item} variant={variant}/>
+                                      <CartQuantity
+                                        item={item}
+                                        variant={variant}
+                                      />
                                     </div>
                                   </>
                                 ) : (
                                   <button
-                                    className="md:w-16 md:h-8 mb-3 xs:w-14 sm:ml-2 md:text-xs md:mt-2  sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
+                                    className=" md:h-8 mt-2 md:mt-3 md:text-base !leading-none   sm:h-10 sm:text-xs  text-lime border border-lightgreen bg-transparent w-full hover:bg-opacity-75 font-medium rounded-lg uppercase px-3 py-1.5 "
                                     onClick={(e) => {
                                       e.stopPropagation();
-                                       user_id? 
-                                       addItemHandler(data, item):
-                                       addItemUI(item);
+                                      user_id
+                                        ? addItemHandler(data, item)
+                                        : addItemUI(item);
                                     }}
                                   >
                                     Add
@@ -573,7 +587,7 @@ export const ProductCarousel = ({}) => {
                           </div>
                         );
                       })}
-                      {item.variants.length > 1 && (
+                    {item.variants.length > 1 && (
                       <div className=" md:flex md:flex-col px-3 md:justify-evenly  sm:flex xs:flex xs:justify-between ">
                         {/* ADD TO FAVOURITES  */}
                         {/* {user_id != 14 &&
@@ -609,15 +623,17 @@ export const ProductCarousel = ({}) => {
                           >
                             {/* <option value="">City</option> */}
                             {item.variants.map((variant, index) => (
-                              <option key={variant.id} value={index} className=" my-2 items-center text-center text-xs font-bold" >
+                              <option
+                                key={variant.id}
+                                value={index}
+                                className=" my-2 items-center text-center text-xs font-bold"
+                              >
                                 <span className="p-5">
-                                {currencyFormatter(variant.price)}{" "}
+                                  {currencyFormatter(variant.price)}{" "}
                                 </span>
-                                <span>
-                                {variant.measurement}{" "}
-                                </span>
+                                <span>{variant.measurement} </span>
                                 <p className="font-normal text-blue border">
-                                {variant.measurement_unit_name}
+                                  {variant.measurement_unit_name}
                                 </p>
                               </option>
                             ))}
@@ -636,7 +652,7 @@ export const ProductCarousel = ({}) => {
                           ) ? (
                             allCartItems?.find(
                               (i) =>
-                                (i.product_variant_id??i.id) ===
+                                (i.product_variant_id ?? i.id) ===
                                 item?.variants?.[variant?.[item?.id] || 0]?.id
                             ) ? (
                               <>
@@ -664,8 +680,8 @@ export const ProductCarousel = ({}) => {
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   user_id
-                                  ? addItemHandler(variant, item)
-                                  : addItemUI(item);
+                                    ? addItemHandler(variant, item)
+                                    : addItemUI(item);
                                 }}
                               >
                                 Add
