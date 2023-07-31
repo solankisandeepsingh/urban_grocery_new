@@ -392,7 +392,7 @@ function MyCart({
                                   </div>
                                 </div>
                                 {/* {console.log(user_id, "><><><CHECK USER ID BOOLEAN><><><")} */}
-                                {user_id === 14 ? (
+                                {user_id === '' ? (
                                   newUserLog ? (
                                     <Login
                                       // setLoggedIn={setLoggedIn}

@@ -100,7 +100,7 @@ export const Navbar = ({
   };
 
   const handleLogout = () => {
-    setUserInfo({ user_id: 14, name: "Login" });
+    setUserInfo({ user_id: '', name: "Login" });
     // setLoggedIn(false);
     setIsOpen(false);
     setMobileOpen(false);
@@ -128,7 +128,7 @@ export const Navbar = ({
                   setMobileOpen(!mobileOpen);
                 }}
               >
-                {!(user_id === 14) ? (
+                {!(user_id == false) ? (
                   <div
                     className="flex items-center justify-center text-center h-[30px] rounded-lg md:px-2 md:mt-5 xs:mt-3 bg-white"
                     onClick={() => {
@@ -311,7 +311,7 @@ export const Navbar = ({
 
             {NavbarOpen && (
               <div className="relative hidden md:block sm:block">
-                {!(user_id === 14) ? (
+                {!(user_id == false) ? (
                   <div
                     // className="flex sm:mr-3 items-center h-[30px] md:ml-[-145px] rounded-lg md:px-2 md:mt-5 xs:mt-3 bg-white"
                     className="flex sm:mr-3 justify-center items-center text-center rounded-lg md:px-2 bg-white"

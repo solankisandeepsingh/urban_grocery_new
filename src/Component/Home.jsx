@@ -27,7 +27,6 @@ function Home({
 }) {
   const { allImg, setAllImg } = useImgStore();
   const { jwt, setJwt } = useApiStore();
-  const [token, setToken] = useState("");
   console.log(allImg, setAllImg, "IMG STORE FROM ZUSTAND");
   const { setisLoading } = useLoaderState();
   const [visible, setVisible] = useState(false);
@@ -140,7 +139,6 @@ function Home({
 
       console.log(jwt);
       setJwt(jwt);
-      setToken(jwt);
       // console.log(jwt.sign(secret, {iss : "eKart", sub : 'eKart Authentication' }).then((res)=> console.log(res)))
     })();
   }, []);
