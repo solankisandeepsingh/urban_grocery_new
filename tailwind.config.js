@@ -48,6 +48,7 @@ module.exports = {
       customBlack: "rgb(28, 28, 28)",
       lightGrays: "rgb(41, 61, 41)",
       lightSky: "#0072A0",
+      skybluelight: "#ADD8E6",
       Crayola_blue: "#1778F2",
       TWITTER_BLUE: "#1D9BF0",
       gmail_color: "#EA4335",

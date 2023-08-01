@@ -481,7 +481,8 @@ export const ProductCarousel = ({}) => {
                     }}
                   >
                     <img
-                      className="w-full h-56 xs:w-48 xs:h-16 md:h-24 md:ml-[23px] md:w-28 md:mt-4 sm:w-48 sm:h-32 rounded-lg bg-white"
+                      // className="w-full h-56 xs:w-48 xs:h-16 md:h-24 md:ml-[23px] md:w-28 md:mt-4 sm:w-48 sm:h-32 rounded-lg bg-white"
+                      className="w-full h-56 xs:w-48 xs:h-16 md:h-28 md:w-40  sm:w-48 sm:h-32 rounded-lg bg-white"
                       src={
                         item.variants.length == 1
                           ? item.image
