@@ -72,12 +72,13 @@ export const Category = () => {
               allCategories.map((item) => {
                 return (
                   <div
-                    className="xs:w-18 md:w-44 md:ml-2 rounded-xl border-light_gray cursor-pointer hover:border-light_green hover:border-[2px] hover:shadow-sm border-[2px] bg-white "
+                    className="xs:w-18 md:w-36 md:ml-2 rounded-xl border-light_gray cursor-pointer hover:border-light_green hover:border-[2px] hover:shadow-sm border-[2px] bg-white "
                     key={item.id}
                   >
                     <NavLink to={`/subcategory-details/${item.id}`}>
                       <img
-                        className="xs:w-28 xs:h-12 sm:w-44 sm:h-32 md:w-32 md:h-28  md:ml-5 md:mt-2 object-cover md:rounded-3xl xs:rounded-lg bg-white sm:rounded-lg"
+                        // className="xs:w-28 xs:h-12 sm:w-44 sm:h-32 md:w-32 md:h-28  md:ml-5 md:mt-2 object-cover md:rounded-3xl xs:rounded-lg bg-white sm:rounded-lg"
+                        className="xs:w-28 xs:h-12 sm:w-44 sm:h-32 md:w-36 md:h-28  object-cover md:rounded-xl xs:rounded-lg bg-white sm:rounded-lg"
                         src={item.image}
                         alt="item"
                       />

@@ -122,8 +122,8 @@ export const MyOrder = ({ addItem }) => {
                       </div>
 
                       <div className="flex justify-end ">
-                        <div className="flex  justify-center items-center border mb-4  m-2 border-light_gray p-1 rounded-lg w-28 text-[12px]">
-                          <p>{item.active_status.toLocaleUpperCase()}</p>
+                        <div className="flex bg-skybluelight   justify-center items-center  border mb-4  m-2 border-light_gray p-1 rounded-lg w-32 text-[12px]">
+                          <p className="text-text-black">{item.active_status.toLocaleUpperCase()}</p>
                         </div>
                         <div className="flex shadow-lg gap-2 mt-2 w-36 text-[12px] mb-4 border border-light_gray p-1 rounded-lg">
                           <div className="text-[18px]">

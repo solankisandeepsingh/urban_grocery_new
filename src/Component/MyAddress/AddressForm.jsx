@@ -154,7 +154,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
                 </h1>
               </div>
               <form onSubmit={handleSubmit}>
-                <div className="grid grid-cols-1 gap-5 md:grid-cols-2 mt-5">
+                <div className="grid grid-cols-1 xs:gap-0 md:gap-5 md:grid-cols-2 mt-5">
                   <div className="">
                     <input
                       className="w-full mt-2 p-2 rounded-lg border border-light_gray "
@@ -167,7 +167,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
                   </div>
                   <div>
                     <input
-                      className="w-auto mt-2 p-2 rounded-lg  border border-light_gray"
+                      className="w-full mt-2 p-2 rounded-lg  border border-light_gray"
                       placeholder="Pincode*"
                       type="number"
                       name="pincode"
@@ -175,7 +175,10 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
                       onChange={handleInputChange}
                     />
                   </div>
-                  <div>
+                  
+                </div>
+
+                <div className="my-2">
                     <textarea
                       className="w-full p-2 h-auto rounded-lg border border-light_gray"
                       type="text"
@@ -185,9 +188,8 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
                       onChange={handleInputChange}
                     />
                   </div>
-                </div>
 
-                <div className="my-5 flex ">
+                <div className="my-2 flex ">
                   <div className="mr-2">
                     <select
                       value={cityDropdown}
