@@ -9,6 +9,7 @@ export const useCartStore = create(
   persist(
     (set) => ({
       allCartItems: [],
+      variant:{0:0},
       config: {
         headers: {
           Authorization: `Bearer ${useUserStore.getState().userInfo.user_id}`,
@@ -25,6 +26,9 @@ export const useCartStore = create(
           useUserStore.getState().userInfo.user_id
         );
         return bodyFormdata;
+      },
+      setVariant: (data)=>{
+        set(()=>({variant: data}))
       },
       setCartTotal: (data) => {
         set(() => ({ cartTotal: data }));
