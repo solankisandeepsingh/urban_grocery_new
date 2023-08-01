@@ -5,6 +5,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { FaCaretDown, FaSistrix, FaUserCircle } from "react-icons/fa";
 import { useUserStore } from "../../zustand/useUserStore";
 import { Login } from "../../Login.jsx/Login";
+import { MyProfile } from "../../Profile/MyProfile";
 
 export const Navbar = ({
   setData,
@@ -35,6 +36,8 @@ export const Navbar = ({
     userInfo: { user_id, name, profile, mobile },
     setUserInfo,
   } = useUserStore();
+
+  const [profileView,setProfileView] = useState(false)
 
   // useEffect(() => {
   //   let handler = (e) => {
@@ -107,6 +110,10 @@ export const Navbar = ({
     navigate("/");
   };
 
+  const handleProfile = ()=>{
+    setIsOpen(false);
+    setProfileView((prev)=>!prev);
+  }
   return (
     <div className="">
       <nav className=" px-2 sm:px-4 fixed w-full z-20 top-0 left-0 border-b border-light_gray shadow-sm bg-white">
@@ -314,7 +321,7 @@ export const Navbar = ({
                 {!(user_id == false) ? (
                   <div
                     // className="flex sm:mr-3 items-center h-[30px] md:ml-[-145px] rounded-lg md:px-2 md:mt-5 xs:mt-3 bg-white"
-                    className="flex sm:mr-3 justify-center items-center text-center rounded-lg md:px-2 bg-white"
+                    className="flex  justify-center items-center hover:border hover:border-light_gray  mr-3 text-center cursor-pointer hover:shadow-sm rounded-br-[50px]  rounded-tr-[50px]  rounded-l-[100px]"
                     onClick={() => {
                       setIsOpen(!isOpen);
                     }}
@@ -322,7 +329,7 @@ export const Navbar = ({
                     {isValidImg ? (
                       <img
                         src={profile}
-                        className="xs:text-3xl w-[40px] h-[40px] text-lime object-cover rounded-full md:text-[2px] mr-1 cursor-pointer"
+                        className="xs:text-3xl w-[40px] h-[40px]  text-lime object-cover rounded-full md:text-[2px] mr-1 cursor-pointer"
                         alt=""
                       />
                     ) : (
@@ -330,8 +337,8 @@ export const Navbar = ({
                     )}
                     <div className="">{name}</div>
 
-                    <div className=" bg-white ">
-                      <FaCaretDown className="bg-white" />
+                    <div className="">
+                      <FaCaretDown className="" />
                     </div>
                   </div>
                 ) : (
@@ -350,11 +357,11 @@ export const Navbar = ({
                   </div>
                 )}
 
-                {openLogin && <Login setOpenLogin={setOpenLogin} />}
+                {openLogin && <Login setOpenLogin={setOpenLogin}  setIsOpen={setIsOpen}/>}
 
                 {isOpen && (
                   <div
-                    className="top-0 p-5 pt-0 right-0 mt-2 w-56 shadow-lg rounded-lg bg-white  xs:mt-[73px] md:ml-[980px] sm:ml-[400px] xs:ml-[100px] z-10 absolute px-4"
+                    className="top-0 p-5 pt-0 right-0 mt-2 w-56 shadow-lg rounded-b-lg bg-white  xs:mt-[73px] md:ml-[980px] md:my-[54px] border border-light_gray sm:ml-[400px] xs:ml-[100px] z-10 absolute px-4"
                     ref={menuRef}
                   >
                     <ul className="mt-4 bg-white">
@@ -391,15 +398,18 @@ export const Navbar = ({
                       </li>
 
                       <li className="  bg-white cursor-pointer">
-                        <NavLink to={"/profile"}>
+                    
                           <p
-                            onClick={() => setIsOpen(false)}
+                            onClick={handleProfile}
                             className="bg-white sm:text-lg md:text-sm mt-4"
                           >
                             My Profile
                           </p>
-                        </NavLink>
+                       
                       </li>
+
+                      
+
                       <li className=" bg-white cursor-pointer">
                         <div className="flex justify-between mt-4  ">
                           <NavLink to={"/wallet"}>
@@ -475,6 +485,8 @@ export const Navbar = ({
           </div>
         </div>
       </nav>
+
+      {profileView && <MyProfile setProfileView={setProfileView}/>}
     </div>
   );
 };

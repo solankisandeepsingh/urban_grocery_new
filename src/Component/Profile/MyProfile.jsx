@@ -3,12 +3,12 @@ import { API_TOKEN } from "../Token/Token";
 import { useUserStore } from "../zustand/useUserStore";
 import axios from "axios";
 import { FaUserCircle } from "react-icons/fa";
-import { AiFillEdit } from "react-icons/ai";
+import { AiFillEdit, AiOutlineCloseCircle } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiStore } from "../zustand/useApiStore";
 
-export const MyProfile = () => {
+export const MyProfile = ({ setProfileView, setIsOpen }) => {
   // const [editBtn, setEditBtn] = useState(false);
   const inputRef = useRef(null);
   const {
@@ -17,9 +17,8 @@ export const MyProfile = () => {
     userInfo,
   } = useUserStore();
   const [isValidImg, setisValidImg] = useState(false);
-  const {setisLoading} = useLoaderState();
+  const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
-
 
   // const [nameUpdate, setNameUpdate] = useState(userInfo.name)
 
@@ -74,7 +73,7 @@ export const MyProfile = () => {
         )
         .then((res) => {
           console.log(res, "upload image");
-          
+
           getUserData();
           toast.success("Profile successfully uploaded!", {
             position: toast.POSITION.TOP_CENTER,
@@ -113,7 +112,6 @@ export const MyProfile = () => {
         //   position: toast.POSITION.TOP_CENTER
         // });
 
-
         setUserInfo(res.data);
         setisLoading(false);
         // setUserInfo(res.data)
@@ -129,6 +127,7 @@ export const MyProfile = () => {
   const handleUpdateProfile = () => {
     // e.preventDefault();
     // setEditBtn((prev) => !prev);
+    
     let config = {
       headers: {
         Authorization: `Bearer ${jwt}`,
@@ -173,6 +172,7 @@ export const MyProfile = () => {
         });
 
         getUserData();
+        setProfileView(false);
       })
       .catch((err) => {
         console.log(err);
@@ -195,93 +195,110 @@ export const MyProfile = () => {
     };
   }, [profile]);
 
+  const closeLoginModal = () => {
+    setProfileView(false);
+  };
+
+  
+
   return (
     <div className="justify-center items-center text-center mt-24">
-      <div>
-        <p className="font-bold">My Profile</p>
-      </div>
       <ToastContainer />
-      <div className="xs:w-[90%] md:w-[50%] sm:w-[50%] m-auto my-10 border border-light_gray h-auto px-6 py-4 rounded-lg">
-        <div className=" justify-between">
-          <div className="flex justify-center items-center">
-            {isValidImg ? (
-              <div className="group relative">
-                <a href="#!">
-                  <div class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsl(0,0%,98.4%,0.2)] bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-100"></div>
-                </a>
-                <AiFillEdit  onClick={() => inputRef.current.click()} className="absolute cursor-pointer text-[20px] text-white md:top-5 sm:top-5 xs:top-7 bg-black rounded-full xs:right-3  md:right-0.5 sm:right-0.5 opacity-[50%] group-hover:opacity-[100%] transition-all " />
-                <img
-                  src={profile}
-                  className="rounded-full object-cover xs:w-[150px] xs:h-[150px] md:w-[100px] md:h-[100px] sm:w-[100px] sm:h-[100px] border-2 border-[#e8e8e8] shadow-lg"
-                  alt=""
-                 
-                />
+
+      <div className="fixed  z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
+        <div className="bg-white rounded top-[5%] left-[5%]">
+          <div className="flex justify-center items-center relative">
+            <div className="container relative  opacity-70">
+              <button
+                className="absolute top-[5%] right-[5%]"
+                onClick={closeLoginModal}
+              >
+                <AiOutlineCloseCircle className="text-red text-2xl hover:opacity-50" />
+              </button>
+              <div className="w-full p-8 md:px-12 mr-auto flex flex-col justify-center items-center text-center rounded-2xl shadow-2xl">
+                <div>
+                  {isValidImg ? (
+                    <div className="group relative">
+                      <a href="#!">
+                        <div class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsl(0,0%,98.4%,0.2)] bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-100"></div>
+                      </a>
+                      <AiFillEdit
+                        onClick={() => inputRef.current.click()}
+                        className="absolute cursor-pointer text-[20px] text-white md:top-5 sm:top-5 xs:top-7 bg-black rounded-full xs:right-3  md:right-0.5 sm:right-0.5 opacity-[50%] group-hover:opacity-[100%] transition-all "
+                      />
+                      <img
+                        src={profile}
+                        className="rounded-full object-cover xs:w-[150px] xs:h-[150px] md:w-[100px] md:h-[100px] sm:w-[100px] sm:h-[100px] border-2 border-[#e8e8e8] shadow-lg"
+                        alt=""
+                      />
+                    </div>
+                  ) : (
+                    <>
+                      <FaUserCircle
+                        className="xs:text-3xl text-lime md:text-[100px] mr-1 cursor-pointer"
+                        onClick={() => inputRef.current.click()}
+                      />
+                    </>
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    style={{ display: "none" }}
+                    ref={inputRef}
+                  />
+                </div>
+
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleUpdateProfile();
+                  }}
+                  action=""
+                >
+                  <div>
+                    <div className=" justify-between ">
+                      <div className="flex flex-col">
+                        <label htmlFor="" className="text-start">
+                          Name :{" "}
+                        </label>
+                        <input
+                          name="name"
+                          type="text"
+                          onChange={handleInputChange}
+                          value={updateUser.name}
+                          // disabled={!editBtn}
+                          className="block w-full py-2 px-3 border border-light_gray bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        />
+                      </div>
+                    </div>
+                    <div className=" justify-between py-2">
+                      <div className="flex flex-col">
+                        <label htmlFor="" className="text-start">
+                          E-mail :{" "}
+                        </label>
+                        <input
+                          name="email"
+                          type="text"
+                          onChange={handleInputChange}
+                          value={updateUser.email}
+                          // disabled={!editBtn}
+                          className="block w-full py-2 px-3 border border-light_gray bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex justify-around  mt-5">
+                      <button className="w-24 bg-lime text-white rounded-lg py-2">
+                        Save
+                      </button>
+                    </div>
+                  </div>
+                </form>
               </div>
-            ) : (
-              <>
-                <FaUserCircle
-                  className="xs:text-3xl text-lime md:text-[100px] mr-1 cursor-pointer"
-                  onClick={() => inputRef.current.click()}
-                />
-              </>
-            )}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              style={{ display: "none" }}
-              ref={inputRef}
-            />
+            </div>
           </div>
         </div>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleUpdateProfile();
-          }}
-          action=""
-        >
-          <div>
-            <div className=" justify-between ">
-              <div className="flex flex-col">
-                <label htmlFor="" className="text-start">
-                  Name :{" "}
-                </label>
-                <input
-                  name="name"
-                  type="text"
-                  onChange={handleInputChange}
-                  value={updateUser.name}
-                  // disabled={!editBtn}
-                  className="block w-full py-2 px-3 border border-light_gray bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
-              </div>
-            </div>
-            <div className=" justify-between py-2">
-              <div className="flex flex-col">
-                <label htmlFor="" className="text-start">
-                  E-mail :{" "}
-                </label>
-                <input
-                  name="email"
-                  type="text"
-                  onChange={handleInputChange}
-                  value={updateUser.email}
-                  // disabled={!editBtn}
-                  className="block w-full py-2 px-3 border border-light_gray bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
-              </div>
-            </div>
-
-           
-
-            <div className="flex justify-around  mt-5">
-              <button className="w-24 bg-lightest_grey rounded-lg py-2">
-                Save
-              </button>
-            </div>
-          </div>
-        </form>
       </div>
     </div>
   );
