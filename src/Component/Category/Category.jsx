@@ -83,10 +83,13 @@ export const Category = () => {
                         alt="item"
                       />
                     </NavLink>
+                    <div className="px-4">
                     <div className="xs:text-center md:text-center xs:py-0.5 bg-white ">
-                      <p className="xs:text-[12px] xs:font-light md:text-sm sm:text-md md:font-medium md:ml-2 sm:py-2 bg-white">
+                      <p className="xs:text-[12px] xs:font-light md:text-sm sm:text-md md:font-medium  sm:py-2 bg-white">
                         {item.name}
                       </p>
+                    </div>
+
                     </div>
                   </div>
                 );

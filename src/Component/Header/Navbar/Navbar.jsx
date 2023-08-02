@@ -320,7 +320,7 @@ export const Navbar = ({
             </div>
           )}
 
-          <div className="flex md:order-2 z-10 xs:justify-between bg-white  justify-center gap-1 items-center">
+          <div className="flex md:order-2 z-10 xs:justify-between bg-white  justify-center gap-1 items-center mr-5">
             {/* {showSearch ? null : (
               // <div className="md:hidden xs:visible rounded-lg bg-lime w-8 h-8 xs:w-8 xs:h-8 xs:mt-3.5 xs:mx-2">
               <div className="md:hidden xs:visible rounded-lg bg-skyblue w-8 h-8 xs:w-8 xs:h-8 xs:mt-3.5 xs:mx-2">
