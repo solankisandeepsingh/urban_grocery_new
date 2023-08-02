@@ -1,16 +1,21 @@
 import React from "react";
 import {
+  AiFillContacts,
+  AiOutlineShoppingCart,
   AiTwotoneBank,
   AiTwotoneSafetyCertificate,
   AiTwotoneWallet,
 } from "react-icons/ai";
+import { BsCart3, BsInfoCircleFill } from "react-icons/bs";
 import {
   FaBell,
+  FaBook,
   FaFileContract,
   FaFoursquare,
   FaHome,
   FaRegAddressBook,
 } from "react-icons/fa";
+import { RiContactsFill } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 export const Aside = () => {
@@ -43,7 +48,7 @@ console.log(location,"loca")
                 className="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 {/* <FaRegAddressBook className="text-darkgray text-[25px]" /> */}
-                <FaRegAddressBook className={`${location.pathname === "/myorder" ? 'text-white text-[25px]':'text-light_gray text-[25px]'}`}/>
+                <BsCart3 className={`${location.pathname === "/myorder" ? 'text-white text-[25px]':'text-light_gray text-[25px]'}`}/>
                 
                 <span className={`ml-3 ${location.pathname === "/myorder" ? 'text-white font-light':'text-light_gray'}`}>
                   My Order
@@ -58,7 +63,7 @@ console.log(location,"loca")
                 className="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 {/* <FaBell className="text-darkgray text-[25px]" /> */}
-                <FaBell className={`${location.pathname === "/about" ? 'text-white text-[25px]':'text-light_gray text-[25px]'}`}/>
+                <BsInfoCircleFill className={`${location.pathname === "/about" ? 'text-white text-[25px]':'text-light_gray text-[25px]'}`}/>
               
                 <span className={`ml-3 ${location.pathname === "/about" ? 'text-white font-light':'text-light_gray'}`}>
                   About_Us
@@ -74,7 +79,7 @@ console.log(location,"loca")
                 className="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 {/* <FaFileContract className="text-darkgray text-[25px]" /> */}
-                <FaFileContract className={`${location.pathname === "/contact" ? 'text-white text-[25px]':'text-light_gray text-[25px]'}`} />
+                <RiContactsFill className={`${location.pathname === "/contact" ? 'text-white text-[25px]':'text-light_gray text-[25px]'}`} />
                 <span className={`ml-3 ${location.pathname === "/contact" ? 'text-white font-light':'text-light_gray'}`}>
                   Contact
                 </span>
@@ -118,7 +123,7 @@ console.log(location,"loca")
                 className="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 {/* <FaBell className="text-darkgray text-[25px]" /> */}
-                <FaBell className={`${location.pathname === "/conditons" ? 'text-white text-[25px]':'text-light_gray text-[25px]'}`} />
+                <FaBook className={`${location.pathname === "/conditons" ? 'text-white text-[25px]':'text-light_gray text-[25px]'}`} />
                 <span className={`ml-3 ${location.pathname === "/conditons" ? 'text-white font-light':'text-light_gray'}`}>
                   Term & Conditons
                 </span>

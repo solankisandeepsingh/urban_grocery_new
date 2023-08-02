@@ -19,6 +19,7 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
   const [isValidImg, setisValidImg] = useState(false);
   const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
+  const profileRef = useRef(null);
 
   // const [nameUpdate, setNameUpdate] = useState(userInfo.name)
 
@@ -42,11 +43,18 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
     }));
   };
 
-  const handleEditAPI = () => {
-    console.log(true);
-    // console.log(editBtn);
-    // setEditBtn(true);
+  const handleClickOutside = (event) => {
+    if (profileRef.current && !profileRef.current.contains(event.target)) {
+      setProfileView(false);
+    }
   };
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside); 
+    };
+  }, []);
   const handleImageUpload = (event) => {
     console.log("text Onchange");
     const file = event.target.files[0];
@@ -127,7 +135,7 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
   const handleUpdateProfile = () => {
     // e.preventDefault();
     // setEditBtn((prev) => !prev);
-    
+
     let config = {
       headers: {
         Authorization: `Bearer ${jwt}`,
@@ -199,16 +207,14 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
     setProfileView(false);
   };
 
-  
-
   return (
     <div className="justify-center items-center text-center mt-24">
       <ToastContainer />
 
       <div className="fixed  z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
-        <div className="bg-white rounded top-[5%] left-[5%]">
+        <div className="bg-white rounded top-[5%] left-[5%]" ref={profileRef}>
           <div className="flex justify-center items-center relative">
-            <div className="container relative  opacity-100">
+            <div className="container relative opacity-100">
               <button
                 className="absolute top-[5%] right-[5%]"
                 onClick={closeLoginModal}

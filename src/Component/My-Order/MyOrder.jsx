@@ -78,9 +78,7 @@ export const MyOrder = ({ addItem }) => {
           <Aside />
         </div>
 
-      
         <div className="md:w-[60%] sm:w-[60%] xs:w-[85%] ">
-  
           {/* <div className="md:w-[60%] xs:w-full "> */}
           <div className=" border border-light_gray p-4">
             {allOrderDetails &&
@@ -123,7 +121,9 @@ export const MyOrder = ({ addItem }) => {
 
                       <div className="flex justify-end ">
                         <div className="flex bg-skybluelight   justify-center items-center  border mb-4  m-2 border-light_gray p-1 rounded-lg w-32 text-[12px]">
-                          <p className="text-text-black">{item.active_status.toLocaleUpperCase()}</p>
+                          <p className="text-text-black">
+                            {item.active_status.toLocaleUpperCase()}
+                          </p>
                         </div>
                         <div className="flex shadow-lg gap-2 mt-2 w-36 text-[12px] mb-4 border border-light_gray p-1 rounded-lg">
                           <div className="text-[18px]">

@@ -5,9 +5,6 @@ import axios from "axios";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
-import { BsChevronCompactRight } from "react-icons/bs";
-import { HiOfficeBuilding } from "react-icons/hi";
-import { FaHome } from "react-icons/fa";
 import { currencyFormatter } from "../../utils/utils";
 import { usePaymentStore } from "../zustand/usePaymentStore";
 import CryptoJS, { HmacSHA256 } from "crypto-js";
@@ -30,7 +27,7 @@ function Payment({ price }) {
   } = useUserStore();
   const navigate = useNavigate();
 
-  const { totalPrice, totalMRPPrice, totalItems } = usePaymentStore();
+  const { totalPrice, totalMRPPrice } = usePaymentStore();
 
   let { address, area_name, city_name, type, name, pincode, country } =
     addList.find((item) => {

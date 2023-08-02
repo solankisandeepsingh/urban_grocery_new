@@ -141,15 +141,15 @@ export const SubCategory = ({ setAddItem, addItem }) => {
       <div>
         <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-6 sm:grid-cols-3 flex flex-wrap md:ml-5 ">
           {isLoading ? (
-            <p className="m-auto">Loadinglklk...</p>
+            <p className="m-auto">Loading...</p>
           ) : allproducts && allproducts.length > 0 ? (
             allproducts.map((item) => {
               return (
-                <div className="w-72 xs:w-40 md:w-40 md:h-[255px] sm:w-60 sm:h-[370px]  rounded-xl xs:m-2 xs:my-3 md:mx-5 md:my-4 sm:my-4 container shadow-sm bg border-2 border-light_gray hover:border-light_green">
+                <div className="w-72 xs:w-40 md:w-40 md:h-[263px] sm:w-60 sm:h-[370px]  rounded-xl xs:m-2 xs:my-3 md:mx-5 md:my-4 sm:my-4 container shadow-sm bg border-2 border-light_gray hover:border-light_green">
                   <NavLink to={`product-details/${item.id}`}>
                     <img
                       // className="w-full h-56 xs:w-32 xs:h-24 xs:m-3 xs:mx-4 md:w-36 md:h-28 md:mx-4 md:m-2 sm:w-40 sm:h-32 sm:m-8 rounded-lg"
-                      className="w-full h-56 xs:w-32 xs:h-24 xs:m-3 xs:mx-4 md:m-0 md:w-40 md:h-28 sm:w-60 sm:h-40 sm:m-0 rounded-lg"
+                      className="w-full h-56 xs:w-40 xs:h-28  md:m-0 md:w-40 md:h-28 sm:w-60 sm:h-40 sm:m-0 rounded-lg"
                       src={item.image}
                       alt="product"
                     />
@@ -199,7 +199,7 @@ export const SubCategory = ({ setAddItem, addItem }) => {
                                       </>
                                     ) : (
                                       <button
-                                        className="md:w-16 md:h-8 mb-3 xs:w-18 sm:ml-2 md:text-xs md:mt-2 xs:mt-2 sm:w-16 sm:h-10 sm:text-base sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
+                                        className="md:w-16 md:h-8 mb-3 xs:w-18 sm:ml-2 md:text-xs md:mt-2 xs:mt-2 sm:w-24 sm:h-12 sm:text-[20px] sm:mt-[15px] text-lime border border-lightgreen bg-transparent hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
                                         onClick={() =>
                                           allCartItemsHandler(data, item)
                                         }
@@ -208,7 +208,7 @@ export const SubCategory = ({ setAddItem, addItem }) => {
                                       </button>
                                     )
                                   ) : (
-                                    <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:mb-4 sm:text-xs xs:text-xs">
+                                    <p className=" bg-white text-orange md:text-[14px] text-sm  font-medium mt-3 pb-4 sm:mb-4 sm:text-lg xs:text-xs">
                                       Out of stock
                                     </p>
                                   )}

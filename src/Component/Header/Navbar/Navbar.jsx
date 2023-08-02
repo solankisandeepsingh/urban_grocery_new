@@ -460,16 +460,7 @@ export const Navbar = ({
                           </p>
                         </NavLink>
                       </li>
-                      <li className="cursor-pointer">
-                        <NavLink to={"/myorderdetails"}>
-                          <p
-                            onClick={() => setIsOpen(false)}
-                            className=" sm:text-lg md:text-sm mt-4"
-                          >
-                            New Order Details
-                          </p>
-                        </NavLink>
-                      </li>
+                      
 
                       <li className=" cursor-pointer">
                         <p
