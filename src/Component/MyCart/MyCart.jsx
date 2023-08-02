@@ -242,7 +242,7 @@ function MyCart({
             {totalItem}
           </div>
           {/* <div className="absolute top-0">O</div> */}
-          <FaShoppingCart className="xs:text-2xl md:bg-lime sm:bg-lime md:text-white sm:text-white xs:text-lime hover:animate-hbeat" />
+          <FaShoppingCart className="xs:text-2xl md:bg-lime sm:bg-lime md:text-white sm:text-white xs:text-lime " />
         </div>
         <div className="md:bg-lime sm:bg-lime xs:bg-white">
           {price > 0 && allCartItems ? (

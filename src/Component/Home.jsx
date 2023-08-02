@@ -211,7 +211,7 @@ function Home({
                 />
               </div>
 
-              <LocallySourced />
+              {/* <LocallySourced /> */}
               <div className="md:w-auto md:p-2 md:mt-4 xs:py-2">
                 <img
                   src={allImg["37"]}

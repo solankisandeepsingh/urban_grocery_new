@@ -137,27 +137,27 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
   }, [cityDropdown]);
 
   return (
-    <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
-      <div className="bg-white rounded top-[5%] left-[5%]">
+    <div className="fixed z-50 top-0  left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
+      <div className="bg-[#f2f2f2] min-w-[600px] rounded top-[5%] left-[5%]">
         <div className="flex justify-center items-center relative">
-          <div className="container relative  opacity-70">
+          <div className="container relative">
             <button
               className="absolute top-[5%] right-[5%]"
               onClick={() => setFormOpen(false)}
             >
-              <AiOutlineCloseCircle className="text-red text-2xl hover:opacity-50" />
+              <AiOutlineCloseCircle className="text-red text-2xl opacity-60 hover:opacity-100" />
             </button>
             <div className="w-full p-8 md:px-12 mr-auto rounded-2xl shadow-2xl">
               <div className="flex justify-between">
-                <h1 className="font-bold text-3xl text-gryColour">
-                  Address :{" "}
+                <h1 className="font-bold p-2 text-xl text-gryColour">
+                  Add Address{" "}
                 </h1>
               </div>
               <form onSubmit={handleSubmit}>
-                <div className="grid grid-cols-1 xs:gap-0 md:gap-5 md:grid-cols-2 mt-5">
+                <div className="grid grid-cols-1 xs:gap-0 md:gap-5 md:grid-cols-2 ">
                   <div className="">
                     <input
-                      className="w-full mt-2 p-2 rounded-lg border border-light_gray "
+                      className="w-full h-[30px] mt-2 p-2 rounded-lg text-xs border border-light_gray "
                       type="text"
                       placeholder=" Name*"
                       name="name"
@@ -167,7 +167,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
                   </div>
                   <div>
                     <input
-                      className="w-full mt-2 p-2 rounded-lg  border border-light_gray"
+                      className="w-full h-[30px] mt-2 p-2 rounded-lg text-xs  border border-light_gray"
                       placeholder="Pincode*"
                       type="number"
                       name="pincode"
@@ -175,109 +175,124 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
                       onChange={handleInputChange}
                     />
                   </div>
-                  
                 </div>
 
                 <div className="my-2">
-                    <textarea
-                      className="w-full p-2 h-auto rounded-lg border border-light_gray"
-                      type="text"
-                      placeholder="Address*"
-                      name="address"
-                      value={addressData.address}
-                      onChange={handleInputChange}
-                    />
-                  </div>
+                  <textarea
+                    className="w-full p-2 h-auto rounded-lg text-xs border border-light_gray"
+                    type="text"
+                    placeholder="Address*"
+                    name="address"
+                    value={addressData.address}
+                    onChange={handleInputChange}
+                  />
+                </div>
 
-                <div className="my-2 flex ">
-                  <div className="mr-2">
-                    <select
-                      value={cityDropdown}
-                      onChange={handleDropdown1Change}
-                      className="block w-full py-2 px-3 border border-light_gray bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    >
-                      <option value="">City</option>
-                      {cities.map((item) => (
-                        <option key={item.id} value={item.id}>
-                          {item.name}
+                <div className="my-2 flex items-start justify-evenly text-center">
+                  <div className="flex justify-start">
+                    <div className="mr-2">
+                      <select
+                        value={cityDropdown}
+                        onChange={handleDropdown1Change}
+                        className="block w-full py-1 px-2 min-w-max border border-light_gray bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs"
+                      >
+                        <option className="" value="" disabled selected>
+                          Select your city
                         </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <select
-                      value={areaDropdown}
-                      onChange={handleDropdown2Change}
-                      disabled={!cityDropdown}
-                      className="block w-full py-2 px-3 border border-light_gray bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    >
-                      <option value="">Area</option>
-                      {areas &&
-                        areas.map((item) => (
-                          <option key={item.id} value={item.id}>
+                        {cities.map((item) => (
+                          <option className="" key={item.id} value={item.id}>
                             {item.name}
                           </option>
                         ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="flex my-2 justify-between items-center text-center">
-                  <div className=" flex gap-2">
-                    <label>
-                      <input
-                        type="radio"
-                        name="type"
-                        value="Home"
-                        checked={addressData.type === "Home"}
-                        onChange={handleInputChange}
-                        className="hidden"
-                      />
-                      <span className="ml-2 text-lightGrayBlinkit bg-colorGray border border-light_gray hover:border-GreenBlinkit cursor-pointer p-2 rounded-lg text-[13px]">Home</span>
-                    </label>
-
-                    <label>
-                      <input
-                        type="radio"
-                        name="type"
-                        value="Work"
-                        checked={addressData.type === "Work"}
-                        onChange={handleInputChange}
-                        className="hidden p-3 bg-lime"
-                      />
-                      <span className="ml-2 text-lightGrayBlinkit bg-colorGray border border-light_gray hover:border-GreenBlinkit cursor-pointer p-2 rounded-lg text-[13px]">Work</span>
-                    </label>
-
-                    <label>
-                      <input
-                        type="radio"
-                        name="type"
-                        value="Other"
-                        checked={addressData.type === "Other"}
-                        onChange={handleInputChange}
-                        className="hidden"
-                      />
-                      <span className="ml-2 text-lightGrayBlinkit bg-colorGray border border-light_gray hover:border-GreenBlinkit cursor-pointer p-2 rounded-lg text-[13px]">Others</span>
-                    </label>
+                      </select>
+                    </div>
+                    <div>
+                      <select
+                        value={areaDropdown}
+                        onChange={handleDropdown2Change}
+                        disabled={!cityDropdown}
+                        className="block w-full py-1 px-2 border border-light_gray bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs"
+                      >
+                        <option className="" value="" disabled selected>
+                          Select your Area
+                        </option>{" "}
+                        {areas &&
+                          areas.map((item) => (
+                            <option key={item.id} value={item.id}>
+                              {item.name}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
                   </div>
 
-                  <div className="">
-                    <button className="uppercase text-[10px] text-white font-bold h-[30px] w-[90px] bg-lime rounded-lg">
-                      Save Address
-                    </button>
-                  </div>
-                </div>
-                {addressData.type === "Other" && (
-                  <div className="">
+                  <div className="flex mb-2 justify-between items-center text-center">
+                    <div className=" flex flex-col justify-center items-center gap-2">
+                      <div className="flex gap-2">
+                         <label>
+                        <input
+                          type="radio"
+                          name="type"
+                          value="Home"
+                          checked={addressData.type === "Home"}
+                          onChange={handleInputChange}
+                          className="hidden"
+                        />
+                        <span className=" text-lightGrayBlinkit bg-colorGray border border-light_gray hover:border-GreenBlinkit hover:bg-[#f2f2f2] cursor-pointer py-1 px-2 rounded-lg text-xs">
+                          Home
+                        </span>
+                      </label>
+
+                      <label>
+                        <input
+                          type="radio"
+                          name="type"
+                          value="Work"
+                          checked={addressData.type === "Work"}
+                          onChange={handleInputChange}
+                          className="hidden p-3 bg-lime"
+                        />
+                        <span className=" text-lightGrayBlinkit bg-colorGray border border-light_gray hover:border-GreenBlinkit hover:bg-[#f2f2f2] cursor-pointer py-1 px-2 rounded-lg text-xs">
+                          Work
+                        </span>
+                      </label>
+
+                      <label>
+                        <input
+                          type="radio"
+                          name="type"
+                          value="Other"
+                          checked={addressData.type === "Other"}
+                          onChange={handleInputChange}
+                          className="hidden"
+                        />
+                        <span className=" text-lightGrayBlinkit bg-colorGray border border-light_gray hover:border-GreenBlinkit hover:bg-[#f2f2f2] cursor-pointer py-1 px-2 rounded-lg text-xs">
+                          Other
+                        </span>
+                      </label>
+                      </div>
+                                     {addressData.type === "Other" && (
+                  <div className="text-xs">
                     <input
                       onChange={handleOtherText}
                       name="type"
                       type="text"
-                      className="block w-full py-2 px-3 border border-light_gray  bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      placeholder="Enter you Address Type"
+                      className="block h-[25px]  w-full py-2 text-xs px-2 border border-light_gray  bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     />
                   </div>
                 )}
+                    </div>
+                  </div>
+                </div>
+
+
+
+                <div className="flex justify-center items-center text-center">
+                  <button className="uppercase text-[10px] text-white font-bold h-[36px] w-[50%] bg-lime rounded-lg">
+                    Save Address
+                  </button>
+                </div>
               </form>
             </div>
           </div>

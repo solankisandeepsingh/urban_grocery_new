@@ -4,8 +4,5 @@ export const currencyFormatter = (value)=>{
         currencyDisplay: "narrowSymbol",
         style: 'currency'
     })
-    return formatNumber.format(value)
-
-
-    
+    return formatNumber.format(value)    
 }
