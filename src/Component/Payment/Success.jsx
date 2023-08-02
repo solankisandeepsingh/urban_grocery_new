@@ -1,7 +1,8 @@
 import React from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-
+import { FaHome } from "react-icons/fa";
+import { useCartStore } from "../zustand/useCartStore";
 
 export const Success = ({  setNavbarOpen }) => {
   const navigate = useNavigate();
@@ -9,6 +10,8 @@ export const Success = ({  setNavbarOpen }) => {
     setNavbarOpen(true);
     navigate("/");
   };
+  const {config} = useCartStore();
+  console.log(config);
   return (
     <>
   
@@ -30,16 +33,25 @@ export const Success = ({  setNavbarOpen }) => {
                   d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <h1 className="text-4xl font-bold">Thank You !</h1>
-              <p>Thank you for your Shopping! Please Visit Again.</p>
-
+              <h1 className="text-4xl font-bold">Order Placed Successfully!</h1>
+              
+              <button
+                className="inline-flex items-center px-3 py-2 rounded-lg text-lime bg-indigo-600 border border-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring"
+                onClick={()=>{
+                  setNavbarOpen(true)
+                  navigate('/myorder')
+                }}
+              >
+                <FaArrowLeft className=" w-3 h-3 mr-1" />
+                Goto My Orders
+              </button>
               <button
                 className="inline-flex items-center px-3 py-2 rounded-lg text-lime bg-indigo-600 border border-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring"
                 onClick={goToHome}
               >
                 <FaArrowLeft className=" w-3 h-3 mr-1" />
-                Back
-              </button>
+                Click here for Home
+              </button>          
             </div>
           </div>
         </div>

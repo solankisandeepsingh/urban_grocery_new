@@ -130,9 +130,9 @@ function Payment({ price }) {
       image: "http://grocery.intelliatech.in/dist/img/logo.png",
       order_id: order_id,
       handler: function (response) {
-        alert(response.razorpay_payment_id);
-        alert(response.razorpay_order_id);
-        alert(response.razorpay_signature);
+        // alert(response.razorpay_payment_id);
+        // alert(response.razorpay_order_id);
+        // alert(response.razorpay_signature);
         console.log(order_id, response.razorpay_payment_id);
 
         let generated_signature = HmacSHA256(

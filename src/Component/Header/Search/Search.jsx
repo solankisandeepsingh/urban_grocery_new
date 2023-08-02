@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_TOKEN } from "../../Token/Token";
 import { useLoaderState } from "../../zustand/useLoaderState";
@@ -11,7 +11,7 @@ import { useApiStore } from "../../zustand/useApiStore";
 import { FaArrowCircleUp } from "react-icons/fa";
 import { useCartStore } from "../../zustand/useCartStore";
 
-const Search = ({ setData, name }) => {
+const Search = ({ setData, name, data }) => {
   const [searchData, setSearchData] = useState("");
   const [Inputsearch, setInputSearch] = useState("");
   const [arrayy, setArray] = useState([]);
@@ -28,13 +28,17 @@ const Search = ({ setData, name }) => {
   const {allCartItems,setAllCartItems}= useCartStore();
   console.log(allCartItems,"allcartitems is not present")
 
+  
+      const location = useLocation();
+
   const serchAPIData = () => {
+    console.log("normal search");
     let config = {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
     };
-
+    
     var bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("type", "products-search");
@@ -55,6 +59,7 @@ const Search = ({ setData, name }) => {
         console.log(res.data.data);
         setisLoading(false);
         setData(res.data.data);
+        setOffset(0)
       })
       .catch((err) => {
         console.log(err);
@@ -94,49 +99,54 @@ const Search = ({ setData, name }) => {
   };
 
   const nextData = async () => {
-    console.log("NEXT DATTTTTRA");
-    let config = {
-      headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
-      },
-    };
 
-    setOffset(offset + 15);
-
-    var bodyFormData = new FormData();
-    bodyFormData.append("accesskey", "90336");
-    bodyFormData.append("type", "products-search");
-    bodyFormData.append("limit", "15");
-    bodyFormData.append("search", Inputsearch);
-    bodyFormData.append("offset", offset + 15);
-
-    setisLoading(true);
-    let data = axios
-      .post(
-        "https://grocery.intelliatech.in/api-firebase/products-search.php",
-        bodyFormData,
-        config
-      )
-
-      // let parsedData =  data.json();
-      // console.log(parsedData);
-      // setArray(arrayy.concat(parsedData.data.data));
-      .then((res) => {
-        // console.log(res.data.data)
-        setSearchData(res.data);
-        console.log(arrayy);
-        const tempArr = JSON.parse(JSON.stringify(arrayy));
-        setArray([...arrayy, ...res.data.data]);
-        // setNewItemsArray(tempArr.concat(res.data.data));
-
-        console.log(res.data.data);
-        setisLoading(false);
-        setData([...arrayy, ...res.data.data]);
-      })
-      .catch((err) => {
-        console.log(err);
-        setisLoading(false);
-      });
+    console.log('IN NEXT DATA');
+    if (location.pathname === '/search' ) {
+      
+      console.log("NEXT DATTTTTRA");
+      let config = {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      };
+  
+      setOffset(offset + 15);
+  
+      var bodyFormData = new FormData();
+      bodyFormData.append("accesskey", "90336");
+      bodyFormData.append("type", "products-search");
+      bodyFormData.append("limit", "15");
+      bodyFormData.append("search", Inputsearch);
+      bodyFormData.append("offset", offset + 15);
+  
+      setisLoading(true);
+      let data = axios
+        .post(
+          "https://grocery.intelliatech.in/api-firebase/products-search.php",
+          bodyFormData,
+          config
+        )
+  
+        // let parsedData =  data.json();
+        // console.log(parsedData);
+        // setArray(arrayy.concat(parsedData.data.data));
+        .then((res) => {
+          // console.log(res.data.data)
+          setSearchData(res.data);
+          console.log(arrayy);
+          const tempArr = JSON.parse(JSON.stringify(arrayy));
+          setArray([...arrayy, ...res.data.data]);
+          // setNewItemsArray(tempArr.concat(res.data.data));
+  
+          console.log(res.data.data);
+          setisLoading(false);
+          setData([...arrayy, ...res.data.data]);
+        })
+        .catch((err) => {
+          console.log(err);
+          setisLoading(false);
+        });
+    } else return
   };
   console.log("item1>>>>>>>>>>>>>>", allCartItems);
   const allCartItemsHandler = (item, data) => {
@@ -224,9 +234,10 @@ const Search = ({ setData, name }) => {
       });
   };
 
-  console.log(newItemsArray, "NEW items>>>>>>>>>>>>>>>>>");
+  console.log(arrayy.length , searchData, "NEW items>>>>>>>>>>>>>>>>>");
 
   return (
+    
     <div className="w-full max-w-screen-2xl bg-white md:h-[69px] md:mr-44">
       <div className="inline-flex justify-center relative text-black-500 bg-white xs:my-4 xs:mx-4 sm:ml-36 md:my-3  xs:mt-20 ">
         <input
@@ -239,7 +250,9 @@ const Search = ({ setData, name }) => {
 
         <button className="fixed right-0 bottom-0 text-[20px]">
           <FaArrowCircleUp
-            onClick={scrollToTop}
+            onClick={()=>{
+              console.log(offset);
+              scrollToTop()}}
             style={{ display: visible ? "inline" : "none" }}
           />
         </button>
@@ -261,15 +274,15 @@ const Search = ({ setData, name }) => {
       </div>
 
       <InfiniteScroll
-        dataLength={arrayy?.length}
+        dataLength={data?.length || 0}
         next={nextData}
-        hasMore={!(arrayy.length >= searchData.total)}
+        hasMore={!(data?.length >= searchData.total)}
         // loader={<div className="w-[500px] h-[100px]">Loading...</div>}
-        endMessage={
-          <p style={{ textAlign: "center" }}>
-            <b>Yay! You have seen it all</b>
-          </p>
-        }
+        // endMessage={
+        //   <p style={{ textAlign: "center" }}>
+        //     <b>Yay! You have seen it all</b>
+        //   </p>
+        // }
       >
         {newItemsArray.map((item, index) => (
           <div

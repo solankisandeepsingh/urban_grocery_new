@@ -287,7 +287,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                     </Carousel>
                   </div>
 
-                  <div className="xs:flex-col md:ml-[750px] md:p-6 md:fixed md:bg-[#f1efef] md:rounded-xl">
+                  <div className="xs:flex-col md:ml-[750px] md:p-6 md:fixed md:bg-[#f7f7f7] md:rounded-xl">
                     {item &&
                       item.variants.map((item) =>
                         item.stock > 0 ? null : (
@@ -560,7 +560,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
         <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
           <div className="bg-white rounded top-[5%] left-[5%]">
             <div className="flex justify-center items-center relative">
-              <div className="container relative  opacity-70">
+              <div className="container relative  ">
                 <button
                   className="absolute top-[5%] right-[5%]"
                   onClick={() => {

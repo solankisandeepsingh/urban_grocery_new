@@ -571,7 +571,7 @@ export const ProductCarousel = ({}) => {
                                   </>
                                 ) : (
                                   <button
-                                    className=" md:h-8 mt-2 md:mt-3 md:text-base !leading-none   sm:h-10 sm:text-xs  text-lime border border-lightgreen bg-transparent w-full hover:bg-opacity-75 font-medium rounded-lg uppercase px-3 py-1.5 "
+                                    className=" md:h-8 mt-2 md:mt-3 md:text-base !leading-none   sm:h-10 sm:text-xs  text-lime border border-lightgreen bg-white w-full hover:bg-opacity-75 font-medium rounded-lg uppercase px-3 py-1.5 "
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       user_id

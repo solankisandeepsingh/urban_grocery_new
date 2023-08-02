@@ -27,7 +27,7 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
   return (
     <div className="md:mt-10 pb-[1000px]">
       <div className="md:invisible xs:visible ">
-        <Search setName={setName} setData={setData} />
+        <Search setName={setName} setData={setData} data={data}/>
       </div>
      
       <div className=" xs:grid xs:grid-cols-2 md:grid md:grid-cols-7 sm:grid-cols-3 flex flex-wrap md:ml-5  ">
