@@ -20,7 +20,7 @@ console.log(location,"loca")
     <>
       <div className="max-w-[100%]">
         <ul className="font-medium w-full">
-          <li className={`border border-light_gray ${location.pathname === "/address" ? ' bg-lime transition-all ease-in-out hover:scale-105':'text-light_gray hover:bg-[#b9b6b6]'} mb-2 rounded-xl shadow-md`}>
+          <li className={`border border-light_gray hover:scale-105 transition-all ease-in-out ${location.pathname === "/address" ? ' bg-lime  ':'text-light_gray hover:bg-[#dfdfdf]'} mb-2 rounded-xl shadow-sm`}>
             <NavLink to={"/address"}>
               <a
                 to="/address"
@@ -36,7 +36,7 @@ console.log(location,"loca")
               </a>
             </NavLink>
           </li>
-          <li className={`border border-light_gray ${location.pathname === "/myorder" ? ' bg-lime transition-all ease-in-out hover:scale-105':'text-lightgray hover:bg-[#b9b6b6]'} mb-2  rounded-xl shadow-md`}>
+          <li className={`border border-light_gray hover:scale-105 transition-all ease-in-out ${location.pathname === "/myorder" ? ' bg-lime ':'text-lightgray hover:bg-[#dfdfdf]'} mb-2  rounded-xl shadow-md`}>
             <NavLink to={"/myorder"}>
               <a
                 to="/myorder"
@@ -51,7 +51,7 @@ console.log(location,"loca")
               </a>
             </NavLink>
           </li>
-          <li className={`border border-light_gray ${location.pathname === "/about" ? ' bg-lime transition-all ease-in-out hover:scale-105':'text-lightgray hover:bg-[#b9b6b6]'} mb-2  rounded-xl shadow-md`}>
+          <li className={`border border-light_gray hover:scale-105 transition-all ease-in-out  ${location.pathname === "/about" ? ' bg-lime ':'text-lightgray hover:bg-[#dfdfdf]'} mb-2  rounded-xl shadow-md`}>
             <NavLink to={"/about"}> 
               <a
                 to="#"
@@ -67,7 +67,7 @@ console.log(location,"loca")
             </NavLink>
           </li>
 
-          <li className={`border border-light_gray ${location.pathname === "/contact" ? ' bg-lime transition-all ease-in-out hover:scale-105':'text-lightgray hover:bg-[#b9b6b6]'} mb-2 rounded-xl shadow-md`}>
+          <li className={`border border-light_gray  hover:scale-105 transition-all ease-in-out  ${location.pathname === "/contact" ? ' bg-lime ':'text-lightgray hover:bg-[#dfdfdf]'} mb-2 rounded-xl shadow-md`}>
             <NavLink to={"/contact"}>
               <a
                 to="#"
@@ -82,21 +82,7 @@ console.log(location,"loca")
             </NavLink>
           </li>
 
-          {/* <li className="border border-light_gray mb-2 shadow-lg">
-              <NavLink to={"/payment"}>
-                <a
-                  to="#"
-                  className="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  <AiTwotoneBank className="text-darkgray text-lg" />
-                  <span className="flex-1 ml-3  text-lightgray xs:text-xs font-normal">
-                    Payment
-                  </span>
-                </a>
-              </NavLink>
-            </li> */}
-
-          <li className={`border border-light_gray ${location.pathname === "/wallet" ? ' bg-lime transition-all ease-in-out hover:scale-105':'text-lightgray hover:bg-[#b9b6b6]'} mb-2 6] rounded-xl shadow-md`}>
+          <li className={`border border-light_gray hover:scale-105 transition-all ease-in-out   ${location.pathname === "/wallet" ? ' bg-lime ':'text-lightgray hover:bg-[#dfdfdf]'} mb-2 6] rounded-xl shadow-md`}>
             <NavLink to={"/wallet"}>
               <a
                 to="/wallet"
@@ -110,7 +96,7 @@ console.log(location,"loca")
               </a>
             </NavLink>
           </li>
-          <li className={`border border-light_gray ${location.pathname === "/privacy" ? ' bg-lime transition-all ease-in-out hover:scale-105':'text-lightgray hover:bg-[#b9b6b6]'} mb-2  rounded-xl shadow-md`}>
+          <li className={`border border-light_gray  hover:scale-105 transition-all ease-in-out  ${location.pathname === "/privacy" ? ' bg-lime ':'text-lightgray hover:bg-[#dfdfdf]'} mb-2  rounded-xl shadow-md`}>
             <NavLink to={"/privacy"}>
               <a
                 to="#"
@@ -125,7 +111,7 @@ console.log(location,"loca")
             </NavLink>
           </li>
 
-          <li className={`border border-light_gray ${location.pathname === "/conditons" ? ' bg-lime  transition-all ease-in-out hover:scale-105':'text-lightgray hover:bg-[#b9b6b6]'} mb-2  rounded-xl shadow-md`}>
+          <li className={`border border-light_gray hover:scale-105 transition-all ease-in-out ${location.pathname === "/conditons" ? ' bg-lime  ':'text-lightgray hover:bg-[#dfdfdf]'} mb-2  rounded-xl shadow-md`}>
             <NavLink to={"/conditons"}> 
               <a
                 to="#"
@@ -140,7 +126,7 @@ console.log(location,"loca")
             </NavLink>
           </li>
 
-          <li className={`border border-light_gray ${location.pathname === "/faq" ? 'bg-lime':'text-lightgray hover:bg-[#b9b6b6]'} mb-2  rounded-xl shadow-md`}>
+          <li className={`border border-light_gray hover:scale-105 transition-all ease-in-out ${location.pathname === "/faq" ? 'bg-lime':'text-lightgray hover:bg-[#dfdfdf]'} mb-2  rounded-xl shadow-md`}>
             <NavLink to={"/faq"}>
               <a
                 to="#"

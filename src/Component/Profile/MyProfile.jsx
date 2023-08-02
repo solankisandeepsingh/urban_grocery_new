@@ -208,7 +208,7 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
       <div className="fixed  z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
         <div className="bg-white rounded top-[5%] left-[5%]">
           <div className="flex justify-center items-center relative">
-            <div className="container relative  opacity-70">
+            <div className="container relative  opacity-100">
               <button
                 className="absolute top-[5%] right-[5%]"
                 onClick={closeLoginModal}
@@ -224,7 +224,7 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
                       </a>
                       <AiFillEdit
                         onClick={() => inputRef.current.click()}
-                        className="absolute cursor-pointer text-[20px] text-white md:top-5 sm:top-5 xs:top-7 bg-black rounded-full xs:right-3  md:right-0.5 sm:right-0.5 opacity-[50%] group-hover:opacity-[100%] transition-all "
+                        className="absolute cursor-pointer text-[20px] text-white bottom-[8%] right-[5%] opacity-[50%] group-hover:opacity-[100%] bg-black rounded-full transition-all "
                       />
                       <img
                         src={profile}

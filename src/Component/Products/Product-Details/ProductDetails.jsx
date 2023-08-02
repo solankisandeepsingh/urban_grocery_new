@@ -269,10 +269,10 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
             return (
               <>
                 <div className="md:flex ">
-                  <div className="img md:ml-20 xs:ml-1">
+                  <div className="img md:ml-20 sm:mx-14 xs:ml-1">
                     <Carousel
                       showIndicators={false}
-                      className="rounded-xl md:w-[400px] xs:w-80 sm:w-[500px] "
+                      className="rounded-xl md:w-[400px] xs:w-80 sm:w-[600px] "
                     >
                       <div className="transition-all hover:scale-105 rounded-xl ">
                         <img src={item.image} alt="" className="rounded-xl " />
@@ -287,7 +287,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                     </Carousel>
                   </div>
 
-                  <div className="xs:flex-col md:ml-[750px] md:p-6 md:fixed">
+                  <div className="xs:flex-col md:ml-[750px] md:p-6 md:fixed md:bg-[#f1efef] md:rounded-xl">
                     {item &&
                       item.variants.map((item) =>
                         item.stock > 0 ? null : (

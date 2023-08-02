@@ -26,7 +26,9 @@ export const Navbar = ({
 }) => {
   const navigate = useNavigate();
   const [showSearch, setShowSearch] = useState(true);
-  let menuRef = useRef();
+  let menuRef = useRef(null);
+  let deskRef = useRef(null);
+  let mobRef = useRef(null);
   const userButtonClicks = useRef(0);
   const [isOpen, setIsOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -66,6 +68,24 @@ export const Navbar = ({
   //     window.removeEventListener("scroll", handleScroll);
   //   };
   // }, []);
+
+  const handleClickOutside = (event) => {
+    // Check if the click occurred outside the modal box
+    if (menuRef.current && !menuRef.current.contains(event.target) && !deskRef.current.contains(event.target)
+    ) {
+      setIsOpen(false);
+      setMobileOpen(false);
+    }
+  };
+  useEffect(() => {
+    // Add event listener when the component mounts
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     setShowSearch(true);
@@ -116,12 +136,12 @@ export const Navbar = ({
   }
   return (
     <div className="">
-      <nav className=" px-2 sm:px-4 fixed w-full z-20 top-0 left-0 border-b border-light_gray shadow-sm bg-white">
+      <nav className=" px-2  sm:px-0 fixed w-full z-20 top-0 left-0 border-b border-light_gray shadow-sm bg-white">
         <div className="bg-white flex flex-wrap items-center justify-between mx-auto ">
           <div>
             <img
               src="http://grocery.intelliatech.in/dist/img/logo.png"
-              className="h-6 md:w-[150px] md:h-[50px] md:ml-8 mr-3 mt-2 sm:h-9 bg-white cursor-pointer"
+              className="h-6 md:w-[150px] md:h-[50px] md:ml-8 sm:px-6 mr-3 mt-2 sm:h-9 bg-white cursor-pointer"
               alt="Flowbite Logo"
               onClick={handleClickHome}
             />
@@ -164,6 +184,7 @@ export const Navbar = ({
                       console.log("working");
                       setOpenLogin(true);
                     }}
+                    ref={mobRef}
                   >
                     {/* <button className=" text-white font-bold bg-lime md:p-2 md:mb-2.5  xs:p-1  xs:mr-16 xs:mt-3  rounded-lg sm:text-md md:text-md text-center">
                     {name}
@@ -321,10 +342,11 @@ export const Navbar = ({
                 {!(user_id == false) ? (
                   <div
                     // className="flex sm:mr-3 items-center h-[30px] md:ml-[-145px] rounded-lg md:px-2 md:mt-5 xs:mt-3 bg-white"
-                    className="flex  justify-center items-center hover:border hover:border-light_gray  mr-3 text-center cursor-pointer hover:shadow-sm rounded-br-[50px]  rounded-tr-[50px]  rounded-l-[100px]"
+                    className="flex justify-center items-center hover:border hover:border-light_gray  mr-3 text-center cursor-pointer hover:shadow-sm rounded-br-[50px]  rounded-tr-[50px]  rounded-l-[100px]"
                     onClick={() => {
                       setIsOpen(!isOpen);
                     }}
+                    ref={deskRef}
                   >
                     {isValidImg ? (
                       <img
@@ -361,47 +383,47 @@ export const Navbar = ({
 
                 {isOpen && (
                   <div
-                    className="top-0 p-5 pt-0 right-0 mt-2 w-56 shadow-lg rounded-b-lg bg-white  xs:mt-[73px] md:ml-[980px] md:my-[54px] border border-light_gray sm:ml-[400px] xs:ml-[100px] z-10 absolute px-4"
+                    className="top-0 p-5 pt-0 right-0 mt-2 w-56 shadow-lg rounded-lg bg-[#f5f4f4]  xs:mt-[73px] md:ml-[980px] md:my-[54px] border border-light_gray sm:ml-[400px] xs:ml-[100px] z-10 absolute px-4"
                     ref={menuRef}
                   >
-                    <ul className="mt-4 bg-white">
-                      <li className=" bg-white cursor-pointer">
-                        <p className="bg-white mt-4 sm:text-2xl md:text-lg">
+                    <ul className="mt-">
+                      <li className="cursor-pointer">
+                        <p className="mt-4 sm:text-2xl md:text-lg">
                           My Account
                         </p>
-                        <p className="bg-white sm:text-2xl md:text-[15px] font-bold">
+                        <p className="sm:text-2xl md:text-[15px] font-bold">
                           {mobile}
                         </p>
                         <hr />
                       </li>
 
-                      <li className="bg-white  cursor-pointer">
+                      <li className="cursor-pointer">
                         <NavLink to={"/myorder"}>
                           <p
                             onClick={() => setIsOpen(false)}
-                            className="bg-white sm:text-lg md:text-sm mt-4"
+                            className= "sm:text-lg md:text-sm mt-4"
                           >
                             My Orders
                           </p>
                         </NavLink>
                       </li>
 
-                      <li className="bg-white  cursor-pointer">
+                      <li className="cursor-pointer">
                         <NavLink to={"/address"}>
                           <p
                             onClick={() => setIsOpen(false)}
-                            className="bg-white sm:text-lg md:text-sm mt-4"
+                            className=" sm:text-lg md:text-sm mt-4"
                           >
                             Saved Address
                           </p>
                         </NavLink>
                       </li>
 
-                      <li className="  bg-white cursor-pointer">
+                      <li className="  cursor-pointer">
                     
                           <p
                             onClick={handleProfile}
-                            className="bg-white sm:text-lg md:text-sm mt-4"
+                            className="sm:text-lg md:text-sm mt-4"
                           >
                             My Profile
                           </p>
@@ -410,49 +432,49 @@ export const Navbar = ({
 
                       
 
-                      <li className=" bg-white cursor-pointer">
+                      <li className=" cursor-pointer">
                         <div className="flex justify-between mt-4  ">
                           <NavLink to={"/wallet"}>
                             <p
                               onClick={() => setIsOpen(false)}
-                              className="bg-white sm:text-lg md:text-sm"
+                              className="sm:text-lg md:text-sm"
                             >
                               My Wallet
                             </p>
                           </NavLink>
                           <p
                             onClick={() => setIsOpen(false)}
-                            className="bg-white sm:text-lg md:text-sm"
+                            className="sm:text-lg md:text-sm"
                           >
                             ₹500
                           </p>
                         </div>
                       </li>
-                      <li className="bg-white cursor-pointer">
+                      <li className="cursor-pointer">
                         <NavLink to={"/faq"}>
                           <p
                             onClick={() => setIsOpen(false)}
-                            className="bg-white sm:text-lg md:text-sm mt-4"
+                            className=" sm:text-lg md:text-sm mt-4"
                           >
                             FAQ
                           </p>
                         </NavLink>
                       </li>
-                      <li className="bg-white cursor-pointer">
+                      <li className="cursor-pointer">
                         <NavLink to={"/myorderdetails"}>
                           <p
                             onClick={() => setIsOpen(false)}
-                            className="bg-white sm:text-lg md:text-sm mt-4"
+                            className=" sm:text-lg md:text-sm mt-4"
                           >
                             New Order Details
                           </p>
                         </NavLink>
                       </li>
 
-                      <li className="bg-white cursor-pointer">
+                      <li className=" cursor-pointer">
                         <p
                           onClick={handleLogout}
-                          className="bg-white sm:text-lg md:text-sm mt-4 cursor-pointer"
+                          className="sm:text-lg md:text-sm mt-4 cursor-pointer"
                         >
                           Log Out
                         </p>
