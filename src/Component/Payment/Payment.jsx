@@ -10,7 +10,7 @@ import { HiOfficeBuilding } from "react-icons/hi";
 import { FaHome } from "react-icons/fa";
 import { currencyFormatter } from "../../utils/utils";
 import { usePaymentStore } from "../zustand/usePaymentStore";
-import CryptoJS, {HmacSHA256} from "crypto-js";
+import CryptoJS, { HmacSHA256 } from "crypto-js";
 import { useApiStore } from "../zustand/useApiStore";
 
 // import {  SiRazorpay } from "../react-icons/si";
@@ -142,19 +142,18 @@ function Payment({ price }) {
         console.log(generated_signature, response.razorpay_signature);
 
         if (generated_signature == response.razorpay_signature) {
-
-          placeOrder().then((res) => {
-            console.log(res);
-            navigate("/success");
-            clearCartApi();
-            setAllCartItems([]);
-            setisLoading(false);
-          })
-          .catch((err) => {
-            console.log(err.message);
-            setisLoading(false);
-          });
-
+          placeOrder()
+            .then((res) => {
+              console.log(res);
+              navigate("/success");
+              clearCartApi();
+              setAllCartItems([]);
+              setisLoading(false);
+            })
+            .catch((err) => {
+              console.log(err.message);
+              setisLoading(false);
+            });
         }
       },
       prefill: {
@@ -174,13 +173,12 @@ function Payment({ price }) {
     paymentObject.open();
   }
 
-  let placeOrder = ()=>{
+  let placeOrder = () => {
     let config = {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
     };
-
 
     let orderData = new FormData();
     orderData.append("accesskey", "90336");
@@ -210,22 +208,19 @@ function Payment({ price }) {
     // orderData.append("status", "awaiting_payment ");
     // orderData.append("delivery_time", "Today - Evening (4:00pm to 7:00pm)");
 
-    
     setisLoading(true);
 
-    return axios
-      .post(
-        "https://grocery.intelliatech.in/api-firebase/order-process.php",
-        orderData,
-        config
-      )
-
-  }
+    return axios.post(
+      "https://grocery.intelliatech.in/api-firebase/order-process.php",
+      orderData,
+      config
+    );
+  };
 
   const handleConfirmOrder = () => {
     if (chosenPayment === "COD") {
-      
-        placeOrder().then((res) => {
+      placeOrder()
+        .then((res) => {
           console.log(res);
           navigate("/success");
           clearCartApi();
@@ -237,13 +232,13 @@ function Payment({ price }) {
           console.log(err.message);
           setisLoading(false);
         });
-        
     } else if (chosenPayment === "razorpay") {
       displayRazorpay();
     }
   };
 
   const handlePaymentMethod = (id) => {
+    console.log(id);
     setChosenPayment(id);
   };
 
@@ -319,29 +314,39 @@ function Payment({ price }) {
   return (
     <>
       {/* <div className="flex justify-evenly items-center text-center"> */}
-      <div className="xs:flex xs:flex-col xs:my-[60px] md:flex md:flex-row md:justify-evenly md:items-center md:text-center xs:mx-3 sm:mx-7">
+      <div className="xs:flex h-[100vh] xs:flex-col xs:my-[60px] md:flex md:flex-row md:justify-between rounded-md border-light_gray md:items-center border md:text-center xs:mx-3 sm:m-20 bg-[#fafafa] px-5">
         {/* <div className=" flex w-[50%] items-center justify-center"> */}
-        <div className="xs:w-[350px] sm:w-[700px] md:w-[50%]">
-          <div className="p-6 xs:h-[40vh] sm:h-[26vh] md:h-[40vh] rounded-lg shadow-2xl">
-            <h2 className="text-2xl font-bold mb-3">Payment</h2>
-            <div className="mb-3">
-              Select Payment Method
+        <div className="xs:w-full self-start h-auto min-h-[75vh] sm:w-[700px] md:w-[35%] ">
+          <div className="mt-5  rounded-lg shadow-2xl min-h-[75vh] h-auto">
+            <div className="bg-[#6ba9c5] py-2 rounded-t-lg">
+              <h2 className="text-2xl text-white font-bold ">
+                Select Payment Method
+              </h2>
+            </div>
+            <div className="mb-3 px-6 flex flex-col justify-between mt-3">
               {paymentOptionsArray.map((item) => {
                 return (
                   paymentMethods[`${item.id}`] == 1 && (
-                    <div key={item.id} className="flex items-center py-2">
-                      {console.log(paymentMethods[`${item.id}`])}
+                    <div
+                      key={item.id}
+                      className="flex w-full border-b bg-[#f2f2f2] cursor-pointer border-light_gray items-center mt-2 px-4 py-3"
+                      onClick={() => {
+                        handlePaymentMethod(item.code);
+                      }}
+                    >
+                      {/* {console.log(paymentMethods[`${item.id}`])} */}
+                      {console.log(item, 'MYITEM<><><>')}
                       <input
                         className="mr-2 leading-tight"
                         type="radio"
                         name={"payment method "}
                         id={item.id}
-                        onClick={() => {
-                          handlePaymentMethod(item.code);
-                        }}
+                        checked={chosenPayment == item.code }
                       />
                       {/* <BsCashStack /> */}
-                      <label htmlFor={item.id}>{item.label}</label>
+                      <label className="ml-2" htmlFor={item.id}>
+                        {item.label}
+                      </label>
                     </div>
                   )
                 );
@@ -363,9 +368,11 @@ function Payment({ price }) {
         <div>
           <div>
             {/* <div className="mt-28 border border-light_gray p-3 h-auto w-[350px]"> */}
-            <div className="xs:my-16  border border-light_gray p-3 h-auto w-[350px] sm:w-[700px] md:w-[350px]">
-              <h2 className="text-[black] font-bold sm:text-center">Order Summary</h2>
-              <div className="my-4">
+            <div className="xs:my-16  border border-light_gray h-auto w-[350px] rounded-lg bg-white hidden md:block md:w-[275px]">
+              <div className="w-full py-3 bg-[#64bd59] rounded-t-lg text-white ">
+                <h2 className=" font-bold sm:text-center">Order Summary</h2>
+              </div>
+              <div className="my-4 p-3">
                 <p className="text-[black] text-left font-bold">
                   Delivery Address:{" "}
                 </p>
@@ -398,7 +405,7 @@ function Payment({ price }) {
 
               <div className="border-b border-light_gray my-2 "></div>
 
-              <div className="flex flex-col list-none mt-2 mb-4">
+              <div className="flex flex-col p-3 list-none mt-2 mb-4">
                 <h2 className="font-bold text-start">Payment Details</h2>
 
                 {/* {allCartItems.map((item, index) => (

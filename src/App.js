@@ -224,8 +224,6 @@ function App() {
             element={
               <Allproducts
                 name={name}
-                setAddItem={setAddItem}
-                addItem={addItem}
                 user_id={user_id}
                 setUser_id={setUser_id}
               />

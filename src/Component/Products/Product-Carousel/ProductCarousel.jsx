@@ -8,6 +8,7 @@ import { API_TOKEN } from "../../Token/Token";
 import { useCartStore } from "../../zustand/useCartStore";
 import { useUserStore } from "../../zustand/useUserStore";
 import { useLoaderState } from "../../zustand/useLoaderState";
+import { useProductsStore } from "../../zustand/useProductsStore";
 import { useApiStore } from "../../zustand/useApiStore";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useFavStore } from "../../zustand/useFavStore";
@@ -15,10 +16,11 @@ import { currencyFormatter } from "../../../utils/utils";
 // import { useNavigate } from "react-router-dom";
 
 export const ProductCarousel = ({}) => {
-  const { allCartItems, setAllCartItems } = useCartStore();
+  const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
   console.log(allCartItems, "After Destructure");
-  const [showAllProduct, setShowAllProducts] = useState([]);
-  const [variant, setVariant] = useState({ 0: 0 });
+  const { allProducts, setAllProducts } = useProductsStore();
+
+  // const [variant, setVariant] = useState({ 0: 0 });
   const [favPos, setFavPos] = useState(false);
   const navigate = useNavigate();
   const { jwt, setJwt } = useApiStore();
@@ -31,10 +33,12 @@ export const ProductCarousel = ({}) => {
   const [fav, setFav] = useState();
 
   const handleVariantChange = (id, e) => {
+    console.log(variant);
     console.log(e.target.value);
-    setVariant((prev) => {
-      return { ...prev, [id]: e.target.value };
-    });
+
+    let updatedvariant = { ...variant, [id]: e.target.value };
+
+    setVariant(updatedvariant);
   };
 
   const mockData = [
@@ -245,8 +249,8 @@ export const ProductCarousel = ({}) => {
         config
       )
       .then((res) => {
-        setShowAllProducts(res.data.data);
         setisLoading(false);
+        setAllProducts(res.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -274,7 +278,7 @@ export const ProductCarousel = ({}) => {
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
-      items: 3,
+      items: 2,
     },
   };
 
@@ -468,12 +472,12 @@ export const ProductCarousel = ({}) => {
 
       <div className="md:my-2 ">
         <Carousel responsive={responsive}>
-          {showAllProduct &&
-            showAllProduct.map((item) => {
+          {allProducts &&
+            allProducts.map((item) => {
               return (
                 <>
                   <div
-                    className="w-72 xs:w-[100px]  xs:h-auto md:w-40 md:h-[235px] sm:h-[250px] sm:w-[170px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green  bg-white cursor-pointer"
+                    className="w-72  xs:w-36  xs:h-auto md:w-40 md:h-[235px] sm:h-[250px] sm:w-[170px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green bg-[#FFFAED] cursor-pointer"
                     onClick={() => {
                       navigate(
                         `/subcategory-details/${item.category_name}/product-details/${item.id}`
@@ -481,8 +485,7 @@ export const ProductCarousel = ({}) => {
                     }}
                   >
                     <img
-                      // className="w-full h-56 xs:w-48 xs:h-16 md:h-24 md:ml-[23px] md:w-28 md:mt-4 sm:w-48 sm:h-32 rounded-lg bg-white"
-                      className="w-full h-56 xs:w-48 xs:h-16 md:h-28 md:w-40  sm:w-48 sm:h-32 rounded-lg bg-white"
+                      className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-24 md:ml-[23px] md:w-28 md:mt-4 sm:w-48 sm:h-32 rounded-lg "
                       src={
                         item.variants.length == 1
                           ? item.image
@@ -490,8 +493,8 @@ export const ProductCarousel = ({}) => {
                       }
                       alt={item.name}
                     />
-                    <div className=" pt-2 md:py-2 md:mx-4 xs:mx-2 sm:mx-4 bg-white">
-                      <p className="md:text-sm xs:text-sm sm:text-[20px]  font-medium bg-white  truncate ">
+                    <div className=" pt-2 md:py-2 md:mx-4 xs:mx-2 sm:mx-4 ">
+                      <p className="md:text-sm xs:text-sm sm:text-[20px]  font-medium   truncate ">
                         {item.name}
                       </p>
                     </div>
@@ -528,7 +531,7 @@ export const ProductCarousel = ({}) => {
                                 />
                               ))} */}
                             <div className="  w-full md:px-3 ">
-                              <p className="2xs:text-base xs:text-sm t sm:text-xl  md:text-sm font-light bg-white px-1 py-1 flex md:flex-row xs:flex-col justify-between items-center">
+                              <p className="2xs:text-base xs:text-sm t sm:text-xl  md:text-sm font-light  px-1 py-1 flex md:flex-row  justify-between items-center">
                                 <span className=" font-bold text-xs">
                                   {currencyFormatter(data.price)}{" "}
                                 </span>
@@ -580,7 +583,7 @@ export const ProductCarousel = ({}) => {
                                   </button>
                                 )
                               ) : (
-                                <p className=" bg-white text-orange md:text-[11px] text-sm font-medium md:mt-4 pb-4 sm:text-xs xs:text-[11px] sm:my-[25px] sm:text-[11px]  sm:break-normal">
+                                <p className="  text-orange md:text-[11px] text-sm font-medium md:mt-4 pb-4 sm:text-xs xs:text-[11px] sm:my-[25px] sm:text-[11px]  sm:break-normal">
                                   Out of stock
                                 </p>
                               )}
@@ -620,7 +623,7 @@ export const ProductCarousel = ({}) => {
                             onChange={(e) => {
                               handleVariantChange(item.id, e);
                             }}
-                            className="block w-full py-2 px-1 items-center border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs text-center font-bold"
+                            className="block w-full py-2 px-1 items-center border border-gray-300  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs text-center font-bold"
                           >
                             {/* <option value="">City</option> */}
                             {item.variants.map((variant, index) => (
@@ -689,7 +692,7 @@ export const ProductCarousel = ({}) => {
                               </button>
                             )
                           ) : (
-                            <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:text-xs  xs:text-xs">
+                            <p className="  text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:text-xs  xs:text-xs">
                               Out of stock
                             </p>
                           )}

@@ -31,7 +31,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const [reviewOpen, setReviewOpen] = useState(false);
   const { id } = useParams();
   const { setisLoading } = useLoaderState();
-  const { allCartItems, setAllCartItems } = useCartStore();
+  const { allCartItems, setAllCartItems,  variant, setVariant  } = useCartStore();
   const { userInfo} = useUserStore();
   const [value, setValue] = React.useState(0);
   const [isValidImg, setisValidImg] = useState(false);
@@ -398,6 +398,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                                           /> */}
                                           <CartQuantity
                                             item={item}
+                                            variant={variant}
                                             // setAllCartItems={setAllCartItems}
                                             // allCartItems={allCartItems}
                                             // user_id={user_id}

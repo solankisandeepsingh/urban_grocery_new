@@ -15,7 +15,6 @@ import { useApiStore } from "../zustand/useApiStore";
 export const Login = ({
   // setUser_id,
   // setLoggedIn,
-  getUserCarts,
   setNewUserLog,
   setOpenLogin,
 }) => {
@@ -23,7 +22,7 @@ export const Login = ({
     phone: "",
     password: "",
   });
-  const { allCartItems, config, clearCartApi } = useCartStore();
+  const { allCartItems, config, clearCartApi, setAllCartItems } = useCartStore();
   const { setUserInfo } = useUserStore();
   const [showSignUp, setShowSignUp] = useState(false);
   const [loginForm, setLoginForm] = useState(true);
@@ -54,6 +53,48 @@ export const Login = ({
     navigate("/");
   };
   console.log(allCartItems, "INSIDE LOGIN AFERT LOGIN");
+
+  // const getUserCarts = (user_id) => {
+  //   let config = {
+  //     headers: {
+  //       Authorization: `Bearer ${jwt}`,
+  //     },
+  //   };
+
+  //   var bodyFormdata = new FormData();
+  //   bodyFormdata.append("accesskey", '90336');
+  //   bodyFormdata.append("get_user_cart", "1");
+  //   bodyFormdata.append("user_id", user_id);
+  //   setisLoading(true);
+
+  //   return axios
+  //     .post(
+  //       "https://grocery.intelliatech.in/api-firebase/cart.php",
+  //       bodyFormdata,
+  //       config
+  //     )
+  //     .then((res) => {
+  //       console.log(res, "[GET USER CART API RESPONSE]");
+
+  //       let addQtyAmount = res?.data?.data?.map((data) => ({
+  //         ...data,
+  //         amount: +data.qty,
+  //       }));
+  //       console.log(addQtyAmount, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+  //       // setAddItem(addQtyAmount);
+
+  //       {
+  //         addQtyAmount && setAllCartItems(addQtyAmount);
+  //       }
+  //       setisLoading(false);
+  //       total();
+  //       totalAmount();
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       setisLoading(false);
+  //     });
+  // };
 
   const inputHandler = (e) => {
     let name = e.target.name;
@@ -138,7 +179,7 @@ export const Login = ({
               )
               .then((res) => {
                 console.log(res, "res<><><><><><><><>");
-                getUserCarts(newUserId);
+                // getUserCarts(newUserId);
                 setisLoading(false);
               })
               .catch((error) => {
@@ -148,6 +189,9 @@ export const Login = ({
           };
 
           addMultipleItems();
+          console.log('getuser');
+          // getUserCarts(newUserId);
+          
         } else {
           toast.error("Invalid phone OR password! !", {
             position: toast.POSITION.TOP_CENTER,
