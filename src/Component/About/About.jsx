@@ -60,7 +60,7 @@ export const About = () => {
 
         <div className="md:w-[60%] sm:w-[60%] xs:w-[85%] ">
           <div class="bg-white">
-            <p class="text-lg font-bold text-black xs:my-6">
+            <p class="text-xs  text-black xs:my-6">
               {stripHTML(about)}
             </p>
           </div>

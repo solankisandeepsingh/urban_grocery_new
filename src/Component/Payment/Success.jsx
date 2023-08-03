@@ -1,7 +1,7 @@
 import React from "react";
-import { FaArrowLeft } from "react-icons/fa";
+import { BsCart3 } from "react-icons/bs";
+import { FaArrowLeft, FaHome } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { FaHome } from "react-icons/fa";
 import { useCartStore } from "../zustand/useCartStore";
 
 export const Success = ({  setNavbarOpen }) => {
@@ -34,24 +34,22 @@ export const Success = ({  setNavbarOpen }) => {
                 />
               </svg>
               <h1 className="text-4xl font-bold">Order Placed Successfully!</h1>
-              
+              {/* <p>Thank you for your Shopping! Please Visit Again.</p> */}
               <button
-                className="inline-flex items-center px-3 py-2 rounded-lg text-lime bg-indigo-600 border border-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring"
-                onClick={()=>{
-                  setNavbarOpen(true)
-                  navigate('/myorder')
-                }}
+                className="inline-flex items-center group px-3 py-2 hover:bg-lime hover:text-white rounded-lg text-lime bg-indigo-600 border border-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring"
+                onClick={()=>navigate("/myorder")}
               >
-                <FaArrowLeft className=" w-3 h-3 mr-1" />
-                Goto My Orders
+                <BsCart3 className=" text-lime group-hover:text-white text-2xl mr-3 " />
+                 My Cart
               </button>
+
               <button
-                className="inline-flex items-center px-3 py-2 rounded-lg text-lime bg-indigo-600 border border-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring"
+                className="inline-flex items-center group px-3 py-2 rounded-lg hover:text-white hover:bg-lime  text-lime bg-indigo-600 border border-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring"
                 onClick={goToHome}
               >
-                <FaArrowLeft className=" w-3 h-3 mr-1" />
-                Click here for Home
-              </button>          
+                <FaHome className="mr-3 text-lime group-hover:text-white text-2xl" />
+                Home
+              </button>
             </div>
           </div>
         </div>

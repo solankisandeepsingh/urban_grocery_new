@@ -358,20 +358,34 @@ export const ProductCarousel = ({}) => {
   };
 
   const addItemUI = (mainItem) => {
-    console.log(mainItem);
-
-    let newArr = [
+    console.log("INSIDE");
+    let newArr = [];
+    if (mainItem.variants.length > 1) {
+      console.log('MORE <><><><><><>');
+      newArr = [
+        ...allCartItems,
+        {
+          ...mainItem.variants[variant[mainItem.id] || 0],
+          amount: 1,
+          name: mainItem.name,
+          image: mainItem.variants[variant[mainItem.id] || 0].images[0],
+          product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
+        },
+      ];
+      
+    } else { 
+      console.log('LESS <><><><><><><>');
+      newArr = [
       ...allCartItems,
       {
-        ...mainItem.variants[variant[mainItem.id] || 0],
+        ...mainItem.variants[variant[mainItem.id] || 0],   
+         
         amount: 1,
         name: mainItem.name,
-        image: mainItem.variants[variant[mainItem.id] || 0].images[0],
+        image: mainItem.image,
         product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
       },
-    ];
-
-    console.log(newArr, "FROM ADD ITEM UI");
+    ]}
     setAllCartItems(newArr);
   };
 
@@ -471,7 +485,7 @@ export const ProductCarousel = ({}) => {
       </div>
 
       <div className="md:my-2 ">
-        <Carousel responsive={responsive}>
+        <Carousel responsive={responsive} className="z-0">
           {allProducts &&
             allProducts.map((item) => {
               return (
@@ -485,7 +499,7 @@ export const ProductCarousel = ({}) => {
                     }}
                   >
                     <img
-                      className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-24 md:ml-[23px] md:w-28 md:mt-4 sm:w-48 sm:h-32 rounded-lg "
+                      className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-28  md:w-40  sm:w-48 sm:h-32 rounded-lg "
                       src={
                         item.variants.length == 1
                           ? item.image
@@ -571,7 +585,7 @@ export const ProductCarousel = ({}) => {
                                   </>
                                 ) : (
                                   <button
-                                    className=" md:h-8 mt-2 md:mt-3 md:text-base !leading-none   sm:h-10 sm:text-xs  text-lime border border-lightgreen bg-white w-full hover:bg-opacity-75 font-medium rounded-lg uppercase px-3 py-1.5 "
+                                    className=" md:h-8 mt-2 md:mt-3 md:text-base !leading-none   sm:h-10 sm:text-xs  text-lime border border-lightgreen bg-transparent w-full hover:bg-opacity-75 font-medium bg-white rounded-lg uppercase px-3 py-1.5 "
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       user_id

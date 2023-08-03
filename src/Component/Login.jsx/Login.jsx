@@ -215,9 +215,9 @@ export const Login = ({
         <>
           <ToastContainer />
           <div className="fixed  z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
-            <div className="bg-white rounded top-[5%] left-[5%]">
+            <div className="bg-[#f5f5f5] rounded top-[5%] left-[5%]">
               <div className="flex justify-center items-center relative">
-                <div className="container relative  opacity-70">
+                <div className="container relative  ">
                   <button
                     className="absolute top-[5%] right-[5%]"
                     onClick={closeLoginModal}
@@ -239,7 +239,7 @@ export const Login = ({
                       <div></div>
                       <div className="gap-5 mt-5">
                         <input
-                          className="w-full border-red-800 bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg  focus:shadow-outline "
+                          className="w-full border-red-800  text-gray-900 mt-2 p-3 rounded-lg  focus:shadow-outline "
                           type="text"
                           onChange={inputHandler}
                           name="phone"
@@ -265,11 +265,11 @@ export const Login = ({
                         >
                           Login
                         </button>
-                        <div className="" onClick={handleForgotPassword}>
+                        {/* <div className="" onClick={handleForgotPassword}>
                           <p className="cursor-pointer xs:ml-8">
                             Forgot password?
                           </p>
-                        </div>
+                        </div> */}
                       </div>
 
                       <div className="text-center lg:text-left">
@@ -277,7 +277,7 @@ export const Login = ({
                           Don't have an account?
                           <a
                             href=""
-                            className="text-danger transition ml-2 duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
+                            className="text-danger transition ml-2 text-[green] duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
                             onClick={handleShow}
                           >
                             Register

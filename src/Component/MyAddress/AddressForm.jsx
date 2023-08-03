@@ -238,7 +238,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
                           onChange={handleInputChange}
                           className="hidden"
                         />
-                        <span className=" text-lightGrayBlinkit bg-colorGray border border-light_gray hover:border-GreenBlinkit hover:bg-[#f2f2f2] cursor-pointer py-1 px-2 rounded-lg text-xs">
+                        <span className= {`text-lightGrayBlinkit ${addressData.type === 'Home' ? "bg-lime text-[white]" :'hover:bg-[#f2f2f2]'} bg-colorGray border border-light_gray hover:border-GreenBlinkit  cursor-pointer py-1 px-2 rounded-lg text-xs`}>
                           Home
                         </span>
                       </label>
@@ -252,7 +252,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
                           onChange={handleInputChange}
                           className="hidden p-3 bg-lime"
                         />
-                        <span className=" text-lightGrayBlinkit bg-colorGray border border-light_gray hover:border-GreenBlinkit hover:bg-[#f2f2f2] cursor-pointer py-1 px-2 rounded-lg text-xs">
+                        <span className={`text-lightGrayBlinkit ${addressData.type === 'Work' ? "bg-lime text-[white]" :'hover:bg-[#f2f2f2]'} bg-colorGray border border-light_gray hover:border-GreenBlinkit  cursor-pointer py-1 px-2 rounded-lg text-xs`}>
                           Work
                         </span>
                       </label>
@@ -266,7 +266,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
                           onChange={handleInputChange}
                           className="hidden"
                         />
-                        <span className=" text-lightGrayBlinkit bg-colorGray border border-light_gray hover:border-GreenBlinkit hover:bg-[#f2f2f2] cursor-pointer py-1 px-2 rounded-lg text-xs">
+                        <span className={`text-lightGrayBlinkit ${addressData.type === 'Other' ? "bg-lime text-[white]" :'hover:bg-[#f2f2f2]'} bg-colorGray border border-light_gray hover:border-GreenBlinkit  cursor-pointer py-1 px-2 rounded-lg text-xs`}>
                           Other
                         </span>
                       </label>

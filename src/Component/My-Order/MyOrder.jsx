@@ -78,19 +78,20 @@ export const MyOrder = ({ addItem }) => {
           <Aside />
         </div>
 
-      
         <div className="md:w-[60%] sm:w-[60%] xs:w-[85%] ">
-  
           {/* <div className="md:w-[60%] xs:w-full "> */}
-          <div className=" border border-light_gray p-4">
-            {allOrderDetails &&
+          <div className=" border border-light_gray p-4 rounded-md">
+            {allOrderDetails?.length > 0 ?(
               allOrderDetails.map((item) => {
                 return (
-                  <div className="bg border-b flex justify-between items-center  border-[#e8e8e8] py-3">
+                  <div  
+                  onClick={() => handleOrderDetails(item.id)}
+                  className="bg border-b flex justify-between items-center cursor-pointer rounded hover:bg-[#f5f5f5]  border-[#e8e8e8] py-3">
+
                     <div className="w-[95%]">
                       <div className="flex ml-3 justify-between text-center">
                         <div>
-                          <p className="font-bold">Order_Id : {item.id}</p>
+                          <p className="font-bold text-gryColour">Order Id : {item.id}</p>
                         </div>
                         <div>
                           <p className="text-lime font-bold">
@@ -101,19 +102,22 @@ export const MyOrder = ({ addItem }) => {
 
                       <div className="flex justify-between text-center mt-3">
                         <div>
-                          <p className=" ml-3 text-gryColour break-all">
+                          <p className=" ml-3  break-all">
                             {item.items.length} Items
                           </p>
                         </div>
                         <div>
+                          { item.delivery_time?
                           <p className="text-gryColour">
                             Place-Order : {item.delivery_time}
-                          </p>
+                          </p>:
+                          <></>
+                          }
                         </div>
                       </div>
 
                       <div className="flex justify-between mt-3">
-                        <div className=" text-gryColour break-all text-sm">
+                        <div className="  break-all text-sm">
                           {item.items &&
                             item.items.map((data) => (
                               <p className="ml-3   ">{data.product_name}</p>
@@ -122,10 +126,12 @@ export const MyOrder = ({ addItem }) => {
                       </div>
 
                       <div className="flex justify-end ">
-                        <div className="flex bg-skybluelight   justify-center items-center  border mb-4  m-2 border-light_gray p-1 rounded-lg w-32 text-[12px]">
-                          <p className="text-text-black">{item.active_status.toLocaleUpperCase()}</p>
+                        <div className="flex bg-skybluelight  shadow-sm justify-center items-center  border mb-4  m-2 border-light_gray p-1 rounded-lg w-32 text-[12px]">
+                          <p className="text-text-black">
+                            {item.active_status.toLocaleUpperCase()}
+                          </p>
                         </div>
-                        <div className="flex shadow-lg gap-2 mt-2 w-36 text-[12px] mb-4 border border-light_gray p-1 rounded-lg">
+                        <div className="flex shadow-sm gap-2 mt-2 w-36 text-[12px] mb-4 border border-light_gray p-1 rounded-lg">
                           <div className="text-[18px]">
                             <GiScooter />
                           </div>
@@ -137,7 +143,7 @@ export const MyOrder = ({ addItem }) => {
                     </div>
                     <div
                       className=" cursor-pointer"
-                      onClick={() => handleOrderDetails(item.id)}
+                     
                     >
                       <BsChevronRight />
                     </div>
@@ -153,7 +159,12 @@ export const MyOrder = ({ addItem }) => {
                     {/* <hr className="mb-2 text-gryColour" /> */}
                   </div>
                 );
-              })}
+              })
+            ) : <>
+              <p className="text-lg font-bold ">No Orders Yet</p>
+            </>
+                
+              }
           </div>
         </div>
         {/* ) : (

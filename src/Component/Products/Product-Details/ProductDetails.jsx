@@ -287,15 +287,15 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                     </Carousel>
                   </div>
 
-                  <div className="xs:flex-col md:ml-[750px] md:p-6 md:fixed md:bg-[#f7f7f7] md:rounded-xl">
-                    {item &&
+                  <div className="xs:flex-col md:ml-[750px] md:p-6 md:fixed xs:bg-[#f7f7f7] xs:p-2 sm:px-3 md:bg-[#f7f7f7] md:rounded-xl">
+                    {/* {item &&
                       item.variants.map((item) =>
                         item.stock > 0 ? null : (
                           <p className="text-orange text-sm md:text-lg font-medium sm:text-2xl">
                             Out of stock
                           </p>
                         )
-                      )}
+                      )} */}
                     <div className="2xs:flex 2xs:mt-4 xs:flex xs:mt-4 sm:mt-8 md:flex md:gap-4 sm:gap-7 xs:gap-6 2xs:gap-3">
                       <div className="2xs:flex xs:flex 2xs:gap-1 xs:gap-1  md:flex md:gap-1 ">
                         {wishlist ? (
@@ -351,12 +351,12 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                                   {data.measurement}{" "}
                                   {data.measurement_unit_name}
                                 </p>
-                                <div className="flex flex-row gap-4 mt-2 sm:mt-5">
-                                  <div className="box-border h-16 md:w-40 xs:w-44 px-4 xs:px-2 border-2  border-light_gray rounded-lg text-center text-lime">
+                                <div className="flex flex-row gap-4 mt-2 sm:mt-5 ">
+                                  <div className="box-border h-16 md:w-40 xs:w-44 px-4 xs:px-2 border-2 bg-white border-light_gray rounded-lg text-center text-lime">
                                     <img
                                       src="https://media.istockphoto.com/id/1426338781/vector/return-parcel-box-line-icon-exchange-package-of-delivery-service-linear-pictogram-arrow-back.jpg?b=1&s=170x170&k=20&c=wJ3CCtEVjfm-5h8m-auMfNdIbRB2ouYfe8CX9eAExVs="
                                       alt=""
-                                      className="w-9 h-9 ml-auto mr-auto "
+                                      className="w-9 h-9 ml-auto mr-auto"
                                     />
                                     {item.return_status === "1" ? (
                                       <p>10 Days Returnable</p>
@@ -364,7 +364,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                                       <p>Not Returnable</p>
                                     )}
                                   </div>
-                                  <div className="box-border h-16 w-40 md:px-2 xs:px-2 border-2 border-light_gray rounded-lg text-center text-lime">
+                                  <div className="box-border h-16 w-40 md:px-2 xs:px-2 border-2 bg-white border-light_gray rounded-lg text-center text-lime">
                                     <img
                                       src="https://static.thenounproject.com/png/3679002-200.png"
                                       alt=""
@@ -416,7 +416,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                                       </button>
                                     )
                                   ) : (
-                                    <p className=" bg-white text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:mb-4 sm:text-xs  xs:text-xs">
+                                    <p className="text-orange md:text-[11px]  mt-4 pb-4 sm:mb-4 s  xs:text-xs text-sm md:text-lg font-medium sm:text-2xl">
                                       Out of stock
                                     </p>
                                   )}

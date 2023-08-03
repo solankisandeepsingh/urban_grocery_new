@@ -9,7 +9,11 @@ export const OrderDetailsPage = () => {
   const { orderId, setOrderId } = useOrderDetails();
   const { allOrderDetails } = useOrderDetails();
   const { totalPrice, totalMRPPrice, totalItems } = usePaymentStore();
-  //   console.log(orderId, "orderId");
+    console.log(totalPrice, "totalPrice");
+    console.log(totalMRPPrice, "totalMRPPrice");
+    console.log(totalItems, "totalItems");
+
+    
   console.log(allOrderDetails, "allOrderDetails");
   const navigate = useNavigate();
   const handleBackMyorder = () => {
@@ -17,12 +21,13 @@ export const OrderDetailsPage = () => {
   };
   return (
     <>
-      {orderId && allOrderDetails &&
-        allOrderDetails.map((item) => {
+    <div>
+    {orderId && 
+        allOrderDetails.map((item,index) => {
           console.log(item.id, "itemmmmmmmmmmmmmmm");
           if (item.id == orderId)
             return (
-              <div className="flex my-28 justify-around">
+              <div className="flex my-28 justify-around" key={index}>
                 <div className="md:w-[40%] sm:w-[40%] xs:w-[80%]  shadow-xl p-3 bg-[#fcfff3]">
                   <div className="flex gap-8 font-bold text-center items-center ">
                     <p>
@@ -105,7 +110,7 @@ export const OrderDetailsPage = () => {
                         return (
                           <div
                             key={data.id}
-                            className="flex justify-between items-center text-center p-3 mb-4 border-b border-b-light_gray"
+                            className="flex justify-between bg-[#f5f5f5] rounded-md items-center text-center p-3 mb-4 border-b border-b-light_gray"
                           >
                             <div className="truncate ...">
                               <img
@@ -141,6 +146,8 @@ export const OrderDetailsPage = () => {
             );
           else return null;
         })}
+    </div>
+      
     </>
   );
 };

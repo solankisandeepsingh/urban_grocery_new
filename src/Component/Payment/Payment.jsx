@@ -5,9 +5,6 @@ import axios from "axios";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
-import { BsChevronCompactRight } from "react-icons/bs";
-import { HiOfficeBuilding } from "react-icons/hi";
-import { FaHome } from "react-icons/fa";
 import { currencyFormatter } from "../../utils/utils";
 import { usePaymentStore } from "../zustand/usePaymentStore";
 import CryptoJS, { HmacSHA256 } from "crypto-js";
@@ -30,7 +27,7 @@ function Payment({ price }) {
   } = useUserStore();
   const navigate = useNavigate();
 
-  const { totalPrice, totalMRPPrice, totalItems } = usePaymentStore();
+  const { totalPrice, totalMRPPrice } = usePaymentStore();
 
   let { address, area_name, city_name, type, name, pincode, country } =
     addList.find((item) => {
@@ -319,7 +316,7 @@ function Payment({ price }) {
         <div className="xs:w-full self-start h-auto min-h-[75vh] sm:w-[700px] md:w-[35%] ">
           <div className="mt-5  rounded-lg shadow-2xl min-h-[75vh] h-auto">
             <div className="bg-[#6ba9c5] py-2 rounded-t-lg">
-              <h2 className="text-2xl text-white font-bold ">
+              <h2 className="text-lg py-2 text-white font-bold ">
                 Select Payment Method
               </h2>
             </div>
@@ -344,7 +341,7 @@ function Payment({ price }) {
                         checked={chosenPayment == item.code }
                       />
                       {/* <BsCashStack /> */}
-                      <label className="ml-2" htmlFor={item.id}>
+                      <label className="ml-2 font-bold" htmlFor={item.id}>
                         {item.label}
                       </label>
                     </div>

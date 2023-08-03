@@ -84,7 +84,7 @@ function Review({
                                         <p className="2xs:text-base xs:text-sm  sm:text-xl md:text-xs text-gryColour  font-medium inline line-through bg-white">
                                           ₹{item.price}.00{" "}
                                         </p>
-                                        <span className="text-xs sm:text-xl xs:text-sm xs:ml-1 md:text-xs text-black  bg-white">
+                                        <span className="text-xs sm:text-xl xs:text-sm xs:ml-1 md:text-xs text-lime font-bold bg-white">
                                           {/* ₹{item.discounted_price}.00{" "} */}
                                           {currencyFormatter(
                                             item.discounted_price

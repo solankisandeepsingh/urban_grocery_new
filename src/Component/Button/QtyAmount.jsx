@@ -153,12 +153,13 @@ export const QtyAmount = ({ item }) => {
           setisLoading(false);
         });
     } else {
-      console.log(item);
+
+      console.log(item, 'THIS ITEM');
       setAllCartItems(
         allCartItems.map((cartItem) => {
           if (item.id === cartItem.id) {
             return { ...cartItem, amount: cartItem.amount + 1 };
-          }
+          } else return cartItem
         })
       );
     }

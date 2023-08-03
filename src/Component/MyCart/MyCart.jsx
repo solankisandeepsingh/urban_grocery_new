@@ -314,10 +314,11 @@ function MyCart({
                     "&::-webkit-scrollbar": { display: "none" },
                   }}
                 >
+
                   {!showForm && allCartItems.length && !reviewPage
                     ? allCartItems &&
                       allCartItems?.map((item, index) => {
-                        console.log(item, "<><><><><><><><><><><><><><><");
+                        console.log(allCartItems, item, "<><><><><><><><><><><><><><><");
                         return (
                           <>
                             <div

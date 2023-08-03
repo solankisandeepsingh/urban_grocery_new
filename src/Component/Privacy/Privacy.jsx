@@ -64,7 +64,7 @@ export const Privacy = () => {
 
         <div className="md:w-[60%] sm:w-[60%] xs:w-[85%] ">
           <div class="bg-white">
-            <p class="text-md font-bold">{stripHTML(privacy)}</p>
+            <p class="text-xs ">{stripHTML(privacy)}</p>
           </div>
         </div>
       </div>
