@@ -21,8 +21,9 @@ import CartQuantity from "../../Button/CartQuantity";
 import { Rating as MUIRating } from "@mui/material/";
 import { FaUserCircle } from "react-icons/fa";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useRef } from "react";
 
 export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const [productPageData, setProductPage] = useState([]);
@@ -31,13 +32,45 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const [reviewOpen, setReviewOpen] = useState(false);
   const { id } = useParams();
   const { setisLoading } = useLoaderState();
-  const { allCartItems, setAllCartItems,  variant, setVariant  } = useCartStore();
-  const { userInfo} = useUserStore();
+  const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
+  const { userInfo } = useUserStore();
   const [value, setValue] = React.useState(0);
   const [isValidImg, setisValidImg] = useState(false);
   const [review, setReview] = useState("");
   const { jwt, setJwt } = useApiStore();
 
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  let imageModalRef = useRef(null);
+
+  const handleImageClick = (image) => {
+    if (image) {
+      setSelectedImage(image);
+      setShowImageModal((prev) => !prev);
+    }
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+    setShowImageModal(false);
+  };
+
+  const handleClickOutside = (event) => {
+    if (
+      imageModalRef.current &&
+      !imageModalRef.current.contains(event.target)
+    ) {
+      setShowImageModal(false);
+    }
+  };
+  useEffect(() => {
+    // Add event listener when the component mounts
+    document.addEventListener("mousedown", handleClickOutside); // Clean up the event listener when the component unmounts
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const addReview = () => {
     let config = {
@@ -46,7 +79,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
       },
     };
 
-    if(value >= 1 && review){
+    if (value >= 1 && review) {
       var bodyFormData = new FormData();
       bodyFormData.append("accesskey", "90336");
       bodyFormData.append("add_products_review", "1");
@@ -55,7 +88,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
       bodyFormData.append("rate", value);
       bodyFormData.append("review", review);
       setisLoading(true);
-  
+
       axios
         .post(
           "https://grocery.intelliatech.in/api-firebase/get-all-products.php",
@@ -66,32 +99,26 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
           console.log(res);
           // setReviewList(res.data.product_review);
           setisLoading(false);
-          setReviewOpen(false)
-          res.data.error? 
-          toast.error(`${res.data.message}`, {
-            position: toast.POSITION.TOP_RIGHT
-        })
-        
-        :
-          toast.success('Review Added Successfully  !', {
-            position: toast.POSITION.TOP_RIGHT
-        })
-          setReview("")
-          setValue(0)
-        ;
+          setReviewOpen(false);
+          res.data.error
+            ? toast.error(`${res.data.message}`, {
+                position: toast.POSITION.TOP_RIGHT,
+              })
+            : toast.success("Review Added Successfully  !", {
+                position: toast.POSITION.TOP_RIGHT,
+              });
+          setReview("");
+          setValue(0);
         })
         .catch((error) => {
-          console.log(error)
+          console.log(error);
           setisLoading(false);
-
         });
+    } else {
+      toast.error("Please Enter All Details !", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
     }
-    else{
-      toast.error('Please Enter All Details !', {
-        position: toast.POSITION.TOP_RIGHT
-    });
-    }
- 
   };
 
   const productReviews = () => {
@@ -130,20 +157,19 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
     setReview(value);
   };
 
-//  function checkImageValidity(url) {
-//     console.log(url, "RUNNING");
-//     var img = new Image();
-//     img.onload = function () {
-//       console.log('IMG VALID');
-//       // setisValidImg(true); // Image is valid
-//     };
-//     img.onerror = function () {
-//       // setisValidImg(false); // Image is broken or invalid
-//       console.log('IMG INVALID');
-//     };
-//     img.src = url;
-//   }
-
+  //  function checkImageValidity(url) {
+  //     console.log(url, "RUNNING");
+  //     var img = new Image();
+  //     img.onload = function () {
+  //       console.log('IMG VALID');
+  //       // setisValidImg(true); // Image is valid
+  //     };
+  //     img.onerror = function () {
+  //       // setisValidImg(false); // Image is broken or invalid
+  //       console.log('IMG INVALID');
+  //     };
+  //     img.src = url;
+  //   }
 
   const productDetail = () => {
     let config = {
@@ -262,7 +288,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
 
   return (
     <>
-    <ToastContainer/>
+      <ToastContainer />
       <div className="2xs:mt-10 xs:mt-10 md:p-20 xs:p-8">
         {filterData &&
           filterData.map((item) => {
@@ -490,7 +516,11 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                             <div className="border-b px-3 border-[#e8e8e8e8] mb-3">
                               <div className="flex items-center gap-3">
                                 {isValidImg ? (
-                                  <img className="h-10 w-10" src={review.user_profile} alt="" />
+                                  <img
+                                    className="h-10 w-10"
+                                    src={review.user_profile}
+                                    alt=""
+                                  />
                                 ) : (
                                   <FaUserCircle className="text-2xl" />
                                 )}
@@ -504,7 +534,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                                 precision={0.1}
                                 readOnly
                               />
-                              <div className="flex gap-2">
+                              {/* <div className="flex gap-2">
                                 {review.images.length > 0 &&
                                   review.images.map((image) => {
                                     return (
@@ -514,6 +544,62 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                                       />
                                     );
                                   })}
+                              </div> */}
+
+                              <div>
+                                <div className="xs:grid xs:grid-cols-3 md:grid-cols-6 sm:grid-cols-6 gap-2">
+                                  {review.images.length > 0 &&
+                                    review.images.map((image, index) =>
+                                      index < 3 ? (
+                                        // <div className="last:opacity-70 last:before:absolute last:before:content-['+3'] text-3xl text-[#f5f5f5] before:w-24 before:h-24 ">
+                                        <div
+                                          onClick={() =>
+                                            handleImageClick(image)
+                                          }
+                                          className={`last:opacity-70 last:before:absolute last:before:content-['${
+                                            review.images.length - index - 1
+                                          }']
+last:before:content-['+3'] text-3xl text-[#f5f5f5] before:w-24 before:h-24`}
+                                        >
+                                          <img
+                                            key={index}
+                                            src={image}
+                                            className="w-24 h-24 rounded-lg  object-cover"
+                                          />
+                                        </div>
+                                      ) : null
+                                    )}
+                                </div>
+
+                                {showImageModal && (
+                                  <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
+                                    <div
+                                      className="bg-white p-4  sm:h-[auto] rounded-lg grid grid-cols-3 gap-2 h-auto  mt-3"
+                                      ref={imageModalRef}
+                                    >
+                                      <>
+                                        {/* <button
+                                          className="absolute top-[33.3%] right-[5%] md:top-[33%] md:right-[35.5%] sm:top-[39.5%] sm:right-[24.2%]"
+                                          onClick={closeModal}
+                                        >
+                                          <AiOutlineCloseCircle className="text-red text-xl sm:text-2xl hover:opacity-50" />
+                                        </button> */}
+
+                                        {review.images.map((image, index) => (
+                                          <img
+                                            key={index}
+                                            src={image}
+                                            className={`w-24 h-24 rounded-lg object-cover ${
+                                              image === selectedImage
+                                                ? "border-4 border-blue-500"
+                                                : ""
+                                            }`}
+                                          />
+                                        ))}
+                                      </>
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                               <p className="mt-3">{review.review}</p>
                             </div>
@@ -571,37 +657,43 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                 </button>
                 <div className="w-full p-8 md:px-12 mr-auto rounded-2xl shadow-2xl">
                   <div className="flex justify-between">
-                    <h1 className="font-bold  text-3xl">
-                      Write a review :
-                    </h1>
+                    <h1 className="font-bold  text-3xl">Write a review :</h1>
                   </div>
-                  <form onSubmit={(e)=>{
-                    e.preventDefault();
-                    addReview()}}>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      addReview();
+                    }}
+                  >
                     <div className="gap-5 mt-5">
                       <div className="border border-[#e8e8e8] p-3 rounded-lg">
+                        <p className="  text-[gray] font-bold text-lg">
+                          Rate your product:{" "}
+                        </p>
+                        <div className="flex mt-1 items-center">
+                          <MUIRating
+                            name="simple-controlled"
+                            size="large"
+                            value={value}
+                            onChange={(event, newValue) => {
+                              if (newValue === null) {
+                                setValue(0);
+                                return;
+                              }
+                              setValue(newValue);
+                            }}
+                          />
 
-                      <p className="  text-[gray] font-bold text-lg">Rate your product: </p>
-                      <div className="flex mt-1 items-center">
-                        <MUIRating
-                          name="simple-controlled"
-                          size="large"
-                          value={value}
-                          onChange={(event, newValue) => {
-                            if(newValue === null){
-
-                              setValue(0)
-                              return
-                            }
-                            setValue(newValue)
-                          }}
-                        />
-
-                        <div className="text-xl">({value})</div>
+                          <div className="text-xl">({value})</div>
+                        </div>
                       </div>
-                      </div>
 
-                      <label className=" text-[gray] font-bold text-lg pl-3 inline-block mt-5" htmlFor="images">Add product images</label>
+                      <label
+                        className=" text-[gray] font-bold text-lg pl-3 inline-block mt-5"
+                        htmlFor="images"
+                      >
+                        Add product images
+                      </label>
                       <input
                         className="w-full bg-gray-100 border-gray-400 text-gray-900  p-3 rounded-lg  focus:shadow-outline"
                         type="file"
@@ -612,7 +704,12 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                         id="images"
                       />
 
-                      <label className=" text-[gray] font-bold pl-3 text-lg inline-block mt-5" htmlFor="text">Add your Review</label>
+                      <label
+                        className=" text-[gray] font-bold pl-3 text-lg inline-block mt-5"
+                        htmlFor="text"
+                      >
+                        Add your Review
+                      </label>
                       <textarea
                         className="w-full border border-[#e8e8e8] bg-gray-100 text-gray-900 mt-1 p-3 rounded-lg  focus:border-[black] "
                         type="text"
@@ -622,7 +719,6 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                         value={review.text}
                         placeholder="Write your review"
                       />
-
                     </div>
 
                     <div className="mb-8 mt-6 flex items-center justify-between">
