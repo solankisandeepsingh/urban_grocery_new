@@ -23,7 +23,7 @@ const location =  useLocation()
 console.log(location,"loca")
   return (
     <>
-      <div className="max-w-[100%]">
+      <div className="max-w-[100%] self-center">
         <ul className="font-medium w-full">
           <li className={`border border-light_gray hover:scale-105 transition-all ease-in-out ${location.pathname === "/address" ? ' bg-lime  ':'text-light_gray hover:bg-[#dfdfdf]'} mb-2 rounded-xl shadow-sm`}>
             <NavLink to={"/address"}>
