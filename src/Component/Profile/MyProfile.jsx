@@ -8,31 +8,25 @@ import { ToastContainer, toast } from "react-toastify";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiStore } from "../zustand/useApiStore";
 
-export const MyProfile = ({ setProfileView, setIsOpen }) => {
-  // const [editBtn, setEditBtn] = useState(false);
+export const MyProfile = ({ setProfileView}) => {
+
   const inputRef = useRef(null);
   const {
-    userInfo: { user_id, name, email, password, profile },
+    userInfo: { user_id, profile },
     setUserInfo,
     userInfo,
   } = useUserStore();
   const [isValidImg, setisValidImg] = useState(false);
   const { setisLoading } = useLoaderState();
-  const { jwt, setJwt } = useApiStore();
+  const { jwt } = useApiStore();
   const profileRef = useRef(null);
-
-  // const [nameUpdate, setNameUpdate] = useState(userInfo.name)
 
   const [updateUser, setUpdateUser] = useState({
     name: userInfo.name,
     email: userInfo.email,
-    // password: userInfo.password,
     profile: userInfo.profile,
   });
 
-  //   console.log(updateUser, " value={updateUser.email}");
-  console.log(updateUser);
-  console.log(userInfo, "userInfo");
 
   const handleInputChange = (event) => {
     const { value, name } = event.target;
@@ -52,10 +46,13 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
     document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside); 
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+
   const handleImageUpload = (event) => {
+
     console.log("text Onchange");
     const file = event.target.files[0];
     if (file) {
@@ -81,7 +78,6 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
         )
         .then((res) => {
           console.log(res, "upload image");
-
           getUserData();
           toast.success("Profile successfully uploaded!", {
             position: toast.POSITION.TOP_CENTER,
@@ -90,6 +86,7 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
         })
         .catch((err) => {
           console.log(err);
+          setisLoading(false);
         });
     }
     console.log(file, "file");
@@ -116,9 +113,9 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
       )
       .then((res) => {
         console.log(res, "res data will update user");
-        // toast.success('Profile successfully uploaded!', {
-        //   position: toast.POSITION.TOP_CENTER
-        // });
+        toast.success('Profile successfully uploaded!', {
+          position: toast.POSITION.TOP_CENTER
+        });
 
         setUserInfo(res.data);
         setisLoading(false);
@@ -126,15 +123,15 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
       })
       .catch((err) => {
         console.log(err);
-        // toast.error('Failed to upload profile image.', {
-        //   position: toast.POSITION.TOP_RIGHT,
-        // });
+        setisLoading(false);
+        toast.error('Failed to upload profile image.', {
+          position: toast.POSITION.TOP_RIGHT,
+        });
       });
   };
 
   const handleUpdateProfile = () => {
-    // e.preventDefault();
-    // setEditBtn((prev) => !prev);
+    
 
     let config = {
       headers: {
@@ -156,8 +153,8 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
     updateProfileData.append("dob", "15-12-1990");
     updateProfileData.append("latitude", "44.968046");
     updateProfileData.append("longitude", "94.420307");
-
-    console.log(updateProfileData, "upd");
+    setisLoading(true)
+  
 
     const object = {};
     updateProfileData.forEach((value, key) => {
@@ -178,9 +175,10 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
         toast.success("Profile successfully uploaded!", {
           position: toast.POSITION.TOP_CENTER,
         });
-
+        
         getUserData();
         setProfileView(false);
+        setisLoading(false)
       })
       .catch((err) => {
         console.log(err);

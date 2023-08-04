@@ -10,18 +10,24 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import { BsChevronCompactRight } from "react-icons/bs";
 import { useApiStore } from "../../zustand/useApiStore";
 
-function Form({ user_id, setReviewPage, setShowForm }) {
+function Form({ setReviewPage, setShowForm }) {
   const [formOpen, setFormOpen] = useState(false);
   const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
+  const {
+    userInfo: { user_id },
+  } = useUserStore();
 
   const { deliveryAddress, setDeliveryAddress, addList, setAddList } =
     useUserStore();
-  console.log(setAddList);
+  
   const handleOptionChange = (event) => {
     console.log(event.target.value);
     setDeliveryAddress(event.target.value);
   };
+
+  console.log(deliveryAddress,"deliveryaddresssssssss")
+  console.log(addList,"addlist addlist");
 
   const config = {
     headers: {

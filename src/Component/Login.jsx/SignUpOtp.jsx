@@ -17,6 +17,7 @@ export const SignUpOtp = ({ setOpenLogin }) => {
   const [loading, setLoading] = useState(false);
   const [showOTP, setShowOTP] = useState(false);
   const [user, setUser] = useState(null);
+  const { setisLoading } = useLoaderState();
 
   function onCaptchVerify() {
     if (!window.recaptchaVerifier) {
@@ -39,6 +40,7 @@ export const SignUpOtp = ({ setOpenLogin }) => {
     console.log("why not clokci");
     setLoading(true);
     onCaptchVerify();
+    setisLoading(true)
 
     const appVerifier = window.recaptchaVerifier;
 

@@ -39,39 +39,13 @@ export const Navbar = ({
     setUserInfo,
   } = useUserStore();
 
-  const [profileView,setProfileView] = useState(false)
-
-  // useEffect(() => {
-  //   let handler = (e) => {
-  //     if (menuRef.current) {
-  //       if (!menuRef.current.contains(e.target)) {
-  //         setIsOpen(false);
-  //         setMobileOpen(false);
-  //       }
-  //     }
-  //   };
-  //   document.addEventListener("mousedown", handler);
-
-  //   return () => {
-  //     document.removeEventListener("mousedown", handler);
-  //   };
-  // });
-
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const isScrollingDown = window.scrollY > 0;
-  //     setShowSearch(!isScrollingDown);
-  //   };
-  //   window.addEventListener("scroll", handleScroll);
-
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, []);
+  const [profileView, setProfileView] = useState(false);
 
   const handleClickOutside = (event) => {
-    // Check if the click occurred outside the modal box
-    if (menuRef.current && !menuRef.current.contains(event.target) && !deskRef.current.contains(event.target)
+    if (
+      menuRef.current &&
+      !menuRef.current.contains(event.target) &&
+      !deskRef.current.contains(event.target)
     ) {
       setIsOpen(false);
       setMobileOpen(false);
@@ -79,11 +53,11 @@ export const Navbar = ({
   };
   useEffect(() => {
     // Add event listener when the component mounts
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
     // Clean up the event listener when the component unmounts
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -114,26 +88,26 @@ export const Navbar = ({
   };
   const handleShowSearchBar = () => {
     setShowSearchBar(true);
-
     navigate("/search");
     scrollToTop();
   };
   const handleClickHome = () => {
     navigate("/");
+    setNavbarOpen(true);
   };
 
   const handleLogout = () => {
-    setUserInfo({ user_id: '', name: "Login" });
+    setUserInfo({ user_id: "", name: "Login" });
     // setLoggedIn(false);
     setIsOpen(false);
     setMobileOpen(false);
     navigate("/");
   };
 
-  const handleProfile = ()=>{
+  const handleProfile = () => {
     setIsOpen(false);
-    setProfileView((prev)=>!prev);
-  }
+    setProfileView((prev) => !prev);
+  };
   return (
     <div className="">
       <nav className=" px-2  sm:px-0 fixed w-full z-20 top-0 left-0 border-b border-light_gray shadow-sm bg-white">
@@ -379,7 +353,9 @@ export const Navbar = ({
                   </div>
                 )}
 
-                {openLogin && <Login setOpenLogin={setOpenLogin}  setIsOpen={setIsOpen}/>}
+                {openLogin && (
+                  <Login setOpenLogin={setOpenLogin} setIsOpen={setIsOpen} />
+                )}
 
                 {isOpen && (
                   <div
@@ -401,7 +377,7 @@ export const Navbar = ({
                         <NavLink to={"/myorder"}>
                           <p
                             onClick={() => setIsOpen(false)}
-                            className= "sm:text-lg md:text-sm mt-4"
+                            className="sm:text-lg md:text-sm mt-4"
                           >
                             My Orders
                           </p>
@@ -420,17 +396,13 @@ export const Navbar = ({
                       </li>
 
                       <li className="  cursor-pointer">
-                    
-                          <p
-                            onClick={handleProfile}
-                            className="sm:text-lg md:text-sm mt-4"
-                          >
-                            My Profile
-                          </p>
-                       
+                        <p
+                          onClick={handleProfile}
+                          className="sm:text-lg md:text-sm mt-4"
+                        >
+                          My Profile
+                        </p>
                       </li>
-
-                      
 
                       <li className=" cursor-pointer">
                         <div className="flex justify-between mt-4  ">
@@ -460,7 +432,6 @@ export const Navbar = ({
                           </p>
                         </NavLink>
                       </li>
-                      
 
                       <li className=" cursor-pointer">
                         <p
@@ -499,7 +470,7 @@ export const Navbar = ({
         </div>
       </nav>
 
-      {profileView && <MyProfile setProfileView={setProfileView}/>}
+      {profileView && <MyProfile setProfileView={setProfileView} />}
     </div>
   );
 };

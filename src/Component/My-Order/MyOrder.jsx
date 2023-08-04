@@ -141,19 +141,9 @@ export const MyOrder = ({ addItem }) => {
                     >
                       <BsChevronRight />
                     </div>
-                    {/* <div className="flex shadow-lg gap-2 mt-2 justify-end ">
-                        <div className="flex">
-                        <div className=" text-[12px] mb-4 border border-light_gray p-1 rounded-lg">
-                        <GiScooter className="text-[20px] mt-1" />
-                        <p>Door Step Delivery</p>
-                        </div>
-                        </div>
-                      </div> */}
-
-                    {/* <hr className="mb-2 text-gryColour" /> */}
                   </div>
                 );
-              })}
+              }) }
           </div>
         </div>
         {/* ) : (
