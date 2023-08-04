@@ -449,8 +449,8 @@ function MyCart({
                     : null}
 
                   {!showForm && !allCartItems.length ? (
-                    <div className="relative p-6 flex-auto text-center text-2xl font-medium bg-white">
-                      <p className="bg-white">Your cart is empty</p>
+                    <div className="relative p-6 flex-auto text-center font-medium bg-white">
+                      <p className="bg-white text-lightgray text-md ">Your cart is empty</p>
                     </div>
                   ) : null}
 

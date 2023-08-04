@@ -72,7 +72,7 @@ export const Category = () => {
               allCategories.map((item) => {
                 return (
                   <div
-                    className="xs:w-18 md:w-36 md:ml-2 rounded-xl border-light_gray cursor-pointer hover:border-light_green hover:border-[2px] hover:shadow-sm border-[2px] bg-[#FFFAED] "
+                    className="xs:w-18 md:w-36 md:ml-2 rounded-xl border-light_gray cursor-pointer hover:border-light_green hover:border-[2px] hover:shadow-sm border-[2px] bg-[#ffffff] "
                     key={item.id}
                   >
                     <NavLink to={`/subcategory-details/${item.id}`}>
@@ -85,7 +85,7 @@ export const Category = () => {
                     </NavLink>
                     <div className="px-4">
                     <div className="xs:text-center md:text-center xs:py-0.5  ">
-                      <p className="xs:text-[12px] xs:font-light md:text-sm sm:text-md md:font-medium  sm:py-2 ">
+                      <p className="xs:text-[12px] xs:font-light md:text-sm sm:text-md md:font-medium  sm:py-4 ">
                         {item.name}
                       </p>
                     </div>
