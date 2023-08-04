@@ -561,16 +561,16 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                                 {showImageModal && (
                                   <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
                                     <div
-                                      className="bg-white p-4 sm:w-[400px] sm:h-[auto] rounded-lg grid grid-cols-3 gap-2 h-auto  mt-3"
+                                      className="bg-white p-4  sm:h-[auto] rounded-lg grid grid-cols-3 gap-2 h-auto  mt-3"
                                       ref={imageModalRef}
                                     >
                                       <>
-                                        <button
-                                          className="absolute top-[33.3%] right-[5%] md:top-[36.5%] md:right-[34.6%] sm:top-[40%] sm:right-[25%]"
+                                        {/* <button
+                                          className="absolute top-[33.3%] right-[5%] md:top-[33%] md:right-[35.5%] sm:top-[39.5%] sm:right-[24.2%]"
                                           onClick={closeModal}
                                         >
                                           <AiOutlineCloseCircle className="text-red text-xl sm:text-2xl hover:opacity-50" />
-                                        </button>
+                                        </button> */}
                                         {review.images.map((image, index) => (
                                           <img
                                             key={index}
