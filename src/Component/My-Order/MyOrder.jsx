@@ -73,12 +73,12 @@ export const MyOrder = ({ addItem }) => {
           <Aside />
         </div> */}
 
-      <div className="flex flex-col mt-24  xs:justify-center xs:items-center md:items-start sm:items-start md:flex-row md:justify-evenly sm:justify-evenly sm:flex sm:flex-row ">
+      <div className="flex flex-col mt-24  xs:justify-center xs:items-center  md:items-start sm:items-start md:flex-row md:justify-evenly sm:justify-evenly sm:flex sm:flex-row ">
         <div className="xs:w-[85%] md:w-[35%] sm:w-[30%] xs:hidden md:block sm:block h-full">
           <Aside />
         </div>
 
-        <div className="md:w-[60%] sm:w-[60%] xs:w-[85%] ">
+        <div className="md:w-[60%] sm:w-[60%] xs:w-[85%] overflow-y-scroll h-[90vh]">
           {/* <div className="md:w-[60%] xs:w-full "> */}
           <div className=" border border-light_gray p-4 rounded-md">
             {allOrderDetails?.length > 0 ?(
