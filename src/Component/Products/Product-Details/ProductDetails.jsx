@@ -289,7 +289,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   return (
     <>
       <ToastContainer />
-      <div className="2xs:mt-10 xs:mt-10 md:p-20 xs:p-8">
+      <div className="2xs:mt-10 xs:mt-10 w-[50%] md:p-20 xs:p-8">
         {filterData &&
           filterData.map((item) => {
             return (
