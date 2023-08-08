@@ -30,6 +30,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const [wishlist, setWishlist] = useState(false);
   const [reviewList, setReviewList] = useState(false);
   const [reviewOpen, setReviewOpen] = useState(false);
+  const [images, setImages] = useState([]);
   const { id } = useParams();
   const { setisLoading } = useLoaderState();
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
@@ -87,6 +88,13 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
       bodyFormData.append("user_id", userInfo.user_id);
       bodyFormData.append("rate", value);
       bodyFormData.append("review", review);
+      // bodyFormData.append("images[]", images);
+      // bodyFormData.append("images[]", review);
+
+      images.forEach((image, index) => {
+        bodyFormData.append(`images[]`, image);
+      });
+
       setisLoading(true);
 
       axios
@@ -151,10 +159,15 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
       });
   };
 
+  const imagesHandler = (event) => {
+    console.log(event.target.files);
+    const files = event.target.files;
+    const imagesArray = Array.from(files);
+    console.log(imagesArray);
+    setImages(imagesArray);
+  };
   const inputHandler = (event) => {
-    let { name, value } = event.target;
-    console.log(review);
-    setReview(value);
+    setReview(event.target.value);
   };
 
   //  function checkImageValidity(url) {
@@ -213,7 +226,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", "14");
+    bodyFormData.append("user_id", userInfo.user_id);
 
     bodyFormData.append("product_id", `${data.id}`);
     bodyFormData.append("product_variant_id", `${item.id}`);
@@ -278,18 +291,15 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
     return data.id === id;
   });
 
-  function stripHTML(myString) {
-    return myString.replace(/(<([^>]+)>)/gi, "");
-  }
-
   const handleWishlist = () => {
     setWishlist((prev) => !prev);
   };
+  // const imgLength = 12/review?.images?.length;
 
   return (
     <>
       <ToastContainer />
-      <div className="2xs:mt-10 xs:mt-10 w-[50%] md:p-20 xs:p-8">
+      <div className="2xs:mt-10 xs:mt-10 md:w-[50%] md:p-20 xs:p-8">
         {filterData &&
           filterData.map((item) => {
             return (
@@ -455,13 +465,10 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                   </div>
                 </div>
 
-                <div className="text-left md:ml-20 xs:ml-1 ">
-                  <p className="2xs:mt-4 font-semibold md:mt-3 xs:text-lg sm:text-3xl md:text-2xl sm:mt-5">
-                    Product Details
-                  </p>
-                  <p className="2xs:text-sm  xs:text-sm sm:text-2xl sm:mt-1 md:font-light md:text-sm md:w-[500px] text-secondary">
-                    {stripHTML(item.description)}
-                  </p>
+                <div className="text-left md:ml-20 xs:ml-1 mb-3">
+                  <div dangerouslySetInnerHTML={{ __html: item.description }}>
+                    {/* {JSON.parse(item.description)} */}
+                  </div>
                   <a
                     className="px-[15px] py-[9px] border-2 rounded-[20px] text-white mt-2 font-bold bg-lime inline-block"
                     href=""
@@ -556,10 +563,12 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                                           onClick={() =>
                                             handleImageClick(image)
                                           }
-                                          className={`last:opacity-70 last:before:absolute last:before:content-['${
-                                            review.images.length - index - 1
-                                          }']
-last:before:content-['+3'] text-3xl text-[#f5f5f5] before:w-24 before:h-24`}
+                                          className={`${
+                                            review.images.length > 2
+                                              ? 'last:before:content-["+3"]  before:w-24 before:h-24 last:opacity-70 last:before:absolute'
+                                              : ""
+                                          } 
+ text-3xl text-[#f5f5f5]`}
                                         >
                                           <img
                                             key={index}
@@ -574,7 +583,7 @@ last:before:content-['+3'] text-3xl text-[#f5f5f5] before:w-24 before:h-24`}
                                 {showImageModal && (
                                   <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
                                     <div
-                                      className="bg-white p-4  sm:h-[auto] rounded-lg grid grid-cols-3 gap-2 h-auto  mt-3"
+                                      className="bg-white p-4  sm:h-[auto] rounded-lg grid grid-cols-12 gap-2 h-auto  mt-3"
                                       ref={imageModalRef}
                                     >
                                       <>
@@ -589,7 +598,7 @@ last:before:content-['+3'] text-3xl text-[#f5f5f5] before:w-24 before:h-24`}
                                           <img
                                             key={index}
                                             src={image}
-                                            className={`w-24 h-24 rounded-lg object-cover ${
+                                            className={`w-24 h-24 rounded-lg  object-cover ${
                                               image === selectedImage
                                                 ? "border-4 border-blue-500"
                                                 : ""
@@ -698,7 +707,8 @@ last:before:content-['+3'] text-3xl text-[#f5f5f5] before:w-24 before:h-24`}
                         className="w-full bg-gray-100 border-gray-400 text-gray-900  p-3 rounded-lg  focus:shadow-outline"
                         type="file"
                         accept="image/*"
-                        // onChange={inputHandler}
+                        multiple
+                        onChange={imagesHandler}
                         // value={logins.password}
                         name="review images"
                         id="images"

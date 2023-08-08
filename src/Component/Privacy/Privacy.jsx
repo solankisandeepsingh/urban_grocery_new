@@ -44,9 +44,6 @@ export const Privacy = () => {
     handlePrivacy();
   }, []);
 
-  function stripHTML(myString) {
-    return myString.replace(/(<([^>]+)>)/gi, "");
-  }
 
   return (
     <>
@@ -63,9 +60,10 @@ export const Privacy = () => {
         </div>
 
         <div className="md:w-[60%] sm:w-[60%] xs:w-[85%] ">
-          <div class="bg-white">
-            <p class="text-xs ">{stripHTML(privacy)}</p>
-          </div>
+        <div dangerouslySetInnerHTML={{__html: privacy}}>
+
+                  {/* {JSON.parse(item.description)} */}
+                  </div>
         </div>
       </div>
     </>

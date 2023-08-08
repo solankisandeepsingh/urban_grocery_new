@@ -42,9 +42,6 @@ export const Contact = () => {
     handleContact();
   }, []);
 
-  function stripHTML(myString) {
-    return myString.replace(/(<([^>]+)>)/gi, "");
-  }
 
   return (
     <>
@@ -60,11 +57,12 @@ export const Contact = () => {
           <Aside />
         </div>
 
-        <div className="md:w-[60%] sm:w-[60%] xs:w-[85%] ">
+        <div className="md:w-[60%] sm:w-[60%] xs:w-[85%] mb-3">
           <div class="">
-            <p class="md:text-md text-center items-center text-black font-bold">
-              {stripHTML(contact)}
-            </p>
+          <div dangerouslySetInnerHTML={{__html: contact}}>
+
+{/* {JSON.parse(item.description)} */}
+</div>
           </div>
         </div>
       </div>

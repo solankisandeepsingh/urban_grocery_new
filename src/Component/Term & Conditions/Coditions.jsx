@@ -42,9 +42,7 @@ export const Coditions = () => {
     handleConditons();
   }, []);
 
-  function stripHTML(myString) {
-    return myString.replace(/(<([^>]+)>)/gi, "");
-  }
+
 
   return (
     <>
@@ -60,11 +58,12 @@ export const Coditions = () => {
           <Aside />
         </div>
 
-        <div className="md:w-[60%] sm:w-[60%] xs:w-[85%] ">
+        <div className="md:w-[60%] sm:w-[60%] xs:w-[85%] mb-3">
           <div class="bg-white">
-            <p class="md:text-md text-center  justify-center items-center">
-              {stripHTML(conditons)}
-            </p>
+          <div dangerouslySetInnerHTML={{__html: conditons}}>
+
+{/* {JSON.parse(item.description)} */}
+</div>
           </div>
         </div>
       </div>

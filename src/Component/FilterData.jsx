@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Search from "./Header/Search/Search";
 import CartQuantity from "./Button/CartQuantity";
@@ -8,17 +8,27 @@ import { useUserStore } from "./zustand/useUserStore";
 import { useApiStore } from "./zustand/useApiStore";
 import { useLoaderState } from "./zustand/useLoaderState";
 import axios from "../api/axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useSearchStore } from "./zustand/useSearchStore";
+import { useDebounce } from "../utils/useDebounce";
 
 function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
   const {allCartItems,setAllCartItems, variant, setVariant}= useCartStore();
   console.log(allCartItems,"allcartitem is here")
   const { setisLoading } = useLoaderState();
+  const [offset, setOffset] = useState(0);
+  const { searchInput, setSearchInput } = useSearchStore();
+  const [arrayy, setArray] = useState([]);
+  const [searchData, setSearchData] = useState("");
+  const location = useLocation();
   const navigate = useNavigate();
   const {
     userInfo: { user_id },
   } = useUserStore();
   const { jwt, setJwt } = useApiStore();
+  const debouncedSearchTerm = useDebounce(searchInput, 800);
+
   const addItemHandler = (item, data) => {
     console.log("item", item);
     const config = {
@@ -120,14 +130,114 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
     console.log(newArr, "FROM ADD ITEM UI");
     setAllCartItems(newArr);
   };
+  const serchAPIData = () => {
+    console.log("normal search");
+    let config = {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    };
+
+    var bodyFormData = new FormData();
+    bodyFormData.append("accesskey", "90336");
+    bodyFormData.append("type", "products-search");
+    bodyFormData.append("limit", "15");
+    bodyFormData.append("search", debouncedSearchTerm);
+
+    setisLoading(true);
+    axios
+      .post(
+        "https://grocery.intelliatech.in/api-firebase/products-search.php",
+        bodyFormData,
+        config
+      )
+      .then((res) => {
+        console.log(res.data);
+        setSearchData(res.data);
+        setArray(res.data.data);
+        console.log(res.data.data);
+        setisLoading(false);
+        setData(res.data.data);
+        setOffset(0);
+      })
+      .catch((err) => {
+        console.log(err);
+        setisLoading(false);
+      });
+  };
+  useEffect(() => {
+    serchAPIData();
+  }, [debouncedSearchTerm]);
+  const nextData = async () => {
+    console.log("IN NEXT DATA");
+    if (location.pathname === "/search") {
+      let config = {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      };
+
+      setOffset(offset + 15);
+      console.log(searchInput, "NEXT DATA SEARCH TERM");
+
+      var bodyFormData = new FormData();
+      bodyFormData.append("accesskey", "90336");
+      bodyFormData.append("type", "products-search");
+      bodyFormData.append("limit", "15");
+      bodyFormData.append("search", searchInput);
+      bodyFormData.append("offset", offset + 15);
+
+      // setisLoading(true);
+      let data = axios
+        .post(
+          "https://grocery.intelliatech.in/api-firebase/products-search.php",
+          bodyFormData,
+          config
+        )
+
+        // let parsedData =  data.json();
+        // console.log(parsedData);
+        // setArray(arrayy.concat(parsedData.data.data));
+        .then((res) => {
+          console.log("Running NEXT DATA");
+          setSearchData(res.data);
+          console.log(arrayy);
+          const tempArr = JSON.parse(JSON.stringify(arrayy));
+          setArray([...arrayy, ...res.data.data]);
+          // setNewItemsArray(tempArr.concat(res.data.data));
+
+          console.log(res.data.data);
+          // setisLoading(false);
+          setData([...arrayy, ...res.data.data]);
+        })
+        .catch((err) => {
+          console.log(err);
+          // setisLoading(false);
+        });
+    } else return;
+  };
   return (
-    <div className="md:mt-10 pb-[1000px]">
+    <div className="md:mt-20 ">
       <div className="md:invisible xs:visible ">
-        <Search setName={setName} setData={setData} data={data}/>
+        {/* <Search setName={setName} setData={setData} data={data}/> */}
       </div>
      
-      <div className=" xs:grid xs:grid-cols-2 md:grid md:grid-cols-7 sm:grid-cols-3 flex flex-wrap md:ml-5  ">
      
+      <InfiniteScroll
+        dataLength={data?.length || 0}
+        next={nextData}
+        hasMore={!(data?.length >= searchData.total)}
+        loader={<div className='w-10 m-auto  h-10 border-[3.5px]  absolute right-[50%] border-[white]  border-b-[Green]  border-t-[Green] border-l-[Green] rounded-full animate-spin'>
+        </div>}
+        // endMessage={
+        //   <p style={{ textAlign: "center" }}>
+        //     <b>Yay! You have seen it all</b>
+        //   </p>
+        // }
+      >
+
+      <div className=" xs:grid xs:grid-cols-2 md:grid md:grid-cols-7 sm:grid-cols-3 flex flex-wrap md:ml-5  ">
+
         {data && data.length > 0 ? (
           data.map((item) => {
             return (
@@ -371,6 +481,8 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
           </div>
         )}
       </div>
+      </InfiniteScroll>
+
     </div>
   );
 }

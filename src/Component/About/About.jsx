@@ -41,9 +41,7 @@ export const About = () => {
     handleAbout();
   }, []);
 
-  function stripHTML(myString) {
-    return myString.replace(/(<([^>]+)>)/gi, "");
-  }
+ 
   return (
     <>
       {/* <div className="flex flex-row justify-evenly mt-28">
@@ -58,11 +56,12 @@ export const About = () => {
           <Aside />
         </div>
 
-        <div className="md:w-[60%] sm:w-[60%] xs:w-[85%] ">
+        <div className="md:w-[60%] sm:w-[60%] xs:w-[85%] mb-3 ">
           <div class="bg-white">
-            <p class="text-xs  text-black xs:my-6">
-              {stripHTML(about)}
-            </p>
+          <div dangerouslySetInnerHTML={{__html: about}}>
+
+{/* {JSON.parse(item.description)} */}
+</div>
           </div>
         </div>
       </div>

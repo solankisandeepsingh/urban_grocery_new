@@ -220,7 +220,7 @@ function MyCart({
   useEffect(() => {
     getUserCarts(user_id);
   }, [accesskey]);
-  console.log(allCartItems, " ADD ITEM IN MYCART <><><><><");
+  // console.log(allCartItems, " ADD ITEM IN MYCART <><><><><");
 
   return (
     <>

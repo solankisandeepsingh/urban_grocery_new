@@ -10,26 +10,27 @@ import { useDebounce } from "../../../utils/useDebounce";
 import { useApiStore } from "../../zustand/useApiStore";
 import { FaArrowCircleUp } from "react-icons/fa";
 import { useCartStore } from "../../zustand/useCartStore";
+import { useSearchStore } from "../../zustand/useSearchStore";
 
 const Search = ({ setData, name, data }) => {
   const [searchData, setSearchData] = useState("");
-  const [Inputsearch, setInputSearch] = useState("");
+  // const [inputSearch, setInputSearch] = useState("a");
   const [arrayy, setArray] = useState([]);
   const [newItemsArray, setNewItemsArray] = useState(arrayy);
   const [visible, setVisible] = useState(false);
   const [offset, setOffset] = useState(0);
   const navigate = useNavigate();
   const { setisLoading } = useLoaderState();
+  const { searchInput, setSearchInput } = useSearchStore();
   const {
     userInfo: { user_id },
   } = useUserStore();
-  const { jwt} = useApiStore();
+  const { jwt } = useApiStore();
 
-  const {allCartItems,setAllCartItems}= useCartStore();
-  console.log(allCartItems,"allcartitems is not present")
+  const { allCartItems, setAllCartItems } = useCartStore();
+  console.log(allCartItems, "allcartitems is not present");
 
-  
-      const location = useLocation();
+  const location = useLocation();
 
   const serchAPIData = () => {
     console.log("normal search");
@@ -38,7 +39,7 @@ const Search = ({ setData, name, data }) => {
         Authorization: `Bearer ${jwt}`,
       },
     };
-    
+
     var bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("type", "products-search");
@@ -59,7 +60,7 @@ const Search = ({ setData, name, data }) => {
         console.log(res.data.data);
         setisLoading(false);
         setData(res.data.data);
-        setOffset(0)
+        setOffset(0);
       })
       .catch((err) => {
         console.log(err);
@@ -87,66 +88,65 @@ const Search = ({ setData, name, data }) => {
 
   window.addEventListener("scroll", toggleVisible);
 
-  const debouncedSearchTerm = useDebounce(Inputsearch, 800);
+  const debouncedSearchTerm = useDebounce(searchInput, 800);
 
   useEffect(() => {
     serchAPIData();
   }, [debouncedSearchTerm]);
 
   const handleChange = (e) => {
-    setInputSearch(e.target.value);
+    console.log(e.target.value);
+    setSearchInput(e.target.value);
     navigate("/search");
   };
 
   const nextData = async () => {
-
-    console.log('IN NEXT DATA');
-    if (location.pathname === '/search' ) {
-      
-      console.log("NEXT DATTTTTRA");
+    console.log("IN NEXT DATA");
+    if (location.pathname === "/search") {
       let config = {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
       };
-  
+
       setOffset(offset + 15);
-  
+      console.log(searchInput, "NEXT DATA SEARCH TERM");
+
       var bodyFormData = new FormData();
       bodyFormData.append("accesskey", "90336");
       bodyFormData.append("type", "products-search");
       bodyFormData.append("limit", "15");
-      bodyFormData.append("search", Inputsearch);
+      bodyFormData.append("search", searchInput);
       bodyFormData.append("offset", offset + 15);
-  
-      setisLoading(true);
+
+      // setisLoading(true);
       let data = axios
         .post(
           "https://grocery.intelliatech.in/api-firebase/products-search.php",
           bodyFormData,
           config
         )
-  
+
         // let parsedData =  data.json();
         // console.log(parsedData);
         // setArray(arrayy.concat(parsedData.data.data));
         .then((res) => {
-          // console.log(res.data.data)
+          console.log("Running NEXT DATA");
           setSearchData(res.data);
           console.log(arrayy);
           const tempArr = JSON.parse(JSON.stringify(arrayy));
           setArray([...arrayy, ...res.data.data]);
           // setNewItemsArray(tempArr.concat(res.data.data));
-  
+
           console.log(res.data.data);
-          setisLoading(false);
+          // setisLoading(false);
           setData([...arrayy, ...res.data.data]);
         })
         .catch((err) => {
           console.log(err);
-          setisLoading(false);
+          // setisLoading(false);
         });
-    } else return
+    } else return;
   };
   console.log("item1>>>>>>>>>>>>>>", allCartItems);
   const allCartItemsHandler = (item, data) => {
@@ -234,31 +234,13 @@ const Search = ({ setData, name, data }) => {
       });
   };
 
-  console.log(arrayy.length , searchData, "NEW items>>>>>>>>>>>>>>>>>");
+  console.log(arrayy.length, searchData, "NEW items>>>>>>>>>>>>>>>>>");
 
   return (
-    
     <div className="w-full max-w-screen-2xl bg-white md:h-[69px] md:mr-44">
       <div className="inline-flex justify-center relative text-black-500 bg-white xs:my-4 xs:mx-4 sm:ml-36 md:my-3  xs:mt-20 ">
-        <input
-          type="text"
-          className=" bg-white input xs:w-[330px] sm:h-16 xs:overflow-x-hidden xs:h-auto p-2 pl-10 md:text-sm  md:w-96 md:h-12 sm:w-[500px]  font-light rounded-2xl border border-light_gray focus:bg-white focus:outline-none focus:ring-1 focus:border-transparent sm:text-xl sm:pl-14"
-          placeholder="Search products"
-          onChange={handleChange}
-          value={name}
-        />
-
-        <button className="fixed right-0 bottom-0 text-[20px]">
-          <FaArrowCircleUp
-            onClick={()=>{
-              console.log(offset);
-              scrollToTop()}}
-            style={{ display: visible ? "inline" : "none" }}
-          />
-        </button>
-
-        <svg
-          className="xs:w-6 sm:h-12 sm:w-10 xs:h-5 xs:text-white md:w-6 md:h-6 absolute xs:left-2 xs:top-2.5 md:left-2.5 md:top-3.5 bg-white"
+      <svg
+          className="xs:w-6 sm:h-12 sm:w-10 xs:h-5 xs:text-white absolute border md:w-6 md:h-6 mt-0.5 ml-3 xs:left-2 xs:top-2.5 self-center bg-white"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -271,13 +253,32 @@ const Search = ({ setData, name, data }) => {
             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
           />
         </svg>
+        <input
+          type="text"
+          className=" bg-white input xs:w-[330px] sm:h-16 xs:overflow-x-hidden xs:h-auto p-2 pl-10 md:text-sm  md:w-96 md:h-12 sm:w-[500px]   rounded-2xl border border-light_gray font-bold text-[gray] focus:bg-white focus:outline-none focus:ring-1 focus:border-transparent sm:text-xl sm:pl-14"
+          placeholder="Search Products"
+          onChange={handleChange}
+          value={name}
+        />
+
+        <button className="fixed right-0 bottom-0 text-[20px]">
+          <FaArrowCircleUp
+            onClick={() => {
+              console.log(offset);
+              scrollToTop();
+            }}
+            style={{ display: visible ? "inline" : "none" }}
+          />
+        </button>
+
+        
       </div>
 
       <InfiniteScroll
         dataLength={data?.length || 0}
         next={nextData}
         hasMore={!(data?.length >= searchData.total)}
-        // loader={<div className="w-[500px] h-[100px]">Loading...</div>}
+        // loader={<div>Loading...</div>}
         // endMessage={
         //   <p style={{ textAlign: "center" }}>
         //     <b>Yay! You have seen it all</b>

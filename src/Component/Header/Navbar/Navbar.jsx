@@ -343,7 +343,7 @@ export const Navbar = ({
                 {!(user_id == false) ? (
                   <div
                     // className="flex sm:mr-3 items-center h-[30px] md:ml-[-145px] rounded-lg md:px-2 md:mt-5 xs:mt-3 bg-white"
-                    className="flex justify-center items-center hover:border hover:border-light_gray  mr-3 text-center cursor-pointer hover:shadow-sm rounded-br-[50px]  rounded-tr-[50px]  rounded-l-[100px]"
+                    className="flex justify-center items-center hover:border border border-[white] hover:border-light_gray hover:bg-[#ff9f9]  mr-3 text-center cursor-pointer hover:shadow-sm rounded-br-[50px]  rounded-tr-[50px]  rounded-l-[100px]"
                     onClick={() => {
                       setIsOpen(!isOpen);
                     }}
