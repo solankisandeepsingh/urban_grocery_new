@@ -11,6 +11,7 @@ import CartQuantity from "../Button/CartQuantity";
 import Carousel from "react-multi-carousel";
 
 export const SimilarProduct = ({ id }) => {
+  console.log(id);
   const [similarProduct, setSimilarProduct] = useState([]);
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
   const {
@@ -285,8 +286,9 @@ export const SimilarProduct = ({ id }) => {
                   <div
                     className="xs:w-32 md:w-32 xs:h-[200px]  xs:my-3 md:h-[230px] sm:w-36 sm:h-[260px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green bg-[#FFFAED] cursor-pointer"
                     onClick={() => {
+                      console.log("Similar");
                       navigate(
-                        `/subcategory-details/${item.category_name}/product-details/${item.id}`
+                        `/subcategory-details/${item.category_name}/product-details/${item.id}`, { replace: true }
                       );
                     }}
                   >

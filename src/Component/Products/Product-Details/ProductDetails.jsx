@@ -28,6 +28,8 @@ import { useFavStore } from "../../zustand/useFavStore";
 import { SimilarProduct } from "../../Similar-Products/SimilarProduct";
 
 export const ProductDetails = ({ isOpen, setIsOpen }) => {
+
+  // console.log('ProductDetails');
   const [productPageData, setProductPage] = useState([]);
   const [wishlist, setWishlist] = useState(false);
   // const [favPos, setFavPos] = useState(true);
@@ -336,9 +338,10 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   };
 
   useEffect(() => {
+    console.log('rendered');
     productDetail();
     productReviews();
-  }, []);
+  }, [id]);
 
   const allCartItemsHandler = (item, data) => {
 
