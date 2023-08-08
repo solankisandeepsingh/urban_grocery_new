@@ -1,268 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { currencyFormatter } from "../../utils/utils";
+import axios from "../../api/axios";
+import { useUserStore } from "../zustand/useUserStore";
+import { useApiStore } from "../zustand/useApiStore";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useCartStore } from "../zustand/useCartStore";
+import { useLoaderState } from "../zustand/useLoaderState";
+import CartQuantity from "../Button/CartQuantity";
 import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-import CartQuantity from "../../Button/CartQuantity";
-import axios from "axios";
-import { API_TOKEN } from "../../Token/Token";
-import { useCartStore } from "../../zustand/useCartStore";
-import { useUserStore } from "../../zustand/useUserStore";
-import { useLoaderState } from "../../zustand/useLoaderState";
-import { useProductsStore } from "../../zustand/useProductsStore";
-import { useApiStore } from "../../zustand/useApiStore";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { useFavStore } from "../../zustand/useFavStore";
-import { currencyFormatter } from "../../../utils/utils";
-import { ToastContainer, toast } from "react-toastify";
-// import { useNavigate } from "react-router-dom";
 
-export const ProductCarousel = ({}) => {
+export const SimilarProduct = ({ id }) => {
+  const [similarProduct, setSimilarProduct] = useState([]);
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
-  console.log(allCartItems, "After Destructure");
-  const { allProducts, setAllProducts } = useProductsStore();
-
-  // const [variant, setVariant] = useState({ 0: 0 });
-  // const [favPos, setFavPos] = useState(false);
-  const [favPos, setFavPos] = useState(true);
-  const navigate = useNavigate();
-  const { jwt, setJwt } = useApiStore();
-
   const {
     userInfo: { user_id },
   } = useUserStore();
+  const { jwt, setJwt } = useApiStore();
+  const navigate = useNavigate();
   const { setisLoading } = useLoaderState();
-  const { allFavItems, setAllFavItems } = useFavStore();
-  const [fav, setFav] = useState();
-
-  const handleVariantChange = (id, e) => {
-    console.log(variant);
-    console.log(e.target.value);
-
-    let updatedvariant = { ...variant, [id]: e.target.value };
-
-    setVariant(updatedvariant);
-  };
-
-  const mockData = [
-    {
-      id: "906",
-      name: "Artisanal Dark Sugar Free Chocolate Bar",
-      indicator: "0",
-      image: "http://grocery.intelliatech.in/upload/images/2877-2023-02-17.png",
-      ratings: "4.0",
-      number_of_ratings: "1",
-      total_allowed_quantity: "0",
-      slug: "artisanal-dark-sugar-free-chocolate-bar-1",
-      description:
-        "<ul>\r\n<li>Sugarfree Chocolates</li>\r\n<li>Weight : 460 gm</li>\r\n</ul>",
-      status: "1",
-      category_name: "Chocolate",
-      tax_percentage: "0",
-      price: "999",
-      is_favorite: false,
-      variants: [
-        {
-          type: "packet",
-          id: "870",
-          product_id: "906",
-          price: "999",
-          discounted_price: "980",
-          serve_for: "Sold Out",
-          stock: "0",
-          measurement: "2",
-          measurement_unit_name: "pack",
-          stock_unit_name: "kg",
-          images: [
-            "http://grocery.intelliatech.in/upload/images/2877-2023-02-17.png",
-          ],
-          cart_count: "0",
-          is_flash_sales: false,
-          flash_sales: [
-            {
-              price: "",
-              discounted_price: "",
-              start_date: "",
-              end_date: "",
-              is_start: false,
-            },
-          ],
-        },
-        {
-          type: "packet",
-          id: "871",
-          // product_id: "907",
-          product_id: "906",
-          price: "500",
-          discounted_price: "100",
-          serve_for: "Available",
-          stock: "79",
-          measurement: "1",
-          measurement_unit_name: "pack",
-          stock_unit_name: "kg",
-          images: [
-            "https://www.telegraph.co.uk/content/dam/news/2020/07/23/TELEMMGLPICT000235668291_trans_NvBQzQNjv4BqhNkvlguSCLNAbLFJA3hmlxSyV74PnrmMVLeDsGCONQM.jpeg",
-          ],
-          cart_count: "0",
-          is_flash_sales: true,
-          flash_sales: [
-            {
-              price: "500",
-              discounted_price: "100",
-              start_date: "2023-02-17 15:30:10",
-              end_date: "2023-02-27 15:30:16",
-              is_start: true,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: "917",
-      name: "Murruku - Vacuum fried",
-      indicator: "1",
-      image: "http://grocery.intelliatech.in/upload/images/5075-2023-02-17.jpg",
-      ratings: "0.0",
-      number_of_ratings: "0",
-      total_allowed_quantity: "0",
-      slug: "murruku-vacuum-fried",
-      description:
-        "<p>Murukku is a versatile vacuum fried and extremely popular anytime snack especially in south India.</p>\r\n<p>They are often served as a tea time snack or even served along with food. Usually, Murukku are not spicy but very flavorful from the cumin seeds and asafoetida, crunchy and delicious snack.</p>",
-      status: "1",
-      category_name: "Snacks",
-      tax_percentage: "18",
-      price: "100",
-      is_favorite: false,
-      variants: [
-        {
-          type: "packet",
-          id: "881",
-          product_id: "917",
-          price: "100",
-          discounted_price: "10",
-          serve_for: "Available",
-          stock: "16",
-          measurement: "100",
-          measurement_unit_name: "gm",
-          stock_unit_name: "kg",
-          images: [
-            "http://grocery.intelliatech.in/upload/images/5075-2023-02-17.jpg",
-          ],
-          cart_count: "0",
-          is_flash_sales: false,
-          flash_sales: [
-            {
-              price: "",
-              discounted_price: "",
-              start_date: "",
-              end_date: "",
-              is_start: false,
-            },
-          ],
-        },
-        {
-          type: "packet",
-          id: "879",
-          // product_id: "915",
-          product_id: "917",
-          price: "500",
-          discounted_price: "9",
-          serve_for: "Available",
-          stock: "37",
-          measurement: "500",
-          measurement_unit_name: "gm",
-          stock_unit_name: "kg",
-          images: [
-            "https://images.unsplash.com/photo-1598128558393-70ff21433be0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=789&q=80",
-          ],
-          cart_count: "0",
-          is_flash_sales: false,
-          flash_sales: [
-            {
-              price: "",
-              discounted_price: "",
-              start_date: "",
-              end_date: "",
-              is_start: false,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: "902",
-      name: "Dairy Milk Chocolate Basket",
-      indicator: "0",
-      image: "http://grocery.intelliatech.in/upload/images/4779-2023-02-17.jpg",
-      ratings: "3.0",
-      number_of_ratings: "1",
-      total_allowed_quantity: "0",
-      slug: "dairy-milk-chocolate-basket-1",
-      description:
-        "<ul>\r\n<li>Chocolate: Dairy Milk chocolate (13 gm each)</li>\r\n<li>No of Chocolate: 10</li>\r\n<li>Packing: Blue Net Packing</li>\r\n<li>Base: Wooden Basket</li>\r\n</ul>",
-      status: "1",
-      category_name: "Chocolate",
-      tax_percentage: "0",
-      price: "599",
-      is_favorite: false,
-      variants: [
-        {
-          type: "packet",
-          id: "866",
-          product_id: "902",
-          price: "599",
-          discounted_price: "140",
-          serve_for: "Available",
-          stock: "881",
-          measurement: "1",
-          measurement_unit_name: "pack",
-          stock_unit_name: "pack",
-          images: [],
-          cart_count: "0",
-          is_flash_sales: true,
-          flash_sales: [
-            {
-              price: "599",
-              discounted_price: "580",
-              start_date: "2023-02-17 15:30:10",
-              end_date: "2023-02-27 15:30:16",
-              is_start: true,
-            },
-          ],
-        },
-      ],
-    },
-  ];
-
-  const getAllProducts = () => {
-    let config = {
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-      },
-    };
-    var bodyFormdata = new FormData();
-    bodyFormdata.append("accesskey", "90336");
-    bodyFormdata.append("get_all_products", "1");
-    bodyFormdata.append("limit", "37");
-    setisLoading(true);
-    axios
-      .post(
-        "https://grocery.intelliatech.in/api-firebase/get-all-products.php",
-        bodyFormdata,
-        config
-      )
-      .then((res) => {
-        setisLoading(false);
-        setAllProducts(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-        setisLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    getAllProducts();
-  }, [user_id]);
 
   const responsive = {
     superLargeDesktop: {
@@ -272,7 +28,7 @@ export const ProductCarousel = ({}) => {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
 
-      items: 6,
+      items: 3,
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
@@ -284,113 +40,99 @@ export const ProductCarousel = ({}) => {
     },
   };
 
-  // const handleRemoveFavorite = (item) => {
-  //   let config = {
-  //     headers: {
-  //       Authorization: `Bearer ${API_TOKEN}`,
-  //     },
-  //   };
+  const handleVariantChange = (id, e) => {
+    console.log(variant);
+    console.log(e.target.value);
 
-  //   let favData = new FormData();
-  //   favData.append("accesskey", "90336");
-  //   favData.append("remove_from_favorites", "1");
-  //   favData.append("user_id", user_id);
-  //   favData.append("product_id", item.id);
-  //   setisLoading(true);
+    let updatedvariant = { ...variant, [id]: e.target.value };
 
-  //   axios
-  //     .post(
-  //       `https://grocery.intelliatech.in/api-firebase/favorites.php`,
-
-  //       favData,
-  //       config
-  //     )
-  //     .then((res) => {
-  //       console.log(res, "favdata");
-  //       setisLoading(false);
-  //       // setFavPos((prev) => !prev);
-
-  //       let newArr = allFavItems.filter((fav) => {
-  //         return fav.id !== item.id;
-  //       });
-  //       console.log(newArr);
-  //       setAllFavItems(newArr);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       setisLoading(false);
-  //     });
-  // };
-
-  // const handleAddFavorite = (item) => {
-  //   let config = {
-  //     headers: {
-  //       Authorization: `Bearer ${API_TOKEN}`,
-  //     },
-  //   };
-
-  //   let favData = new FormData();
-  //   favData.append("accesskey", "90336");
-  //   favData.append("add_to_favorites", "1");
-  //   favData.append("user_id", user_id);
-  //   favData.append("product_id", item.id);
-  //   setisLoading(true);
-
-  //   axios
-  //     .post(
-  //       `https://grocery.intelliatech.in/api-firebase/favorites.php`,
-
-  //       favData,
-  //       config
-  //     )
-  //     .then((res) => {
-  //       setisLoading(false);
-  //       // setFavPos((prev) => !prev);
-
-  //       console.log(res, "favdata");
-  //       let newArr = [...allFavItems, item];
-  //       console.log(newArr);
-  //       setAllFavItems(newArr);
-  //     })
-  //     .catch((err) => {
-  //       setisLoading(false);
-
-  //       console.log(err);
-  //     });
-  // };
-
-  const addItemUI = (mainItem) => {
-    console.log("INSIDE");
-    let newArr = [];
-    if (mainItem.variants.length > 1) {
-      console.log('MORE <><><><><><>');
-      newArr = [
-        ...allCartItems,
-        {
-          ...mainItem.variants[variant[mainItem.id] || 0],
-          amount: 1,
-          name: mainItem.name,
-          image: mainItem.variants[variant[mainItem.id] || 0].images[0],
-          product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
-        },
-      ];
-      
-    } else { 
-      console.log('LESS <><><><><><><>');
-      newArr = [
-      ...allCartItems,
-      {
-        ...mainItem.variants[variant[mainItem.id] || 0],   
-         
-        amount: 1,
-        name: mainItem.name,
-        image: mainItem.image,
-        product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
-      },
-    ]}
-    setAllCartItems(newArr);
+    setVariant(updatedvariant);
   };
 
+  const allCartItemsHandler = (item, data) => {
+    // console.log("item1>>>>>>>>>>>>>>", allCartItems);
+    console.log("item", item);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    };
+    // console.log(data.id, "varaitn id");
+    // console.log(item.id, "main id");
+    const bodyFormData = new FormData();
+    bodyFormData.append("accesskey", "90336");
+    bodyFormData.append("add_to_cart", "1");
+    bodyFormData.append("user_id", user_id);
+    bodyFormData.append("product_id", `${data.id}`);
+    bodyFormData.append("product_variant_id", `${item.id}`);
+
+    // const qtys = (item.qty || 0) + 1;
+
+    bodyFormData.append("qty", 1);
+
+    // console.log("item", qtys);
+    setisLoading(true);
+
+    axios
+      .post(
+        "https://grocery.intelliatech.in/api-firebase/cart.php",
+        bodyFormData,
+        config
+      )
+      .then((res) => {
+        setisLoading(false);
+        console.log(res, "res add item");
+        // setallCartItems(res)
+        if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
+          // console.log("addtiem", allCartItems);
+          let newArr = allCartItems.map((data) =>
+            data.product_id === item.id
+              ? {
+                  ...data,
+                  amount: data.amount + 1,
+                }
+              : data
+          );
+          console.log(newArr);
+          setAllCartItems(newArr);
+
+          return;
+        }
+        console.log(item.id, "allCartItems Id in product caraousel");
+
+        let item1 = {
+          amount: 1,
+          discounted_price: item.discounted_price,
+          id: item.id,
+          image: data.image,
+          images: [
+            "http://grocery.intelliatech.in/upload/variant_images/1676618514.4521-883.png",
+          ],
+          price: item.price,
+          product_id: item.product_id,
+          product_variant_id: item.id,
+          qty: 1,
+          save_for_later: "0",
+          serve_for: "Available",
+          slug: "butterscotch-flavorsome-cake",
+          stock: "29",
+
+          type: "packet",
+          unit: "gm",
+          user_id: user_id,
+        };
+
+        let newArr = [...allCartItems, { ...item1, amount: 1 }];
+        console.log(newArr);
+        // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
+        setAllCartItems(newArr);
+        setisLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setisLoading(false);
+      });
+  };
   const addItemHandler = (item, data) => {
     console.log("item", item);
     const config = {
@@ -429,10 +171,6 @@ export const ProductCarousel = ({}) => {
           );
           console.log(newArr);
           setAllCartItems(newArr);
-          toast.success('Item added to user cart successfully !', {
-            position: toast.POSITION.TOP_CENTER
-        });
-
           // setAllCartItems((cart) =>
           //   cart.map((data) =>
           //     data.product_id === item.id
@@ -463,44 +201,75 @@ export const ProductCarousel = ({}) => {
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
         setAllCartItems(newArr);
         setisLoading(false);
-        
       })
       .catch((error) => {
         console.log(error);
         setisLoading(false);
       });
   };
+  const addItemUI = (mainItem) => {
+    console.log(mainItem);
 
-  const viewAllProducts = () => {
-    navigate("/allproducts");
+    let newArr = [
+      ...allCartItems,
+      {
+        ...mainItem.variants[variant[mainItem.id] || 0],
+        amount: 1,
+        name: mainItem.name,
+        image: mainItem.variants[variant[mainItem.id] || 0].images[0],
+        product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
+      },
+    ];
+
+    console.log(newArr, "FROM ADD ITEM UI");
+    setAllCartItems(newArr);
+  };
+  const handleSimilarProduct = () => {
+    let config = {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    };
+
+    let similarData = new FormData();
+    similarData.append("accesskey", "90336");
+    similarData.append("get_similar_products", "1");
+    similarData.append("product_id", id);
+
+    setisLoading(true);
+
+    axios
+      .post(
+        `https://grocery.intelliatech.in/api-firebase/get-similar-products.php`,
+        similarData,
+        config
+      )
+      .then((res) => {
+        setisLoading(false);
+        setSimilarProduct(res?.data?.data);
+       
+      })
+      .catch((err) => {
+        setisLoading(false);
+        console.log(err);
+      });
   };
 
+  useEffect(() => {
+    handleSimilarProduct();
+  }, []);
   return (
-    <>
-    <ToastContainer/>
-     <div className="xs:mt-4 xs:p-2 md:mt-7 shadow-sm border border-[#e8e8e8] rounded-md md:p-5 bg-[#fcfff3]">
-      <div className="xs:my-5 mt-20 flex justify-between">
-        <div className="text-customBlack text-[24px]">
-          <h1 className="font-okra font-600">All Proudcts</h1>
-        </div>
-        <div className=" text-customGreen text-[20px]	">
-          <h1
-            className="cursor-pointer font-okra font-600"
-            onClick={viewAllProducts}
-          >
-            View All
-          </h1>
-        </div>
-      </div>
+    <div>
+      <p className="text-[22px]  font-semibold">Similar products</p>
 
-      <div className="md:my-2 ">
-        <Carousel responsive={responsive} className="z-0">
-          {allProducts &&
-            allProducts.map((item) => {
+      <div className="">
+        <Carousel responsive={responsive}>
+          {similarProduct &&
+            similarProduct.map((item) => {
               return (
                 <>
                   <div
-                    className="w-72  xs:w-36  xs:h-auto md:w-40 md:h-[235px] sm:h-[250px] sm:w-[170px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green bg-[#FFFAED] cursor-pointer"
+                    className="xs:w-32 md:w-32 xs:h-[200px]  xs:my-3 md:h-[230px] sm:w-36 sm:h-[260px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green bg-[#FFFAED] cursor-pointer"
                     onClick={() => {
                       navigate(
                         `/subcategory-details/${item.category_name}/product-details/${item.id}`
@@ -508,7 +277,8 @@ export const ProductCarousel = ({}) => {
                     }}
                   >
                     <img
-                      className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-28  md:w-40  sm:w-48 sm:h-32 rounded-lg "
+                      // className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-24 md:ml-[23px] md:w-28 md:mt-4 sm:w-48 sm:h-32 rounded-lg "
+                      className="xs:w-32 xs:h-24  md:w-32 md:h-24 object-cover object-center  sm:w-36 sm:h-32 rounded-lg "
                       src={
                         item.variants.length == 1
                           ? item.image
@@ -532,31 +302,31 @@ export const ProductCarousel = ({}) => {
 
                             {/* ADD TO FAVOURITES  */}
                             {/* {user_id != 14 &&
-                              (allFavItems?.find((fav) => {
+                              (allFavItems.find((fav) => {
                                 return fav.id === item.id;
                               }) ? (
                                 <FaHeart
-                                  className="text-red absolute top-5 text-xl animate-hbeat hover:scale-125 transition-all right-8 "
+                                  className="text-red absolute top-2 text-xl animate-hbeat hover:scale-125 transition-all  right-2 "
                                   onClick={(e) => {
-                                    setFavPos(true)
+                                    setFavPos((prev)=> !prev)
                                     e.stopPropagation();
                                     handleRemoveFavorite(item);
                                   }}
                                 />
                               ) : (
                                 <FaRegHeart
-                                  className={`text-[light_gray] group-hover:top-2 group-active:top-2 absolute ${!favPos ? '-top-8' : 'top-5'} text-xl hover:scale-125  transition-all right-8`}
+                                  className={`text-[light_gray] group-hover:top-2 group-active:top-2 absolute ${!favPos ? '-top-5' : 'top-2'} text-xl hover:scale-125  transition-all right-2`}
                                   onClick={(e) => {
-                                    setFavPos(true)
+                                    setFavPos((prev)=> !prev)
                                     e.stopPropagation();
                                     handleAddFavorite(item);
                                   }}
                                 />
                               ))} */}
-                            <div className="  w-full md:px-3 ">
+                            <div className=" w-full">
                               <p className="2xs:text-base xs:text-sm t sm:text-xl  md:text-sm font-light  px-1 py-1 flex md:flex-row  justify-between items-center">
                                 <span className=" font-bold text-xs">
-                                  {currencyFormatter(data.discounted_price)}{" "}
+                                  {currencyFormatter(data.price)}{" "}
                                 </span>
                                 <div>
                                   <span className="text-gryColour text-xs">
@@ -729,7 +499,5 @@ export const ProductCarousel = ({}) => {
         </Carousel>
       </div>
     </div>
-    </>
-   
   );
 };

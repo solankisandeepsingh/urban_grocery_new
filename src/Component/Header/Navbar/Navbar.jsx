@@ -39,7 +39,7 @@ export const Navbar = ({
     setUserInfo,
   } = useUserStore();
 
-  const [profileView,setProfileView] = useState(false)
+  const [profileView, setProfileView] = useState(false);
 
   // useEffect(() => {
   //   let handler = (e) => {
@@ -71,7 +71,10 @@ export const Navbar = ({
 
   const handleClickOutside = (event) => {
     // Check if the click occurred outside the modal box
-    if (menuRef.current && !menuRef.current.contains(event.target) && !deskRef.current.contains(event.target)
+    if (
+      menuRef.current &&
+      !menuRef.current.contains(event.target) &&
+      !deskRef.current.contains(event.target)
     ) {
       setIsOpen(false);
       setMobileOpen(false);
@@ -79,11 +82,11 @@ export const Navbar = ({
   };
   useEffect(() => {
     // Add event listener when the component mounts
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
     // Clean up the event listener when the component unmounts
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -119,22 +122,22 @@ export const Navbar = ({
     scrollToTop();
   };
   const handleClickHome = () => {
-    setNavbarOpen(true)
+    setNavbarOpen(true);
     navigate("/");
   };
 
   const handleLogout = () => {
-    setUserInfo({ user_id: '', name: "Login" });
+    setUserInfo({ user_id: "", name: "Login" });
     // setLoggedIn(false);
     setIsOpen(false);
     setMobileOpen(false);
     navigate("/");
   };
 
-  const handleProfile = ()=>{
+  const handleProfile = () => {
     setIsOpen(false);
-    setProfileView((prev)=>!prev);
-  }
+    setProfileView((prev) => !prev);
+  };
   return (
     <div className="">
       <nav className=" px-2  sm:px-0 fixed w-full z-20 top-0 left-0 border-b border-light_gray shadow-sm bg-white">
@@ -234,6 +237,16 @@ export const Navbar = ({
                             className="bg-white sm:text-lg md:text-sm mt-4"
                           >
                             Saved Address
+                          </p>
+                        </NavLink>
+                      </li>
+                      <li className="  bg-white cursor-pointer">
+                        <NavLink to={"/favpage"}>
+                          <p
+                            onClick={() => setMobileOpen(false)}
+                            className="bg-white sm:text-lg md:text-sm mt-4"
+                          >
+                            Favourties
                           </p>
                         </NavLink>
                       </li>
@@ -380,7 +393,9 @@ export const Navbar = ({
                   </div>
                 )}
 
-                {openLogin && <Login setOpenLogin={setOpenLogin}  setIsOpen={setIsOpen}/>}
+                {openLogin && (
+                  <Login setOpenLogin={setOpenLogin} setIsOpen={setIsOpen} />
+                )}
 
                 {isOpen && (
                   <div
@@ -402,7 +417,7 @@ export const Navbar = ({
                         <NavLink to={"/myorder"}>
                           <p
                             onClick={() => setIsOpen(false)}
-                            className= "sm:text-lg md:text-sm mt-4"
+                            className="sm:text-lg md:text-sm mt-4"
                           >
                             My Orders
                           </p>
@@ -420,18 +435,25 @@ export const Navbar = ({
                         </NavLink>
                       </li>
 
-                      <li className="  cursor-pointer">
-                    
+                      <li className="  bg-white cursor-pointer">
+                        <NavLink to={"/favpage"}>
                           <p
-                            onClick={handleProfile}
-                            className="sm:text-lg md:text-sm mt-4"
+                            onClick={() => setIsOpen(false)}
+                            className="bg-white sm:text-lg md:text-sm mt-4"
                           >
-                            My Profile
+                            Favourties
                           </p>
-                       
+                        </NavLink>
                       </li>
 
-                      
+                      <li className="  cursor-pointer">
+                        <p
+                          onClick={handleProfile}
+                          className="sm:text-lg md:text-sm mt-4"
+                        >
+                          My Profile
+                        </p>
+                      </li>
 
                       <li className=" cursor-pointer">
                         <div className="flex justify-between mt-4  ">
@@ -461,7 +483,6 @@ export const Navbar = ({
                           </p>
                         </NavLink>
                       </li>
-                      
 
                       <li className=" cursor-pointer">
                         <p
@@ -500,7 +521,7 @@ export const Navbar = ({
         </div>
       </nav>
 
-      {profileView && <MyProfile setProfileView={setProfileView}/>}
+      {profileView && <MyProfile setProfileView={setProfileView} />}
     </div>
   );
 };

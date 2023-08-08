@@ -24,12 +24,16 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRef } from "react";
+import { useFavStore } from "../../zustand/useFavStore";
+import { SimilarProduct } from "../../Similar-Products/SimilarProduct";
 
 export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const [productPageData, setProductPage] = useState([]);
   const [wishlist, setWishlist] = useState(false);
+  // const [favPos, setFavPos] = useState(true);
   const [reviewList, setReviewList] = useState(false);
   const [reviewOpen, setReviewOpen] = useState(false);
+  const [reviewIndex, setReviewIndex] = useState("");
   const { id } = useParams();
   const { setisLoading } = useLoaderState();
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
@@ -38,13 +42,18 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const [isValidImg, setisValidImg] = useState(false);
   const [review, setReview] = useState("");
   const { jwt, setJwt } = useApiStore();
+  const { allFavItems, setAllFavItems } = useFavStore();
+  const {
+    userInfo: { user_id },
+  } = useUserStore();
 
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   let imageModalRef = useRef(null);
 
-  const handleImageClick = (image) => {
+  const handleImageClick = (image,index) => {
     if (image) {
+      setReviewIndex(index)
       setSelectedImage(image);
       setShowImageModal((prev) => !prev);
     }
@@ -286,10 +295,89 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
     setWishlist((prev) => !prev);
   };
 
+  const handleRemoveFavorite = (item) => {
+    let config = {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    };
+
+    let favData = new FormData();
+    favData.append("accesskey", "90336");
+    favData.append("remove_from_favorites", "1");
+    favData.append("user_id", user_id);
+    favData.append("product_id", item.id);
+    setisLoading(true);
+
+    axios
+      .post(
+        `https://grocery.intelliatech.in/api-firebase/favorites.php`,
+
+        favData,
+        config
+      )
+      .then((res) => {
+        console.log(res, "favdata");
+        setisLoading(false);
+        // setFavPos((prev) => !prev);
+        setWishlist((prev) => !prev);
+
+        let newArr = allFavItems.filter((fav) => {
+          return fav.id !== item.id;
+        });
+        console.log(newArr);
+        setAllFavItems(newArr);
+      })
+      .catch((err) => {
+        console.log(err);
+        setisLoading(false);
+      });
+  };
+
+  const handleAddFavorite = (item) => {
+    let config = {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    };
+
+    let favData = new FormData();
+    favData.append("accesskey", "90336");
+    favData.append("add_to_favorites", "1");
+    favData.append("user_id", user_id);
+    favData.append("product_id", item.id);
+    setisLoading(true);
+
+    axios
+      .post(
+        `https://grocery.intelliatech.in/api-firebase/favorites.php`,
+
+        favData,
+        config
+      )
+      .then((res) => {
+        setisLoading(false);
+        // setFavPos((prev) => !prev);
+        setWishlist((prev) => !prev);
+
+        console.log(res, "favdata");
+        let newArr = [...allFavItems, item];
+        console.log(newArr);
+        setAllFavItems(newArr);
+      })
+      .catch((err) => {
+        setisLoading(false);
+
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <ToastContainer />
-      <div className="2xs:mt-10 xs:mt-10 w-[50%] md:p-20 xs:p-8">
+
+      {/*Produc-details Page */}
+      <div className="2xs:mt-10 xs:mt-10 md:w-[50%] md:p-20 xs:p-8">
         {filterData &&
           filterData.map((item) => {
             return (
@@ -324,6 +412,33 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                       )} */}
                     <div className="2xs:flex 2xs:mt-4 xs:flex xs:mt-4 sm:mt-8 md:flex md:gap-4 sm:gap-7 xs:gap-6 2xs:gap-3">
                       <div className="2xs:flex xs:flex 2xs:gap-1 xs:gap-1  md:flex md:gap-1 ">
+                        {user_id !== 14 &&
+                        allFavItems?.find((fav) => {
+                          return fav.id === item.id;
+                        }) ? (
+                          <FaHeart
+                            className="2xs:text-xs xs:text-sm sm:text-3xl  md:text-lg  text-red animate-hbeat cursor-pointer"
+                            onClick={(e) => {
+                              setWishlist(true);
+                              e.stopPropagation();
+                              handleRemoveFavorite(item);
+                            }}
+                          />
+                        ) : (
+                          <FaRegHeart
+                            className="2xs:text-xs xs:text-sm sm:text-3xl  md:text-lg  text-lime cursor-pointer"
+                            onClick={(e) => {
+                              setWishlist(true);
+                              e.stopPropagation();
+                              handleAddFavorite(item);
+                            }}
+                          />
+                        )}
+                        <p className="2xs:text-xs xs:text-sm sm:text-3xl md:text-sm ">
+                          Add Wishlist
+                        </p>
+                      </div>
+                      {/* <div className="2xs:flex xs:flex 2xs:gap-1 xs:gap-1  md:flex md:gap-1 ">
                         {wishlist ? (
                           <FaHeart
                             className="2xs:text-xs xs:text-sm sm:text-3xl  md:text-lg  text-red animate-hbeat"
@@ -338,7 +453,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                         <p className="2xs:text-xs xs:text-sm sm:text-3xl md:text-sm">
                           Wish_List
                         </p>
-                      </div>
+                      </div> */}
                       <div className="2xs:flex xs:flex xs:gap-1  md:flex md:gap-1 ">
                         <FaArrowsAlt className="2xs:text-xs xs:text-sm sm:text-3xl md:text-lg text-lime " />
                         <p className="2xs:text-xs xs:text-sm sm:text-3xl md:text-sm">
@@ -496,7 +611,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                         Customer reviews ({reviewList?.length || 0})
                       </h2>
                       {reviewList?.length > 0 ? (
-                        reviewList.map((review) => {
+                        reviewList.map((review,mainindex) => {
                           // const img = new Image();
                           // // let validImg;
                           // img.src = review.user_profile;
@@ -554,7 +669,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                                         // <div className="last:opacity-70 last:before:absolute last:before:content-['+3'] text-3xl text-[#f5f5f5] before:w-24 before:h-24 ">
                                         <div
                                           onClick={() =>
-                                            handleImageClick(image)
+                                            handleImageClick(image,mainindex)
                                           }
                                           className={`last:opacity-70 last:before:absolute last:before:content-['${
                                             review.images.length - index - 1
@@ -564,36 +679,25 @@ last:before:content-['+3'] text-3xl text-[#f5f5f5] before:w-24 before:h-24`}
                                           <img
                                             key={index}
                                             src={image}
-                                            className="w-24 h-24 rounded-lg  object-cover"
+                                            className="w-24 h-24 rounded-lg object-cover"
                                           />
                                         </div>
                                       ) : null
                                     )}
                                 </div>
 
-                                {showImageModal && (
+                                {showImageModal && reviewIndex === mainindex && (
                                   <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
                                     <div
-                                      className="bg-white p-4  sm:h-[auto] rounded-lg grid grid-cols-3 gap-2 h-auto  mt-3"
+                                      className="bg-white p-4 sm:h-[auto] rounded-lg grid grid-cols-3 gap-2 h-auto mt-3"
                                       ref={imageModalRef}
                                     >
                                       <>
-                                        {/* <button
-                                          className="absolute top-[33.3%] right-[5%] md:top-[33%] md:right-[35.5%] sm:top-[39.5%] sm:right-[24.2%]"
-                                          onClick={closeModal}
-                                        >
-                                          <AiOutlineCloseCircle className="text-red text-xl sm:text-2xl hover:opacity-50" />
-                                        </button> */}
-
-                                        {review.images.map((image, index) => (
+                                        {  review.images.map((image,index) => (
                                           <img
                                             key={index}
                                             src={image}
-                                            className={`w-24 h-24 rounded-lg object-cover ${
-                                              image === selectedImage
-                                                ? "border-4 border-blue-500"
-                                                : ""
-                                            }`}
+                                            className={`w-24 h-24 rounded-lg object-cover`}
                                           />
                                         ))}
                                       </>
@@ -629,7 +733,7 @@ last:before:content-['+3'] text-3xl text-[#f5f5f5] before:w-24 before:h-24`}
                   )}
                   {item.made_in && (
                     <>
-                      <p className="font-medium 2xs:mt-2 xs:mt-2 xs:text-lg  sm:text-3xl md:text-sm sm:mt-4 ">
+                      <p className="font-medium 2xs:mt-2 xs:mt-2 xs:text-lg border-b border-[#e8e8e8e8] sm:text-3xl md:text-sm sm:mt-4 ">
                         Made In
                       </p>
                       <p className="2xs:text-sm 2xs:mb-2 xs:text-sm sm:mt-1 sm:text-2xl md:text-xs md:mt-0 font-light text-secondary">
@@ -641,7 +745,15 @@ last:before:content-['+3'] text-3xl text-[#f5f5f5] before:w-24 before:h-24`}
               </>
             );
           })}
+
+        {/*  Similar products Page */}
+        <div className="md:ml-14  ">
+          <div className="md:ml-6 sm:ml-4">
+            <SimilarProduct id={id} />
+          </div>
+        </div>
       </div>
+
       {reviewOpen && (
         <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
           <div className="bg-white rounded top-[5%] left-[5%]">

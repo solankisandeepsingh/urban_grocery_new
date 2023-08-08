@@ -57,6 +57,8 @@ module.exports = {
       GreenColour: "#00b259",
       lightGrayBlinkit: "#333",
       GrayBlinkit: "#666",
+      yellowAwaiting: "#FFDC56",
+      RedColour: "#FF0000",
       colorGray: "rgb(255, 255, 255)",
     },
     borderColor: {

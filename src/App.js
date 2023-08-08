@@ -25,6 +25,7 @@ import { OrderDetails } from "./Component/Order-Details/OrderDetails";
 import { MyProfile } from "./Component/Profile/MyProfile";
 import { OrderDetailsPage } from "./Component/Order-Details/OrderDetailsPage";
 import Search from "./Component/Header/Search/Search";
+import { FavPage } from "./Component/Favourites/FavPage";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -190,6 +191,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/profile" element={<MyProfile />} />
           <Route path="/orderdetailspage" element={<OrderDetailsPage />} />
+          <Route path="/favpage" element={<FavPage />} />
 
       
 
@@ -218,6 +220,7 @@ function App() {
               />
             }
           />
+
           
           <Route
             path="/allproducts"

@@ -112,8 +112,15 @@ export const Login = ({
     // setLoggedIn(true);
 
     if (!logins.phone || !logins.password) {
-      toast.error("Please enter both phone and password!");
+      
+      toast.error('Please enter both phone and password!', {
+        position: toast.POSITION.TOP_CENTER
+    });
       return;
+    }else{
+      toast.success('Login successfully !', {
+        position: toast.POSITION.TOP_CENTER
+    });
     }
     const loginItem = new FormData();
     loginItem.append("accesskey", "90336");
