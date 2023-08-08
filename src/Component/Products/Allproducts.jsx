@@ -214,15 +214,6 @@ function Allproducts({ }) {
 
 
 
-  const handleVariantChange = (id, e) => {
-    console.log(variant);
-    console.log(e.target.value);
-
-    let updatedvariant = { ...variant, [id]: e.target.value };
-
-    setVariant(updatedvariant);
-  };
-
   const allCartItemsHandler = (item, data) => {
     // console.log("item1>>>>>>>>>>>>>>", allCartItems);
     console.log("item", item);
@@ -307,6 +298,15 @@ function Allproducts({ }) {
         setisLoading(false);
       });
   };
+  const handleVariantChange = (id, e) => {
+    console.log(variant);
+    console.log(e.target.value);
+    
+    let updatedvariant = { ...variant, [id]: e.target.value };
+
+    setVariant(updatedvariant);
+  };
+
   const addItemHandler = (item, data) => {
     console.log("item", item);
     const config = {

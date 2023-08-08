@@ -99,7 +99,7 @@ function CartQuantity({ item, variant }) {
         console.log(item, variant, "bodyForm APPEMND");
         bodyFormData.append(
           "product_variant_id",
-          item.variants[variant[item.variants.length > 1 ? item.id : 0 || 0]].id
+          item.variants[0].id
         );
 
         const finditem = allCartItems.find(

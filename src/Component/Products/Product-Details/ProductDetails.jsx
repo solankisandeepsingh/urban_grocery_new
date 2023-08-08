@@ -60,6 +60,121 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
     }
   };
 
+  const handleVariantChange = (id, e) => {
+    console.log(variant);
+    console.log(e.target.value);
+    
+    let updatedvariant = { ...variant, [id]: e.target.value };
+
+    setVariant(updatedvariant);
+  };
+
+  const addItemHandler = (item, data) => {
+    console.log("item IN PDP", item, data);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    };
+    // console.log(data.id, "varaitn id");
+    // console.log(item.id, "main id");
+    const bodyFormData = new FormData();
+    bodyFormData.append("accesskey", "90336");
+    bodyFormData.append("add_to_cart", "1");
+    bodyFormData.append("user_id", user_id);
+    bodyFormData.append("product_id", `${data.id}`);
+    bodyFormData.append("product_variant_id", `${item.id}`);
+    bodyFormData.append("qty", 1);
+    setisLoading(true);
+
+    axios
+      .post(
+        "https://grocery.intelliatech.in/api-firebase/cart.php",
+        bodyFormData,
+        config
+      )
+      .then(console.log(allCartItems, "[before some method]"))
+      .then((res) => {
+        // setisLoading(false);
+        if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
+          let newArr = allCartItems.map((data) =>
+            data.product_id === item.id
+              ? {
+                  ...data,
+                  amount: data.amount + 1,
+                }
+              : data
+          );
+          console.log(newArr);
+          setAllCartItems(newArr);
+          // setAllCartItems((cart) =>
+          //   cart.map((data) =>
+          //     data.product_id === item.id
+          //       ? {
+          //           ...data,
+          //           amount: data.amount + 1,
+          //         }
+          //       : data
+          //   )
+          // );
+          return;
+        }
+        console.log(item.id, "Additem Id in product caraousel");
+
+        let item1 = {
+          amount: 1,
+          discounted_price: item.discounted_price,
+          id: item.id,
+          price: item.price,
+          product_id: item.product_id,
+          product_variant_id: item.id,
+          qty: 1,
+          user_id: user_id,
+        };
+
+        let newArr = [...allCartItems, { ...item1, amount: 1 }];
+        console.log(newArr);
+        // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
+        setAllCartItems(newArr);
+        setisLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setisLoading(false);
+      });
+  };
+  const addItemUI = (mainItem) => {
+    console.log("INSIDE");
+    let newArr = [];
+    if (mainItem.variants.length > 1) {
+      console.log('MORE <><><><><><>');
+      newArr = [
+        ...allCartItems,
+        {
+          ...mainItem.variants[variant[mainItem.id] || 0],
+          amount: 1,
+          name: mainItem.name,
+          image: mainItem.variants[variant[mainItem.id] || 0].images[0],
+          product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
+        },
+      ];
+      
+    } else { 
+      console.log('LESS <><><><><><><>');
+      newArr = [
+      ...allCartItems,
+      {
+        ...mainItem.variants[variant[mainItem.id] || 0],   
+         
+        amount: 1,
+        name: mainItem.name,
+        image: mainItem.image,
+        product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
+      },
+    ]}
+    setAllCartItems(newArr);
+  };
+
   const closeModal = () => {
     setSelectedImage(null);
     setShowImageModal(false);
@@ -226,6 +341,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   }, []);
 
   const allCartItemsHandler = (item, data) => {
+
     const config = {
       headers: {
         Authorization: `Bearer ${jwt}`,
@@ -235,7 +351,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", userInfo.user_id);
+    bodyFormData.append("user_id", "14");
 
     bodyFormData.append("product_id", `${data.id}`);
     bodyFormData.append("product_variant_id", `${item.id}`);
@@ -245,6 +361,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
     bodyFormData.append("qty", 1);
 
     setisLoading(true);
+    
     axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
@@ -294,7 +411,10 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
       .catch((error) => {
         setisLoading(false);
       });
+
+
   };
+
 
   const filterData = productPageData.filter((data) => {
     return data.id === id;
@@ -484,23 +604,23 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                       </p>
 
                       {item &&
-                        item.variants.map((data) => {
+                        item.variants.map((variant) => {
                           return (
                             <>
                               <div className="xs:text-sm xs:text-left sm:mt-2  md:text-left  ">
                                 <p className="text-lime text-lg font-bold sm:text-3xl md:text-lg">
-                                  You save ₹{data.price - data.discounted_price}
+                                  You save ₹{variant.price - variant.discounted_price}
                                   .00
                                 </p>
                                 <p className="2xs:text-base  sm:text-2xl md:text-base text-black font-medium md:mt-1 sm:mt-2">
-                                  ₹{data.discounted_price}.00{" "}
+                                  ₹{variant.discounted_price}.00{" "}
                                   <span className="text-xs sm:text-xl md:text-sm text-black line-through">
-                                    ₹{data.price}.00{" "}
+                                    ₹{variant.price}.00{" "}
                                   </span>
                                 </p>
                                 <p className="2xs:text-base  sm:text-2xl md:text-sm  mt-1 font-light">
-                                  {data.measurement}{" "}
-                                  {data.measurement_unit_name}
+                                  {variant.measurement}{" "}
+                                  {variant.measurement_unit_name}
                                 </p>
                                 <div className="flex flex-row gap-4 mt-2 sm:mt-5 ">
                                   <div className="box-border h-16 md:w-40 xs:w-44 px-4 xs:px-2 border-2 bg-white border-light_gray rounded-lg text-center text-lime">
@@ -559,9 +679,15 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                                     ) : (
                                       <button
                                         className="bg-lime 2xs:px-2 2xs:mt-2 2xs:rounded xs:mt-3 xs:w-24 xs:rounded-lg xs:py-1 md:mt-3 md:w-[118px] sm:w-[130px] sm:mt-5  text-white md:font-bold md:py-3 sm:text-lg md:text-sm md:px-4 md:rounded-lg md:hover:opacity-90"
-                                        onClick={() =>
-                                          allCartItemsHandler(data, item)
-                                        }
+                                        // onClick={() =>
+                                        //   allCartItemsHandler(data, item)
+                                        // }
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          user_id
+                                            ? addItemHandler(variant, item)
+                                            : addItemUI(item);
+                                        }}
                                       >
                                         Add
                                       </button>
