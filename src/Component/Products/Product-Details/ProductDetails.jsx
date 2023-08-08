@@ -24,13 +24,17 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRef } from "react";
+import { useFavStore } from "../../zustand/useFavStore";
+import { SimilarProduct } from "../../Similar-Products/SimilarProduct";
 
 export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const [productPageData, setProductPage] = useState([]);
   const [wishlist, setWishlist] = useState(false);
+  // const [favPos, setFavPos] = useState(true);
   const [reviewList, setReviewList] = useState(false);
   const [reviewOpen, setReviewOpen] = useState(false);
   const [images, setImages] = useState([]);
+  const [reviewIndex, setReviewIndex] = useState("");
   const { id } = useParams();
   const { setisLoading } = useLoaderState();
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
@@ -39,13 +43,18 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const [isValidImg, setisValidImg] = useState(false);
   const [review, setReview] = useState("");
   const { jwt, setJwt } = useApiStore();
+  const { allFavItems, setAllFavItems } = useFavStore();
+  const {
+    userInfo: { user_id },
+  } = useUserStore();
 
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   let imageModalRef = useRef(null);
 
-  const handleImageClick = (image) => {
+  const handleImageClick = (image, index) => {
     if (image) {
+      setReviewIndex(index);
       setSelectedImage(image);
       setShowImageModal((prev) => !prev);
     }
@@ -296,9 +305,88 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   };
   // const imgLength = 12/review?.images?.length;
 
+  const handleRemoveFavorite = (item) => {
+    let config = {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    };
+
+    let favData = new FormData();
+    favData.append("accesskey", "90336");
+    favData.append("remove_from_favorites", "1");
+    favData.append("user_id", user_id);
+    favData.append("product_id", item.id);
+    setisLoading(true);
+
+    axios
+      .post(
+        `https://grocery.intelliatech.in/api-firebase/favorites.php`,
+
+        favData,
+        config
+      )
+      .then((res) => {
+        console.log(res, "favdata");
+        setisLoading(false);
+        // setFavPos((prev) => !prev);
+        setWishlist((prev) => !prev);
+
+        let newArr = allFavItems.filter((fav) => {
+          return fav.id !== item.id;
+        });
+        console.log(newArr);
+        setAllFavItems(newArr);
+      })
+      .catch((err) => {
+        console.log(err);
+        setisLoading(false);
+      });
+  };
+
+  const handleAddFavorite = (item) => {
+    let config = {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    };
+
+    let favData = new FormData();
+    favData.append("accesskey", "90336");
+    favData.append("add_to_favorites", "1");
+    favData.append("user_id", user_id);
+    favData.append("product_id", item.id);
+    setisLoading(true);
+
+    axios
+      .post(
+        `https://grocery.intelliatech.in/api-firebase/favorites.php`,
+
+        favData,
+        config
+      )
+      .then((res) => {
+        setisLoading(false);
+        // setFavPos((prev) => !prev);
+        setWishlist((prev) => !prev);
+
+        console.log(res, "favdata");
+        let newArr = [...allFavItems, item];
+        console.log(newArr);
+        setAllFavItems(newArr);
+      })
+      .catch((err) => {
+        setisLoading(false);
+
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <ToastContainer />
+
+      {/*Produc-details Page */}
       <div className="2xs:mt-10 xs:mt-10 md:w-[50%] md:p-20 xs:p-8">
         {filterData &&
           filterData.map((item) => {
@@ -334,6 +422,33 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                       )} */}
                     <div className="2xs:flex 2xs:mt-4 xs:flex xs:mt-4 sm:mt-8 md:flex md:gap-4 sm:gap-7 xs:gap-6 2xs:gap-3">
                       <div className="2xs:flex xs:flex 2xs:gap-1 xs:gap-1  md:flex md:gap-1 ">
+                        {user_id !== 14 &&
+                        allFavItems?.find((fav) => {
+                          return fav.id === item.id;
+                        }) ? (
+                          <FaHeart
+                            className="2xs:text-xs xs:text-sm sm:text-3xl  md:text-lg  text-red animate-hbeat cursor-pointer"
+                            onClick={(e) => {
+                              setWishlist(true);
+                              e.stopPropagation();
+                              handleRemoveFavorite(item);
+                            }}
+                          />
+                        ) : (
+                          <FaRegHeart
+                            className="2xs:text-xs xs:text-sm sm:text-3xl  md:text-lg  text-lime cursor-pointer"
+                            onClick={(e) => {
+                              setWishlist(true);
+                              e.stopPropagation();
+                              handleAddFavorite(item);
+                            }}
+                          />
+                        )}
+                        <p className="2xs:text-xs xs:text-sm sm:text-3xl md:text-sm ">
+                          Add Wishlist
+                        </p>
+                      </div>
+                      {/* <div className="2xs:flex xs:flex 2xs:gap-1 xs:gap-1  md:flex md:gap-1 ">
                         {wishlist ? (
                           <FaHeart
                             className="2xs:text-xs xs:text-sm sm:text-3xl  md:text-lg  text-red animate-hbeat"
@@ -348,7 +463,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                         <p className="2xs:text-xs xs:text-sm sm:text-3xl md:text-sm">
                           Wish_List
                         </p>
-                      </div>
+                      </div> */}
                       <div className="2xs:flex xs:flex xs:gap-1  md:flex md:gap-1 ">
                         <FaArrowsAlt className="2xs:text-xs xs:text-sm sm:text-3xl md:text-lg text-lime " />
                         <p className="2xs:text-xs xs:text-sm sm:text-3xl md:text-sm">
@@ -469,16 +584,12 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                   <div dangerouslySetInnerHTML={{ __html: item.description }}>
                     {/* {JSON.parse(item.description)} */}
                   </div>
-                  <a
-                    className="px-[15px] py-[9px] border-2 rounded-[20px] text-white mt-2 font-bold bg-lime inline-block"
-                    href=""
-                    onClick={(event) => {
-                      event.preventDefault();
-                      setReviewOpen(true);
-                    }}
-                  >
-                    Write A Review
-                  </a>
+
+                  <div className="mt-4">
+                    <div className="">
+                      <SimilarProduct id={id} />
+                    </div>
+                  </div>
                   <div className="mt-4 flex flex-col gap-1">
                     <h1 className="font-bold text-2xl">RATINGS AND REVIEWS</h1>
                     <div className="flex items-center   gap-1 border-b border-[#e8e8e8e8]">
@@ -489,21 +600,31 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                                         reviews={item.number_of_ratings}
                                       />
                                     </div> */}
-                      <div>
+                      <div className="flex justify-between items-center w-full">
                         <MUIRating
                           name="half-rating-read"
                           defaultValue={+item.ratings}
                           precision={0.1}
                           readOnly
                         />
+                        <a
+                          className="px-[15px] py-[9px]  rounded-[20px] text-black font-bold bg-yellowAwaiting inline-block"
+                          href=""
+                          onClick={(event) => {
+                            event.preventDefault();
+                            setReviewOpen(true);
+                          }}
+                        >
+                          Add review
+                        </a>
                       </div>
                     </div>
                     <div className="">
                       <h2 className="font-bold text-[20px] mb-4">
-                        Customer reviews ({reviewList?.length || 0})
+                        {`Customer reviews ${reviewList?.length ? "("+reviewList?.length+")":''}`}
                       </h2>
                       {reviewList?.length > 0 ? (
-                        reviewList.map((review) => {
+                        reviewList.map((review, mainindex) => {
                           // const img = new Image();
                           // // let validImg;
                           // img.src = review.user_profile;
@@ -554,18 +675,18 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                               </div> */}
 
                               <div>
-                                <div className="xs:grid xs:grid-cols-3 md:grid-cols-6 sm:grid-cols-6 gap-2">
+                                <div className="xs:grid xs:grid-cols-3 md:grid-cols-6 relative sm:grid-cols-6 gap-2">
                                   {review.images.length > 0 &&
                                     review.images.map((image, index) =>
                                       index < 3 ? (
                                         // <div className="last:opacity-70 last:before:absolute last:before:content-['+3'] text-3xl text-[#f5f5f5] before:w-24 before:h-24 ">
                                         <div
                                           onClick={() =>
-                                            handleImageClick(image)
+                                            handleImageClick(image, mainindex)
                                           }
                                           className={`${
                                             review.images.length > 2
-                                              ? 'last:before:content-["+3"]  before:w-24 before:h-24 last:opacity-70 last:before:absolute'
+                                              ? 'last:before:content-["+3"]  cursor-pointer before:w-24 before:h-24 last:opacity-60  last:before:absolute'
                                               : ""
                                           } 
  text-3xl text-[#f5f5f5]`}
@@ -573,42 +694,36 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                                           <img
                                             key={index}
                                             src={image}
-                                            className="w-24 h-24 rounded-lg  object-cover"
+                                            className="w-24 h-24 rounded-lg object-cover"
                                           />
                                         </div>
                                       ) : null
                                     )}
                                 </div>
 
-                                {showImageModal && (
-                                  <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
-                                    <div
-                                      className="bg-white p-4  sm:h-[auto] rounded-lg grid grid-cols-12 gap-2 h-auto  mt-3"
-                                      ref={imageModalRef}
-                                    >
-                                      <>
-                                        {/* <button
-                                          className="absolute top-[33.3%] right-[5%] md:top-[33%] md:right-[35.5%] sm:top-[39.5%] sm:right-[24.2%]"
-                                          onClick={closeModal}
-                                        >
-                                          <AiOutlineCloseCircle className="text-red text-xl sm:text-2xl hover:opacity-50" />
-                                        </button> */}
-
-                                        {review.images.map((image, index) => (
-                                          <img
-                                            key={index}
-                                            src={image}
-                                            className={`w-24 h-24 rounded-lg  object-cover ${
-                                              image === selectedImage
-                                                ? "border-4 border-blue-500"
-                                                : ""
-                                            }`}
-                                          />
-                                        ))}
-                                      </>
+                                {showImageModal &&
+                                  reviewIndex === mainindex && (
+                                    <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
+                                      <div
+                                        className="bg-white p-4 sm:h-[auto] rounded-lg grid grid-cols-3 gap-2 h-auto mt-3"
+                                        ref={imageModalRef}
+                                      >
+                                        <>
+                                          {review.images.map((image, index) => (
+                                            <img
+                                              key={index}
+                                              src={image}
+                                              className={`w-24 h-24 rounded-lg  object-cover ${
+                                                image === selectedImage
+                                                  ? "border-4 border-blue-500"
+                                                  : ""
+                                              }`}
+                                            />
+                                          ))}
+                                        </>
+                                      </div>
                                     </div>
-                                  </div>
-                                )}
+                                  )}
                               </div>
                               <p className="mt-3">{review.review}</p>
                             </div>
@@ -638,7 +753,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                   )}
                   {item.made_in && (
                     <>
-                      <p className="font-medium 2xs:mt-2 xs:mt-2 xs:text-lg  sm:text-3xl md:text-sm sm:mt-4 ">
+                      <p className="font-medium 2xs:mt-2 xs:mt-2 xs:text-lg border-b border-[#e8e8e8e8] sm:text-3xl md:text-sm sm:mt-4 ">
                         Made In
                       </p>
                       <p className="2xs:text-sm 2xs:mb-2 xs:text-sm sm:mt-1 sm:text-2xl md:text-xs md:mt-0 font-light text-secondary">
@@ -650,7 +765,10 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
               </>
             );
           })}
+
+        {/*  Similar products Page */}
       </div>
+
       {reviewOpen && (
         <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
           <div className="bg-white rounded top-[5%] left-[5%]">

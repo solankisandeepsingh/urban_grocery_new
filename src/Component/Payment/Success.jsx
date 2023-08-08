@@ -15,7 +15,7 @@ export const Success = ({ setNavbarOpen }) => {
   return (
     <>
       <div className="flex flex-col items-center text-center justify-center mt-24">
-        <div className="md:mt-36 sm:mt-36">
+        <div className="md:mt-24 sm:mt-36">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="text-lime w-28 h-28 sm:w-40 sm:h-40 xs:w-24 xs:h-24"

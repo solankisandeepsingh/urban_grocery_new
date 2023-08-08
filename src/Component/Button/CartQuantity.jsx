@@ -5,6 +5,7 @@ import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiStore } from "../zustand/useApiStore";
+import { ToastContainer, toast } from "react-toastify";
 
 function CartQuantity({ item, variant }) {
   const { allCartItems, setAllCartItems } = useCartStore();
@@ -42,6 +43,7 @@ function CartQuantity({ item, variant }) {
             config
           )
           .then((res) => {
+            
             if (
               allCartItems.some((cartItem) => cartItem.product_id === item.id)
             ) {
@@ -51,7 +53,6 @@ function CartQuantity({ item, variant }) {
                   : data
               );
               console.log(newArr);
-  
               setAllCartItems(newArr);
               setisLoading(false);
   
@@ -60,6 +61,7 @@ function CartQuantity({ item, variant }) {
             let newArr = [...allCartItems, { ...item, amount: 1 }];
             console.log(newArr);
             // setAllCartItems((cart) => [...cart, { ...item, amount: 1 }]);
+            
             setAllCartItems(newArr);
           })
           .catch((error) => {
@@ -77,6 +79,9 @@ function CartQuantity({ item, variant }) {
           return { ...i };
         });
         setAllCartItems(newArr);
+        toast.success('Item added to user cart successfully !', {
+          position: toast.POSITION.TOP_CENTER
+      });
       }
     } else if (change == "decrease") {
       if (user_id) {
@@ -132,6 +137,10 @@ function CartQuantity({ item, variant }) {
               );
 
               setisLoading(false);
+              toast.info('Item remove to user cart successfully !', {
+                position: toast.POSITION.TOP_CENTER
+            });
+              
 
               setAllCartItems(newArr);
             } else if (
@@ -226,7 +235,7 @@ function CartQuantity({ item, variant }) {
             newArr,
             "Cart Quant MORE THAN 1 ><>>>><>><><><><>>>><><><<><><><>"
           );
-    
+        
           setAllCartItems(newArr);
     
           return;
@@ -373,6 +382,8 @@ function CartQuantity({ item, variant }) {
   };
 
   return (
+    <>
+    <ToastContainer/>
     <div className="rounded-lg bg-lime text-white gap-1 hover:bg-blue-700 font-bold px-2 md:h-[28px] xs:h-[28px] w-full sm:h-[36px] flex justify-evenly " onClick={(e)=>e.stopPropagation()}>
       <button
         className="md:text-lg xs:text-sm sm:text-4xl "
@@ -404,6 +415,8 @@ function CartQuantity({ item, variant }) {
         +
       </button>
     </div>
+    </>
+    
   );
 }
 

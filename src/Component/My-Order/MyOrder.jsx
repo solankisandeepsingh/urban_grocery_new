@@ -81,17 +81,19 @@ export const MyOrder = ({ addItem }) => {
         <div className="md:w-[60%] sm:w-[60%] xs:w-[85%] overflow-y-scroll h-[90vh]">
           {/* <div className="md:w-[60%] xs:w-full "> */}
           <div className=" border border-light_gray p-4 rounded-md">
-            {allOrderDetails?.length > 0 ?(
+            {allOrderDetails?.length > 0 ? (
               allOrderDetails.map((item) => {
                 return (
-                  <div  
-                  onClick={() => handleOrderDetails(item.id)}
-                  className="bg border-b flex justify-between items-center cursor-pointer rounded hover:bg-[#f5f5f5]  border-[#e8e8e8] py-3">
-
+                  <div
+                    onClick={() => handleOrderDetails(item.id)}
+                    className="bg border-b flex justify-between items-center cursor-pointer rounded hover:bg-[#f5f5f5]  border-[#e8e8e8] py-3"
+                  >
                     <div className="w-[95%]">
                       <div className="flex ml-3 justify-between text-center">
                         <div>
-                          <p className="font-bold text-gryColour">Order Id : {item.id}</p>
+                          <p className="font-bold text-gryColour">
+                            Order Id : {item.id}
+                          </p>
                         </div>
                         <div>
                           <p className="text-lime font-bold">
@@ -107,12 +109,13 @@ export const MyOrder = ({ addItem }) => {
                           </p>
                         </div>
                         <div>
-                          { item.delivery_time?
-                          <p className="text-gryColour">
-                            Place-Order : {item.delivery_time}
-                          </p>:
-                          <></>
-                          }
+                          {item.delivery_time ? (
+                            <p className="text-gryColour">
+                              Place-Order : {item.delivery_time}
+                            </p>
+                          ) : (
+                            <></>
+                          )}
                         </div>
                       </div>
 
@@ -126,10 +129,34 @@ export const MyOrder = ({ addItem }) => {
                       </div>
 
                       <div className="flex justify-end ">
-                        <div className="flex bg-skybluelight  shadow-sm justify-center items-center  border mb-4  m-2 border-light_gray p-1 rounded-lg w-32 text-[12px]">
+                        {/* <div className="flex bg-skybluelight  shadow-sm justify-center items-center  border mb-4  m-2 border-light_gray p-1 rounded-lg w-32 text-[12px]">
                           <p className="text-text-black">
                             {item.active_status.toLocaleUpperCase()}
                           </p>
+                        </div> */}
+
+                        <div
+                          className={`flex shadow-sm justify-center items-center  mb-4 m-2 p-1 rounded-lg w-32 text-[12px] ${
+                            item.active_status === "received"
+                              ? "bg-[#5779df] text-white"
+                              : item.active_status === "delivered"
+                              ? "bg-lime text-white"
+                              : item.active_status === "return"
+                              ? "bg-GreenColour text-white"
+                              : item.active_status === "awaiting"
+                              ? "bg-yellowAwaiting text-black"
+                              : item.active_status === "processed"
+                              ? "bg-TWITTER_BLUE text-white"
+                              : item.active_status === "shipped"
+                              ? "bg-gmail_color text-black"
+                              : item.active_status === "cancel"
+                              ? "bg-RedColour text-white"
+                              : item.active_status === "ready_to_pickup"
+                              ? "bg-green text-white"
+                              : "bg-skybluelight text-text-black"
+                          }`}
+                        >
+                          <p>{item.active_status.toLocaleUpperCase()}</p>
                         </div>
                         <div className="flex shadow-sm gap-2 mt-2 w-36 text-[12px] mb-4 border border-light_gray p-1 rounded-lg">
                           <div className="text-[18px]">
@@ -141,10 +168,7 @@ export const MyOrder = ({ addItem }) => {
                         </div>
                       </div>
                     </div>
-                    <div
-                      className=" cursor-pointer"
-                     
-                    >
+                    <div className=" cursor-pointer">
                       <BsChevronRight />
                     </div>
                     {/* <div className="flex shadow-lg gap-2 mt-2 justify-end ">
@@ -160,11 +184,11 @@ export const MyOrder = ({ addItem }) => {
                   </div>
                 );
               })
-            ) : <>
-              <p className="text-lg font-bold ">No Orders Yet</p>
-            </>
-                
-              }
+            ) : (
+              <>
+                <p className="text-lg font-bold ">No Orders Yet</p>
+              </>
+            )}
           </div>
         </div>
         {/* ) : (
