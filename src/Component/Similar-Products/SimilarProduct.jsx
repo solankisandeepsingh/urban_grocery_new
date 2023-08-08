@@ -208,20 +208,34 @@ export const SimilarProduct = ({ id }) => {
       });
   };
   const addItemUI = (mainItem) => {
-    console.log(mainItem);
-
-    let newArr = [
+    console.log("INSIDE");
+    let newArr = [];
+    if (mainItem.variants.length > 1) {
+      console.log('MORE <><><><><><>');
+      newArr = [
+        ...allCartItems,
+        {
+          ...mainItem.variants[variant[mainItem.id] || 0],
+          amount: 1,
+          name: mainItem.name,
+          image: mainItem.variants[variant[mainItem.id] || 0].images[0],
+          product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
+        },
+      ];
+      
+    } else { 
+      console.log('LESS <><><><><><><>');
+      newArr = [
       ...allCartItems,
       {
-        ...mainItem.variants[variant[mainItem.id] || 0],
+        ...mainItem.variants[variant[mainItem.id] || 0],   
+         
         amount: 1,
         name: mainItem.name,
-        image: mainItem.variants[variant[mainItem.id] || 0].images[0],
+        image: mainItem.image,
         product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
       },
-    ];
-
-    console.log(newArr, "FROM ADD ITEM UI");
+    ]}
     setAllCartItems(newArr);
   };
   const handleSimilarProduct = () => {

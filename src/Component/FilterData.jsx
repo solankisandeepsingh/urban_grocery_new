@@ -114,20 +114,34 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
   };
 
   const addItemUI = (mainItem) => {
-    console.log(mainItem);
-
-    let newArr = [
+    console.log("INSIDE");
+    let newArr = [];
+    if (mainItem.variants.length > 1) {
+      console.log('MORE <><><><><><>');
+      newArr = [
+        ...allCartItems,
+        {
+          ...mainItem.variants[variant[mainItem.id] || 0],
+          amount: 1,
+          name: mainItem.name,
+          image: mainItem.variants[variant[mainItem.id] || 0].images[0],
+          product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
+        },
+      ];
+      
+    } else { 
+      console.log('LESS <><><><><><><>');
+      newArr = [
       ...allCartItems,
       {
-        ...mainItem.variants[variant[mainItem.id] || 0],
+        ...mainItem.variants[variant[mainItem.id] || 0],   
+         
         amount: 1,
         name: mainItem.name,
-        image: mainItem.variants[variant[mainItem.id] || 0].images[0],
+        image: mainItem.image,
         product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
       },
-    ];
-
-    console.log(newArr, "FROM ADD ITEM UI");
+    ]}
     setAllCartItems(newArr);
   };
   const serchAPIData = () => {
@@ -227,8 +241,8 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
         dataLength={data?.length || 0}
         next={nextData}
         hasMore={!(data?.length >= searchData.total)}
-        loader={<div className='w-10 m-auto  h-10 border-[3.5px]  absolute right-[50%] border-[white]  border-b-[Green]  border-t-[Green] border-l-[Green] rounded-full animate-spin'>
-        </div>}
+        // loader={<div className='w-10 m-auto  h-10 border-[3.5px]  absolute right-[50%] border-[white]  border-b-[Green]  border-t-[Green] border-l-[Green] rounded-full animate-spin'>
+        // </div>}
         // endMessage={
         //   <p style={{ textAlign: "center" }}>
         //     <b>Yay! You have seen it all</b>

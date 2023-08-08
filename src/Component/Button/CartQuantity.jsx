@@ -5,9 +5,9 @@ import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiStore } from "../zustand/useApiStore";
-import { ToastContainer, toast } from "react-toastify";
 
 function CartQuantity({ item, variant }) {
+  console.log(item,variant, "FROM FLASH SALES I");
   const { allCartItems, setAllCartItems } = useCartStore();
   const { setisLoading } = useLoaderState();
   const {
@@ -16,6 +16,7 @@ function CartQuantity({ item, variant }) {
   const { jwt, setJwt } = useApiStore();
 
   const changeQuantity = (change) => {
+    console.log(change);
     if (change == "increase") {
       if (user_id) {
         console.log("USER LOGGED IN");
@@ -79,11 +80,9 @@ function CartQuantity({ item, variant }) {
           return { ...i };
         });
         setAllCartItems(newArr);
-        toast.success('Item added to user cart successfully !', {
-          position: toast.POSITION.TOP_CENTER
-      });
       }
     } else if (change == "decrease") {
+      console.log("decrease");
       if (user_id) {
         const config = {
           headers: {
@@ -136,12 +135,7 @@ function CartQuantity({ item, variant }) {
                 "Cart Quant -1 LAST ITEM ><>>>>>>>><><><<><><><>"
               );
 
-              setisLoading(false);
-              toast.info('Item remove to user cart successfully !', {
-                position: toast.POSITION.TOP_CENTER
-            });
-              
-
+              setisLoading(false);              
               setAllCartItems(newArr);
             } else if (
               allCartItems.some((cartItem) => cartItem.product_id === item.id)
@@ -383,7 +377,6 @@ function CartQuantity({ item, variant }) {
 
   return (
     <>
-    <ToastContainer/>
     <div className="rounded-lg bg-lime text-white gap-1 hover:bg-blue-700 font-bold px-2 md:h-[28px] xs:h-[28px] w-full sm:h-[36px] flex justify-evenly " onClick={(e)=>e.stopPropagation()}>
       <button
         className="md:text-lg xs:text-sm sm:text-4xl "
@@ -405,7 +398,8 @@ function CartQuantity({ item, variant }) {
 
       <button
         className="md:text-lg xs:text-sm sm:text-2xl"
-        onClick={() => {
+        onClick={() => {          console.log("klklklk");
+
           console.log(user_id);
           changeQuantity('increase')
           // quantityIncreaseBoth();

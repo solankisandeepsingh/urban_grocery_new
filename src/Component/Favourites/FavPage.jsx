@@ -77,7 +77,7 @@ export const FavPage = () => {
     console.log("INSIDE");
     let newArr = [];
     if (mainItem.variants.length > 1) {
-      console.log("MORE <><><><><><>");
+      console.log('MORE <><><><><><>');
       newArr = [
         ...allCartItems,
         {
@@ -88,23 +88,22 @@ export const FavPage = () => {
           product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
         },
       ];
-    } else {
-      console.log("LESS <><><><><><><>");
+      
+    } else { 
+      console.log('LESS <><><><><><><>');
       newArr = [
-        ...allCartItems,
-        {
-          ...mainItem.variants[variant[mainItem.id] || 0],
-
-          amount: 1,
-          name: mainItem.name,
-          image: mainItem.image,
-          product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
-        },
-      ];
-    }
+      ...allCartItems,
+      {
+        ...mainItem.variants[variant[mainItem.id] || 0],   
+         
+        amount: 1,
+        name: mainItem.name,
+        image: mainItem.image,
+        product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
+      },
+    ]}
     setAllCartItems(newArr);
   };
-
   const addItemHandler = (item, data) => {
     console.log("item", item);
     const config = {
