@@ -117,10 +117,6 @@ export const Login = ({
         position: toast.POSITION.TOP_CENTER
     });
       return;
-    }else{
-      toast.success('Login successfully !', {
-        position: toast.POSITION.TOP_CENTER
-    });
     }
     const loginItem = new FormData();
     loginItem.append("accesskey", "90336");
@@ -157,6 +153,9 @@ export const Login = ({
           let newUserId = res?.data?.user_id;
           // setUser_id(newUserId);
           // clearCart(newUserId);
+          toast.success('Login successfully !', {
+            position: toast.POSITION.TOP_CENTER
+        });
 
           const addMultipleItems = () => {
             let arr = {};
