@@ -22,7 +22,8 @@ export const Login = ({
     phone: "",
     password: "",
   });
-  const { allCartItems, config, clearCartApi, setAllCartItems } = useCartStore();
+  const { allCartItems, config, clearCartApi, setAllCartItems } =
+    useCartStore();
   const { setUserInfo } = useUserStore();
   const [showSignUp, setShowSignUp] = useState(false);
   const [loginForm, setLoginForm] = useState(true);
@@ -36,7 +37,7 @@ export const Login = ({
 
   const handleShow = (e) => {
     e.preventDefault();
-    setLoginForm(false)
+    setLoginForm(false);
     setShowSignUp(true);
     // setOpenLogin(false)
     // setLoginFormModals(false);
@@ -52,7 +53,7 @@ export const Login = ({
     }
     navigate("/");
   };
-  console.log(allCartItems, "INSIDE LOGIN AFERT LOGIN");
+ 
 
   // const getUserCarts = (user_id) => {
   //   let config = {
@@ -107,31 +108,37 @@ export const Login = ({
   };
 
   const handleSubmit = (e) => {
-
-      console.log("HANDLE LOGIN");
     e.preventDefault();
 
-    // setLoggedIn(true);
+    if (!logins.phone && !logins.password) {
+    console.log("handleSubmit")
 
-    if (!logins.phone || !logins.password) {
-      toast.error('Please enter both phone and password!', {
-        position: toast.POSITION.TOP_CENTER
-    })}
-    else {
-
+      toast.error("Please enter both phone and password!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else if (!logins.phone) {
+      
+      toast.error("Please enter a valid phone number!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else if (!logins.password) {
+      toast.error("Please enter a password!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else {
       const loginItem = new FormData();
       loginItem.append("accesskey", "90336");
       loginItem.append("mobile", logins.phone);
       loginItem.append("password", logins.password);
       loginItem.append("fcm_id", "YOUR_FCM_ID");
       setisLoading(true);
-  
+
       let config = {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
       };
-  
+
       axios
         .post(
           "https://grocery.intelliatech.in/api-firebase/login.php",
@@ -140,9 +147,9 @@ export const Login = ({
         )
         .then((res) => {
           console.log(res);
-  
+
           setisLoading(false);
-          if (res.data.user_id) {
+          if (!res.data.error) {
             setLoginData([...loginData, logins]);
             console.log("LOGIN THRU CART<><><><>");
             closeLoginModal();
@@ -154,22 +161,21 @@ export const Login = ({
             let newUserId = res?.data?.user_id;
             // setUser_id(newUserId);
             // clearCart(newUserId);
-            toast.success('Login successfully !', {
-              position: toast.POSITION.TOP_CENTER
-          });
-          
-  
+            toast.success("Login successfully!", {
+              position: toast.POSITION.TOP_CENTER,
+            });
+
             const addMultipleItems = () => {
               let arr = {};
               allCartItems.forEach((item) => {
                 arr[item.product_variant_id] = item.amount;
               });
-  
+
               let variants = Object.keys(arr).join(",");
               let variantQty = Object.values(arr).join(",");
               console.log("variants", variants);
               console.log("variantQty", variantQty);
-  
+
               console.log(config);
               var bodyFormdata = new FormData();
               bodyFormdata.append("accesskey", "90336");
@@ -178,7 +184,7 @@ export const Login = ({
               bodyFormdata.append("product_variant_id", variants);
               bodyFormdata.append("qty", variantQty);
               setisLoading(true);
-  
+
               return axios
                 .post(
                   "https://grocery.intelliatech.in/api-firebase/cart.php",
@@ -195,13 +201,12 @@ export const Login = ({
                   setisLoading(false);
                 });
             };
-  
+
             addMultipleItems();
-            console.log('getuser');
+            console.log("getuser");
             // getUserCarts(newUserId);
-            
           } else {
-            toast.error("Invalid phone OR password! !", {
+            toast.error("Invalid phone OR password!", {
               position: toast.POSITION.TOP_CENTER,
             });
           }
@@ -301,8 +306,15 @@ export const Login = ({
           </div>
         </>
       )}
-      {showRegisterForm && <Signup setOpenLogin={setOpenLogin} setLoginForm={setLoginForm} setShowRegisterForm={setShowRegisterForm} phoneNumber={phoneNumber} />}
-      
+      {showRegisterForm && (
+        <Signup
+          setOpenLogin={setOpenLogin}
+          setLoginForm={setLoginForm}
+          setShowRegisterForm={setShowRegisterForm}
+          phoneNumber={phoneNumber}
+        />
+      )}
+
       {/* {showSignUp && <SignUpOtp setOpenLogin={setOpenLogin}/>} */}
       {showSignUp && (
         <SignUpwithOtp
@@ -311,7 +323,6 @@ export const Login = ({
           phoneNumber={phoneNumber}
           setShowSignUp={setShowSignUp}
           setOpenLogin={setOpenLogin}
-        
         />
       )}
       {/* <SignUpwithOtp setOpenLogin={setOpenLogin}/> */}
