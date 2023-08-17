@@ -5,12 +5,18 @@ import axios from "axios";
 import { API_TOKEN } from "../Token/Token";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { AiOutlineCloseCircle } from "react-icons/ai";
+import {
+  AiFillEye,
+  AiFillEyeInvisible,
+  AiOutlineCloseCircle,
+} from "react-icons/ai";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { SignUpwithOtp } from "./SignUpwithOtp";
 import { useApiStore } from "../zustand/useApiStore";
+import { useRef } from "react";
+import { useEffect } from "react";
 
 export const Login = ({
   // setUser_id,
@@ -22,7 +28,8 @@ export const Login = ({
     phone: "",
     password: "",
   });
-  const { allCartItems, config, clearCartApi, setAllCartItems } = useCartStore();
+  const { allCartItems, config, clearCartApi, setAllCartItems } =
+    useCartStore();
   const { setUserInfo } = useUserStore();
   const [showSignUp, setShowSignUp] = useState(false);
   const [loginForm, setLoginForm] = useState(true);
@@ -33,10 +40,12 @@ export const Login = ({
   const navigate = useNavigate();
   const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
+  const [visiblePassword, setVisiblePassword] = useState(false);
+  let loginRef = useRef(null);
 
   const handleShow = (e) => {
     e.preventDefault();
-    setLoginForm(false)
+    setLoginForm(false);
     setShowSignUp(true);
     // setOpenLogin(false)
     // setLoginFormModals(false);
@@ -53,6 +62,22 @@ export const Login = ({
     navigate("/");
   };
   console.log(allCartItems, "INSIDE LOGIN AFERT LOGIN");
+
+  const handleClickOutside = (event) => {
+    // Check if the click occurred outside the modal box
+    if (loginRef.current && !loginRef.current.contains(event.target)) {
+      loginForm(false);
+      showRegisterForm(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // const getUserCarts = (user_id) => {
   //   let config = {
@@ -96,6 +121,10 @@ export const Login = ({
   //     });
   // };
 
+  const handleShowVisivblePassword = () => {
+    setVisiblePassword((prev) => !prev);
+  };
+
   const inputHandler = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -107,31 +136,134 @@ export const Login = ({
   };
 
   const handleSubmit = (e) => {
-
-      console.log("HANDLE LOGIN");
+    console.log("HANDLE LOGIN");
     e.preventDefault();
 
     // setLoggedIn(true);
 
-    if (!logins.phone || !logins.password) {
-      toast.error('Please enter both phone and password!', {
-        position: toast.POSITION.TOP_CENTER
-    })}
-    else {
+    // if (!logins.phone || !logins.password) {
+    //   toast.error("Please enter both phone and password!", {
+    //     position: toast.POSITION.TOP_CENTER,
+    //   });
+    // } else {
+    //   const loginItem = new FormData();
+    //   loginItem.append("accesskey", "90336");
+    //   loginItem.append("mobile", logins.phone);
+    //   loginItem.append("password", logins.password);
+    //   loginItem.append("fcm_id", "YOUR_FCM_ID");
+    //   setisLoading(true);
+
+    //   let config = {
+    //     headers: {
+    //       Authorization: `Bearer ${jwt}`,
+    //     },
+    //   };
+
+    //   axios
+    //     .post(
+    //       "https://grocery.intelliatech.in/api-firebase/login.php",
+    //       loginItem,
+    //       config
+    //     )
+    //     .then((res) => {
+    //       console.log(res);
+
+    //       setisLoading(false);
+    //       if (res.data.user_id) {
+    //         setLoginData([...loginData, logins]);
+    //         console.log("LOGIN THRU CART<><><><>");
+    //         closeLoginModal();
+    //         navigate("/");
+    //         localStorage.setItem("token", `${jwt}`);
+    //         // dispatchLogin({ type: "LOGIN", payload: res.data.name });
+    //         console.log("LOGIN RESPONSEEEEEEEEEEEEEE", res.data);
+    //         setUserInfo(res.data);
+    //         let newUserId = res?.data?.user_id;
+    //         // setUser_id(newUserId);
+    //         // clearCart(newUserId);
+    //         toast.success("Login successfully !", {
+    //           position: toast.POSITION.TOP_CENTER,
+    //         });
+
+    //         const addMultipleItems = () => {
+    //           let arr = {};
+    //           allCartItems.forEach((item) => {
+    //             arr[item.product_variant_id] = item.amount;
+    //           });
+
+    //           let variants = Object.keys(arr).join(",");
+    //           let variantQty = Object.values(arr).join(",");
+    //           console.log("variants", variants);
+    //           console.log("variantQty", variantQty);
+
+    //           console.log(config);
+    //           var bodyFormdata = new FormData();
+    //           bodyFormdata.append("accesskey", "90336");
+    //           bodyFormdata.append("add_multiple_items", "1");
+    //           bodyFormdata.append("user_id", newUserId);
+    //           bodyFormdata.append("product_variant_id", variants);
+    //           bodyFormdata.append("qty", variantQty);
+    //           setisLoading(true);
+
+    //           return axios
+    //             .post(
+    //               "https://grocery.intelliatech.in/api-firebase/cart.php",
+    //               bodyFormdata,
+    //               config
+    //             )
+    //             .then((res) => {
+    //               console.log(res, "res<><><><><><><><>");
+    //               // getUserCarts(newUserId);
+    //               setisLoading(false);
+    //             })
+    //             .catch((error) => {
+    //               console.log(error);
+    //               setisLoading(false);
+    //             });
+    //         };
+
+    //         addMultipleItems();
+    //         console.log("getuser");
+    //         // getUserCarts(newUserId);
+    //       } else {
+    //         toast.error("Invalid phone OR password! !", {
+    //           position: toast.POSITION.TOP_CENTER,
+    //         });
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.log(err, "LOGIN ERROR ><><><><><><><><><");
+    //       setisLoading(false);
+    //     });
+    // }
+
+    if (!logins.phone && !logins.password) {
+      toast.error("Please enter both phone and password!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else if (!logins.phone) {
+      toast.error("Please enter a valid phone number!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else if (!logins.password) {
+      toast.error("Please enter a password!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else {
+      setisLoading(true);
 
       const loginItem = new FormData();
       loginItem.append("accesskey", "90336");
       loginItem.append("mobile", logins.phone);
       loginItem.append("password", logins.password);
       loginItem.append("fcm_id", "YOUR_FCM_ID");
-      setisLoading(true);
-  
+
       let config = {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
       };
-  
+
       axios
         .post(
           "https://grocery.intelliatech.in/api-firebase/login.php",
@@ -140,9 +272,11 @@ export const Login = ({
         )
         .then((res) => {
           console.log(res);
-  
+
           setisLoading(false);
-          if (res.data.user_id) {
+
+          if (!res.data.error) {
+            // ... rest of your success logic ...
             setLoginData([...loginData, logins]);
             console.log("LOGIN THRU CART<><><><>");
             closeLoginModal();
@@ -154,22 +288,22 @@ export const Login = ({
             let newUserId = res?.data?.user_id;
             // setUser_id(newUserId);
             // clearCart(newUserId);
-            toast.success('Login successfully !', {
-              position: toast.POSITION.TOP_CENTER
-          });
-          
-  
+
+            toast.success("Login successfully!", {
+              position: toast.POSITION.TOP_CENTER,
+            });
+
             const addMultipleItems = () => {
               let arr = {};
               allCartItems.forEach((item) => {
                 arr[item.product_variant_id] = item.amount;
               });
-  
+
               let variants = Object.keys(arr).join(",");
               let variantQty = Object.values(arr).join(",");
               console.log("variants", variants);
               console.log("variantQty", variantQty);
-  
+
               console.log(config);
               var bodyFormdata = new FormData();
               bodyFormdata.append("accesskey", "90336");
@@ -178,7 +312,7 @@ export const Login = ({
               bodyFormdata.append("product_variant_id", variants);
               bodyFormdata.append("qty", variantQty);
               setisLoading(true);
-  
+
               return axios
                 .post(
                   "https://grocery.intelliatech.in/api-firebase/cart.php",
@@ -195,13 +329,12 @@ export const Login = ({
                   setisLoading(false);
                 });
             };
-  
+
             addMultipleItems();
-            console.log('getuser');
+            console.log("getuser");
             // getUserCarts(newUserId);
-            
           } else {
-            toast.error("Invalid phone OR password! !", {
+            toast.error("Invalid phone OR password!", {
               position: toast.POSITION.TOP_CENTER,
             });
           }
@@ -217,6 +350,17 @@ export const Login = ({
       password: "",
     });
   };
+
+  // const isWeakPassword = logins.password.length < 6;
+  // const isStrongPassword = logins.password.length > 7;
+
+  // const passwordStrengthMessage =
+  //   logins.password.length >= 6 ? "Strong Password" : "Weak Password";
+
+  // const strongPasswordRegex =
+  //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  // const weakPasswordRegex = /^(.{1,7}|[^a-zA-Z0-9])$/;
+
   const handleForgotPassword = () => {};
   return (
     <>
@@ -224,23 +368,27 @@ export const Login = ({
         <>
           <ToastContainer />
           <div className="fixed  z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
-            <div className="bg-[#f5f5f5] rounded top-[5%] left-[5%]">
+            <div
+              className="bg-[#f5f5f5] rounded top-[5%] left-[5%] md:w-[500px] xs:w-[340px] sm:w-[500px]"
+              ref={loginRef}
+            >
               <div className="flex justify-center items-center relative">
-                <div className="container relative  ">
+                <div className="container relative flex ">
+                <div className="mb-4 mt-32 w-[40%]">
+                      <img
+                        src="http://grocery.intelliatech.in/dist/img/logo.png"
+                        className="w-40 mx-4 "
+                        alt="Flowbite Logo"
+                      />
+                    </div>
+                 
+                  <div className="w-full p-8 md:px-12 mr-auto rounded-2xl ">
                   <button
                     className="absolute top-[5%] right-[5%]"
                     onClick={closeLoginModal}
                   >
                     <AiOutlineCloseCircle className="text-red text-2xl hover:opacity-50" />
                   </button>
-                  <div className="w-full p-8 md:px-12 mr-auto rounded-2xl shadow-2xl">
-                    <div className="mb-4 mr-1">
-                      <img
-                        src="http://grocery.intelliatech.in/dist/img/logo.png"
-                        className="h-3 md:w-[70px] md:h-[60px] sm:h-9 bg-white "
-                        alt="Flowbite Logo"
-                      />
-                    </div>
                     <div className="flex justify-between">
                       <h1 className="font-bold uppercase text-3xl">Login :</h1>
                     </div>
@@ -255,14 +403,28 @@ export const Login = ({
                           value={logins.phone}
                           placeholder="Phone"
                         />
-                        <input
-                          className="w-full bg-gray-100 border-gray-400 text-gray-900 mt-2 p-3 rounded-lg  focus:shadow-outline"
-                          type="Password"
-                          placeholder="Password"
-                          onChange={inputHandler}
-                          value={logins.password}
-                          name="password"
-                        />
+
+                        <div className="relative flex items-center">
+                          <input
+                            className="w-full bg-gray-100 border-gray-400 text-gray-900 mt-2 p-3 rounded-lg focus:shadow-outline"
+                            type={visiblePassword ? "text" : "password"}
+                            placeholder="Password"
+                            onChange={inputHandler}
+                            value={logins.password}
+                            name="password"
+                          />
+                          <div
+                            onClick={handleShowVisivblePassword}
+                            className="absolute xs:ml-[250px] md:ml-[246px] sm:ml-[280px] mt-2 cursor-pointer"
+                          >
+                            {visiblePassword ? (
+                              <AiFillEye />
+                            ) : (
+                              <AiFillEyeInvisible />
+                            )}
+                          </div>
+                        </div>
+                       
                       </div>
 
                       <div className="mb-8 mt-6 flex items-center justify-between">
@@ -289,7 +451,7 @@ export const Login = ({
                             className="text-danger transition ml-2 text-[green] duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
                             onClick={handleShow}
                           >
-                            Register
+                           Sign up now
                           </a>
                         </p>
                       </div>
@@ -301,8 +463,15 @@ export const Login = ({
           </div>
         </>
       )}
-      {showRegisterForm && <Signup setOpenLogin={setOpenLogin} setLoginForm={setLoginForm} setShowRegisterForm={setShowRegisterForm} phoneNumber={phoneNumber} />}
-      
+      {showRegisterForm && (
+        <Signup
+          setOpenLogin={setOpenLogin}
+          setLoginForm={setLoginForm}
+          setShowRegisterForm={setShowRegisterForm}
+          phoneNumber={phoneNumber}
+        />
+      )}
+
       {/* {showSignUp && <SignUpOtp setOpenLogin={setOpenLogin}/>} */}
       {showSignUp && (
         <SignUpwithOtp
@@ -311,7 +480,6 @@ export const Login = ({
           phoneNumber={phoneNumber}
           setShowSignUp={setShowSignUp}
           setOpenLogin={setOpenLogin}
-        
         />
       )}
       {/* <SignUpwithOtp setOpenLogin={setOpenLogin}/> */}

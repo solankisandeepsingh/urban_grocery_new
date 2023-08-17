@@ -256,7 +256,7 @@ const Search = ({ setData, name, data }) => {
         <input
           type="text"
           className=" bg-white input xs:w-[330px] sm:h-16 xs:overflow-x-hidden xs:h-auto p-2 pl-10 md:text-sm  md:w-96 md:h-12 sm:w-[500px]   rounded-2xl border border-light_gray font-bold text-[gray] focus:bg-white focus:outline-none focus:ring-1 focus:border-transparent sm:text-xl sm:pl-14"
-          placeholder="Search Products"
+          placeholder="Search for Products"
           onChange={handleChange}
           value={name}
         />
