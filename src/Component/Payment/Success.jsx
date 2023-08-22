@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../zustand/useCartStore";
 import { useEffect } from "react";
 
-export const Success = ({ setNavbarOpen }) => {
+export const Success = ({ setNavbarOpen,NavbarOpen }) => {
   const navigate = useNavigate();
   const goToHome = () => {
     setNavbarOpen(true);
@@ -13,7 +13,7 @@ export const Success = ({ setNavbarOpen }) => {
   };
   useEffect(()=>{
     setNavbarOpen(false)
-  },[])
+  },[NavbarOpen])
   const { config } = useCartStore();
   console.log(config);
   return (

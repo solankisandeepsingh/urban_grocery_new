@@ -20,6 +20,7 @@ export const ProductCarousel = ({}) => {
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
   console.log(allCartItems, "After Destructure");
   const { allProducts, setAllProducts } = useProductsStore();
+  
 
   // const [variant, setVariant] = useState({ 0: 0 });
   // const [favPos, setFavPos] = useState(false);
@@ -429,9 +430,7 @@ export const ProductCarousel = ({}) => {
           );
           console.log(newArr);
           setAllCartItems(newArr);
-          toast.success('Item added to user cart successfully !', {
-            position: toast.POSITION.TOP_CENTER
-        });
+          
 
           // setAllCartItems((cart) =>
           //   cart.map((data) =>

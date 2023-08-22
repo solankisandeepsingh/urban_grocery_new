@@ -12,7 +12,7 @@ import { useApiStore } from "../zustand/useApiStore";
 
 // import {  SiRazorpay } from "../react-icons/si";
 
-function Payment({ setNavbarOpen }) {
+function Payment({ setNavbarOpen,NavbarOpen}) {
   const { clearCartApi, setAllCartItems, allCartItems, cartTotal } =
     useCartStore();
   const [paymentMethods, setPaymentMethods] = useState([]);
@@ -42,6 +42,9 @@ function Payment({ setNavbarOpen }) {
     return `${item.amount}`;
   });
   console.log(varArr, qtyArr);
+  useEffect(()=>{
+    setNavbarOpen(false);
+  },[NavbarOpen])
 
   useEffect(() => {
     let config = {
@@ -63,7 +66,8 @@ function Payment({ setNavbarOpen }) {
       .then((res) => {
         setPaymentMethods(res?.data?.payment_methods);
         setisLoading(false);
-        setNavbarOpen(false)
+        setNavbarOpen(false);
+  
       })
       .catch((err) => {
         console.log(err);
