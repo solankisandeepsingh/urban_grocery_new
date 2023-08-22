@@ -282,9 +282,7 @@ function Home({
                   </div>
                 </div> */}
 
-                <div className="text-white text-sm mt-4 mb-4">
-                  <Footer/>
-                </div>
+               
               </footer>
             </div>
           </div>

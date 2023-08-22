@@ -26,6 +26,7 @@ import { MyProfile } from "./Component/Profile/MyProfile";
 import { OrderDetailsPage } from "./Component/Order-Details/OrderDetailsPage";
 import Search from "./Component/Header/Search/Search";
 import { FavPage } from "./Component/Favourites/FavPage";
+import { Footer } from "./Component/Footer/Footer";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -233,6 +234,9 @@ function App() {
             }
           />
         </Routes>
+        <div  className="bg-[#212122] border w-full border-white text-center rounded-md text-white p-4">
+                  <Footer/>
+                </div>
       </div>
     </>
   );
