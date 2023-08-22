@@ -12,7 +12,7 @@ import { useApiStore } from "../zustand/useApiStore";
 
 // import {  SiRazorpay } from "../react-icons/si";
 
-function Payment({ price }) {
+function Payment({ setNavbarOpen }) {
   const { clearCartApi, setAllCartItems, allCartItems, cartTotal } =
     useCartStore();
   const [paymentMethods, setPaymentMethods] = useState([]);
@@ -63,6 +63,7 @@ function Payment({ price }) {
       .then((res) => {
         setPaymentMethods(res?.data?.payment_methods);
         setisLoading(false);
+        setNavbarOpen(false)
       })
       .catch((err) => {
         console.log(err);
@@ -313,10 +314,10 @@ function Payment({ price }) {
       {/* <div className="flex justify-evenly items-center text-center"> */}
       <div className="xs:flex h-[100vh] xs:flex-col xs:my-[60px] md:flex md:flex-row md:justify-between rounded-md border-light_gray md:items-center border md:text-center xs:mx-3 sm:m-20 bg-[#fafafa] px-5">
         {/* <div className=" flex w-[50%] items-center justify-center"> */}
-        <div className="xs:w-full self-start h-auto min-h-[75vh] sm:w-[700px] md:w-[35%] ">
+        <div className="xs:w-full self-start h-auto min-h-[75vh] sm:w-[620px] md:w-[35%] ">
           <div className="mt-5  rounded-lg shadow-2xl min-h-[75vh] h-auto">
             <div className="bg-[#6ba9c5] py-2 rounded-t-lg">
-              <h2 className="text-lg py-2 text-white font-bold ">
+              <h2 className="text-lg py-2 text-white font-bold text-center ">
                 Select Payment Method
               </h2>
             </div>
@@ -332,13 +333,13 @@ function Payment({ price }) {
                       }}
                     >
                       {/* {console.log(paymentMethods[`${item.id}`])} */}
-                      {console.log(item, 'MYITEM<><><>')}
+                      {console.log(item, "MYITEM<><><>")}
                       <input
                         className="mr-2 leading-tight"
                         type="radio"
                         name={"payment method "}
                         id={item.id}
-                        checked={chosenPayment == item.code }
+                        checked={chosenPayment == item.code}
                       />
                       {/* <BsCashStack /> */}
                       <label className="ml-2 font-bold" htmlFor={item.id}>
@@ -354,7 +355,7 @@ function Payment({ price }) {
                     handleConfirmOrder();
                   }}
                   disabled={!chosenPayment}
-                  className="bg-lime text-white my-4 hover:opacity-90 sm:w-full md:w-[90%] mx-4 sm:text-2xl md:text-lg px-4 py-1.5 rounded-lg"
+                  className="bg-lime text-white my-4 hover:opacity-90 sm:w-full md:w-[90%] xs:w-[100%] sm:text-2xl md:text-lg px-4 py-1.5 rounded-lg"
                 >
                   Proceed to Pay
                 </button>
@@ -365,7 +366,7 @@ function Payment({ price }) {
         <div>
           <div>
             {/* <div className="mt-28 border border-light_gray p-3 h-auto w-[350px]"> */}
-            <div className="xs:my-16  border border-light_gray h-auto w-[350px] rounded-lg bg-white hidden md:block md:w-[275px]">
+            <div className="xs:my-16 md:mt-[-70px] border border-light_gray h-auto w-[350px] rounded-lg bg-white hidden md:block md:w-[300px]">
               <div className="w-full py-3 bg-[#64bd59] rounded-t-lg text-white ">
                 <h2 className=" font-bold sm:text-center">Order Summary</h2>
               </div>

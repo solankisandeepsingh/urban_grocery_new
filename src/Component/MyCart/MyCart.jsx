@@ -196,6 +196,7 @@ function MyCart({
       )
       .then((res) => {
         console.log(res, "[GET USER CART API RESPONSE]");
+        
 
         let addQtyAmount = res?.data?.data?.map((data) => ({
           ...data,
@@ -241,7 +242,7 @@ function MyCart({
           <div className={`${totalItem > 0 ? "visible":"invisible"}`+ " " + "hidden md:block  absolute top-1 right-0 px-1 rounded-full bg-red text-xs"}>
             {totalItem}
           </div>
-          {/* <div className="absolute top-0">O</div> */}
+         
           <FaShoppingCart className="xs:text-2xl md:bg-lime sm:bg-lime md:text-white sm:text-white xs:text-lime " />
         </div>
         <div className="md:bg-lime sm:bg-lime xs:bg-white">

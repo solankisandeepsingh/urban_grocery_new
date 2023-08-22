@@ -3,6 +3,7 @@ import { BsCart3 } from "react-icons/bs";
 import { FaArrowLeft, FaHome } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../zustand/useCartStore";
+import { useEffect } from "react";
 
 export const Success = ({ setNavbarOpen }) => {
   const navigate = useNavigate();
@@ -10,6 +11,9 @@ export const Success = ({ setNavbarOpen }) => {
     setNavbarOpen(true);
     navigate("/");
   };
+  useEffect(()=>{
+    setNavbarOpen(false)
+  },[])
   const { config } = useCartStore();
   console.log(config);
   return (

@@ -14,6 +14,7 @@ import { FlashSales } from "./Flash_Sales/FlashSales";
 import { SignJWT } from "jose";
 import axioss from "../api/axios";
 import { useApiStore } from "./zustand/useApiStore";
+import { Footer } from "./Footer/Footer";
 
 function Home({
   data,
@@ -175,15 +176,17 @@ function Home({
                   <img
                     src={allImg["30"]}
                     alt=""
-                    className="rounded-xl xs:h-[145px] md:w-full md:h-auto xs:w-full sm:h-[232px]"
+                    // className="rounded-xl xs:h-[145px] md:w-full md:h-auto xs:w-full sm:h-[232px]"
+                    className="rounded-xl xs:h-[145px] md:w-full md:h-[250px] xs:w-full sm:h-[232px]"
                   />
                 </div>
 
-                <div className="md:w-auto md:p-2 md:mt-4 xs:py-2">
+                <div className="md:w-auto md:p-2 xs:py-2">
                   <img
                     src={allImg["32"]}
                     alt=""
-                    className="rounded-xl xs:h-[145px] md:w-full md:h-auto xs:w-full sm:h-[232px]"
+                    // className="rounded-xl xs:h-[145px] md:w-full md:h-auto xs:w-full sm:h-[232px]"
+                    className="rounded-xl xs:h-[145px] md:w-full md:h-[250px] xs:w-full sm:h-[232px]"
                   />
                 </div>
               </div>
@@ -280,8 +283,7 @@ function Home({
                 </div> */}
 
                 <div className="text-white text-sm mt-4 mb-4">
-                  <p>&copy; 2023 Urban Grocery. All rights reserved.</p>
-                  <p>Terms of Service | Privacy Policy</p>
+                  <Footer/>
                 </div>
               </footer>
             </div>
