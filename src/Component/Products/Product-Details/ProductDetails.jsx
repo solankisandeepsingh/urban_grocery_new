@@ -142,6 +142,9 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
       })
       .catch((error) => {
         console.log(error);
+        toast.error("Network error. Please check your connection and try again.", {
+          position: toast.POSITION.TOP_CENTER,
+        });
         setisLoading(false);
       });
   };

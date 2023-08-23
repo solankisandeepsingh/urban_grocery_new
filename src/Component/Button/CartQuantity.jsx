@@ -5,9 +5,10 @@ import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiStore } from "../zustand/useApiStore";
+import { ToastContainer, toast } from "react-toastify";
 
 function CartQuantity({ item, variant }) {
-  console.log(item,variant, "FROM FLASH SALES I");
+  console.log(item, variant, "FROM FLASH SALES I");
   const { allCartItems, setAllCartItems } = useCartStore();
   const { setisLoading } = useLoaderState();
   const {
@@ -31,12 +32,20 @@ function CartQuantity({ item, variant }) {
         bodyFormData.append("user_id", user_id);
         bodyFormData.append("product_id", item.id);
         bodyFormData.append("product_variant_id", item.variants[0].id);
-        const finditem = allCartItems.find((data) => data.product_id == item.id);
-  
+        const finditem = allCartItems.find(
+          (data) => data.product_id == item.id
+        );
+
         const newQty = (+finditem.amount || 0) + 1;
         bodyFormData.append("qty", newQty);
+        if (newQty > 10) {
+          toast.error("quantity limit has been exceeded", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+          return;
+        }
         setisLoading(true);
-  
+
         axios
           .post(
             "https://grocery.intelliatech.in/api-firebase/cart.php",
@@ -44,7 +53,6 @@ function CartQuantity({ item, variant }) {
             config
           )
           .then((res) => {
-            
             if (
               allCartItems.some((cartItem) => cartItem.product_id === item.id)
             ) {
@@ -53,16 +61,18 @@ function CartQuantity({ item, variant }) {
                   ? { ...data, amount: +data.amount + 1 }
                   : data
               );
+
               console.log(newArr);
+
               setAllCartItems(newArr);
               setisLoading(false);
-  
+
               return;
             }
             let newArr = [...allCartItems, { ...item, amount: 1 }];
             console.log(newArr);
             // setAllCartItems((cart) => [...cart, { ...item, amount: 1 }]);
-            
+
             setAllCartItems(newArr);
           })
           .catch((error) => {
@@ -71,9 +81,12 @@ function CartQuantity({ item, variant }) {
           });
       } else {
         let newArr = allCartItems.map((i) => {
-          console.log(variant, i  );
+          console.log(variant, i);
           // console.log(i.id, item.variants[variant[item.id] || 0].id, "YELLOOOO");
-          if ((i.product_variant_id??i.id) == item.variants[variant[item.id] || 0].id) {
+          if (
+            (i.product_variant_id ?? i.id) ==
+            item.variants[variant[item.id] || 0].id
+          ) {
             console.log("RUnning");
             return { ...i, amount: +i.amount + 1 };
           }
@@ -97,10 +110,7 @@ function CartQuantity({ item, variant }) {
         bodyFormData.append("product_id", item.id);
 
         console.log(item, variant, "bodyForm APPEMND");
-        bodyFormData.append(
-          "product_variant_id",
-          item.variants[0].id
-        );
+        bodyFormData.append("product_variant_id", item.variants[0].id);
 
         const finditem = allCartItems.find(
           (data) => data.product_id == item.id
@@ -109,6 +119,7 @@ function CartQuantity({ item, variant }) {
           +finditem.amount !== 0 ? +finditem.amount - 1 : finditem.amount;
         // console.log();
         bodyFormData.append("qty", newQty);
+        //
         setisLoading(true);
 
         axios
@@ -135,7 +146,7 @@ function CartQuantity({ item, variant }) {
                 "Cart Quant -1 LAST ITEM ><>>>>>>>><><><<><><><>"
               );
 
-              setisLoading(false);              
+              setisLoading(false);
               setAllCartItems(newArr);
             } else if (
               allCartItems.some((cartItem) => cartItem.product_id === item.id)
@@ -182,9 +193,9 @@ function CartQuantity({ item, variant }) {
           console.log("INSIDE 1");
           let newArr = allCartItems.filter((cartItem) => {
             // console.log(pro.id === item.variants[variant[item.id]|| 0].id && pro.amount !== 1, "INSIDE IF");
-    
+
             // console.log(pro.id === item.variants[variant[item.id]|| 0].id , pro.amount !== 1, "CHECK");
-    
+
             // return pro.id === item.variants[variant[item.id]|| 0].id || pro.amount !== 1
             console.log(
               (cartItem.product_variant_id ?? cartItem.id) ==
@@ -197,9 +208,12 @@ function CartQuantity({ item, variant }) {
               return false;
             return true;
           });
-    
-          console.log(newArr, "Cart Quant -1 LAST ITEM ><>>>>>>>><><><<><><><>");
-    
+
+          console.log(
+            newArr,
+            "Cart Quant -1 LAST ITEM ><>>>>>>>><><><<><><><>"
+          );
+
           setAllCartItems(newArr);
         } else if (
           allCartItems.some((cartItem) => {
@@ -229,15 +243,15 @@ function CartQuantity({ item, variant }) {
             newArr,
             "Cart Quant MORE THAN 1 ><>>>><>><><><><>>>><><><<><><><>"
           );
-        
+
           setAllCartItems(newArr);
-    
+
           return;
         }
       }
     }
 
-    return
+    return;
   };
 
   const quantityDecrease = () => {
@@ -306,6 +320,7 @@ function CartQuantity({ item, variant }) {
       })
       .catch((error) => {
         console.log(error);
+
         setisLoading(false);
       });
   };
@@ -362,11 +377,23 @@ function CartQuantity({ item, variant }) {
   const findItemNumber = () => {
     console.log(variant, item);
     let index = allCartItems.findIndex((i) => {
-      console.log(i, i.product_variant_id,i.id,'i', item,'item', variant,  "FINDDDDD>>>>><");
+      console.log(
+        i,
+        i.product_variant_id,
+        i.id,
+        "i",
+        item,
+        "item",
+        variant,
+        "FINDDDDD>>>>><"
+      );
       // console.log( +item.variants[variant[item.id] || 0].id);
 
       // return true
-      return (i.product_variant_id ?? i.id) == +item.variants[variant?.[item.id] || 0].id;
+      return (
+        (i.product_variant_id ?? i.id) ==
+        +item.variants[variant?.[item.id] || 0].id
+      );
     });
     console.log(index);
     console.log(allCartItems);
@@ -377,40 +404,44 @@ function CartQuantity({ item, variant }) {
 
   return (
     <>
-    <div className="rounded-lg bg-lime text-white gap-1 hover:bg-blue-700 font-bold px-2 md:h-[28px] xs:h-[28px] w-full sm:h-[36px] flex justify-evenly " onClick={(e)=>e.stopPropagation()}>
-      <button
-        className="md:text-lg xs:text-sm sm:text-4xl "
-        onClick={() => {
-          console.log(user_id);
-          changeQuantity('decrease')
-
-          // user_id ? quantityDecrease() : quantityDecreaseUI();
-        }}
+      <ToastContainer />
+      <div
+        className="rounded-lg bg-lime text-white gap-1 hover:bg-blue-700 font-bold px-2 md:h-[28px] xs:h-[28px] w-full sm:h-[36px] flex justify-evenly "
+        onClick={(e) => e.stopPropagation()}
       >
-        -
-      </button>
+        <button
+          className="md:text-lg xs:text-sm sm:text-4xl "
+          onClick={() => {
+            console.log(user_id);
+            changeQuantity("decrease");
 
-      {
-        <p className="md:text-sm xs:text-sm sm:text-xl mt-1 bg-lime">
-          {findItemNumber()}
-        </p>
-      }
+            // user_id ? quantityDecrease() : quantityDecreaseUI();
+          }}
+        >
+          -
+        </button>
 
-      <button
-        className="md:text-lg xs:text-sm sm:text-2xl"
-        onClick={() => {          console.log("klklklk");
+        {
+          <p className="md:text-sm xs:text-sm sm:text-xl mt-1 bg-lime">
+            {findItemNumber()}
+          </p>
+        }
 
-          console.log(user_id);
-          changeQuantity('increase')
-          // quantityIncreaseBoth();
-          // user_id ? quantityIncrease() : quantityIncreaseUI();
-        }}
-      >
-        +
-      </button>
-    </div>
+        <button
+          className="md:text-lg xs:text-sm sm:text-2xl"
+          onClick={() => {
+            console.log("klklklk");
+
+            console.log(user_id);
+            changeQuantity("increase");
+            // quantityIncreaseBoth();
+            // user_id ? quantityIncrease() : quantityIncreaseUI();
+          }}
+        >
+          +
+        </button>
+      </div>
     </>
-    
   );
 }
 

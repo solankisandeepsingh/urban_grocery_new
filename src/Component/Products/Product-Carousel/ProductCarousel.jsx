@@ -429,9 +429,9 @@ export const ProductCarousel = ({}) => {
           );
           console.log(newArr);
           setAllCartItems(newArr);
-          toast.success('Item added to user cart successfully !', {
-            position: toast.POSITION.TOP_CENTER
-        });
+        //   toast.success('Item added to user cart successfully !', {
+        //     position: toast.POSITION.TOP_CENTER
+        // });
 
           // setAllCartItems((cart) =>
           //   cart.map((data) =>
@@ -461,12 +461,16 @@ export const ProductCarousel = ({}) => {
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
         console.log(newArr);
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
+       
         setAllCartItems(newArr);
         setisLoading(false);
         
       })
       .catch((error) => {
         console.log(error);
+        toast.error("Network error. Please check your connection and try again.", {
+          position: toast.POSITION.TOP_CENTER,
+        });
         setisLoading(false);
       });
   };
