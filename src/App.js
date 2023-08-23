@@ -91,14 +91,14 @@ function App() {
 
           // handleLogin={handleLogin}
         />
-      <Loader />
+        <Loader />
         <Routes>
           <Route
             path="/login"
             element={
               <Login
                 // dispatchLogin={dispatchLogin}
-                // setLoggedIn={setLoggedIn} 
+                // setLoggedIn={setLoggedIn}
                 // user_id={user_id}
                 setUser_id={setUser_id}
                 // handleLogin={handleLogin}
@@ -171,7 +171,7 @@ function App() {
               />
             }
           />
-          
+
           {/* <Route
             path="/review"
             element={
@@ -193,8 +193,6 @@ function App() {
           <Route path="/profile" element={<MyProfile />} />
           <Route path="/orderdetailspage" element={<OrderDetailsPage />} />
           <Route path="/favpage" element={<FavPage />} />
-
-      
 
           <Route
             path="/success"
@@ -222,7 +220,6 @@ function App() {
             }
           />
 
-          
           <Route
             path="/allproducts"
             element={
@@ -234,9 +231,9 @@ function App() {
             }
           />
         </Routes>
-        <div  className="bg-[#212122] border w-full border-white text-center rounded-md text-white p-4">
-                  <Footer/>
-                </div>
+        <div className="bg-[#212122] border w-full border-white text-center rounded-md text-white p-4">
+          <Footer />
+        </div>
       </div>
     </>
   );
