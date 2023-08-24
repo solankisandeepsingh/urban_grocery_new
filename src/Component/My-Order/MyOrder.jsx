@@ -92,7 +92,7 @@ export const MyOrder = ({ addItem }) => {
                       <div className="flex ml-3 justify-between text-center">
                         <div>
                           <p className="font-bold text-gryColour">
-                            Order Id : {item.id}
+                            Order ID : {item.id}
                           </p>
                         </div>
                         <div>

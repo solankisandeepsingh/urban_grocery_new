@@ -354,8 +354,8 @@ function Payment({ setNavbarOpen }) {
                   onClick={() => {
                     handleConfirmOrder();
                   }}
-                  disabled={!chosenPayment}
-                  className="bg-lime text-white my-4 hover:opacity-90 sm:w-full md:w-[90%] xs:w-[100%] sm:text-2xl md:text-lg px-4 py-1.5 rounded-lg"
+                  disabled={!chosenPayment} 
+                  className={`${chosenPayment ? "bg-lime hover:opacity-90 ":"bg-[#D3D3D3]"} text-white my-4 sm:w-full md:w-[90%] xs:w-[100%] sm:text-2xl md:text-lg px-4 py-1.5 rounded-lg`}
                 >
                   Proceed to Pay
                 </button>

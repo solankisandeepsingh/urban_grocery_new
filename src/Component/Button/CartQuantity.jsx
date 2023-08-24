@@ -17,7 +17,7 @@ function CartQuantity({ item, variant }) {
   const { jwt, setJwt } = useApiStore();
 
   const changeQuantity = (change) => {
-    console.log(change);
+    console.log(change,'654654');
     if (change == "increase") {
       if (user_id) {
         console.log("USER LOGGED IN");
@@ -65,8 +65,10 @@ function CartQuantity({ item, variant }) {
               console.log(newArr);
 
               setAllCartItems(newArr);
+              toast.success('Item added to user cart successfully !', {
+                position: toast.POSITION.TOP_CENTER
+              });
               setisLoading(false);
-
               return;
             }
             let newArr = [...allCartItems, { ...item, amount: 1 }];
@@ -404,7 +406,7 @@ function CartQuantity({ item, variant }) {
 
   return (
     <>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <div
         className="rounded-lg bg-lime text-white gap-1 hover:bg-blue-700 font-bold px-2 md:h-[28px] xs:h-[28px] w-full sm:h-[36px] flex justify-evenly "
         onClick={(e) => e.stopPropagation()}
