@@ -8,6 +8,7 @@ import { useLoaderState } from "../../zustand/useLoaderState";
 import { useApiStore } from "../../zustand/useApiStore";
 import { currencyFormatter } from "../../../utils/utils";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 
 export const SubCategory = ({ setAddItem, addItem }) => {
@@ -93,6 +94,9 @@ const addItemHandler = (item, data) => {
       })
       .catch((error) => {
         console.log(error);
+        toast.error("Network error. Please check your connection and try again.", {
+          position: toast.POSITION.TOP_CENTER,
+        });
         setisLoading(false);
       });
   };
@@ -259,6 +263,7 @@ const addItemHandler = (item, data) => {
   return (
     <>
       <div>
+        <ToastContainer/>
         <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-6 sm:grid-cols-3 flex flex-wrap md:ml-5 ">
           {isLoading ? (
             <p className="m-auto">Loading...</p>

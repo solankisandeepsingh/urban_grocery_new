@@ -9,6 +9,7 @@ import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiStore } from "../zustand/useApiStore";
 import { currencyFormatter } from "../../utils/utils";
+import { ToastContainer,toast } from "react-toastify";
 
 export const FlashSales = () => {
   const [salesProducts, setSalesProducts] = useState([]);
@@ -156,6 +157,9 @@ console.log(user_id, "FLASH SALES USE RIR");
       })
       .catch((error) => {
         console.log(error);
+        toast.error("Network error. Please check your connection and try again.", {
+          position: toast.POSITION.TOP_CENTER,
+        });
         setisLoading(false);
       });
   };
@@ -248,11 +252,15 @@ console.log(user_id, "FLASH SALES USE RIR");
       })
       .catch((error) => {
         console.log(error);
+        toast.error("Network error. Please check your connection and try again.", {
+          position: toast.POSITION.TOP_CENTER,
+        });
         setisLoading(false);
       });
   };
   return (
     <>
+    <ToastContainer/>
       <div className="md:mt-7  shadow-sm border border-[#e8e8e8] rounded-md p-2 bg-[#fcfff3]">
         <div className="text-customBlack text-[24px] p-2">
           <h1 className="font-okra font-600">Flash Sales</h1>

@@ -458,14 +458,21 @@ export const ProductCarousel = ({}) => {
         };
 
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
+        toast.success('Item added to user cart successfully !', {
+          position: toast.POSITION.TOP_CENTER
+      });
         console.log(newArr);
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
+       
         setAllCartItems(newArr);
         setisLoading(false);
         
       })
       .catch((error) => {
         console.log(error);
+        toast.error("Network error. Please check your connection and try again.", {
+          position: toast.POSITION.TOP_CENTER,
+        });
         setisLoading(false);
       });
   };
@@ -476,7 +483,7 @@ export const ProductCarousel = ({}) => {
 
   return (
     <>
-    <ToastContainer/>
+    {/* <ToastContainer/> */}
      <div className="xs:mt-4 xs:p-2 md:mt-7 shadow-sm border border-[#e8e8e8] rounded-md md:p-5 bg-[#fcfff3]">
       <div className="xs:my-5 mt-20 flex justify-between">
         <div className="text-customBlack text-[24px]">

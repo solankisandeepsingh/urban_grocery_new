@@ -289,7 +289,7 @@ export const Login = ({
             // setUser_id(newUserId);
             // clearCart(newUserId);
 
-            toast.success("Login successfully!", {
+            toast.success("Logged in successfully!", {
               position: toast.POSITION.TOP_CENTER,
             });
 

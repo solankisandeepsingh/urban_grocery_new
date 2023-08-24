@@ -5,6 +5,7 @@ import { useCartStore } from "../zustand/useCartStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useUserStore } from "../zustand/useUserStore";
 import { useApiStore } from "../zustand/useApiStore";
+import { toast } from "react-toastify";
 
 export const QtyAmount = ({ item }) => {
   const {allCartItems, setAllCartItems} = useCartStore();
@@ -37,6 +38,9 @@ export const QtyAmount = ({ item }) => {
       });
       const newQty = +finditem.amount !== 0 ? +finditem.amount - 1 : 0;
       bodyFormData.append("qty", newQty);
+
+      console.log("newQty",newQty)
+    
       setisLoading(true);
 
       axios
@@ -124,6 +128,12 @@ export const QtyAmount = ({ item }) => {
         return data.product_id == item.product_id;
       });
       const newQty = (+finditem.amount || 0) + 1;
+      if (newQty > 10) {
+        toast.error("quantity limit has been exceeded", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        return;
+      }
       bodyFormData.append("qty", newQty);
       setisLoading(true);
 
@@ -141,7 +151,9 @@ export const QtyAmount = ({ item }) => {
               data.id === item.id ? { ...data, amount: +data.amount + 1 } : data
             );
             setAllCartItems(newArr);
-
+ toast.success('Item added to user cart successfully !', {
+          position: toast.POSITION.TOP_CENTER
+      });
             return;
           }
           let newArr = [...allCartItems, { ...item, amount: 1 }];

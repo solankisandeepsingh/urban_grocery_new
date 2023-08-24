@@ -67,7 +67,8 @@ export const Category = () => {
         </div>
 
         <div className="category xs:mt-3 md:mt-5">
-          <div className=" grid md:grid-cols-4 sm:grid-cols-4 gap-4 xs:grid-cols-4 xs:mx-1  md:py-3">
+          {/* <div className=" grid md:grid-cols-4 sm:grid-cols-4 gap-4 xs:grid-cols-4 xs:mx-1  md:py-3"> */}
+          <div className="flex justify-between items-center xs:gap-2">
             {allCategories &&
               allCategories.map((item) => {
                 return (

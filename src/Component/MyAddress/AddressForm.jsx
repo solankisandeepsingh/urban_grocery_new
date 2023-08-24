@@ -4,6 +4,7 @@ import axios from "axios";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiStore } from "../zustand/useApiStore";
+import { ToastContainer, toast } from "react-toastify";
 
 export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
   const [addressData, setAddressData] = useState({
@@ -79,6 +80,9 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
       )
       .then((res) => {
         console.log(res, "hi");
+        toast.success("Address Added Successfully", {
+          position: toast.POSITION.TOP_CENTER,
+        });
         getAddress();
         setFormOpen(false);
         setisLoading(false);
@@ -137,7 +141,9 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
   }, [cityDropdown]);
 
   return (
+    
     <div className="fixed z-50 top-0  left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
+    
       <div className="bg-[#f2f2f2] min-w-[600px] rounded top-[5%] left-[5%]">
         <div className="flex justify-center items-center relative">
           <div className="container relative">
