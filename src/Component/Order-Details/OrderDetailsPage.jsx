@@ -2,7 +2,6 @@ import React from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useOrderDetails } from "../zustand/useOrderDetails";
-import { usePaymentStore } from "../zustand/usePaymentStore";
 import { currencyFormatter } from "../../utils/utils";
 import { useUserStore } from "../zustand/useUserStore";
 
@@ -10,15 +9,13 @@ export const OrderDetailsPage = () => {
   const { orderId, setOrderId } = useOrderDetails();
   const { allOrderDetails } = useOrderDetails();
   const { addList } = useUserStore();
-  const { totalPrice, totalMRPPrice, totalItems } = usePaymentStore();
-  console.log(totalPrice, "totalPrice");
-  console.log(totalMRPPrice, "totalMRPPrice");
-  console.log(totalItems, "totalItems");
+
+  console.log(allOrderDetails,"allOrderDetails")
 
   console.log(allOrderDetails, "allOrderDetails");
   const navigate = useNavigate();
   const handleBackMyorder = () => {
-    navigate("/myorder");
+    navigate("/orderhistory");
   };
   return (
     <>
@@ -70,7 +67,7 @@ export const OrderDetailsPage = () => {
                             <p className="text-graycolor text-[16px]">
                               Order-Date
                             </p>
-                            <p>{item.order_time}</p>
+                            <p>{item.date_added}</p>
                           </div>
                           <div className="flex justify-between py-2 border-b border-b-light_gray">
                             <p className="text-graycolor text-[16px]">Total</p>

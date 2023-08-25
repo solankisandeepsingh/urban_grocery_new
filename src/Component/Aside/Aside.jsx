@@ -41,16 +41,16 @@ console.log(location,"loca")
               </a>
             </NavLink>
           </li>
-          <li className={`border border-light_gray hover:scale-105 transition-all ease-in-out ${location.pathname === "/myorder" ? ' bg-lime ':'text-lightgray hover:bg-[#dfdfdf]'} mb-2  rounded-xl shadow-md`}>
-            <NavLink to={"/myorder"}>
+          <li className={`border border-light_gray hover:scale-105 transition-all ease-in-out ${location.pathname === "/orderhistory" ? ' bg-lime ':'text-lightgray hover:bg-[#dfdfdf]'} mb-2  rounded-xl shadow-md`}>
+            <NavLink to={"/orderhistory"}>
               <a
-                to="/myorder"
+                to="/orderhistory"
                 className="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 {/* <FaRegAddressBook className="text-darkgray text-[25px]" /> */}
-                <BsCart3 className={`${location.pathname === "/myorder" ? 'text-white text-[25px]':'text-light_gray text-[25px]'}`}/>
+                <BsCart3 className={`${location.pathname === "/orderhistory" ? 'text-white text-[25px]':'text-light_gray text-[25px]'}`}/>
                 
-                <span className={`ml-3 ${location.pathname === "/myorder" ? 'text-white font-light':'text-light_gray'}`}>
+                <span className={`ml-3 ${location.pathname === "/orderhistory" ? 'text-white font-light':'text-light_gray'}`}>
                   My Orders
                 </span>
               </a>

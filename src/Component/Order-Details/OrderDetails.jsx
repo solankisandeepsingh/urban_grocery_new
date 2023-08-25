@@ -12,7 +12,7 @@ export const OrderDetails = ({ setDetailsOrder, orderId }) => {
   const { totalPrice, totalMRPPrice, totalItems } = usePaymentStore();
   const navigate = useNavigate();
   const handleBack = () => {
-    navigate("/myorder");
+    navigate("/orderhistory");
     setDetailsOrder(false);
   };
   console.log(orderId, "orderId");

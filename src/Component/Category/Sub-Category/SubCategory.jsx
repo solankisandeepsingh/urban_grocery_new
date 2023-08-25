@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 
-export const SubCategory = ({ setAddItem, addItem }) => {
+export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
   const [allproducts, setAllProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
@@ -22,6 +22,7 @@ export const SubCategory = ({ setAddItem, addItem }) => {
   const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
   const { category_id } = useParams();
+  
 
 const addItemHandler = (item, data) => {
     console.log("item", item);
@@ -164,6 +165,7 @@ const addItemHandler = (item, data) => {
           console.log(res.data.data);
           setAllProducts(res?.data?.data);
           setIsLoading(false);
+          setNavbarOpen(true)
         })
         .catch((err) => {
           console.log(err);

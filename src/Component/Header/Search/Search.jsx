@@ -12,7 +12,7 @@ import { FaArrowCircleUp } from "react-icons/fa";
 import { useCartStore } from "../../zustand/useCartStore";
 import { useSearchStore } from "../../zustand/useSearchStore";
 
-const Search = ({ setData, name, data }) => {
+const Search = ({ setData, name, data, item }) => {
   const [searchData, setSearchData] = useState("");
   // const [inputSearch, setInputSearch] = useState("a");
   const [arrayy, setArray] = useState([]);
@@ -236,10 +236,17 @@ const Search = ({ setData, name, data }) => {
 
   console.log(arrayy.length, searchData, "NEW items>>>>>>>>>>>>>>>>>");
 
+  const handleRedirect = (item) => {
+    navigate(
+      `/subcategory-details/${item.category_name}/product-details/${item.id}`
+    );
+    
+  };
+
   return (
     <div className="w-full max-w-screen-2xl bg-white md:h-[69px] md:mr-44">
       <div className="inline-flex justify-center relative text-black-500 bg-white xs:my-4 xs:mx-4 sm:ml-36 md:my-3  xs:mt-20 ">
-      <svg
+        <svg
           className="xs:w-6 sm:h-12 sm:w-10 xs:h-5 xs:text-white absolute border md:w-6 md:h-6 mt-0.5 ml-3 xs:left-2 xs:top-2.5 self-center bg-white"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -270,8 +277,6 @@ const Search = ({ setData, name, data }) => {
             style={{ display: visible ? "inline" : "none" }}
           />
         </button>
-
-        
       </div>
 
       <InfiniteScroll
@@ -288,17 +293,26 @@ const Search = ({ setData, name, data }) => {
         {newItemsArray.map((item, index) => (
           <div
             key={index.toString()}
-            className="w-80 rounded-lg  md:mt-[-285px] xs:mt-16 mx-5 container shadow-lg bg-lightblue md:hidden xs:visible  "
+            className="w-80 rounded-lg  md:mt-[-285px] xs:mt-16 mx-5 container shadow-lg bg-lightblue md:hidden xs:visible"
           >
-            <NavLink
+            {/* <NavLink
               to={`/subcategory-details/${item.category_name}/product-details/${item.id}`}
             >
               <img
                 className="w-full h-56 rounded-lg"
                 src={item.image}
                 alt={name}
+                onClick={handleRedirect}
               />
-            </NavLink>
+            </NavLink> */}
+
+            <img
+              className="w-full h-56 rounded-lg"
+              src={item.image}
+              alt={name}
+              onClick={handleRedirect}
+            />
+
             <div className="py-4">
               <h1>jhlkjlkj</h1>
 

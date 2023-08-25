@@ -42,14 +42,38 @@ function App() {
 
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [name, setName] = useState("");
-  const [NavbarOpen, setNavbarOpen] = useState(true);
   const [price, setPrice] = useState(0);
-  // const [loading, setLoading] = useState(true);
+  //Old Chnage
+  // const [NavbarOpen, setNavbarOpen] = useState(true)
   const [user_id, setUser_id] = useState("14");
+  //New Chnage
+  const [NavbarOpen, setNavbarOpen] = useState(
+    JSON.parse(localStorage.getItem("NavbarOpen")) ?? true
+  );
+  
+//Old Chnage
+  // useEffect(() => {
+  //   localStorage.setItem("NavbarOpen", JSON.stringify(NavbarOpen));
+  // }, [NavbarOpen]);
 
+  //New Chnage
   useEffect(() => {
     localStorage.setItem("NavbarOpen", JSON.stringify(NavbarOpen));
   }, [NavbarOpen]);
+
+  useEffect(() => {
+    const handlePopstate = () => {
+      setNavbarOpen(true); // Ensure navbar is visible when navigating back
+    };
+  
+    window.addEventListener("popstate", handlePopstate);
+  
+    return () => {
+      window.removeEventListener("popstate", handlePopstate);
+    };
+  }, []);
+  
+  
 
   // useEffect(() => {
   //   const LoggedInStatus = () => {
@@ -129,6 +153,7 @@ function App() {
                 addItem={addItem}
                 user_id={user_id}
                 setUser_id={setUser_id}
+                
               />
             }
           />
@@ -141,6 +166,7 @@ function App() {
                 addItem={addItem}
                 user_id={user_id}
                 setUser_id={setUser_id}
+                setNavbarOpen={setNavbarOpen}
               />
             }
           />
@@ -209,7 +235,7 @@ function App() {
           <Route path="/faq" element={<Faq />} />
           <Route path="/orderdetails" element={<OrderDetails />} />
           <Route
-            path="/myorder"
+            path="/orderhistory"
             element={
               <MyOrder
                 setAddItem={setAddItem}

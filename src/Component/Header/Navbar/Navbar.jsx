@@ -221,7 +221,7 @@ export const Navbar = ({
                       </li>
 
                       <li className="bg-white  cursor-pointer">
-                        <NavLink to="/myorder">
+                        <NavLink to="/orderhistory">
                           <p
                             onClick={() => setMobileOpen(false)}
                             className="bg-white sm:text-lg md:text-sm  mt-4"
@@ -414,7 +414,7 @@ export const Navbar = ({
                       </li>
 
                       <li className="cursor-pointer">
-                        <NavLink to={"/myorder"}>
+                        <NavLink to={"/orderhistory"}>
                           <p
                             onClick={() => setIsOpen(false)}
                             className="sm:text-lg md:text-sm mt-4"
