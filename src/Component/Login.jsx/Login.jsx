@@ -240,14 +240,17 @@ export const Login = ({
     if (!logins.phone && !logins.password) {
       toast.error("Please enter both phone and password!", {
         position: toast.POSITION.TOP_CENTER,
+        autoClose: 500,
       });
     } else if (!logins.phone) {
       toast.error("Please enter a valid phone number!", {
         position: toast.POSITION.TOP_CENTER,
+        autoClose: 500,
       });
     } else if (!logins.password) {
       toast.error("Please enter a password!", {
         position: toast.POSITION.TOP_CENTER,
+        autoClose: 500,
       });
     } else {
       setisLoading(true);
@@ -291,6 +294,7 @@ export const Login = ({
 
             toast.success("Logged in successfully!", {
               position: toast.POSITION.TOP_CENTER,
+             
             });
 
             const addMultipleItems = () => {
@@ -336,6 +340,7 @@ export const Login = ({
           } else {
             toast.error("Invalid phone OR password!", {
               position: toast.POSITION.TOP_CENTER,
+              autoClose: 500,
             });
           }
         })

@@ -366,7 +366,7 @@ function Payment({ setNavbarOpen }) {
         <div>
           <div>
             {/* <div className="mt-28 border border-light_gray p-3 h-auto w-[350px]"> */}
-            <div className="xs:my-16 md:mt-[-70px] border border-light_gray h-auto w-[350px] rounded-lg bg-white hidden md:block md:w-[300px]">
+            <div className="xs:my-16 md:mt-[20px] sm:mt-[-40px] border border-light_gray h-auto w-[350px] rounded-lg bg-white hidden md:block md:w-[300px]">
               <div className="w-full py-3 bg-[#64bd59] rounded-t-lg text-white ">
                 <h2 className=" font-bold sm:text-center">Order Summary</h2>
               </div>
