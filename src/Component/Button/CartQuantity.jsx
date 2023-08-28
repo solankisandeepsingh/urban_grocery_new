@@ -41,6 +41,7 @@ function CartQuantity({ item, variant }) {
         if (newQty > 10) {
           toast.error("quantity limit has been exceeded", {
             position: toast.POSITION.TOP_CENTER,
+            autoClose: 3000
           });
           return;
         }
@@ -66,7 +67,9 @@ function CartQuantity({ item, variant }) {
 
               setAllCartItems(newArr);
               toast.success('Item added to user cart successfully !', {
-                position: toast.POSITION.TOP_CENTER
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 3000
+                
               });
               setisLoading(false);
               return;

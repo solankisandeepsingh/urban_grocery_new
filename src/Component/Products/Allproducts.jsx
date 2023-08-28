@@ -10,6 +10,7 @@ import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useApiStore } from "../zustand/useApiStore";
 import { currencyFormatter } from "../../utils/utils";
+import { ToastContainer, toast } from "react-toastify";
 
 function Allproducts({ }) {
   const { allProducts, setAllProducts } = useProductsStore();
@@ -345,6 +346,7 @@ function Allproducts({ }) {
           );
           console.log(newArr);
           setAllCartItems(newArr);
+          
           // setAllCartItems((cart) =>
           //   cart.map((data) =>
           //     data.product_id === item.id
@@ -375,9 +377,16 @@ function Allproducts({ }) {
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
         setAllCartItems(newArr);
         setisLoading(false);
+        toast.success('Item added to user cart successfully !', {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 3000
+      });
       })
       .catch((error) => {
         console.log(error);
+        toast.error("Network error. Please check your connection and try again.", {
+          position: toast.POSITION.TOP_CENTER,
+        });
         setisLoading(false);
       });
   };
@@ -415,6 +424,7 @@ function Allproducts({ }) {
 
   return (
     <>
+    <ToastContainer/>
       <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-6 sm:grid-cols-3 flex flex-wrap xs:ml-7  md:ml-5 sm:ml-16 ">
         {allProducts &&
           allProducts.map((item) => {

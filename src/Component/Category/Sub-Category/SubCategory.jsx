@@ -92,6 +92,10 @@ const addItemHandler = (item, data) => {
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
         setAllCartItems(newArr);
         setisLoading(false);
+        toast.success('Item added to user cart successfully !', {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 3000
+      });
       })
       .catch((error) => {
         console.log(error);

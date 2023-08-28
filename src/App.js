@@ -44,17 +44,10 @@ function App() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   //Old Chnage
-  // const [NavbarOpen, setNavbarOpen] = useState(true)
+  const [NavbarOpen, setNavbarOpen] = useState(true)
   const [user_id, setUser_id] = useState("14");
-  //New Chnage
-  const [NavbarOpen, setNavbarOpen] = useState(
-    JSON.parse(localStorage.getItem("NavbarOpen")) ?? true
-  );
+ 
   
-//Old Chnage
-  // useEffect(() => {
-  //   localStorage.setItem("NavbarOpen", JSON.stringify(NavbarOpen));
-  // }, [NavbarOpen]);
 
   //New Chnage
   useEffect(() => {
@@ -63,7 +56,7 @@ function App() {
 
   useEffect(() => {
     const handlePopstate = () => {
-      setNavbarOpen(true); // Ensure navbar is visible when navigating back
+      setNavbarOpen(true); 
     };
   
     window.addEventListener("popstate", handlePopstate);

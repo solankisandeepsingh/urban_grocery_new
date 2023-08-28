@@ -430,7 +430,8 @@ export const ProductCarousel = ({}) => {
           console.log(newArr);
           setAllCartItems(newArr);
           toast.success('Item added to user cart successfully !', {
-            position: toast.POSITION.TOP_CENTER
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 3000
         });
 
           // setAllCartItems((cart) =>
@@ -460,7 +461,8 @@ export const ProductCarousel = ({}) => {
 
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
         toast.success('Item added to user cart successfully !', {
-          position: toast.POSITION.TOP_CENTER
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 3000
       });
         console.log(newArr);
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
