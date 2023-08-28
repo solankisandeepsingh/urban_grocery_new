@@ -202,6 +202,7 @@ function MyCart({
           ...data,
           amount: +data.qty,
         }));
+        // localStorage.setItem("userCart", JSON.stringify(addQtyAmount));
         console.log(addQtyAmount, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         // setAddItem(addQtyAmount);
 
@@ -221,7 +222,7 @@ function MyCart({
   useEffect(() => {
     getUserCarts(user_id);
   }, [accesskey]);
-  // console.log(allCartItems, " ADD ITEM IN MYCART <><><><><");
+  
 
   return (
     <>

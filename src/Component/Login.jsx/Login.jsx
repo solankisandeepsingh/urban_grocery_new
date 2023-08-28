@@ -294,7 +294,6 @@ export const Login = ({
 
             toast.success("Logged in successfully!", {
               position: toast.POSITION.TOP_CENTER,
-             
             });
 
             const addMultipleItems = () => {
@@ -337,12 +336,16 @@ export const Login = ({
             addMultipleItems();
             console.log("getuser");
             // getUserCarts(newUserId);
-          } else {
-            toast.error("Invalid phone OR password!", {
+          } else if (!logins.phone) {
+            toast.error("Please Enter A Correct Phone Number", {
               position: toast.POSITION.TOP_CENTER,
-              autoClose: 500,
+              autoClose: 800,
             });
-          }
+          } else
+            toast.error("Please Enter A Correct Password", {
+              position: toast.POSITION.TOP_CENTER,
+              autoClose: 800,
+            });
         })
         .catch((err) => {
           console.log(err, "LOGIN ERROR ><><><><><><><><><");
@@ -379,21 +382,21 @@ export const Login = ({
             >
               <div className="flex justify-center items-center relative">
                 <div className="container relative flex ">
-                <div className="mb-4 mt-32 w-[40%]">
-                      <img
-                        src="http://grocery.intelliatech.in/dist/img/logo.png"
-                        className="w-40 mx-4 "
-                        alt="Flowbite Logo"
-                      />
-                    </div>
-                 
+                  <div className="mb-4 mt-32 w-[40%]">
+                    <img
+                      src="http://grocery.intelliatech.in/dist/img/logo.png"
+                      className="w-40 mx-4 "
+                      alt="Flowbite Logo"
+                    />
+                  </div>
+
                   <div className="w-full p-8 md:px-12 mr-auto rounded-2xl ">
-                  <button
-                    className="absolute top-[5%] right-[5%]"
-                    onClick={closeLoginModal}
-                  >
-                    <AiOutlineCloseCircle className="text-red text-2xl hover:opacity-50" />
-                  </button>
+                    <button
+                      className="absolute top-[5%] right-[5%]"
+                      onClick={closeLoginModal}
+                    >
+                      <AiOutlineCloseCircle className="text-red text-2xl hover:opacity-50" />
+                    </button>
                     <div className="flex justify-between">
                       <h1 className="font-bold uppercase text-3xl">Login :</h1>
                     </div>
@@ -429,7 +432,6 @@ export const Login = ({
                             )}
                           </div>
                         </div>
-                       
                       </div>
 
                       <div className="mb-8 mt-6 flex items-center justify-between">
@@ -456,7 +458,7 @@ export const Login = ({
                             className="text-danger transition ml-2 text-[green] duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
                             onClick={handleShow}
                           >
-                           Sign up now
+                            Sign up now
                           </a>
                         </p>
                       </div>
