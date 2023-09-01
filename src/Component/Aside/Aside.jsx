@@ -66,7 +66,7 @@ console.log(location,"loca")
                 <BsInfoCircleFill className={`${location.pathname === "/about" ? 'text-white text-[25px]':'text-light_gray text-[25px]'}`}/>
               
                 <span className={`ml-3 ${location.pathname === "/about" ? 'text-white font-light':'text-light_gray'}`}>
-                  About_Us
+                About Us
                 </span>
               </a>
             </NavLink>

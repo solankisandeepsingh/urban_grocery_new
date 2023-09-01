@@ -39,7 +39,7 @@ function CartQuantity({ item, variant }) {
         const newQty = (+finditem.amount || 0) + 1;
         bodyFormData.append("qty", newQty);
         if (newQty > 10) {
-          toast.error("quantity limit has been exceeded", {
+          toast.error("Quantity limit has been exceeded", {
             position: toast.POSITION.TOP_CENTER,
           });
           return;

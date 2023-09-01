@@ -129,7 +129,7 @@ export const QtyAmount = ({ item }) => {
       });
       const newQty = (+finditem.amount || 0) + 1;
       if (newQty > 10) {
-        toast.error("quantity limit has been exceeded", {
+        toast.error("Quantity limit has been exceeded", {
           position: toast.POSITION.TOP_CENTER,
         });
         return;
