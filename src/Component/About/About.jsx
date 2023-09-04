@@ -41,7 +41,6 @@ export const About = () => {
     handleAbout();
   }, []);
 
- 
   return (
     <>
       {/* <div className="flex flex-row justify-evenly mt-28">
@@ -58,10 +57,17 @@ export const About = () => {
 
         <div className="md:w-[60%] sm:w-[60%] xs:w-[85%] mb-3 ">
           <div class="bg-white">
-          <div dangerouslySetInnerHTML={{__html: about}}>
-
-{/* {JSON.parse(item.description)} */}
-</div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: about.replace(
+                  "<h2>About Us</h2>",
+                  '<h2 style="font-weight:500;">About Us</h2>'
+                ),
+              }}
+            >
+              {/* {JSON.parse(item.description)} */}
+              {console.log(about, "about us")}
+            </div>
           </div>
         </div>
       </div>
