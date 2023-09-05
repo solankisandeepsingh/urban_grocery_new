@@ -73,7 +73,7 @@ export const SignUpwithOtp = ({
                 window.confirmationResult = confirmationResult;
                 // ...
 
-                toast.success("OTP sended successfully! !", {
+                toast.success("OTP Sent Successfully", {
                   position: toast.POSITION.TOP_CENTER,
                 });
               })
@@ -135,7 +135,7 @@ export const SignUpwithOtp = ({
       window.confirmationResult
         .confirm(OTP)
         .then((res) => {
-          toast.success("Verify successfully! !", {
+          toast.success("Verification Successful", {
             position: toast.POSITION.TOP_CENTER,
           });
           console.log(res, "otp confirmattiomn response");
