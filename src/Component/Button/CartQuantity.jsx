@@ -17,7 +17,7 @@ function CartQuantity({ item, variant }) {
   const { jwt, setJwt } = useApiStore();
 
   const changeQuantity = (change) => {
-    console.log(change,'654654');
+    console.log(change, "654654");
     if (change == "increase") {
       if (user_id) {
         console.log("USER LOGGED IN");
@@ -65,8 +65,8 @@ function CartQuantity({ item, variant }) {
               console.log(newArr);
 
               setAllCartItems(newArr);
-              toast.success('Item added to user cart successfully !', {
-                position: toast.POSITION.TOP_CENTER
+              toast.success("Item added to user cart successfully !", {
+                position: toast.POSITION.TOP_CENTER,
               });
               setisLoading(false);
               return;
