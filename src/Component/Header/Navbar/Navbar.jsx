@@ -40,6 +40,7 @@ export const Navbar = ({
   } = useUserStore();
 
   const [profileView, setProfileView] = useState(false);
+  
 
   // useEffect(() => {
   //   let handler = (e) => {

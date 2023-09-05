@@ -6,6 +6,7 @@ import { useLoaderState } from "../zustand/useLoaderState";
 import { useUserStore } from "../zustand/useUserStore";
 import { useApiStore } from "../zustand/useApiStore";
 import { toast } from "react-toastify";
+import { useApiToken } from "../zustand/useApiToken";
 
 export const QtyAmount = ({ item }) => {
   const {allCartItems, setAllCartItems} = useCartStore();
@@ -14,6 +15,7 @@ export const QtyAmount = ({ item }) => {
   const {
     userInfo: { user_id },
   } = useUserStore();
+  const { apiToken } = useApiToken();
 
 
   const quantityDecrease = () => {
@@ -21,7 +23,7 @@ export const QtyAmount = ({ item }) => {
       console.log("IN IF");
       const config = {
         headers: {
-          Authorization: `Bearer ${API_TOKEN}`,
+          Authorization: `Bearer ${apiToken}`,
         },
       };
 
@@ -112,7 +114,7 @@ export const QtyAmount = ({ item }) => {
     if (user_id) {
       const config = {
         headers: {
-          Authorization: `Bearer ${API_TOKEN}`,
+          Authorization: `Bearer ${apiToken}`,
         },
       };
 

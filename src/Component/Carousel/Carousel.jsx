@@ -7,11 +7,13 @@ import axios from "axios";
 import { useSliderStore } from "../zustand/useSliderStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiStore } from "../zustand/useApiStore";
+import { useApiToken } from "../zustand/useApiToken";
 
 function CarouselComponent() {
   const { allCarouselImg, setAllCarouselImg } = useSliderStore();
   const {setisLoading} = useLoaderState();
   const { jwt, setJwt } = useApiStore();
+  const { apiToken } = useApiToken();
   console.log(
     allCarouselImg,
     setAllCarouselImg,
@@ -21,7 +23,7 @@ function CarouselComponent() {
   const handleSliderImg = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     let sliderData = new FormData();

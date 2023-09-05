@@ -5,6 +5,7 @@ import { useLoaderState } from "../zustand/useLoaderState";
 import { useUserStore } from "../zustand/useUserStore";
 import { useCartStore } from "../zustand/useCartStore";
 import { useApiStore } from "../zustand/useApiStore";
+import { useApiToken } from "../zustand/useApiToken";
 
 function CartQuantity({ item }) {
   const { allCartItems, setAllCartItems } = useCartStore();
@@ -13,12 +14,13 @@ function CartQuantity({ item }) {
     userInfo: { user_id },
   } = useUserStore();
   const { jwt, setJwt } = useApiStore();
+  const { apiToken } = useApiToken();
 
 
   const quantityDecrease = () => {
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -88,7 +90,7 @@ function CartQuantity({ item }) {
   const quantityIncrease = () => {
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     const bodyFormData = new FormData();

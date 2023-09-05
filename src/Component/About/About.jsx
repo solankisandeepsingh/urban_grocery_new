@@ -4,15 +4,18 @@ import { API_TOKEN } from "../Token/Token";
 import { Aside } from "../Aside/Aside";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiStore } from "../zustand/useApiStore";
+import { useApiToken } from "../zustand/useApiToken";
+
 
 export const About = () => {
   const [about, setAbout] = useState("");
   const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
+  const { apiToken } = useApiToken();
   const handleAbout = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     let conditonData = new FormData();

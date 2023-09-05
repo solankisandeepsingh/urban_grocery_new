@@ -9,6 +9,7 @@ import { useApiStore } from "../../zustand/useApiStore";
 import { currencyFormatter } from "../../../utils/utils";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { useApiToken } from "../../zustand/useApiToken";
 
 
 export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
@@ -20,15 +21,16 @@ export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
   } = useUserStore();
   const navigate = useNavigate();
   const { setisLoading } = useLoaderState();
-  const { jwt, setJwt } = useApiStore();
+  // const { jwt, setJwt } = useApiStore();
   const { category_id } = useParams();
+  const { apiToken } = useApiToken();
   
 
 const addItemHandler = (item, data) => {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");
@@ -149,7 +151,7 @@ const addItemHandler = (item, data) => {
   
   let config = {
     headers: {
-      Authorization: `Bearer ${jwt}`,
+      Authorization: `Bearer ${apiToken}`,
     },
   };
 
@@ -186,7 +188,7 @@ const addItemHandler = (item, data) => {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");

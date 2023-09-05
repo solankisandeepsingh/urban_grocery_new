@@ -9,6 +9,7 @@ import { currencyFormatter } from "../../utils/utils";
 import { usePaymentStore } from "../zustand/usePaymentStore";
 import CryptoJS, { HmacSHA256 } from "crypto-js";
 import { useApiStore } from "../zustand/useApiStore";
+import { useApiToken } from "../zustand/useApiToken";
 
 // import {  SiRazorpay } from "../react-icons/si";
 
@@ -19,6 +20,7 @@ function Payment({ setNavbarOpen }) {
   const [chosenPayment, setChosenPayment] = useState("");
   const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
+  const { apiToken } = useApiToken();
   const {
     userInfo: { user_id },
     userInfo,
@@ -46,7 +48,7 @@ function Payment({ setNavbarOpen }) {
   useEffect(() => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     let paymentMethod = new FormData();
@@ -102,7 +104,7 @@ function Payment({ setNavbarOpen }) {
 
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -174,7 +176,7 @@ function Payment({ setNavbarOpen }) {
   let placeOrder = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 

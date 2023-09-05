@@ -26,6 +26,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useRef } from "react";
 import { useFavStore } from "../../zustand/useFavStore";
 import { SimilarProduct } from "../../Similar-Products/SimilarProduct";
+import { useApiToken } from "../../zustand/useApiToken";
 
 export const ProductDetails = ({ isOpen, setIsOpen }) => {
 
@@ -53,6 +54,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   let imageModalRef = useRef(null);
+  const { apiToken } = useApiToken();
 
   const handleImageClick = (image, index) => {
     if (image) {
@@ -75,7 +77,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
     console.log("item IN PDP", item, data);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");
@@ -205,7 +207,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const addReview = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -261,7 +263,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const productReviews = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -316,7 +318,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const productDetail = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -350,7 +352,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
 
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -473,7 +475,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const handleAddFavorite = (item) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 

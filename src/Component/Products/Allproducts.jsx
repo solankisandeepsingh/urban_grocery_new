@@ -11,6 +11,7 @@ import { useUserStore } from "../zustand/useUserStore";
 import { useApiStore } from "../zustand/useApiStore";
 import { currencyFormatter } from "../../utils/utils";
 import { ToastContainer, toast } from "react-toastify";
+import { useApiToken } from "../zustand/useApiToken";
 
 function Allproducts({ }) {
   const { allProducts, setAllProducts } = useProductsStore();
@@ -22,7 +23,7 @@ function Allproducts({ }) {
   } = useUserStore();
   const { jwt, setJwt } = useApiStore();
   const navigate = useNavigate();
-
+  const { apiToken } = useApiToken();
   const mockData = [
     {
       id: "906",
@@ -220,7 +221,7 @@ function Allproducts({ }) {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");
@@ -312,7 +313,7 @@ function Allproducts({ }) {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");

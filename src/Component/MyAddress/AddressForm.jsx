@@ -5,6 +5,7 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiStore } from "../zustand/useApiStore";
 import { ToastContainer, toast } from "react-toastify";
+import { useApiToken } from "../zustand/useApiToken";
 
 export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
   const [addressData, setAddressData] = useState({
@@ -23,6 +24,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
   const { jwt, setJwt } = useApiStore();
   const { setisLoading } = useLoaderState();
   const [otherField, setOtherField] = useState("");
+  const { apiToken } = useApiToken();
   const handleDropdown1Change = (event) => {
     const selectedValue = event.target.value;
     setCityDropdown(selectedValue);
@@ -50,7 +52,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
   console.log(addressData);
   const config = {
     headers: {
-      Authorization: `Bearer ${jwt}`,
+      Authorization: `Bearer ${apiToken}`,
     },
   };
   const handleSubmit = (event) => {

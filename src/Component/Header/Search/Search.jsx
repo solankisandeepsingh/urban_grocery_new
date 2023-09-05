@@ -11,6 +11,7 @@ import { useApiStore } from "../../zustand/useApiStore";
 import { FaArrowCircleUp } from "react-icons/fa";
 import { useCartStore } from "../../zustand/useCartStore";
 import { useSearchStore } from "../../zustand/useSearchStore";
+import { useApiToken } from "../../zustand/useApiToken";
 
 const Search = ({ setData, name, data, item }) => {
   const [searchData, setSearchData] = useState("");
@@ -26,6 +27,7 @@ const Search = ({ setData, name, data, item }) => {
     userInfo: { user_id },
   } = useUserStore();
   const { jwt } = useApiStore();
+  const { apiToken } = useApiToken();
 
   const { allCartItems, setAllCartItems } = useCartStore();
   console.log(allCartItems, "allcartitems is not present");
@@ -36,7 +38,7 @@ const Search = ({ setData, name, data, item }) => {
     console.log("normal search");
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -105,7 +107,7 @@ const Search = ({ setData, name, data, item }) => {
     if (location.pathname === "/search") {
       let config = {
         headers: {
-          Authorization: `Bearer ${jwt}`,
+          Authorization: `Bearer ${apiToken}`,
         },
       };
 
@@ -154,7 +156,7 @@ const Search = ({ setData, name, data, item }) => {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");

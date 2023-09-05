@@ -6,8 +6,6 @@ import { ProductCarousel } from "./Products/Product-Carousel/ProductCarousel";
 import { API_TOKEN } from "./Token/Token";
 import { useImgStore } from "./zustand/useImgStore";
 import axios from "axios";
-import { FoodDelivery } from "../Food Delivery Image/FoodDelivery";
-import { LocallySourced } from "../Food Delivery Image/LocallySourced";
 import { useLoaderState } from "./zustand/useLoaderState";
 import { Link } from "react-router-dom";
 import { FlashSales } from "./Flash_Sales/FlashSales";
@@ -15,6 +13,8 @@ import { SignJWT } from "jose";
 import axioss from "../api/axios";
 import { useApiStore } from "./zustand/useApiStore";
 import { Footer } from "./Footer/Footer";
+import { useApiToken } from "./zustand/useApiToken";
+
 
 function Home({
   data,
@@ -32,6 +32,8 @@ function Home({
   const { setisLoading } = useLoaderState();
   const [visible, setVisible] = useState(false);
 
+  const { accessTokenApi, apiToken } = useApiToken();
+  console.log(apiToken,"apiToken??")
   // console.log(axioss);
 
   // async function getData () {
@@ -95,7 +97,7 @@ function Home({
   const handleHomeImg = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     let imgData = new FormData();
@@ -123,34 +125,35 @@ function Home({
       });
   };
 
+  // useEffect(() => {
+  //   (async function createJwt() {
+  //     const alg = "HS256";
+  //     const secret = new TextEncoder().encode(
+  //       "replace_with_your_strong_jwt_secret_key"
+  //     );
+
+      // const jwt = await new SignJWT({ "urn:example:claim": true })
+      //   .setProtectedHeader({ alg })
+      //   // .setIssuedAt()
+      //   .setIssuer("eKart")
+      //   .setAudience("eKart Authentication")
+
+      //   .sign(secret);
+
+      // console.log(jwt);
+  //     accessTokenApi(apiToken);
+  //     // console.log(jwt.sign(secret, {iss : "eKart", sub : 'eKart Authentication' }).then((res)=> console.log(res)))
+  //   })();
+  // }, []);
+
   useEffect(() => {
-    (async function createJwt() {
-      const alg = "HS256";
-      const secret = new TextEncoder().encode(
-        "replace_with_your_strong_jwt_secret_key"
-      );
-
-      const jwt = await new SignJWT({ "urn:example:claim": true })
-        .setProtectedHeader({ alg })
-        // .setIssuedAt()
-        .setIssuer("eKart")
-        .setAudience("eKart Authentication")
-
-        .sign(secret);
-
-      console.log(jwt);
-      setJwt(jwt);
-      // console.log(jwt.sign(secret, {iss : "eKart", sub : 'eKart Authentication' }).then((res)=> console.log(res)))
-    })();
-  }, []);
-
-  useEffect(() => {
-    if (jwt) handleHomeImg();
-  }, [jwt]);
+    if (apiToken) handleHomeImg();
+  }, [apiToken]);
 
   return (
     <div className=" md:mt-0.5 xs:mt-14">
       <>
+   
         {/* <div className="md:invisible xs:visible">
           <Search
             setData={setData}

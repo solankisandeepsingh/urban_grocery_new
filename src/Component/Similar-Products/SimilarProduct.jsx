@@ -9,6 +9,7 @@ import { useCartStore } from "../zustand/useCartStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import CartQuantity from "../Button/CartQuantity";
 import Carousel from "react-multi-carousel";
+import { useApiToken } from "../zustand/useApiToken";
 
 export const SimilarProduct = ({ id }) => {
   console.log(id);
@@ -20,7 +21,7 @@ export const SimilarProduct = ({ id }) => {
   const { jwt, setJwt } = useApiStore();
   const navigate = useNavigate();
   const { setisLoading } = useLoaderState();
-
+  const { apiToken } = useApiToken();
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
@@ -55,7 +56,7 @@ export const SimilarProduct = ({ id }) => {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");
@@ -138,7 +139,7 @@ export const SimilarProduct = ({ id }) => {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");
@@ -242,7 +243,7 @@ export const SimilarProduct = ({ id }) => {
   const handleSimilarProduct = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 

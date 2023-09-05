@@ -14,6 +14,7 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useFavStore } from "../../zustand/useFavStore";
 import { currencyFormatter } from "../../../utils/utils";
 import { ToastContainer, toast } from "react-toastify";
+import { useApiToken } from "../../zustand/useApiToken";
 // import { useNavigate } from "react-router-dom";
 
 export const ProductCarousel = ({}) => {
@@ -33,6 +34,7 @@ export const ProductCarousel = ({}) => {
   const { setisLoading } = useLoaderState();
   const { allFavItems, setAllFavItems } = useFavStore();
   const [fav, setFav] = useState();
+  const { apiToken } = useApiToken();
 
   const handleVariantChange = (id, e) => {
     console.log(variant);
@@ -236,7 +238,7 @@ export const ProductCarousel = ({}) => {
   const getAllProducts = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     var bodyFormdata = new FormData();
@@ -395,7 +397,7 @@ export const ProductCarousel = ({}) => {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");

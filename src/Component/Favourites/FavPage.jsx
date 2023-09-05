@@ -11,6 +11,7 @@ import axios from "../../api/axios";
 import { useState } from "react";
 import { FaHeart, FaRegHeart, FaTrash } from "react-icons/fa";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { useApiToken } from "../zustand/useApiToken";
 
 export const FavPage = () => {
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
@@ -21,6 +22,7 @@ export const FavPage = () => {
   const [removeFavPos, setRemoveFavPos] = useState(true);
   const navigate = useNavigate();
   const { jwt } = useApiStore();
+  const { apiToken } = useApiToken();
 
   const {
     userInfo: { user_id },
@@ -40,7 +42,7 @@ export const FavPage = () => {
   const handleRemoveFavorite = (item) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -108,7 +110,7 @@ export const FavPage = () => {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");

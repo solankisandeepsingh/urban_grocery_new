@@ -17,6 +17,7 @@ import { SignUpwithOtp } from "./SignUpwithOtp";
 import { useApiStore } from "../zustand/useApiStore";
 import { useRef } from "react";
 import { useEffect } from "react";
+import { useApiToken } from "../zustand/useApiToken";
 
 export const Login = ({
   // setUser_id,
@@ -42,6 +43,7 @@ export const Login = ({
   const { jwt, setJwt } = useApiStore();
   const [visiblePassword, setVisiblePassword] = useState(false);
   let loginRef = useRef(null);
+  const { apiToken } = useApiToken();
 
   const handleShow = (e) => {
     e.preventDefault();
@@ -263,7 +265,7 @@ export const Login = ({
 
       let config = {
         headers: {
-          Authorization: `Bearer ${jwt}`,
+          Authorization: `Bearer ${apiToken}`,
         },
       };
 
@@ -284,7 +286,7 @@ export const Login = ({
             console.log("LOGIN THRU CART<><><><>");
             closeLoginModal();
             navigate("/");
-            localStorage.setItem("token", `${jwt}`);
+            localStorage.setItem("token", `${apiToken}`);
             // dispatchLogin({ type: "LOGIN", payload: res.data.name });
             console.log("LOGIN RESPONSEEEEEEEEEEEEEE", res.data);
             setUserInfo(res.data);

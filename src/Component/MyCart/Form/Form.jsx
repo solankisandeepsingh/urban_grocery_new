@@ -9,11 +9,13 @@ import { useLoaderState } from "../../zustand/useLoaderState";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { BsChevronCompactRight } from "react-icons/bs";
 import { useApiStore } from "../../zustand/useApiStore";
+import { useApiToken } from "../../zustand/useApiToken";
 
 function Form({ user_id, setReviewPage, setShowForm }) {
   const [formOpen, setFormOpen] = useState(false);
   const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
+  const { apiToken } = useApiToken();
 
   const { deliveryAddress, setDeliveryAddress, addList, setAddList } =
     useUserStore();
@@ -25,7 +27,7 @@ function Form({ user_id, setReviewPage, setShowForm }) {
 
   const config = {
     headers: {
-      Authorization: `Bearer ${jwt}`,
+      Authorization: `Bearer ${apiToken}`,
     },
   };
 

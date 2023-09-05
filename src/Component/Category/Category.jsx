@@ -5,6 +5,7 @@ import { API_TOKEN } from "../Token/Token";
 import { useProductsStore } from "../zustand/useProductsStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiStore } from "../zustand/useApiStore";
+import { useApiToken } from "../zustand/useApiToken";
 export const Category = () => {
   const { allCategories, setAllCategories } = useProductsStore();
   const { setisLoading } = useLoaderState();
@@ -12,11 +13,12 @@ export const Category = () => {
 
   // const [categorydata, setCategorydata] = useState(categoryData.data);
   // const [categorydata, setCategorydata] = useState([]);
-
+  const { apiToken } = useApiToken();
+  
   const categryData = () => {
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 

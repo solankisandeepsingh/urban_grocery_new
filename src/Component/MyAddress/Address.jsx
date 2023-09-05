@@ -11,6 +11,7 @@ import { useLoaderState } from "../zustand/useLoaderState";
 import { useUserStore } from "../zustand/useUserStore";
 import { useApiStore } from "../zustand/useApiStore";
 import { ToastContainer, toast } from "react-toastify";
+import { useApiToken } from "../zustand/useApiToken";
 
 export const Address = ({ isOpen, setIsOpen }) => {
   const [formOpen, setFormOpen] = useState(false);
@@ -18,6 +19,7 @@ export const Address = ({ isOpen, setIsOpen }) => {
   const { setisLoading } = useLoaderState();
   const { addList, setAddList } = useUserStore();
   const { jwt, setJwt } = useApiStore();
+  const { apiToken } = useApiToken();
 
   const {
     userInfo: { user_id },
@@ -27,7 +29,7 @@ export const Address = ({ isOpen, setIsOpen }) => {
 
   const config = {
     headers: {
-      Authorization: `Bearer ${jwt}`,
+      Authorization: `Bearer ${apiToken}`,
     },
   };
 

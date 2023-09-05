@@ -10,12 +10,14 @@ import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiStore } from "../zustand/useApiStore";
 import { currencyFormatter } from "../../utils/utils";
 import { ToastContainer, toast } from "react-toastify";
+import { useApiToken } from "../zustand/useApiToken";
 
 export const FlashSales = () => {
   const [salesProducts, setSalesProducts] = useState([]);
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
 
   const { jwt, setJwt } = useApiStore();
+  const { apiToken } = useApiToken();
   const {
     userInfo: { user_id },
   } = useUserStore();
@@ -26,7 +28,7 @@ export const FlashSales = () => {
   const handleSalesClick = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -90,7 +92,7 @@ export const FlashSales = () => {
     console.log("ALAH", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");
@@ -182,7 +184,7 @@ export const FlashSales = () => {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");

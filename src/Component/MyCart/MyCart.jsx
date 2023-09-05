@@ -16,6 +16,7 @@ import { currencyFormatter } from "../../utils/utils";
 import { usePaymentStore } from "../zustand/usePaymentStore";
 import { useApiStore } from "../zustand/useApiStore";
 import { useMediaQuery } from "react-responsive";
+import { useApiToken } from "../zustand/useApiToken";
 
 function MyCart({
   // allCartItems,
@@ -46,6 +47,7 @@ function MyCart({
   const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
   const { setTotalPrice, setTotalMRPPrice, setTotalItems } = usePaymentStore();
+  const { apiToken } = useApiToken();
 
   const isMobileOrTablet = useMediaQuery({ query: "(max-width: 767px)" });
 
@@ -108,7 +110,7 @@ function MyCart({
   const removeItemHandler = (item) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -178,7 +180,7 @@ function MyCart({
   const getUserCarts = (user_id) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
