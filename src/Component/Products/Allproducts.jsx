@@ -10,6 +10,7 @@ import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useApiStore } from "../zustand/useApiStore";
 import { currencyFormatter } from "../../utils/utils";
+import { useApiToken } from "../zustand/useApiToken";
 
 function Allproducts({ }) {
   const { allProducts, setAllProducts } = useProductsStore();
@@ -21,6 +22,7 @@ function Allproducts({ }) {
   } = useUserStore();
   const { jwt, setJwt } = useApiStore();
   const navigate = useNavigate();
+  const {apiToken} = useApiToken()
 
   const mockData = [
     {
@@ -219,7 +221,8 @@ function Allproducts({ }) {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");
@@ -311,7 +314,8 @@ function Allproducts({ }) {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");

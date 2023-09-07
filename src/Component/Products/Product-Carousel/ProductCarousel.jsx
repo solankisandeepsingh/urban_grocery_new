@@ -14,19 +14,20 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useFavStore } from "../../zustand/useFavStore";
 import { currencyFormatter } from "../../../utils/utils";
 import { ToastContainer, toast } from "react-toastify";
+import { useApiToken } from "../../zustand/useApiToken";
 // import { useNavigate } from "react-router-dom";
 
 export const ProductCarousel = ({}) => {
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
   console.log(allCartItems, "After Destructure");
   const { allProducts, setAllProducts } = useProductsStore();
-  
 
   // const [variant, setVariant] = useState({ 0: 0 });
   // const [favPos, setFavPos] = useState(false);
   const [favPos, setFavPos] = useState(true);
   const navigate = useNavigate();
   const { jwt, setJwt } = useApiStore();
+  const { apiToken } = useApiToken();
 
   const {
     userInfo: { user_id },
@@ -237,7 +238,8 @@ export const ProductCarousel = ({}) => {
   const getAllProducts = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     var bodyFormdata = new FormData();
@@ -364,7 +366,7 @@ export const ProductCarousel = ({}) => {
     console.log("INSIDE");
     let newArr = [];
     if (mainItem.variants.length > 1) {
-      console.log('MORE <><><><><><>');
+      console.log("MORE <><><><><><>");
       newArr = [
         ...allCartItems,
         {
@@ -375,20 +377,20 @@ export const ProductCarousel = ({}) => {
           product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
         },
       ];
-      
-    } else { 
-      console.log('LESS <><><><><><><>');
+    } else {
+      console.log("LESS <><><><><><><>");
       newArr = [
-      ...allCartItems,
-      {
-        ...mainItem.variants[variant[mainItem.id] || 0],   
-         
-        amount: 1,
-        name: mainItem.name,
-        image: mainItem.image,
-        product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
-      },
-    ]}
+        ...allCartItems,
+        {
+          ...mainItem.variants[variant[mainItem.id] || 0],
+
+          amount: 1,
+          name: mainItem.name,
+          image: mainItem.image,
+          product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
+        },
+      ];
+    }
     setAllCartItems(newArr);
   };
 
@@ -396,7 +398,8 @@ export const ProductCarousel = ({}) => {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");
@@ -430,7 +433,6 @@ export const ProductCarousel = ({}) => {
           );
           console.log(newArr);
           setAllCartItems(newArr);
-          
 
           // setAllCartItems((cart) =>
           //   cart.map((data) =>
@@ -458,21 +460,23 @@ export const ProductCarousel = ({}) => {
         };
 
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
-        toast.success('Item added to user cart successfully !', {
-          position: toast.POSITION.TOP_CENTER
-      });
+        toast.success("Item added to user cart successfully !", {
+          position: toast.POSITION.TOP_CENTER,
+        });
         console.log(newArr);
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
-       
+
         setAllCartItems(newArr);
         setisLoading(false);
-        
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Network error. Please check your connection and try again.", {
-          position: toast.POSITION.TOP_CENTER,
-        });
+        toast.error(
+          "Network error. Please check your connection and try again.",
+          {
+            position: toast.POSITION.TOP_CENTER,
+          }
+        );
         setisLoading(false);
       });
   };
@@ -483,61 +487,61 @@ export const ProductCarousel = ({}) => {
 
   return (
     <>
-    {/* <ToastContainer/> */}
-     <div className="xs:mt-4 xs:p-2 md:mt-7 shadow-sm border border-[#e8e8e8] rounded-md md:p-5 bg-[#fcfff3]">
-      <div className="xs:my-5 mt-20 flex justify-between">
-        <div className="text-customBlack text-[24px]">
-          <h1 className="font-okra font-600">All Proudcts</h1>
+      {/* <ToastContainer/> */}
+      <div className="xs:mt-4 xs:p-2 md:mt-7 shadow-sm border border-[#e8e8e8] rounded-md md:p-5 bg-[#fcfff3]">
+        <div className="xs:my-5 mt-20 flex justify-between">
+          <div className="text-customBlack text-[24px]">
+            <h1 className="font-okra font-600">All Proudcts</h1>
+          </div>
+          <div className=" text-customGreen text-[20px]	">
+            <h1
+              className="cursor-pointer font-okra font-600"
+              onClick={viewAllProducts}
+            >
+              View All
+            </h1>
+          </div>
         </div>
-        <div className=" text-customGreen text-[20px]	">
-          <h1
-            className="cursor-pointer font-okra font-600"
-            onClick={viewAllProducts}
-          >
-            View All
-          </h1>
-        </div>
-      </div>
 
-      <div className="md:my-2 ">
-        <Carousel responsive={responsive} className="z-0">
-          {allProducts &&
-            allProducts.map((item) => {
-              return (
-                <>
-                  <div
-                    className="w-72  xs:w-36  xs:h-auto md:w-40 md:h-[235px] sm:h-[250px] sm:w-[170px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green bg-[#fdfffc] cursor-pointer"
-                    onClick={() => {
-                      navigate(
-                        `/subcategory-details/${item.category_name}/product-details/${item.id}`
-                      );
-                    }}
-                  >
-                    <img
-                      className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-28  md:w-40  sm:w-48 sm:h-32 rounded-lg "
-                      src={
-                        item.variants.length == 1
-                          ? item.image
-                          : item.variants[variant[item.id] || 0].images[0]
-                      }
-                      alt={item.name}
-                    />
-                    <div className=" pt-2 md:py-2 md:mx-4 xs:mx-2 sm:mx-4 ">
-                      <p className="md:text-sm xs:text-sm sm:text-[20px]  font-medium   truncate ">
-                        {item.name}
-                      </p>
-                    </div>
-                    {item.variants.length == 1 &&
-                      item.variants.map((data) => {
-                        return (
-                          <div className="flex p-1 md:px-3 flex-col xs:justify-center xs:items-center xs:text-center md:justify-evenly sm:ml-0   ">
-                            {/* {console.log(allFavItems.find((fav)=>{
+        <div className="md:my-2 ">
+          <Carousel responsive={responsive} className="z-0">
+            {allProducts &&
+              allProducts.map((item) => {
+                return (
+                  <>
+                    <div
+                      className="w-72  xs:w-36  xs:h-auto md:w-40 md:h-[235px] sm:h-[250px] sm:w-[170px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green bg-[#fdfffc] cursor-pointer"
+                      onClick={() => {
+                        navigate(
+                          `/subcategory-details/${item.category_name}/product-details/${item.id}`
+                        );
+                      }}
+                    >
+                      <img
+                        className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-28  md:w-40  sm:w-48 sm:h-32 rounded-lg "
+                        src={
+                          item.variants.length == 1
+                            ? item.image
+                            : item.variants[variant[item.id] || 0].images[0]
+                        }
+                        alt={item.name}
+                      />
+                      <div className=" pt-2 md:py-2 md:mx-4 xs:mx-2 sm:mx-4 ">
+                        <p className="md:text-sm xs:text-sm sm:text-[20px]  font-medium   truncate ">
+                          {item.name}
+                        </p>
+                      </div>
+                      {item.variants.length == 1 &&
+                        item.variants.map((data) => {
+                          return (
+                            <div className="flex p-1 md:px-3 flex-col xs:justify-center xs:items-center xs:text-center md:justify-evenly sm:ml-0   ">
+                              {/* {console.log(allFavItems.find((fav)=>{
                               console.log(fav.id, item.id, "HEREEEEEEEEEEEEE<><><><><><>");
                                return fav.id === item.id
                             }))}; */}
 
-                            {/* ADD TO FAVOURITES  */}
-                            {/* {user_id != 14 &&
+                              {/* ADD TO FAVOURITES  */}
+                              {/* {user_id != 14 &&
                               (allFavItems?.find((fav) => {
                                 return fav.id === item.id;
                               }) ? (
@@ -559,71 +563,71 @@ export const ProductCarousel = ({}) => {
                                   }}
                                 />
                               ))} */}
-                            <div className="  w-full md:px-3 ">
-                              <p className="2xs:text-base xs:text-sm t sm:text-xl  md:text-sm font-light  px-1 py-1 flex md:flex-row  justify-between items-center">
-                                <span className=" font-bold text-xs">
-                                  {currencyFormatter(data.discounted_price)}{" "}
-                                </span>
-                                <div>
-                                  <span className="text-gryColour text-xs">
-                                    {data.measurement}{" "}
+                              <div className="  w-full md:px-3 ">
+                                <p className="2xs:text-base xs:text-sm t sm:text-xl  md:text-sm font-light  px-1 py-1 flex md:flex-row  justify-between items-center">
+                                  <span className=" font-bold text-xs">
+                                    {currencyFormatter(data.discounted_price)}{" "}
                                   </span>
-                                  <span className="font-normal text-gryColour text-xs  ">
-                                    {data.measurement_unit_name}
-                                  </span>
-                                </div>
-                              </p>
-                            </div>
+                                  <div>
+                                    <span className="text-gryColour text-xs">
+                                      {data.measurement}{" "}
+                                    </span>
+                                    <span className="font-normal text-gryColour text-xs  ">
+                                      {data.measurement_unit_name}
+                                    </span>
+                                  </div>
+                                </p>
+                              </div>
 
-                            <div className="w-full ">
-                              {item.variants.some(
-                                (variant) => variant.stock > 0
-                              ) ? (
-                                allCartItems?.find(
-                                  (i) => i.product_id === item.id
+                              <div className="w-full ">
+                                {item.variants.some(
+                                  (variant) => variant.stock > 0
                                 ) ? (
-                                  <>
-                                    <div
-                                      className="mt-3"
+                                  allCartItems?.find(
+                                    (i) => i.product_id === item.id
+                                  ) ? (
+                                    <>
+                                      <div
+                                        className="mt-3"
+                                        onClick={(e) => {
+                                          console.log(
+                                            e,
+                                            "EVENT IN IMMEDIATE PARENT ELEMENT"
+                                          );
+                                        }}
+                                      >
+                                        <CartQuantity
+                                          item={item}
+                                          variant={variant}
+                                        />
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <button
+                                      className=" md:h-8 mt-2 md:mt-3 md:text-base !leading-none   sm:h-10 sm:text-xs  text-lime border border-lightgreen bg-transparent w-full hover:bg-opacity-75 font-medium bg-white rounded-lg uppercase px-3 py-1.5 "
                                       onClick={(e) => {
-                                        console.log(
-                                          e,
-                                          "EVENT IN IMMEDIATE PARENT ELEMENT"
-                                        );
+                                        e.stopPropagation();
+                                        user_id
+                                          ? addItemHandler(data, item)
+                                          : addItemUI(item);
                                       }}
                                     >
-                                      <CartQuantity
-                                        item={item}
-                                        variant={variant}
-                                      />
-                                    </div>
-                                  </>
+                                      Add
+                                    </button>
+                                  )
                                 ) : (
-                                  <button
-                                    className=" md:h-8 mt-2 md:mt-3 md:text-base !leading-none   sm:h-10 sm:text-xs  text-lime border border-lightgreen bg-transparent w-full hover:bg-opacity-75 font-medium bg-white rounded-lg uppercase px-3 py-1.5 "
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      user_id
-                                        ? addItemHandler(data, item)
-                                        : addItemUI(item);
-                                    }}
-                                  >
-                                    Add
-                                  </button>
-                                )
-                              ) : (
-                                <p className="  text-orange md:text-[11px] text-sm font-medium md:mt-4 pb-4 sm:text-xs xs:text-[11px] sm:my-[25px] sm:text-[11px]  sm:break-normal">
-                                  Out of stock
-                                </p>
-                              )}
+                                  <p className="  text-orange md:text-[11px] text-sm font-medium md:mt-4 pb-4 sm:text-xs xs:text-[11px] sm:my-[25px] sm:text-[11px]  sm:break-normal">
+                                    Out of stock
+                                  </p>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        );
-                      })}
-                    {item.variants.length > 1 && (
-                      <div className=" md:flex md:flex-col px-3 md:justify-evenly  sm:flex xs:flex xs:justify-between ">
-                        {/* ADD TO FAVOURITES  */}
-                        {/* {user_id != 14 &&
+                          );
+                        })}
+                      {item.variants.length > 1 && (
+                        <div className=" md:flex md:flex-col px-3 md:justify-evenly  sm:flex xs:flex xs:justify-between ">
+                          {/* ADD TO FAVOURITES  */}
+                          {/* {user_id != 14 &&
                           (allFavItems.find((fav) => {
                             return fav.id === item.id;
                           }) ? (
@@ -646,96 +650,98 @@ export const ProductCarousel = ({}) => {
                             />
                           ))} */}
 
-                        <div className="" onClick={(e) => e.stopPropagation()}>
-                          <select
-                            // value={"selectedVariant"}
-                            onChange={(e) => {
-                              handleVariantChange(item.id, e);
-                            }}
-                            className="block w-full py-2 px-1 items-center border border-gray-300  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs text-center font-bold"
+                          <div
+                            className=""
+                            onClick={(e) => e.stopPropagation()}
                           >
-                            {/* <option value="">City</option> */}
-                            {item.variants.map((variant, index) => (
-                              <option
-                                key={variant.id}
-                                value={index}
-                                className=" my-2 items-center text-center text-xs font-bold"
-                              >
-                                <span className="p-5">
-                                  {currencyFormatter(variant.price)}{" "}
-                                </span>
-                                <span>{variant.measurement} </span>
-                                <p className="font-normal text-blue border">
-                                  {variant.measurement_unit_name}
-                                </p>
-                              </option>
-                            ))}
-                          </select>
-                        </div>
+                            <select
+                              // value={"selectedVariant"}
+                              onChange={(e) => {
+                                handleVariantChange(item.id, e);
+                              }}
+                              className="block w-full py-2 px-1 items-center border border-gray-300  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs text-center font-bold"
+                            >
+                              {/* <option value="">City</option> */}
+                              {item.variants.map((variant, index) => (
+                                <option
+                                  key={variant.id}
+                                  value={index}
+                                  className=" my-2 items-center text-center text-xs font-bold"
+                                >
+                                  <span className="p-5">
+                                    {currencyFormatter(variant.price)}{" "}
+                                  </span>
+                                  <span>{variant.measurement} </span>
+                                  <p className="font-normal text-blue border">
+                                    {variant.measurement_unit_name}
+                                  </p>
+                                </option>
+                              ))}
+                            </select>
+                          </div>
 
-                        {/* <div className=" xs:text-left  sm:mt-2 md:mt-[15px] md:mx-4 xs:mx-4 sm:mx-4 md:text-left ">
+                          {/* <div className=" xs:text-left  sm:mt-2 md:mt-[15px] md:mx-4 xs:mx-4 sm:mx-4 md:text-left ">
                           <p className="2xs:text-base  xs:text-sm t sm:text-xl  xs:mt-4 md:mt-[-3px] sm:mt-[12px] md:text-sm text-gryColour font-light bg-white">
                             ₹{item.variants[0].price}{" "}
                           </p>
                         </div> */}
 
-                        <div>
-                          {item.variants.some(
-                            (variant) => variant.stock > 0
-                          ) ? (
-                            allCartItems?.find(
-                              (i) =>
-                                (i.product_variant_id ?? i.id) ===
-                                item?.variants?.[variant?.[item?.id] || 0]?.id
+                          <div>
+                            {item.variants.some(
+                              (variant) => variant.stock > 0
                             ) ? (
-                              <>
-                                <div
-                                  className="mt-3"
-                                  // onClick={(e) => {
-                                  //   console.log(
-                                  //     e,
-                                  //     "EVENT IN IMMEDIATE PARENT ELEMENT"
-                                  //   );
-                                  // }}
+                              allCartItems?.find(
+                                (i) =>
+                                  (i.product_variant_id ?? i.id) ===
+                                  item?.variants?.[variant?.[item?.id] || 0]?.id
+                              ) ? (
+                                <>
+                                  <div
+                                    className="mt-3"
+                                    // onClick={(e) => {
+                                    //   console.log(
+                                    //     e,
+                                    //     "EVENT IN IMMEDIATE PARENT ELEMENT"
+                                    //   );
+                                    // }}
+                                  >
+                                    <CartQuantity
+                                      item={item}
+                                      variant={variant}
+                                      // setAllCartItems={setAllCartItems}
+                                      // allCartItems={allCartItems}
+                                      // user_id={user_id}
+                                    />
+                                  </div>
+                                </>
+                              ) : (
+                                <button
+                                  className=" md:h-8 mt-3 md:text-xs   sm:h-10 sm:text-base  text-lime border border-lightgreen bg-transparent w-full hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    user_id
+                                      ? addItemHandler(variant, item)
+                                      : addItemUI(item);
+                                  }}
                                 >
-                                  <CartQuantity
-                                    item={item}
-                                    variant={variant}
-                                    // setAllCartItems={setAllCartItems}
-                                    // allCartItems={allCartItems}
-                                    // user_id={user_id}
-                                  />
-                                </div>
-                              </>
+                                  Add
+                                </button>
+                              )
                             ) : (
-                              <button
-                                className=" md:h-8 mt-3 md:text-xs   sm:h-10 sm:text-base  text-lime border border-lightgreen bg-transparent w-full hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  user_id
-                                    ? addItemHandler(variant, item)
-                                    : addItemUI(item);
-                                }}
-                              >
-                                Add
-                              </button>
-                            )
-                          ) : (
-                            <p className="  text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:text-xs  xs:text-xs">
-                              Out of stock
-                            </p>
-                          )}
+                              <p className="  text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:text-xs  xs:text-xs">
+                                Out of stock
+                              </p>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
-                </>
-              );
-            })}
-        </Carousel>
+                      )}
+                    </div>
+                  </>
+                );
+              })}
+          </Carousel>
+        </div>
       </div>
-    </div>
     </>
-   
   );
 };

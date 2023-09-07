@@ -216,6 +216,7 @@ function App() {
                 user_id={user_id}
                 setUser_id={setUser_id}
                 setPrice={setPrice}
+                setNavbarOpen={setNavbarOpen}
               />
             }
           />

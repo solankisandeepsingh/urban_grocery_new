@@ -9,6 +9,7 @@ import { currencyFormatter } from "../../utils/utils";
 import { usePaymentStore } from "../zustand/usePaymentStore";
 import CryptoJS, { HmacSHA256 } from "crypto-js";
 import { useApiStore } from "../zustand/useApiStore";
+import { useApiToken } from "../zustand/useApiToken";
 
 // import {  SiRazorpay } from "../react-icons/si";
 
@@ -19,6 +20,7 @@ function Payment({ setNavbarOpen,NavbarOpen}) {
   const [chosenPayment, setChosenPayment] = useState("");
   const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
+  const {apiToken} = useApiToken()
   const {
     userInfo: { user_id },
     userInfo,
@@ -49,7 +51,8 @@ function Payment({ setNavbarOpen,NavbarOpen}) {
   useEffect(() => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     let paymentMethod = new FormData();
@@ -106,7 +109,8 @@ function Payment({ setNavbarOpen,NavbarOpen}) {
 
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -178,7 +182,8 @@ function Payment({ setNavbarOpen,NavbarOpen}) {
   let placeOrder = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -370,7 +375,7 @@ function Payment({ setNavbarOpen,NavbarOpen}) {
         <div>
           <div>
             {/* <div className="mt-28 border border-light_gray p-3 h-auto w-[350px]"> */}
-            <div className="xs:my-16 md:mt-[-70px] border border-light_gray h-auto w-[350px] rounded-lg bg-white hidden md:block md:w-[300px]">
+            <div className="xs:my-16 md:mt-[20px] border border-light_gray h-auto w-[350px] rounded-lg bg-white hidden md:block md:w-[300px]">
               <div className="w-full py-3 bg-[#64bd59] rounded-t-lg text-white ">
                 <h2 className=" font-bold sm:text-center">Order Summary</h2>
               </div>

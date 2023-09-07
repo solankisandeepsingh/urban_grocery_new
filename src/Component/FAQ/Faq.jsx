@@ -4,16 +4,19 @@ import axios from "axios";
 import { Aside } from "../Aside/Aside";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiStore } from "../zustand/useApiStore";
+import { useApiToken } from "../zustand/useApiToken";
 
 export const Faq = () => {
   const [faqData, setFaqData] = useState("");
   const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
+  const {apiToken} = useApiToken()
 
   const handleFaq = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     let FaqData = new FormData();

@@ -9,24 +9,27 @@ import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiStore } from "../zustand/useApiStore";
 import { currencyFormatter } from "../../utils/utils";
-import { ToastContainer,toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import { useApiToken } from "../zustand/useApiToken";
 
 export const FlashSales = () => {
   const [salesProducts, setSalesProducts] = useState([]);
-  const {allCartItems,setAllCartItems, variant, setVariant}= useCartStore();
+  const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
 
   const { jwt, setJwt } = useApiStore();
+  const { apiToken } = useApiToken();
   const {
     userInfo: { user_id },
   } = useUserStore();
   const { setisLoading } = useLoaderState();
   const navigate = useNavigate();
 
-console.log(user_id, "FLASH SALES USE RIR");
+  console.log(user_id, "FLASH SALES USE RIR");
   const handleSalesClick = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -59,7 +62,7 @@ console.log(user_id, "FLASH SALES USE RIR");
     console.log("INSIDE");
     let newArr = [];
     if (mainItem.variants.length > 1) {
-      console.log('MORE <><><><><><>');
+      console.log("MORE <><><><><><>");
       newArr = [
         ...allCartItems,
         {
@@ -70,27 +73,28 @@ console.log(user_id, "FLASH SALES USE RIR");
           product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
         },
       ];
-      
-    } else { 
-      console.log('LESS <><><><><><><>');
+    } else {
+      console.log("LESS <><><><><><><>");
 
       newArr = [
-      ...allCartItems,
-      {
-        ...mainItem.variants[variant[mainItem.id] || 0],   
-        amount: 1,
-        name: mainItem.name,
-        image: mainItem.image,
-        product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
-      },
-    ]}
+        ...allCartItems,
+        {
+          ...mainItem.variants[variant[mainItem.id] || 0],
+          amount: 1,
+          name: mainItem.name,
+          image: mainItem.image,
+          product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
+        },
+      ];
+    }
     setAllCartItems(newArr);
   };
   const addItemHandler = (item, data) => {
     console.log("ALAH", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");
@@ -152,14 +156,20 @@ console.log(user_id, "FLASH SALES USE RIR");
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
         console.log(newArr);
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
+        toast.success("Item added to user cart successfully !", {
+          position: toast.POSITION.TOP_CENTER,
+        });
         setAllCartItems(newArr);
         setisLoading(false);
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Network error. Please check your connection and try again.", {
-          position: toast.POSITION.TOP_CENTER,
-        });
+        toast.error(
+          "Network error. Please check your connection and try again.",
+          {
+            position: toast.POSITION.TOP_CENTER,
+          }
+        );
         setisLoading(false);
       });
   };
@@ -176,7 +186,8 @@ console.log(user_id, "FLASH SALES USE RIR");
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");
@@ -252,15 +263,18 @@ console.log(user_id, "FLASH SALES USE RIR");
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Network error. Please check your connection and try again.", {
-          position: toast.POSITION.TOP_CENTER,
-        });
+        toast.error(
+          "Network error. Please check your connection and try again.",
+          {
+            position: toast.POSITION.TOP_CENTER,
+          }
+        );
         setisLoading(false);
       });
   };
   return (
     <>
-    <ToastContainer/>
+      <ToastContainer />
       <div className="md:mt-7  shadow-sm border border-[#e8e8e8] rounded-md p-2 bg-[#fcfff3]">
         <div className="text-customBlack text-[24px] p-2">
           <h1 className="font-okra font-600">Flash Sales</h1>
@@ -270,7 +284,7 @@ console.log(user_id, "FLASH SALES USE RIR");
             salesProducts.map((item) => {
               return (
                 <>
-                    <div
+                  <div
                     className="w-72  xs:my-3 xs:w-36  xs:h-auto md:w-40 md:h-[280px] sm:h-[250px] sm:w-[170px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green bg-[#ffffff] cursor-pointer"
                     onClick={() => {
                       navigate(
@@ -297,7 +311,7 @@ console.log(user_id, "FLASH SALES USE RIR");
                       item.variants.map((data) => {
                         return (
                           <div className="flex p-1 md:px-3 flex-col xs:justify-center xs:items-center xs:text-center md:justify-evenly sm:ml-0   ">
-                           <div className="">
+                            <div className="">
                               <div className="flex gap-2 mx-4 md:mx-4 sm:gap-3 sm:mx-6 ">
                                 <p className="2xs:text-base xs:text-sm sm:text-xl md:text-sm text-gryColour  font-medium inline line-through bg-white">
                                   ₹{data.price}.00{" "}
@@ -338,7 +352,7 @@ console.log(user_id, "FLASH SALES USE RIR");
                                     <div
                                       className="mt-3"
                                       onClick={(e) => {
-                                        e.stopPropagation()
+                                        e.stopPropagation();
                                         console.log(
                                           "EVENT IN IMMEDIATE PARENT ELEMENT"
                                         );

@@ -6,6 +6,7 @@ import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiStore } from "../zustand/useApiStore";
 import { ToastContainer, toast } from "react-toastify";
+import { useApiToken } from "../zustand/useApiToken";
 
 function CartQuantity({ item, variant }) {
   console.log(item, variant, "FROM FLASH SALES I");
@@ -15,6 +16,7 @@ function CartQuantity({ item, variant }) {
     userInfo: { user_id },
   } = useUserStore();
   const { jwt, setJwt } = useApiStore();
+  const {apiToken} = useApiToken()
 
   const changeQuantity = (change) => {
     console.log(change, "654654");
@@ -23,7 +25,8 @@ function CartQuantity({ item, variant }) {
         console.log("USER LOGGED IN");
         const config = {
           headers: {
-            Authorization: `Bearer ${jwt}`,
+            // Authorization: `Bearer ${jwt}`,
+            Authorization: `Bearer ${apiToken}`,
           },
         };
         const bodyFormData = new FormData();
@@ -101,7 +104,8 @@ function CartQuantity({ item, variant }) {
       if (user_id) {
         const config = {
           headers: {
-            Authorization: `Bearer ${jwt}`,
+            // Authorization: `Bearer ${jwt}`,
+            Authorization: `Bearer ${apiToken}`,
           },
         };
 
@@ -259,7 +263,8 @@ function CartQuantity({ item, variant }) {
   const quantityDecrease = () => {
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -330,7 +335,8 @@ function CartQuantity({ item, variant }) {
   const quantityIncrease = () => {
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     const bodyFormData = new FormData();

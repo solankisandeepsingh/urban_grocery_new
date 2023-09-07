@@ -9,6 +9,7 @@ import { useCartStore } from "../zustand/useCartStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import CartQuantity from "../Button/CartQuantity";
 import Carousel from "react-multi-carousel";
+import { useApiToken } from "../zustand/useApiToken";
 
 export const SimilarProduct = ({ id }) => {
   console.log(id);
@@ -20,6 +21,7 @@ export const SimilarProduct = ({ id }) => {
   const { jwt, setJwt } = useApiStore();
   const navigate = useNavigate();
   const { setisLoading } = useLoaderState();
+  const { apiToken } = useApiToken();
 
   const responsive = {
     superLargeDesktop: {
@@ -55,7 +57,8 @@ export const SimilarProduct = ({ id }) => {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");
@@ -138,7 +141,8 @@ export const SimilarProduct = ({ id }) => {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");
@@ -212,7 +216,7 @@ export const SimilarProduct = ({ id }) => {
     console.log("INSIDE");
     let newArr = [];
     if (mainItem.variants.length > 1) {
-      console.log('MORE <><><><><><>');
+      console.log("MORE <><><><><><>");
       newArr = [
         ...allCartItems,
         {
@@ -223,26 +227,27 @@ export const SimilarProduct = ({ id }) => {
           product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
         },
       ];
-      
-    } else { 
-      console.log('LESS <><><><><><><>');
+    } else {
+      console.log("LESS <><><><><><><>");
       newArr = [
-      ...allCartItems,
-      {
-        ...mainItem.variants[variant[mainItem.id] || 0],   
-         
-        amount: 1,
-        name: mainItem.name,
-        image: mainItem.image,
-        product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
-      },
-    ]}
+        ...allCartItems,
+        {
+          ...mainItem.variants[variant[mainItem.id] || 0],
+
+          amount: 1,
+          name: mainItem.name,
+          image: mainItem.image,
+          product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
+        },
+      ];
+    }
     setAllCartItems(newArr);
   };
   const handleSimilarProduct = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -262,7 +267,6 @@ export const SimilarProduct = ({ id }) => {
       .then((res) => {
         setisLoading(false);
         setSimilarProduct(res?.data?.data);
-       
       })
       .catch((err) => {
         setisLoading(false);
@@ -288,7 +292,8 @@ export const SimilarProduct = ({ id }) => {
                     onClick={() => {
                       console.log("Similar");
                       navigate(
-                        `/subcategory-details/${item.category_name}/product-details/${item.id}`, { replace: true }
+                        `/subcategory-details/${item.category_name}/product-details/${item.id}`,
+                        { replace: true }
                       );
                     }}
                   >

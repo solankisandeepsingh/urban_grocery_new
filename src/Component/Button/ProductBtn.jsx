@@ -5,6 +5,8 @@ import { useLoaderState } from "../zustand/useLoaderState";
 import { useUserStore } from "../zustand/useUserStore";
 import { useCartStore } from "../zustand/useCartStore";
 import { useApiStore } from "../zustand/useApiStore";
+import { useApiToken } from "../zustand/useApiToken";
+import { toast } from "react-toastify";
 
 function CartQuantity({ item }) {
   const { allCartItems, setAllCartItems } = useCartStore();
@@ -13,12 +15,14 @@ function CartQuantity({ item }) {
     userInfo: { user_id },
   } = useUserStore();
   const { jwt, setJwt } = useApiStore();
+  const {apiToken} = useApiToken()
 
 
   const quantityDecrease = () => {
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -60,6 +64,7 @@ function CartQuantity({ item }) {
           setisLoading(false);
 
           setAllCartItems(newArr);
+         
         } else if (
           allCartItems.some((cartItem) => cartItem.product_id === item.id)
         ) {
@@ -75,6 +80,9 @@ function CartQuantity({ item }) {
 
           setAllCartItems(newArr);
           setisLoading(false);
+          toast.success('Item added to user cart successfully !', {
+            position: toast.POSITION.TOP_CENTER
+        });
 
           return;
         }
@@ -88,7 +96,8 @@ function CartQuantity({ item }) {
   const quantityIncrease = () => {
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     const bodyFormData = new FormData();
@@ -125,6 +134,9 @@ function CartQuantity({ item }) {
         }
         let newArr = [...allCartItems, { ...item, amount: 1 }];
         console.log(newArr);
+        toast.success('Item added to user cart successfully !', {
+          position: toast.POSITION.TOP_CENTER
+      });
         // setAllCartItems((cart) => [...cart, { ...item, amount: 1 }]);
         setAllCartItems(newArr);
       })

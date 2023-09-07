@@ -67,10 +67,12 @@ export const QtyAmount = ({ item }) => {
               let newArr = allCartItems.filter(
                 (data) => data.product_id !== item.product_id
               );
+            
               setAllCartItems(newArr);
             }
           }
         })
+        
         .catch((error) => {
           console.log(error);
           setisLoading(false);

@@ -12,6 +12,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSearchStore } from "./zustand/useSearchStore";
 import { useDebounce } from "../utils/useDebounce";
+import { useApiToken } from "./zustand/useApiToken";
+import { toast } from "react-toastify";
 
 function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
   const {allCartItems,setAllCartItems, variant, setVariant}= useCartStore();
@@ -28,12 +30,14 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
   } = useUserStore();
   const { jwt, setJwt } = useApiStore();
   const debouncedSearchTerm = useDebounce(searchInput, 800);
+  const {apiToken} = useApiToken()
 
   const addItemHandler = (item, data) => {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");
@@ -94,12 +98,18 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
 
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
         console.log(newArr);
+        toast.success('Item added to user cart successfully !', {
+          position: toast.POSITION.TOP_CENTER
+      });
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
         setAllCartItems(newArr);
         setisLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        toast.error("Network error. Please check your connection and try again.", {
+          position: toast.POSITION.TOP_CENTER,
+        });
         setisLoading(false);
       });
   };

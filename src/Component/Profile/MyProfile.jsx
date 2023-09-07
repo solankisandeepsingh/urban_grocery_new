@@ -7,6 +7,7 @@ import { AiFillEdit, AiOutlineCloseCircle } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiStore } from "../zustand/useApiStore";
+import { useApiToken } from "../zustand/useApiToken";
 
 export const MyProfile = ({ setProfileView, setIsOpen }) => {
   // const [editBtn, setEditBtn] = useState(false);
@@ -20,6 +21,7 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
   const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
   const profileRef = useRef(null);
+  const {apiToken} = useApiToken()
 
   // const [nameUpdate, setNameUpdate] = useState(userInfo.name)
 
@@ -61,7 +63,8 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
     if (file) {
       let config = {
         headers: {
-          Authorization: `Bearer ${jwt}`,
+          // Authorization: `Bearer ${jwt}`,
+          Authorization: `Bearer ${apiToken}`,
         },
       };
       let formData = new FormData();
@@ -98,7 +101,8 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
   const getUserData = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -138,7 +142,8 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
 
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     let updateProfileData = new FormData();

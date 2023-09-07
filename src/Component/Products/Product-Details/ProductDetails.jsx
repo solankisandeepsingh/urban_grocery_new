@@ -26,9 +26,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { useRef } from "react";
 import { useFavStore } from "../../zustand/useFavStore";
 import { SimilarProduct } from "../../Similar-Products/SimilarProduct";
+import { useApiToken } from "../../zustand/useApiToken";
 
 export const ProductDetails = ({ isOpen, setIsOpen }) => {
-
   // console.log('ProductDetails');
   const [productPageData, setProductPage] = useState([]);
   const [wishlist, setWishlist] = useState(false);
@@ -53,6 +53,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   let imageModalRef = useRef(null);
+  const { apiToken } = useApiToken();
 
   const handleImageClick = (image, index) => {
     if (image) {
@@ -65,7 +66,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const handleVariantChange = (id, e) => {
     console.log(variant);
     console.log(e.target.value);
-    
+
     let updatedvariant = { ...variant, [id]: e.target.value };
 
     setVariant(updatedvariant);
@@ -75,7 +76,8 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
     console.log("item IN PDP", item, data);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");
@@ -136,15 +138,21 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
 
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
         console.log(newArr);
+        toast.success("Item added to user cart successfully !", {
+          position: toast.POSITION.TOP_CENTER,
+        });
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
         setAllCartItems(newArr);
         setisLoading(false);
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Network error. Please check your connection and try again.", {
-          position: toast.POSITION.TOP_CENTER,
-        });
+        toast.error(
+          "Network error. Please check your connection and try again.",
+          {
+            position: toast.POSITION.TOP_CENTER,
+          }
+        );
         setisLoading(false);
       });
   };
@@ -152,7 +160,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
     console.log("INSIDE");
     let newArr = [];
     if (mainItem.variants.length > 1) {
-      console.log('MORE <><><><><><>');
+      console.log("MORE <><><><><><>");
       newArr = [
         ...allCartItems,
         {
@@ -163,20 +171,20 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
           product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
         },
       ];
-      
-    } else { 
-      console.log('LESS <><><><><><><>');
+    } else {
+      console.log("LESS <><><><><><><>");
       newArr = [
-      ...allCartItems,
-      {
-        ...mainItem.variants[variant[mainItem.id] || 0],   
-         
-        amount: 1,
-        name: mainItem.name,
-        image: mainItem.image,
-        product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
-      },
-    ]}
+        ...allCartItems,
+        {
+          ...mainItem.variants[variant[mainItem.id] || 0],
+
+          amount: 1,
+          name: mainItem.name,
+          image: mainItem.image,
+          product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
+        },
+      ];
+    }
     setAllCartItems(newArr);
   };
 
@@ -205,7 +213,8 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const addReview = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -261,7 +270,8 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const productReviews = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -316,7 +326,8 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const productDetail = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -341,16 +352,16 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   };
 
   useEffect(() => {
-    console.log('rendered');
+    console.log("rendered");
     productDetail();
     productReviews();
   }, [id]);
 
   const allCartItemsHandler = (item, data) => {
-
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -367,7 +378,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
     bodyFormData.append("qty", 1);
 
     setisLoading(true);
-    
+
     axios
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
@@ -417,10 +428,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
       .catch((error) => {
         setisLoading(false);
       });
-
-
   };
-
 
   const filterData = productPageData.filter((data) => {
     return data.id === id;
@@ -473,7 +481,8 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const handleAddFavorite = (item) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -615,7 +624,8 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                             <>
                               <div className="xs:text-sm xs:text-left sm:mt-2  md:text-left  ">
                                 <p className="text-lime text-lg font-bold sm:text-3xl md:text-lg">
-                                  You save ₹{variant.price - variant.discounted_price}
+                                  You save ₹
+                                  {variant.price - variant.discounted_price}
                                   .00
                                 </p>
                                 <p className="2xs:text-base  sm:text-2xl md:text-base text-black font-medium md:mt-1 sm:mt-2">
@@ -753,7 +763,11 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
                     </div>
                     <div className="">
                       <h2 className="font-bold text-[20px] mb-4">
-                        {`Customer reviews ${reviewList?.length ? "("+reviewList?.length+")":''}`}
+                        {`Customer reviews ${
+                          reviewList?.length
+                            ? "(" + reviewList?.length + ")"
+                            : ""
+                        }`}
                       </h2>
                       {reviewList?.length > 0 ? (
                         reviewList.map((review, mainindex) => {

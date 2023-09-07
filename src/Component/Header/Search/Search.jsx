@@ -11,6 +11,8 @@ import { useApiStore } from "../../zustand/useApiStore";
 import { FaArrowCircleUp } from "react-icons/fa";
 import { useCartStore } from "../../zustand/useCartStore";
 import { useSearchStore } from "../../zustand/useSearchStore";
+import { useApiToken } from "../../zustand/useApiToken";
+import { toast } from "react-toastify";
 
 const Search = ({ setData, name, data }) => {
   const [searchData, setSearchData] = useState("");
@@ -26,6 +28,7 @@ const Search = ({ setData, name, data }) => {
     userInfo: { user_id },
   } = useUserStore();
   const { jwt } = useApiStore();
+  const { apiToken } = useApiToken();
 
   const { allCartItems, setAllCartItems } = useCartStore();
   console.log(allCartItems, "allcartitems is not present");
@@ -36,7 +39,8 @@ const Search = ({ setData, name, data }) => {
     console.log("normal search");
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -105,7 +109,8 @@ const Search = ({ setData, name, data }) => {
     if (location.pathname === "/search") {
       let config = {
         headers: {
-          Authorization: `Bearer ${jwt}`,
+          // Authorization: `Bearer ${jwt}`,
+          Authorization: `Bearer ${apiToken}`,
         },
       };
 
@@ -154,7 +159,8 @@ const Search = ({ setData, name, data }) => {
     console.log("item", item);
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     // console.log(data.id, "varaitn id");
@@ -183,6 +189,7 @@ const Search = ({ setData, name, data }) => {
         setisLoading(false);
         console.log(res, "res add item");
         // setallCartItems(res)
+
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
           // console.log("addtiem", allCartItems);
           let newArr = allCartItems.map((data) =>
@@ -224,12 +231,22 @@ const Search = ({ setData, name, data }) => {
 
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
         console.log(newArr);
+
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
         setAllCartItems(newArr);
         setisLoading(false);
+        toast.success("Item added to user cart successfully !", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       })
       .catch((error) => {
         console.log(error);
+        toast.error(
+          "Network error. Please check your connection and try again.",
+          {
+            position: toast.POSITION.TOP_CENTER,
+          }
+        );
         setisLoading(false);
       });
   };
@@ -239,7 +256,7 @@ const Search = ({ setData, name, data }) => {
   return (
     <div className="w-full max-w-screen-2xl bg-white md:h-[69px] md:mr-44">
       <div className="inline-flex justify-center relative text-black-500 bg-white xs:my-4 xs:mx-4 sm:ml-36 md:my-3  xs:mt-20 ">
-      <svg
+        <svg
           className="xs:w-6 sm:h-12 sm:w-10 xs:h-5 xs:text-white absolute border md:w-6 md:h-6 mt-0.5 ml-3 xs:left-2 xs:top-2.5 self-center bg-white"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -270,8 +287,6 @@ const Search = ({ setData, name, data }) => {
             style={{ display: visible ? "inline" : "none" }}
           />
         </button>
-
-        
       </div>
 
       <InfiniteScroll

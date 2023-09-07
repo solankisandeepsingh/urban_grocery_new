@@ -10,8 +10,9 @@ import { useUserStore } from "../zustand/useUserStore";
 import { useOrderDetails } from "../zustand/useOrderDetails";
 import { useNavigate } from "react-router-dom";
 import { useApiStore } from "../zustand/useApiStore";
+import { useApiToken } from "../zustand/useApiToken";
 
-export const MyOrder = ({ addItem }) => {
+export const MyOrder = ({ addItem,setNavbarOpen }) => {
   const [price, setPrice] = useState(0);
   // const [detailsOrder, setDetailsOrder] = useState(false);
   const {
@@ -26,11 +27,14 @@ export const MyOrder = ({ addItem }) => {
   // const [orderId, setOrderId] = useState("");
   const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
+  const {apiToken} = useApiToken()
+  setNavbarOpen(true)
 
   const handlemyOrder = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     let myOrderData = new FormData();
@@ -57,6 +61,7 @@ export const MyOrder = ({ addItem }) => {
 
   useEffect(() => {
     handlemyOrder();
+    
   }, []);
 
   const handleOrderDetails = (item) => {

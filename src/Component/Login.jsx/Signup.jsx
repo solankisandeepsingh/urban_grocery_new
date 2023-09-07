@@ -17,6 +17,7 @@ import {
   AiFillEyeInvisible,
   AiOutlineCloseCircle,
 } from "react-icons/ai";
+import { useApiToken } from "../zustand/useApiToken";
 
 export const Signup = ({
   setOpenLogin,
@@ -32,6 +33,7 @@ export const Signup = ({
   const [closeSignup, setCloseSignUp] = useState(true);
   const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
+  const {apiToken} = useApiToken()
   const [signUpvisiblePassword, setSignUpVisiblePassword] = useState(false);
 
   const handleUserSignUp = (e) => {
@@ -50,7 +52,8 @@ export const Signup = ({
 
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 

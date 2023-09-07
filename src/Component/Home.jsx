@@ -15,6 +15,8 @@ import { SignJWT } from "jose";
 import axioss from "../api/axios";
 import { useApiStore } from "./zustand/useApiStore";
 import { Footer } from "./Footer/Footer";
+import { AccessToken } from "./AccessToken/AccessToken";
+import { useApiToken } from "./zustand/useApiToken";
 
 function Home({
   data,
@@ -31,6 +33,7 @@ function Home({
   console.log(allImg, setAllImg, "IMG STORE FROM ZUSTAND");
   const { setisLoading } = useLoaderState();
   const [visible, setVisible] = useState(false);
+  const {apiToken,accessTokenApi} = useApiToken()
 
   // console.log(axioss);
 
@@ -95,7 +98,8 @@ function Home({
   const handleHomeImg = () => {
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        // Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
     let imgData = new FormData();
@@ -123,34 +127,39 @@ function Home({
       });
   };
 
+  // useEffect(() => {
+  //   (async function createJwt() {
+  //     const alg = "HS256";
+  //     const secret = new TextEncoder().encode(
+  //       "replace_with_your_strong_jwt_secret_key"
+  //     );
+
+  //     const jwt = await new SignJWT({ "urn:example:claim": true })
+  //       .setProtectedHeader({ alg })
+  //       // .setIssuedAt()
+  //       .setIssuer("eKart")
+  //       .setAudience("eKart Authentication")
+
+  //       .sign(secret);
+
+  //     console.log(jwt);
+  //     setJwt(jwt);
+  //     // console.log(jwt.sign(secret, {iss : "eKart", sub : 'eKart Authentication' }).then((res)=> console.log(res)))
+  //   })();
+  // }, []);
+
+  // useEffect(() => {
+  //   if (jwt) handleHomeImg();
+  // }, [jwt]);
+
   useEffect(() => {
-    (async function createJwt() {
-      const alg = "HS256";
-      const secret = new TextEncoder().encode(
-        "replace_with_your_strong_jwt_secret_key"
-      );
-
-      const jwt = await new SignJWT({ "urn:example:claim": true })
-        .setProtectedHeader({ alg })
-        // .setIssuedAt()
-        .setIssuer("eKart")
-        .setAudience("eKart Authentication")
-
-        .sign(secret);
-
-      console.log(jwt);
-      setJwt(jwt);
-      // console.log(jwt.sign(secret, {iss : "eKart", sub : 'eKart Authentication' }).then((res)=> console.log(res)))
-    })();
-  }, []);
-
-  useEffect(() => {
-    if (jwt) handleHomeImg();
-  }, [jwt]);
+    if (apiToken) handleHomeImg();
+  }, [apiToken]);
 
   return (
     <div className=" md:mt-0.5 xs:mt-14">
       <>
+      <AccessToken/>
         {/* <div className="md:invisible xs:visible">
           <Search
             setData={setData}

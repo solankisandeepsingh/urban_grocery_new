@@ -12,6 +12,7 @@ import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiStore } from "../zustand/useApiStore";
+import { useApiToken } from "../zustand/useApiToken";
 
 export const SignUpwithOtp = ({
   setOpenLogin,
@@ -25,6 +26,7 @@ export const SignUpwithOtp = ({
   const [OTP, setOTP] = useState("");
   const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
+  const {apiToken} = useApiToken()
 
   const [showSignUpForm, setShowSignUpForm] = useState(false);
 
@@ -32,7 +34,8 @@ export const SignUpwithOtp = ({
     console.log("ver");
     let config = {
       headers: {
-        Authorization: `Bearer ${jwt }`,
+        // Authorization: `Bearer ${jwt }`,
+        Authorization: `Bearer ${apiToken }`,
       },
     };
 
@@ -73,7 +76,7 @@ export const SignUpwithOtp = ({
                 window.confirmationResult = confirmationResult;
                 // ...
 
-                toast.success("OTP Sent Successfully", {
+                toast.success("OTP has been sent successfully", {
                   position: toast.POSITION.TOP_CENTER,
                 });
               })
