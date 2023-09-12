@@ -145,8 +145,8 @@ export const Navbar = ({
           <div>
             <img
               src="http://grocery.intelliatech.in/dist/img/logo.png"
-              className="h-6 md:w-[150px] md:h-[50px] md:ml-8 sm:px-6 mr-3 mt-2 sm:h-9 bg-white cursor-pointer"
-              alt="Flowbite Logo"
+              className="h-6 md:w-[180px] md:h-[60px] md:ml-8 sm:px-6 mr-3 mt-2 sm:h-9 bg-white cursor-pointer"
+              alt=""
               onClick={handleClickHome}
             />
           </div>
@@ -217,8 +217,9 @@ export const Navbar = ({
                         <p className="bg-white sm:text-2xl md:text-[15px] font-bold">
                           {mobile}
                         </p>
-                        <hr />
+                      
                       </li>
+                      <div className="border-b border-light_gray my-2 "></div>
 
                       <li className="bg-white  cursor-pointer">
                         <NavLink to="/myorder">
@@ -230,6 +231,7 @@ export const Navbar = ({
                           </p>
                         </NavLink>
                       </li>
+                      <div className="border-b border-light_gray my-2 "></div>
                       <li className="  bg-white cursor-pointer">
                         <NavLink to={"/address"}>
                           <p
@@ -240,6 +242,7 @@ export const Navbar = ({
                           </p>
                         </NavLink>
                       </li>
+                      <div className="border-b border-light_gray my-2 "></div>
                       <li className="  bg-white cursor-pointer">
                         <NavLink to={"/favpage"}>
                           <p
@@ -250,6 +253,7 @@ export const Navbar = ({
                           </p>
                         </NavLink>
                       </li>
+                      <div className="border-b border-light_gray my-2 "></div>
                       <li className="  bg-white cursor-pointer">
                         <NavLink to={"/profile"}>
                           <p
@@ -260,6 +264,7 @@ export const Navbar = ({
                           </p>
                         </NavLink>
                       </li>
+                      <div className="border-b border-light_gray my-2 "></div>
                       <li className=" bg-white cursor-pointer">
                         <div className="flex justify-between mt-4  ">
                           <NavLink to={"/wallet"}>
@@ -278,6 +283,7 @@ export const Navbar = ({
                           </p>
                         </div>
                       </li>
+                      <div className="border-b border-light_gray my-2 "></div>
                       <li className="bg-white cursor-pointer">
                         <NavLink to={"/faq"}>
                           <p
@@ -288,6 +294,7 @@ export const Navbar = ({
                           </p>
                         </NavLink>
                       </li>
+                      <div className="border-b border-light_gray my-2 "></div>
                       <li className="bg-white cursor-pointer">
                         <NavLink to={"/about"}>
                           <p
@@ -298,6 +305,7 @@ export const Navbar = ({
                           </p>
                         </NavLink>
                       </li>
+                      <div className="border-b border-light_gray my-2 "></div>
                       <li className="bg-white cursor-pointer">
                         <NavLink to={"/contact"}>
                           <p
@@ -308,6 +316,7 @@ export const Navbar = ({
                           </p>
                         </NavLink>
                       </li>
+                      <div className="border-b border-light_gray my-2 "></div>
                       <li className="bg-white cursor-pointer">
                         <NavLink to={"/privacy"}>
                           <p
@@ -318,7 +327,7 @@ export const Navbar = ({
                           </p>
                         </NavLink>
                       </li>
-
+                      <div className="border-b border-light_gray my-2 "></div>
                       <li className="bg-white cursor-pointer">
                         <p
                           onClick={handleLogout}
@@ -327,6 +336,7 @@ export const Navbar = ({
                           Log Out
                         </p>
                       </li>
+                      <div className="border-b border-light_gray my-2 "></div>
                     </ul>
                   </div>
                 )}
@@ -399,7 +409,7 @@ export const Navbar = ({
 
                 {isOpen && (
                   <div
-                    className="top-0 p-5 pt-0 right-0 mt-2 w-56 shadow-lg rounded-lg bg-[#f5f4f4]  xs:mt-[73px] md:ml-[980px] md:my-[54px] border border-light_gray sm:ml-[400px] xs:ml-[100px] z-10 absolute px-4"
+                    className="top-0 p-5 pt-0 right-0 mt-2 w-56 shadow-lg rounded-lg bg-[#f5f4f4]  xs:mt-[73px] md:ml-[980px] md:my-[54px] sm:ml-[400px] xs:ml-[100px] z-10 absolute px-4"
                     ref={menuRef}
                   >
                     <ul className="mt-">
@@ -410,9 +420,10 @@ export const Navbar = ({
                         <p className="sm:text-2xl md:text-[15px] font-bold">
                           {mobile}
                         </p>
-                        <hr />
+                     
                       </li>
-
+                      <div className="border-b border-light_gray my-2 "></div>
+                     
                       <li className="cursor-pointer">
                         <NavLink to={"/myorder"}>
                           <p
@@ -423,6 +434,7 @@ export const Navbar = ({
                           </p>
                         </NavLink>
                       </li>
+                      <div className="border-b border-light_gray my-2 "></div>
 
                       <li className="cursor-pointer">
                         <NavLink to={"/address"}>
@@ -434,7 +446,7 @@ export const Navbar = ({
                           </p>
                         </NavLink>
                       </li>
-
+                      <div className="border-b border-light_gray my-2 "></div>
                       <li className="  cursor-pointer">
                         <NavLink to={"/favpage"}>
                           <p
@@ -445,7 +457,7 @@ export const Navbar = ({
                           </p>
                         </NavLink>
                       </li>
-
+                      <div className="border-b border-light_gray my-2 "></div>
                       <li className="  cursor-pointer">
                         <p
                           onClick={handleProfile}
@@ -454,7 +466,7 @@ export const Navbar = ({
                           My Profile
                         </p>
                       </li>
-
+                      <div className="border-b border-light_gray my-2 "></div>
                       <li className=" cursor-pointer">
                         <div className="flex justify-between mt-4  ">
                           <NavLink to={"/wallet"}>
@@ -473,6 +485,7 @@ export const Navbar = ({
                           </p>
                         </div>
                       </li>
+                      <div className="border-b border-light_gray my-2 "></div>
                       <li className="cursor-pointer">
                         <NavLink to={"/faq"}>
                           <p
@@ -483,6 +496,7 @@ export const Navbar = ({
                           </p>
                         </NavLink>
                       </li>
+                      <div className="border-b border-light_gray my-2 "></div>
 
                       <li className=" cursor-pointer">
                         <p
@@ -492,6 +506,7 @@ export const Navbar = ({
                           Log Out
                         </p>
                       </li>
+                      <div className="border-b border-light_gray my-2 "></div>
                     </ul>
                   </div>
                 )}

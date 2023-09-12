@@ -42,31 +42,14 @@ function App() {
 
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [name, setName] = useState("");
-  const [NavbarOpen, setNavbarOpen] = useState(true);
   const [price, setPrice] = useState(0);
   // const [loading, setLoading] = useState(true);
   const [user_id, setUser_id] = useState("14");
+  const [NavbarOpen, setNavbarOpen] = useState(true);
 
   useEffect(() => {
     localStorage.setItem("NavbarOpen", JSON.stringify(NavbarOpen));
   }, [NavbarOpen]);
-
-  // useEffect(() => {
-  //   const LoggedInStatus = () => {
-  //     const token = localStorage.getItem("token");
-  //     if (token) {
-  //       setLoggedIn(true);
-  //     } else {
-  //       // dispatchLogin({ type: "LOGOUT" });
-  //       setLoggedIn(false);
-  //     }
-  //     setLoading(false);
-  //   };
-  //   LoggedInStatus();
-  // });
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
 
   return (
     <>
@@ -79,17 +62,11 @@ function App() {
           setFormdata={setFormdata}
           setShowSearchBar={setShowSearchBar}
           name={name}
-          // loggedIn={loggedIn}
           setName={setName}
-          // loggedUsername={loggedUsername}
           NavbarOpen={NavbarOpen}
           setNavbarOpen={setNavbarOpen}
           setLoggedIn={setLoggedIn}
-          // dispatchLogin={dispatchLogin}
-          // user_id={user_id}
           setUser_id={setUser_id}
-
-          // handleLogin={handleLogin}
         />
         <Loader />
         <Routes>
@@ -118,6 +95,7 @@ function App() {
                 user_id={user_id}
                 setUser_id={setUser_id}
                 setLoggedIn={setLoggedIn}
+                setNavbarOpen={setNavbarOpen}
               />
             }
           />
@@ -129,6 +107,7 @@ function App() {
                 addItem={addItem}
                 user_id={user_id}
                 setUser_id={setUser_id}
+                setNavbarOpen={setNavbarOpen}
               />
             }
           />
@@ -141,6 +120,7 @@ function App() {
                 addItem={addItem}
                 user_id={user_id}
                 setUser_id={setUser_id}
+                setNavbarOpen={setNavbarOpen}
               />
             }
           />
@@ -228,73 +208,19 @@ function App() {
                 name={name}
                 user_id={user_id}
                 setUser_id={setUser_id}
+                setNavbarOpen={setNavbarOpen}
               />
             }
           />
         </Routes>
-        <div className="bg-[#212122]  border w-full mt-4 border-white text-center ">
-              <footer className="bg-gray-800 ">
-                {/* <div className="container mx-auto px-6 py-12">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                    <div className="text-white">
-                      <h3 className="text-lg font-semibold mb-4">About Us</h3>
-                      <p className="text-sm">
-                        About Us Urban-Grocery is one of the most selling and
-                        trending&nbsp; Grocery, Food Delivery, Fruits &amp;
-                        Vegetable store, Full Android eCommerce &amp; Website.
-                        which is helps to create your own app and web with your
-                        brand name.
-                      </p>
-                    </div>
-                    <div className="text-white">
-                      <h3 className="text-lg font-semibold mb-4">
-                        Quick Links
-                      </h3>
-                      <ul className="space-y-2">
-                        <li>
-                          <Link
-                            to={"/"}
-                            className="text-gray-300 hover:text-white"
-                          >
-                            Home
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            to={"/allproducts"}
-                            className="text-gray-300 hover:text-white"
-                          >
-                            Products
-                          </Link>
-                        </li>
-                        <li>
-                          <a to="#" className="text-gray-300 hover:text-white">
-                            Services
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="text-white">
-                      <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
-                      <p className="text-sm">123 Street, City, State</p>
-                      <p className="text-sm">Email: info@example.com</p>
-                      <p className="text-sm">Phone: 123-456-7890</p>
-                    </div>
-                  </div>
-              
-                  <div className="text-white text-sm text-center mt-6">
-                    <p>&copy; 2023 Urban Grocery. All rights reserved.</p>
-                    <p>Terms of Service | Privacy Policy</p>
-                  </div>
-                </div> */}
-
-                <div className="text-white text-sm mt-4 mb-4">
-                  <Footer/>
-                </div>
-              </footer>
+        <div className="bg-[#faffed] w-full text-center opacity-80 shadow-[inset_0_-2px_10px_rgba(0,0,0,0.6)]">
+          <footer className=" ">
+            <div className=" text-sm  mb-4">
+              <Footer />
             </div>
+          </footer>
+        </div>
       </div>
-     
     </>
   );
 }

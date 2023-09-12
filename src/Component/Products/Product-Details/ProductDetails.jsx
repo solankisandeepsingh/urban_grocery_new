@@ -28,7 +28,7 @@ import { useFavStore } from "../../zustand/useFavStore";
 import { SimilarProduct } from "../../Similar-Products/SimilarProduct";
 import { useApiToken } from "../../zustand/useApiToken";
 
-export const ProductDetails = ({ isOpen, setIsOpen }) => {
+export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
   // console.log('ProductDetails');
   const [productPageData, setProductPage] = useState([]);
   const [wishlist, setWishlist] = useState(false);
@@ -54,6 +54,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   let imageModalRef = useRef(null);
   const { apiToken } = useApiToken();
+  setNavbarOpen(true)
 
   const handleImageClick = (image, index) => {
     if (image) {
@@ -138,7 +139,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
 
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
         console.log(newArr);
-        toast.success("Item added to user cart successfully !", {
+        toast.success("Item Added To User Cart Successfully !", {
           position: toast.POSITION.TOP_CENTER,
         });
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
@@ -148,7 +149,7 @@ export const ProductDetails = ({ isOpen, setIsOpen }) => {
       .catch((error) => {
         console.log(error);
         toast.error(
-          "Network error. Please check your connection and try again.",
+          "Network Error. Please Check Your Connection And Try Again.",
           {
             position: toast.POSITION.TOP_CENTER,
           }

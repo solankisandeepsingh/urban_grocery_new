@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useApiToken } from "../../zustand/useApiToken";
 
-export const SubCategory = ({ setAddItem, addItem }) => {
+export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
   const [allproducts, setAllProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
@@ -23,6 +23,7 @@ export const SubCategory = ({ setAddItem, addItem }) => {
   const { jwt, setJwt } = useApiStore();
   const { category_id } = useParams();
   const { apiToken } = useApiToken();
+  setNavbarOpen(true)
 
   const addItemHandler = (item, data) => {
     console.log("item", item);
@@ -90,8 +91,9 @@ export const SubCategory = ({ setAddItem, addItem }) => {
 
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
         console.log(newArr);
-        toast.success("Item added to user cart successfully !", {
+        toast.success("Item Added To User Cart Successfully !", {
           position: toast.POSITION.TOP_CENTER,
+          className:"bg-slate-300"
         });
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
         setAllCartItems(newArr);
@@ -100,7 +102,7 @@ export const SubCategory = ({ setAddItem, addItem }) => {
       .catch((error) => {
         console.log(error);
         toast.error(
-          "Network error. Please check your connection and try again.",
+          "Network Error. Please Check Your Connection And Try Again.",
           {
             position: toast.POSITION.TOP_CENTER,
           }
@@ -273,8 +275,9 @@ export const SubCategory = ({ setAddItem, addItem }) => {
   return (
     <>
       <div>
-        <ToastContainer />
-        <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-6 sm:grid-cols-3 flex flex-wrap md:ml-5 ">
+        {/* <ToastContainer /> */}
+        <ToastContainer toastStyle={{ backgroundColor: "customGreen" }} />
+        <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-7 sm:grid-cols-3 flex flex-wrap md:ml-5 ">
           {isLoading ? (
             <p className="m-auto">Loading...</p>
           ) : allproducts && allproducts.length > 0 ? (

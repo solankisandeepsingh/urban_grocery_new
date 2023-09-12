@@ -72,6 +72,9 @@ module.exports = {
       GrayBlinkit: "#666",
       GreenBlinkit: "rgb(12, 131, 31)",
     },
+    bgColour :{
+      offWhite : "#FAF9F6"
+    },
     fontFamily: {
       sans: ["Roboto", "sans-serif"],
       okra: ["Okra-Medium", "sans-serif"],

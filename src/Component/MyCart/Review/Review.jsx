@@ -162,7 +162,7 @@ function Review({
                     </div> */}
 
                     <button
-                      className="flex justify-between mt-5 mb-1 bg-lime p-3 text-white fixed bottom-0 md:w-[350px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
+                      className="flex justify-between mt-5 mb-1 bg-lime p-3 text-white fixed bottom-0 md:w-[346px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
                       onClick={() => {
                         handlePayment();
                       }}
