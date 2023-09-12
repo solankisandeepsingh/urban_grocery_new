@@ -415,7 +415,7 @@ function MyCart({
                                   ) : (
                                     <>
                                       <button
-                                        className="flex justify-between bg-lime p-3 mt-5  border-3 text-white fixed bottom-0 md:w-96 xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
+                                        className="flex justify-between bg-lime p-3 mt-5  border-3 text-white fixed bottom-0  md:w-96 xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
                                         onClick={() => setNewUserLog(true)}
                                       >
                                         <p className="p-2 bg-lime text-xl font-bold rounded-lg">
@@ -432,7 +432,7 @@ function MyCart({
                                   )
                                 ) : (
                                   <button
-                                    className="flex justify-between mt-5 md:w-96 bg-lime p-3 text-white fixed bottom-0  xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
+                                    className="flex justify-between mt-5 md:w-96 bg-lime p-3 text-white fixed bottom-0 md:ml-[-11px]  xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
                                     onClick={formHandler}
                                   >
                                     <p className="p-2 bg-lime text-xl font-bold rounded-lg">

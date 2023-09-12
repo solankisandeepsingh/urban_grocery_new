@@ -27,6 +27,7 @@ function Home({
   setAddItem,
   isOpen,
   user_id,
+  setNavbarOpen
 }) {
   const { allImg, setAllImg } = useImgStore();
   const { jwt, setJwt } = useApiStore();
@@ -34,6 +35,7 @@ function Home({
   const { setisLoading } = useLoaderState();
   const [visible, setVisible] = useState(false);
   const {apiToken,accessTokenApi} = useApiToken()
+  setNavbarOpen(true)
 
   // console.log(axioss);
 
@@ -235,6 +237,7 @@ function Home({
             <div className="">
               <FlashSales />
             </div>
+            
            
           </div>
         </div>

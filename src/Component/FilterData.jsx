@@ -14,6 +14,7 @@ import { useSearchStore } from "./zustand/useSearchStore";
 import { useDebounce } from "../utils/useDebounce";
 import { useApiToken } from "./zustand/useApiToken";
 import { toast } from "react-toastify";
+import InfiniteLoader from "./Infinite-loader";
 
 function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
   const {allCartItems,setAllCartItems, variant, setVariant}= useCartStore();
@@ -251,8 +252,7 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
         dataLength={data?.length || 0}
         next={nextData}
         hasMore={!(data?.length >= searchData.total)}
-        // loader={<div className='w-10 m-auto  h-10 border-[3.5px]  absolute right-[50%] border-[white]  border-b-[Green]  border-t-[Green] border-l-[Green] rounded-full animate-spin'>
-        // </div>}
+        // loader={<InfiniteLoader/>}
         // endMessage={
         //   <p style={{ textAlign: "center" }}>
         //     <b>Yay! You have seen it all</b>

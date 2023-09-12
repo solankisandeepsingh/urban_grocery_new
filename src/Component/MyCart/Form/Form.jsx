@@ -138,10 +138,10 @@ function Form({ user_id, setReviewPage, setShowForm }) {
         // <NavLink to={`/payment`}>
         <>
           <button
-            className="flex justify-center mt-5 mb-1 bg-lime p-3 text-white fixed bottom-0 right-4 md:w-[370px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
+            className="flex justify-center mt-5 mb-1 bg-lime p-3 text-white fixed bottom-0 right-1 md:w-[378px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
             onClick={handleReview}
           >
-            <div className="flex items-center justify-between w-full  ">
+            <div className="flex items-center justify-between w-full   ">
               <p className="py-2 bg-lime text-xl  rounded-lg"> Review Order</p>
                 <BsChevronCompactRight className="text-lg font-bold" />
             </div>

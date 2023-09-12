@@ -460,7 +460,7 @@ export const ProductCarousel = ({}) => {
         };
 
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
-        toast.success("Item added to user cart successfully !", {
+        toast.success("Item Added To User Cart Successfully !", {
           position: toast.POSITION.TOP_CENTER,
         });
         console.log(newArr);
@@ -472,7 +472,7 @@ export const ProductCarousel = ({}) => {
       .catch((error) => {
         console.log(error);
         toast.error(
-          "Network error. Please check your connection and try again.",
+          "Network Error. Please Check Your Connection And Try Again.",
           {
             position: toast.POSITION.TOP_CENTER,
           }

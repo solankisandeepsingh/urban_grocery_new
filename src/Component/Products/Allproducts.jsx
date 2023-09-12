@@ -12,7 +12,7 @@ import { useApiStore } from "../zustand/useApiStore";
 import { currencyFormatter } from "../../utils/utils";
 import { useApiToken } from "../zustand/useApiToken";
 
-function Allproducts({ }) {
+function Allproducts({ setNavbarOpen}) {
   const { allProducts, setAllProducts } = useProductsStore();
   const { setisLoading } = useLoaderState();
   console.log(allProducts, setAllProducts);
@@ -23,6 +23,7 @@ function Allproducts({ }) {
   const { jwt, setJwt } = useApiStore();
   const navigate = useNavigate();
   const {apiToken} = useApiToken()
+  setNavbarOpen(true)
 
   const mockData = [
     {
@@ -419,7 +420,7 @@ function Allproducts({ }) {
 
   return (
     <>
-      <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-6 sm:grid-cols-3 flex flex-wrap xs:ml-7  md:ml-5 sm:ml-16 ">
+      <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-7 sm:grid-cols-3 flex flex-wrap xs:ml-7  md:ml-5 sm:ml-16 ">
         {allProducts &&
           allProducts.map((item) => {
             return (

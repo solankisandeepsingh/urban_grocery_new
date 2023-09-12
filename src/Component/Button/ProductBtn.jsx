@@ -15,8 +15,7 @@ function CartQuantity({ item }) {
     userInfo: { user_id },
   } = useUserStore();
   const { jwt, setJwt } = useApiStore();
-  const {apiToken} = useApiToken()
-
+  const { apiToken } = useApiToken();
 
   const quantityDecrease = () => {
     const config = {
@@ -64,7 +63,6 @@ function CartQuantity({ item }) {
           setisLoading(false);
 
           setAllCartItems(newArr);
-         
         } else if (
           allCartItems.some((cartItem) => cartItem.product_id === item.id)
         ) {
@@ -80,9 +78,9 @@ function CartQuantity({ item }) {
 
           setAllCartItems(newArr);
           setisLoading(false);
-          toast.success('Item added to user cart successfully !', {
-            position: toast.POSITION.TOP_CENTER
-        });
+          toast.success("Item Added To User Cart Successfully !", {
+            position: toast.POSITION.TOP_CENTER,
+          });
 
           return;
         }
@@ -134,9 +132,9 @@ function CartQuantity({ item }) {
         }
         let newArr = [...allCartItems, { ...item, amount: 1 }];
         console.log(newArr);
-        toast.success('Item added to user cart successfully !', {
-          position: toast.POSITION.TOP_CENTER
-      });
+        toast.success("Item added to user cart successfully !", {
+          position: toast.POSITION.TOP_CENTER,
+        });
         // setAllCartItems((cart) => [...cart, { ...item, amount: 1 }]);
         setAllCartItems(newArr);
       })

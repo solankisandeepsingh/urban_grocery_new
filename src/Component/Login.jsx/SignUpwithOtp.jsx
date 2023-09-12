@@ -26,7 +26,7 @@ export const SignUpwithOtp = ({
   const [OTP, setOTP] = useState("");
   const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
-  const {apiToken} = useApiToken()
+  const { apiToken } = useApiToken();
 
   const [showSignUpForm, setShowSignUpForm] = useState(false);
 
@@ -35,7 +35,7 @@ export const SignUpwithOtp = ({
     let config = {
       headers: {
         // Authorization: `Bearer ${jwt }`,
-        Authorization: `Bearer ${apiToken }`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -76,7 +76,7 @@ export const SignUpwithOtp = ({
                 window.confirmationResult = confirmationResult;
                 // ...
 
-                toast.success("OTP has been sent successfully", {
+                toast.success("OTP Has Been Sent Successfully", {
                   position: toast.POSITION.TOP_CENTER,
                 });
               })
@@ -87,7 +87,7 @@ export const SignUpwithOtp = ({
       .catch((err) => {
         console.log(err);
 
-        toast.error("An error occurred. Please try again later.");
+        toast.error("An Error Occurred. Please Try Again Later.");
       });
   };
 

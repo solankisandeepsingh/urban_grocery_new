@@ -13,14 +13,14 @@ import { useApiToken } from "../zustand/useApiToken";
 
 // import {  SiRazorpay } from "../react-icons/si";
 
-function Payment({ setNavbarOpen,NavbarOpen}) {
+function Payment({ setNavbarOpen, NavbarOpen }) {
   const { clearCartApi, setAllCartItems, allCartItems, cartTotal } =
     useCartStore();
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [chosenPayment, setChosenPayment] = useState("");
   const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
-  const {apiToken} = useApiToken()
+  const { apiToken } = useApiToken();
   const {
     userInfo: { user_id },
     userInfo,
@@ -44,9 +44,9 @@ function Payment({ setNavbarOpen,NavbarOpen}) {
     return `${item.amount}`;
   });
   console.log(varArr, qtyArr);
-  useEffect(()=>{
+  useEffect(() => {
     setNavbarOpen(false);
-  },[NavbarOpen])
+  }, [NavbarOpen]);
 
   useEffect(() => {
     let config = {
@@ -70,7 +70,6 @@ function Payment({ setNavbarOpen,NavbarOpen}) {
         setPaymentMethods(res?.data?.payment_methods);
         setisLoading(false);
         setNavbarOpen(false);
-  
       })
       .catch((err) => {
         console.log(err);
@@ -363,8 +362,10 @@ function Payment({ setNavbarOpen,NavbarOpen}) {
                   onClick={() => {
                     handleConfirmOrder();
                   }}
-                  disabled={!chosenPayment} 
-                  className={`${chosenPayment ? "bg-lime hover:opacity-90 ":"bg-[#D3D3D3]"} text-white my-4 sm:w-full md:w-[90%] xs:w-[100%] sm:text-2xl md:text-lg px-4 py-1.5 rounded-lg`}
+                  disabled={!chosenPayment}
+                  className={`${
+                    chosenPayment ? "bg-lime hover:opacity-90 " : "bg-[#D3D3D3]"
+                  } text-white my-4 sm:w-full md:w-[90%] xs:w-[100%] sm:text-2xl md:text-lg px-4 py-1.5 rounded-lg`}
                 >
                   Proceed to Pay
                 </button>
@@ -412,19 +413,9 @@ function Payment({ setNavbarOpen,NavbarOpen}) {
 
               <div className="border-b border-light_gray my-2 "></div>
 
-              <div className="flex flex-col p-3 list-none mt-2 mb-4">
+              <div className="flex flex-col p-3 list-none mt-2 mb-4 shadow-sm">
                 <h2 className="font-bold text-start">Payment Details</h2>
 
-                {/* {allCartItems.map((item, index) => (
-                  <li key={index} className="cursor-pointer">
-                    <div className="flex justify-between mt-2">
-                      <p className="sm:text-lg md:text-sm">Item</p>
-                      <p className="sm:text-lg md:text-sm">
-                        ₹{item.totalPrice}.00
-                      </p>
-                    </div>
-                  </li>
-                ))} */}
                 <li className="cursor-pointer">
                   <div className="flex justify-between mt-2">
                     <p className="sm:text-lg md:text-sm">Items</p>
@@ -441,15 +432,6 @@ function Payment({ setNavbarOpen,NavbarOpen}) {
                     </p>
                   </div>
                 </li>
-                {/* 
-                <li className="cursor-pointer">
-                  <div className="flex justify-between mt-4">
-                    <p className="sm:text-lg md:text-sm">Discounted Price</p>
-                    <p className="sm:text-lg md:text-sm">
-                      {currencyFormatter(totalPrice)}
-                    </p>
-                  </div>
-                </li> */}
 
                 <li className="cursor-pointer">
                   <div className="flex justify-between mt-2">
@@ -459,15 +441,6 @@ function Payment({ setNavbarOpen,NavbarOpen}) {
                     </p>
                   </div>
                 </li>
-
-                {/* <li className="cursor-pointer">
-                  <div className="flex justify-between mt-2">
-                    <p className="sm:text-lg md:text-sm">Number of Items</p>
-                    <p className="sm:text-lg md:text-sm text-customGreen">
-                    {totalItems}
-                    </p>
-                  </div>
-                </li> */}
 
                 {/* FOR PROMO CODE */}
 
@@ -492,6 +465,8 @@ function Payment({ setNavbarOpen,NavbarOpen}) {
                   </div>
                 </li>
               </div>
+
+              
 
               {/* <div className="flex justify-between font-bold text-[12px] mt-[-36px]">
                 <p className="text-[#8d9191] px-3">Final_Amount</p>

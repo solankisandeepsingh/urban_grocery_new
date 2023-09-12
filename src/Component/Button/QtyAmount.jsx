@@ -8,13 +8,12 @@ import { useApiStore } from "../zustand/useApiStore";
 import { toast } from "react-toastify";
 
 export const QtyAmount = ({ item }) => {
-  const {allCartItems, setAllCartItems} = useCartStore();
-  const {setisLoading} = useLoaderState();
+  const { allCartItems, setAllCartItems } = useCartStore();
+  const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
   const {
     userInfo: { user_id },
   } = useUserStore();
-
 
   const quantityDecrease = () => {
     if (user_id) {
@@ -39,8 +38,8 @@ export const QtyAmount = ({ item }) => {
       const newQty = +finditem.amount !== 0 ? +finditem.amount - 1 : 0;
       bodyFormData.append("qty", newQty);
 
-      console.log("newQty",newQty)
-    
+      console.log("newQty", newQty);
+
       setisLoading(true);
 
       axios
@@ -67,18 +66,17 @@ export const QtyAmount = ({ item }) => {
               let newArr = allCartItems.filter(
                 (data) => data.product_id !== item.product_id
               );
-            
+
               setAllCartItems(newArr);
             }
           }
         })
-        
+
         .catch((error) => {
           console.log(error);
           setisLoading(false);
         });
     } else {
-
       console.log(item);
       if (item.amount == 1) {
         console.log("Item 1");
@@ -86,27 +84,27 @@ export const QtyAmount = ({ item }) => {
           allCartItems.filter((cartItem) => {
             if (cartItem.id === item.id) {
               return false;
-            }
-            else{
-              return true
+            } else {
+              return true;
             }
           })
-          );
-        }
-        else{
-          // console.log("Item > 1");
-          // console.log(allCartItems.map((cartItem) => {
-          //     if (item.id === cartItem.id) {
-          //       return { ...cartItem, amount: cartItem.amount - 1 };
-          //     } else return cartItem
-          //   }));
+        );
+      } else {
+        // console.log("Item > 1");
+        // console.log(allCartItems.map((cartItem) => {
+        //     if (item.id === cartItem.id) {
+        //       return { ...cartItem, amount: cartItem.amount - 1 };
+        //     } else return cartItem
+        //   }));
 
-          setAllCartItems(allCartItems.map((cartItem) => {
+        setAllCartItems(
+          allCartItems.map((cartItem) => {
             if (item.id === cartItem.id) {
               return { ...cartItem, amount: cartItem.amount - 1 };
-            } else return cartItem
-          }))
-        }
+            } else return cartItem;
+          })
+        );
+      }
     }
   };
 
@@ -153,9 +151,9 @@ export const QtyAmount = ({ item }) => {
               data.id === item.id ? { ...data, amount: +data.amount + 1 } : data
             );
             setAllCartItems(newArr);
- toast.success('Item added to user cart successfully !', {
-          position: toast.POSITION.TOP_CENTER
-      });
+            toast.success("Item Added To User Cart Successfully !", {
+              position: toast.POSITION.TOP_CENTER,
+            });
             return;
           }
           let newArr = [...allCartItems, { ...item, amount: 1 }];
@@ -167,13 +165,12 @@ export const QtyAmount = ({ item }) => {
           setisLoading(false);
         });
     } else {
-
-      console.log(item, 'THIS ITEM');
+      console.log(item, "THIS ITEM");
       setAllCartItems(
         allCartItems.map((cartItem) => {
           if (item.id === cartItem.id) {
             return { ...cartItem, amount: cartItem.amount + 1 };
-          } else return cartItem
+          } else return cartItem;
         })
       );
     }
