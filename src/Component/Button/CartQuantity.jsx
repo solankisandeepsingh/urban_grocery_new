@@ -68,7 +68,7 @@ function CartQuantity({ item, variant }) {
               console.log(newArr);
 
               setAllCartItems(newArr);
-              toast.success("Item added to user cart successfully !", {
+              toast.success("Item Added To User Cart Successfully !", {
                 position: toast.POSITION.TOP_CENTER,
               });
               setisLoading(false);
