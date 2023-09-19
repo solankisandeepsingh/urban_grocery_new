@@ -1,26 +1,24 @@
 import axios from "axios";
 import React from "react";
-import { API_TOKEN } from "../Token/Token";
 import { useCartStore } from "../zustand/useCartStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useUserStore } from "../zustand/useUserStore";
-import { useApiStore } from "../zustand/useApiStore";
 import { toast } from "react-toastify";
+import { useApiToken } from "../zustand/useApiToken";
 
 export const QtyAmount = ({ item }) => {
   const { allCartItems, setAllCartItems } = useCartStore();
   const { setisLoading } = useLoaderState();
-  const { jwt, setJwt } = useApiStore();
+  const { apiToken } = useApiToken();
   const {
     userInfo: { user_id },
   } = useUserStore();
 
   const quantityDecrease = () => {
     if (user_id) {
-      console.log("IN IF");
       const config = {
         headers: {
-          Authorization: `Bearer ${API_TOKEN}`,
+          Authorization: `Bearer ${apiToken}`,
         },
       };
 
@@ -77,9 +75,7 @@ export const QtyAmount = ({ item }) => {
           setisLoading(false);
         });
     } else {
-      console.log(item);
       if (item.amount == 1) {
-        console.log("Item 1");
         setAllCartItems(
           allCartItems.filter((cartItem) => {
             if (cartItem.id === item.id) {
@@ -112,7 +108,7 @@ export const QtyAmount = ({ item }) => {
     if (user_id) {
       const config = {
         headers: {
-          Authorization: `Bearer ${API_TOKEN}`,
+          Authorization: `Bearer ${apiToken}`,
         },
       };
 
@@ -120,7 +116,6 @@ export const QtyAmount = ({ item }) => {
       bodyFormData.append("accesskey", "90336");
       bodyFormData.append("add_to_cart", "1");
       bodyFormData.append("user_id", `${user_id}`);
-      // bodyFormData.append("product_id", item.id);
       bodyFormData.append("product_id", item.product_id);
       bodyFormData.append("product_variant_id", item.product_variant_id);
       const finditem = allCartItems.find((data) => {
@@ -151,8 +146,12 @@ export const QtyAmount = ({ item }) => {
               data.id === item.id ? { ...data, amount: +data.amount + 1 } : data
             );
             setAllCartItems(newArr);
-            toast.success("Item Added To User Cart Successfully !", {
+            toast.success("Item added to user cart successfully !", {
               position: toast.POSITION.TOP_CENTER,
+              style: {
+                backgroundColor: "darkGreen",
+                color: "white", 
+              },
             });
             return;
           }
@@ -165,7 +164,6 @@ export const QtyAmount = ({ item }) => {
           setisLoading(false);
         });
     } else {
-      console.log(item, "THIS ITEM");
       setAllCartItems(
         allCartItems.map((cartItem) => {
           if (item.id === cartItem.id) {

@@ -35,12 +35,12 @@ export const Footer = () => {
     // </div>
 
     <footer>
-      <div class="bg-offWhite py-4 text-gray-400">
-        <div class="container px-4 mx-auto">
-          <div class="-mx-4 flex flex-wrap justify-between">
-            <div class="px-4 my-4 w-full sm:w-auto">
+      <div className="bg-offWhite py-4 text-gray-400">
+        <div className="container px-4 mx-auto">
+          <div className="-mx-4 flex flex-wrap justify-between">
+            <div className="px-4 my-4 w-full sm:w-auto">
               <div>
-                <h2 class="inline-block text-2xl pb-4 mb-4 border-b-4 border-blue-600">
+                <h2 className="inline-block text-2xl pb-4 mb-4 border-b-4 border-blue-600">
                   Company
                 </h2>
               </div>
@@ -72,9 +72,9 @@ export const Footer = () => {
                 </li>
               </ul>
             </div>
-            <div class="px-4 my-4 w-full sm:w-auto">
+            <div className="px-4 my-4 w-full sm:w-auto">
               <div>
-                <h2 class="inline-block text-2xl pb-4 mb-4 border-b-4 border-blue-600">
+                <h2 className="inline-block text-2xl pb-4 mb-4 border-b-4 border-blue-600">
                   Blog
                 </h2>
               </div>
@@ -88,9 +88,9 @@ export const Footer = () => {
                 </p>
               </div>
             </div>
-            <div class="px-4 my-4 w-full sm:w-auto xl:w-1/5">
+            <div className="px-4 my-4 w-full sm:w-auto xl:w-1/5">
               <div>
-                <h2 class="inline-block text-2xl pb-4 mb-4 border-b-4 border-blue-600">
+                <h2 className="inline-block text-2xl pb-4 mb-4 border-b-4 border-blue-600">
                   Connect With Us
                 </h2>
               </div>
@@ -104,8 +104,8 @@ export const Footer = () => {
           </div>
         </div>
       </div>
-      <div class="bg-indigo-700 py-4 text-gray-100">
-        <div class="text-center font-bold text-[#3b3a3a]">
+      <div className="bg-indigo-700 py-4 text-gray-100">
+        <div className="text-center font-bold text-[#3b3a3a]">
           <p className="">&copy; 2023 Urban Grocery. All rights reserved.</p>
         </div>
       </div>

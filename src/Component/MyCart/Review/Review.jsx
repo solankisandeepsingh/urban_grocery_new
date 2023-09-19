@@ -48,7 +48,7 @@ function Review({
                       return (
                         <div
                           className={` bg-white ${
-                            index === allCartItems.length - 1 ? "mb-[50px]" : ""
+                            index === allCartItems?.length - 1 ? "mb-[50px]" : ""
                           }  2xs:p-3 border-b-[2px] border-[#e8e8e8]`}
                         >
                           <div className="flow-root">

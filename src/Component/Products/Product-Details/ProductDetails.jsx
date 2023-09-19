@@ -139,8 +139,12 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
 
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
         console.log(newArr);
-        toast.success("Item Added To User Cart Successfully !", {
+        toast.success("Item added to user cart successfully !", {
           position: toast.POSITION.TOP_CENTER,
+          style: {
+            backgroundColor: "darkGreen",
+            color: "white", 
+          },
         });
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
         setAllCartItems(newArr);
@@ -160,7 +164,7 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
   const addItemUI = (mainItem) => {
     console.log("INSIDE");
     let newArr = [];
-    if (mainItem.variants.length > 1) {
+    if (mainItem?.variants?.length > 1) {
       console.log("MORE <><><><><><>");
       newArr = [
         ...allCartItems,
@@ -174,6 +178,13 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
       ];
     } else {
       console.log("LESS <><><><><><><>");
+      toast.success("Item added to user cart successfully !", {
+        position: toast.POSITION.TOP_CENTER,
+        style: {
+          backgroundColor: "darkGreen",
+          color: "white", 
+        },
+      });
       newArr = [
         ...allCartItems,
         {
@@ -194,7 +205,7 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
     setShowImageModal(false);
   };
 
-  const handleClickOutside = (event) => {
+  const handleClickProuctDetailsOutside = (event) => {
     if (
       imageModalRef.current &&
       !imageModalRef.current.contains(event.target)
@@ -203,11 +214,9 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
     }
   };
   useEffect(() => {
-    // Add event listener when the component mounts
-    document.addEventListener("mousedown", handleClickOutside); // Clean up the event listener when the component unmounts
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickProuctDetailsOutside);
     };
   }, []);
 
@@ -352,11 +361,18 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
       });
   };
 
+  // useEffect(() => {
+  //   console.log("rendered");
+  //   productDetail();
+  //   productReviews();
+  // }, [id]);
+
   useEffect(() => {
-    console.log("rendered");
-    productDetail();
-    productReviews();
-  }, [id]);
+    if (apiToken) {
+      productDetail();
+      productReviews();
+    }
+  }, [apiToken,id]);
 
   const allCartItemsHandler = (item, data) => {
     const config = {
@@ -438,12 +454,12 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
   const handleWishlist = () => {
     setWishlist((prev) => !prev);
   };
-  // const imgLength = 12/review?.images?.length;
+
 
   const handleRemoveFavorite = (item) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -823,7 +839,7 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
 
                               <div>
                                 <div className="xs:grid xs:grid-cols-3 md:grid-cols-6 relative sm:grid-cols-6 gap-2">
-                                  {review.images.length > 0 &&
+                                  {review?.images?.length > 0 &&
                                     review.images.map((image, index) =>
                                       index < 3 ? (
                                         // <div className="last:opacity-70 last:before:absolute last:before:content-['+3'] text-3xl text-[#f5f5f5] before:w-24 before:h-24 ">
@@ -832,7 +848,7 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
                                             handleImageClick(image, mainindex)
                                           }
                                           className={`${
-                                            review.images.length > 2
+                                            review?.images?.length > 2
                                               ? 'last:before:content-["+3"]  cursor-pointer before:w-24 before:h-24 last:opacity-60  last:before:absolute'
                                               : ""
                                           } 

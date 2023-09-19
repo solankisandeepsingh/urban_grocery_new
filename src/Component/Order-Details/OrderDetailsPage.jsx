@@ -111,7 +111,7 @@ export const OrderDetailsPage = () => {
                   <div className="w-[40%] xs:hidden md:block sm:block overflow-y-hidden">
                     <div className="overflow-y-scroll scrollbar-none max-h-[90vh]">
                       <p className="text-blackColour font-bold my-2">
-                        Order Items ({item.items.length})
+                        Order Items ({item?.items?.length})
                       </p>
                       {item.items &&
                         item.items.map((data) => {

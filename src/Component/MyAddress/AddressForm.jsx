@@ -23,7 +23,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
   const [initialRender, setIntialrender] = useState(true);
   const { jwt, setJwt } = useApiStore();
   const { setisLoading } = useLoaderState();
-  const {apiToken} = useApiToken()
+  const { apiToken } = useApiToken();
   const [otherField, setOtherField] = useState("");
   const handleDropdown1Change = (event) => {
     const selectedValue = event.target.value;
@@ -44,65 +44,68 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
   };
 
   const handleInputChange = (event) => {
-    console.log(event, "<><><><><><><><><><><>");
     const { name, value } = event.target;
-    // console.log(name, "><<><><></></>");
     setAddressData({ ...addressData, [name]: value });
   };
-  console.log(addressData);
   const config = {
     headers: {
-      // Authorization: `Bearer ${jwt}`,
       Authorization: `Bearer ${apiToken}`,
     },
   };
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // setAddList([...addList, addressData]);
 
-    const data = new FormData();
-    data.append("accesskey", "90336");
-    data.append("add_address", "1");
-    data.append("user_id", user_id);
-    data.append("type", `${otherField ? otherField : addressData.type}`);
-    data.append("name", `${addressData.name}`);
-    data.append("mobile", "9131582414");
-    data.append("address", `${addressData.address}`);
-    data.append("landmark", "Bhuj-Mirzapar Highway");
-    data.append("area_id", `${areaDropdown}`);
-    data.append("city_id", `${cityDropdown}`);
-    data.append("pincode", `${addressData.pincode}`);
-    data.append("state", "Gujrat");
-    data.append("country", "India");
-    setisLoading(true);
-    axios
-      .post(
-        "https://grocery.intelliatech.in/api-firebase/user-addresses.php",
-        data,
-        config
-      )
-      .then((res) => {
-        console.log(res, "hi");
-        toast.success("Address Added Successfully", {
-          position: toast.POSITION.TOP_CENTER,
-        });
-        getAddress();
-        setFormOpen(false);
-        setisLoading(false);
-        setOtherField("");
-      })
+  
 
-      .catch((err) => {
-        console.log(err);
-        setisLoading(false);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (
+      !addressData?.name ||
+      !addressData?.pincode ||
+      !addressData?.address ||
+      !addressData?.type
+    ) {
+      toast.error("Please fill all the fields", {
+        position: toast.POSITION.TOP_CENTER,
       });
-    setAddressData({
-      name: "",
-      address: "",
-      type: "",
-      city: "",
-      pincode: "",
-    });
+    } else {
+      const data = new FormData();
+      data.append("accesskey", "90336");
+      data.append("add_address", "1");
+      data.append("user_id", user_id);
+      data.append("type", `${otherField ? otherField : addressData.type}`);
+      data.append("name", `${addressData.name}`);
+      data.append("mobile", "9131582414");
+      data.append("address", `${addressData.address}`);
+      data.append("landmark", "Bhuj-Mirzapar Highway");
+      data.append("area_id", `${areaDropdown}`);
+      data.append("city_id", `${cityDropdown}`);
+      data.append("pincode", `${addressData.pincode}`);
+      data.append("state", "Gujrat");
+      data.append("country", "India");
+      setisLoading(true);
+      axios
+        .post(
+          "https://grocery.intelliatech.in/api-firebase/user-addresses.php",
+          data,
+          config
+        )
+        .then((res) => {
+          console.log(res, "hi");
+          toast.success("Address added Successfully", {
+            position: toast.POSITION.TOP_CENTER,
+           
+          });
+          getAddress();
+          setFormOpen(false);
+          setisLoading(false);
+          setOtherField("");
+        })
+
+        .catch((err) => {
+          console.log(err);
+          setisLoading(false);
+        });
+    }
   };
 
   useEffect(() => {
@@ -144,9 +147,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
   }, [cityDropdown]);
 
   return (
-    
     <div className="fixed z-50 top-0  left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
-    
       <div className="bg-[#f2f2f2] min-w-[600px] rounded top-[5%] left-[5%]">
         <div className="flex justify-center items-center relative">
           <div className="container relative">
@@ -238,64 +239,80 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
                   <div className="flex mb-2 justify-between items-center text-center">
                     <div className=" flex flex-col justify-center items-center gap-2">
                       <div className="flex gap-2">
-                         <label>
-                        <input
-                          type="radio"
-                          name="type"
-                          value="Home"
-                          checked={addressData.type === "Home"}
-                          onChange={handleInputChange}
-                          className="hidden"
-                        />
-                        <span className= {`text-lightGrayBlinkit ${addressData.type === 'Home' ? "bg-lime text-[white]" :'hover:bg-[#f2f2f2]'} bg-colorGray border border-light_gray hover:border-GreenBlinkit  cursor-pointer py-1 px-2 rounded-lg text-xs`}>
-                          Home
-                        </span>
-                      </label>
+                        <label>
+                          <input
+                            type="radio"
+                            name="type"
+                            value="Home"
+                            checked={addressData.type === "Home"}
+                            onChange={handleInputChange}
+                            className="hidden"
+                          />
+                          <span
+                            className={`text-lightGrayBlinkit ${
+                              addressData.type === "Home"
+                                ? "bg-lime text-[white]"
+                                : "hover:bg-[#f2f2f2]"
+                            } bg-colorGray border border-light_gray hover:border-GreenBlinkit  cursor-pointer py-1 px-2 rounded-lg text-xs`}
+                          >
+                            Home
+                          </span>
+                        </label>
 
-                      <label>
-                        <input
-                          type="radio"
-                          name="type"
-                          value="Work"
-                          checked={addressData.type === "Work"}
-                          onChange={handleInputChange}
-                          className="hidden p-3 bg-lime"
-                        />
-                        <span className={`text-lightGrayBlinkit ${addressData.type === 'Work' ? "bg-lime text-[white]" :'hover:bg-[#f2f2f2]'} bg-colorGray border border-light_gray hover:border-GreenBlinkit  cursor-pointer py-1 px-2 rounded-lg text-xs`}>
-                          Work
-                        </span>
-                      </label>
+                        <label>
+                          <input
+                            type="radio"
+                            name="type"
+                            value="Work"
+                            checked={addressData.type === "Work"}
+                            onChange={handleInputChange}
+                            className="hidden p-3 bg-lime"
+                          />
+                          <span
+                            className={`text-lightGrayBlinkit ${
+                              addressData.type === "Work"
+                                ? "bg-lime text-[white]"
+                                : "hover:bg-[#f2f2f2]"
+                            } bg-colorGray border border-light_gray hover:border-GreenBlinkit  cursor-pointer py-1 px-2 rounded-lg text-xs`}
+                          >
+                            Work
+                          </span>
+                        </label>
 
-                      <label>
-                        <input
-                          type="radio"
-                          name="type"
-                          value="Other"
-                          checked={addressData.type === "Other"}
-                          onChange={handleInputChange}
-                          className="hidden"
-                        />
-                        <span className={`text-lightGrayBlinkit ${addressData.type === 'Other' ? "bg-lime text-[white]" :'hover:bg-[#f2f2f2]'} bg-colorGray border border-light_gray hover:border-GreenBlinkit  cursor-pointer py-1 px-2 rounded-lg text-xs`}>
-                          Other
-                        </span>
-                      </label>
+                        <label>
+                          <input
+                            type="radio"
+                            name="type"
+                            value="Other"
+                            checked={addressData.type === "Other"}
+                            onChange={handleInputChange}
+                            className="hidden"
+                          />
+                          <span
+                            className={`text-lightGrayBlinkit ${
+                              addressData.type === "Other"
+                                ? "bg-lime text-[white]"
+                                : "hover:bg-[#f2f2f2]"
+                            } bg-colorGray border border-light_gray hover:border-GreenBlinkit  cursor-pointer py-1 px-2 rounded-lg text-xs`}
+                          >
+                            Other
+                          </span>
+                        </label>
                       </div>
-                                     {addressData.type === "Other" && (
-                  <div className="text-xs">
-                    <input
-                      onChange={handleOtherText}
-                      name="type"
-                      type="text"
-                      placeholder="Enter you Address Type"
-                      className="block h-[25px]  w-full py-2 text-xs px-2 border border-light_gray  bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                    />
-                  </div>
-                )}
+                      {addressData.type === "Other" && (
+                        <div className="text-xs">
+                          <input
+                            onChange={handleOtherText}
+                            name="type"
+                            type="text"
+                            placeholder="Enter you Address Type"
+                            className="block h-[25px]  w-full py-2 text-xs px-2 border border-light_gray  bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
-
-
 
                 <div className="flex justify-center items-center text-center">
                   <button className="uppercase text-[10px] text-white font-bold h-[36px] w-[50%] bg-lime rounded-lg">

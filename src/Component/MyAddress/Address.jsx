@@ -19,14 +19,11 @@ export const Address = ({ isOpen, setIsOpen }) => {
   const { setisLoading } = useLoaderState();
   const { addList, setAddList } = useUserStore();
   const { jwt, setJwt } = useApiStore();
-  const {apiToken} = useApiToken()
-
+  const { apiToken } = useApiToken();
 
   const {
     userInfo: { user_id },
   } = useUserStore();
-  console.log(setAddList);
-  console.log(user_id, "usriddddddddd");
 
   const config = {
     headers: {
@@ -57,9 +54,13 @@ export const Address = ({ isOpen, setIsOpen }) => {
       });
   };
 
+  // useEffect(() => {
+  //   getAddress();
+  // }, []);
+
   useEffect(() => {
-    getAddress();
-  }, []);
+    if (apiToken) getAddress();
+  }, [apiToken]);
 
   const handleDelete = (id) => {
     const deleteData = new FormData();
@@ -75,7 +76,7 @@ export const Address = ({ isOpen, setIsOpen }) => {
       )
       .then((res) => {
         console.log("delete response:", res);
-        toast.info("Address Deleted Successfully !", {
+        toast.info("Address deleted successfully !", {
           position: toast.POSITION.TOP_CENTER,
         });
         getAddress();
@@ -83,16 +84,8 @@ export const Address = ({ isOpen, setIsOpen }) => {
       .catch((err) => console.log(err));
   };
 
-  const handleEdit = (id) => {};
-
   return (
     <>
-      {/* <div className="flex flex-row justify-evenly mt-28">
-        <div className="w-[35%] h-full ">
-          <Aside />
-        </div>
-
-        <div className="md:w-[60%]"> */}
       <ToastContainer />
       <div className="flex flex-col mt-24 xs:justify-center xs:items-center md:items-start sm:items-start md:flex-row md:justify-evenly sm:justify-evenly sm:flex sm:flex-row ">
         <div className="xs:w-[85%] md:w-[35%] sm:w-[30%] xs:hidden md:block sm:block h-full">

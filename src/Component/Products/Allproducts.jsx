@@ -11,6 +11,7 @@ import { useUserStore } from "../zustand/useUserStore";
 import { useApiStore } from "../zustand/useApiStore";
 import { currencyFormatter } from "../../utils/utils";
 import { useApiToken } from "../zustand/useApiToken";
+import { ToastContainer, toast } from "react-toastify";
 
 function Allproducts({ setNavbarOpen}) {
   const { allProducts, setAllProducts } = useProductsStore();
@@ -315,12 +316,9 @@ function Allproducts({ setNavbarOpen}) {
     console.log("item", item);
     const config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
-    // console.log(data.id, "varaitn id");
-    // console.log(item.id, "main id");
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
@@ -348,21 +346,10 @@ function Allproducts({ setNavbarOpen}) {
                 }
               : data
           );
-          console.log(newArr);
           setAllCartItems(newArr);
-          // setAllCartItems((cart) =>
-          //   cart.map((data) =>
-          //     data.product_id === item.id
-          //       ? {
-          //           ...data,
-          //           amount: data.amount + 1,
-          //         }
-          //       : data
-          //   )
-          // );
+         
           return;
         }
-        console.log(item.id, "Additem Id in product caraousel");
 
         let item1 = {
           amount: 1,
@@ -376,8 +363,14 @@ function Allproducts({ setNavbarOpen}) {
         };
 
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
-        console.log(newArr);
-        // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
+        toast.success("Item added to user cart successfully !", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 500,
+          style: {
+            backgroundColor: "darkGreen",
+            color: "white",
+          },
+        });
         setAllCartItems(newArr);
         setisLoading(false);
       })
@@ -389,7 +382,7 @@ function Allproducts({ setNavbarOpen}) {
   const addItemUI = (mainItem) => {
     console.log("INSIDE");
     let newArr = [];
-    if (mainItem.variants.length > 1) {
+    if (mainItem?.variants?.length > 1) {
       console.log('MORE <><><><><><>');
       newArr = [
         ...allCartItems,
@@ -403,7 +396,14 @@ function Allproducts({ setNavbarOpen}) {
       ];
       
     } else { 
-      console.log('LESS <><><><><><><>');
+      toast.success("Item added to user cart successfully !", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 500,
+        style: {
+          backgroundColor: "darkGreen",
+          color: "white",
+        },
+      });
       newArr = [
       ...allCartItems,
       {
@@ -420,6 +420,7 @@ function Allproducts({ setNavbarOpen}) {
 
   return (
     <>
+    <ToastContainer/>
       <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-7 sm:grid-cols-3 flex flex-wrap xs:ml-7  md:ml-5 sm:ml-16 ">
         {allProducts &&
           allProducts.map((item) => {
@@ -437,7 +438,7 @@ function Allproducts({ setNavbarOpen}) {
                       // className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-24 md:ml-[23px] md:w-28 md:mt-4 sm:w-48 sm:h-32 rounded-lg "
                       className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-28 md:w-40 sm:w-48 sm:h-32 rounded-lg "
                       src={
-                        item.variants.length == 1
+                        item?.variants?.length == 1
                           ? item.image
                           : item.variants[variant[item.id] || 0].images[0]
                       }
@@ -448,7 +449,7 @@ function Allproducts({ setNavbarOpen}) {
                         {item.name}
                       </p>
                     </div>
-                    {item.variants.length == 1 &&
+                    {item?.variants?.length == 1 &&
                       item.variants.map((data) => {
                         return (
                           <div className="flex p-1 md:px-3 flex-col xs:justify-center xs:items-center xs:text-center md:justify-evenly sm:ml-0   ">
@@ -541,7 +542,7 @@ function Allproducts({ setNavbarOpen}) {
                           </div>
                         );
                       })}
-                    {item.variants.length > 1 && (
+                    {item?.variants?.length > 1 && (
                       <div className=" md:flex md:flex-col px-3 md:justify-evenly  sm:flex xs:flex xs:justify-between ">
                         {/* ADD TO FAVOURITES  */}
                         {/* {user_id != 14 &&

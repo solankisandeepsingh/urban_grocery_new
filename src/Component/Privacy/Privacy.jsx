@@ -43,9 +43,15 @@ export const Privacy = () => {
       });
   };
 
+  // useEffect(() => {
+  //   handlePrivacy();
+  // }, []);
+
   useEffect(() => {
-    handlePrivacy();
-  }, []);
+    if (apiToken) {
+      handlePrivacy();
+    }
+  }, [apiToken]);
 
 
   return (
@@ -55,7 +61,7 @@ export const Privacy = () => {
           <Aside />
         </div>
 
-        <div class="w-[60%]"> */}
+        <div className="w-[60%]"> */}
 
       <div className="flex flex-col mt-24 xs:justify-center xs:items-center md:items-start sm:items-start md:flex-row md:justify-evenly sm:justify-evenly sm:flex sm:flex-row ">
         <div className="xs:w-[85%] md:w-[35%] sm:w-[30%]  xs:hidden md:block sm:block h-full">

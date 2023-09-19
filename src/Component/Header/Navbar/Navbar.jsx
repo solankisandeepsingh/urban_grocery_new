@@ -14,15 +14,11 @@ export const Navbar = ({
   formData,
   setFormdata,
   setShowSearchBar,
-  // name,
   setName,
-  loggedUsername,
   NavbarOpen,
   setNavbarOpen,
   dispatchLogin,
-  // setLoggedIn,
   setUser_id,
-  // loggedIn,
 }) => {
   const navigate = useNavigate();
   const [showSearch, setShowSearch] = useState(true);
@@ -41,52 +37,22 @@ export const Navbar = ({
 
   const [profileView, setProfileView] = useState(false);
 
-  // useEffect(() => {
-  //   let handler = (e) => {
-  //     if (menuRef.current) {
-  //       if (!menuRef.current.contains(e.target)) {
-  //         setIsOpen(false);
-  //         setMobileOpen(false);
-  //       }
-  //     }
-  //   };
-  //   document.addEventListener("mousedown", handler);
-
-  //   return () => {
-  //     document.removeEventListener("mousedown", handler);
-  //   };
-  // });
-
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const isScrollingDown = window.scrollY > 0;
-  //     setShowSearch(!isScrollingDown);
-  //   };
-  //   window.addEventListener("scroll", handleScroll);
-
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, []);
-
-  const handleClickOutside = (event) => {
-    // Check if the click occurred outside the modal box
+  const handleClickNavOutside = (event) => {
     if (
       menuRef.current &&
       !menuRef.current.contains(event.target) &&
       !deskRef.current.contains(event.target)
     ) {
+      console.log("indghhgj");
       setIsOpen(false);
       setMobileOpen(false);
     }
   };
   useEffect(() => {
-    // Add event listener when the component mounts
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("click", handleClickNavOutside);
 
-    // Clean up the event listener when the component unmounts
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickNavOutside);
     };
   }, []);
 
@@ -111,8 +77,6 @@ export const Navbar = ({
     window.scrollTo({
       top: 0,
       behavior: "smooth",
-      /* you can also use 'auto' behaviour
-         in place of 'smooth' */
     });
   };
   const handleShowSearchBar = () => {
@@ -128,7 +92,6 @@ export const Navbar = ({
 
   const handleLogout = () => {
     setUserInfo({ user_id: "", name: "Login" });
-    // setLoggedIn(false);
     setIsOpen(false);
     setMobileOpen(false);
     navigate("/");
@@ -217,7 +180,6 @@ export const Navbar = ({
                         <p className="bg-white sm:text-2xl md:text-[15px] font-bold">
                           {mobile}
                         </p>
-                      
                       </li>
                       <div className="border-b border-light_gray my-2 "></div>
 
@@ -238,7 +200,7 @@ export const Navbar = ({
                             onClick={() => setMobileOpen(false)}
                             className="bg-white sm:text-lg md:text-sm mt-4"
                           >
-                            Saved Address
+                            My Address
                           </p>
                         </NavLink>
                       </li>
@@ -365,7 +327,6 @@ export const Navbar = ({
               <div className="relative hidden md:block sm:block">
                 {!(user_id == false) ? (
                   <div
-                    // className="flex sm:mr-3 items-center h-[30px] md:ml-[-145px] rounded-lg md:px-2 md:mt-5 xs:mt-3 bg-white"
                     className="flex justify-center items-center hover:border border border-[white] hover:border-light_gray hover:bg-[#ff9f9]  mr-3 text-center cursor-pointer hover:shadow-sm rounded-br-[50px]  rounded-tr-[50px]  rounded-l-[100px]"
                     onClick={() => {
                       setIsOpen(!isOpen);
@@ -392,11 +353,10 @@ export const Navbar = ({
                     className="xs:w-20  md:w-24 h-[32px]  rounded-lg md:ml-[-75px] md:px-4 !leading-tight  bg-white"
                     onClick={() => {
                       console.log("working");
-                      setOpenLogin(true);
+                      // setOpenLogin(true);
+                      setOpenLogin((prev) => !prev);
                     }}
                   >
-                    {/* <button className=" text-white font-bold bg-lime md:p-2 md:mb-2.5  xs:p-1  xs:mr-16 xs:mt-3  rounded-lg sm:text-md md:text-md text-center"> */}
-                    {/* <button className=" text-white font-bold bg-lime  rounded-lg sm:text-md md:text-md text-center"> */}
                     <button className=" text-lime items-center flex font-bold rounded  p-3 py-1.5 ">
                       {name}
                     </button>
@@ -420,10 +380,9 @@ export const Navbar = ({
                         <p className="sm:text-2xl md:text-[15px] font-bold">
                           {mobile}
                         </p>
-                     
                       </li>
                       <div className="border-b border-light_gray my-2 "></div>
-                     
+
                       <li className="cursor-pointer">
                         <NavLink to={"/myorder"}>
                           <p
@@ -442,7 +401,7 @@ export const Navbar = ({
                             onClick={() => setIsOpen(false)}
                             className=" sm:text-lg md:text-sm mt-4"
                           >
-                            Saved Address
+                            My Address
                           </p>
                         </NavLink>
                       </li>

@@ -27,6 +27,9 @@ import { OrderDetailsPage } from "./Component/Order-Details/OrderDetailsPage";
 import Search from "./Component/Header/Search/Search";
 import { FavPage } from "./Component/Favourites/FavPage";
 import { Footer } from "./Component/Footer/Footer";
+import { AccessToken } from "./Component/AccessToken/AccessToken";
+import axios from "./api/axios";
+import { useApiToken } from "./Component/zustand/useApiToken";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -39,13 +42,114 @@ function App() {
     phone: "",
     pin: "",
   });
-
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   // const [loading, setLoading] = useState(true);
   const [user_id, setUser_id] = useState("14");
   const [NavbarOpen, setNavbarOpen] = useState(true);
+  const { apiToken, accessTokenApi } = useApiToken();
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         'https://grocery.intelliatech.in/api-firebase/verify-token.php?generate_token',
+  //         {
+  //           params: {
+  //             key: 'generate_token',
+  //           },
+  //         }
+  //       );
+
+  //       console.log(response, 'jwt response');
+  //       accessTokenApi(response?.data);
+  //     } catch (error) {
+  //       console.log(error, 'Api Error');
+  //     }
+  //   };
+
+  //   if (!apiToken) {
+  //     fetchData();
+  //   }
+  // }, [apiToken, accessTokenApi]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "https://grocery.intelliatech.in/api-firebase/verify-token.php?generate_token",
+  //         {
+  //           params: {
+  //             key: "generate_token",
+  //           },
+  //         }
+  //       );
+
+  //       const token = response?.data;
+
+  //       if (token) {
+  //         localStorage.setItem("accessToken", token);
+  //         accessTokenApi(token);
+  //       } else {
+  //         console.log("Token is not valid.");
+  //       }
+  //     } catch (error) {
+  //       console.error("API Error:", error);
+  //     }
+  //   };
+
+  //   const TokenStore = localStorage.getItem("accessToken");
+
+  //   if (!apiToken && !TokenStore) {
+  //     fetchData();
+  //   } else {
+  //     if (TokenStore) {
+  //       accessTokenApi(TokenStore);
+  //     } else {
+  //       fetchData();
+  //     }
+  //   }
+  // }, [apiToken, accessTokenApi]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://grocery.intelliatech.in/api-firebase/verify-token.php?generate_token",
+          {
+            params: {
+              key: "generate_token",
+            },
+          }
+        );
+  
+        const token = response?.data;
+  
+        if (token) {
+          localStorage.setItem("accessToken", token);
+          accessTokenApi(token);
+        } else {
+          console.log("Token is not valid.");
+          localStorage.removeItem("accessToken");
+        }
+      } catch (error) {
+        console.error("API Error:", error);
+        localStorage.removeItem("accessToken");
+      }
+    };
+  
+    const storedToken = localStorage.getItem("accessToken");
+  
+    if (!apiToken && !storedToken) {
+      fetchData();
+    } else {
+      if (storedToken) {
+        accessTokenApi(storedToken);
+      } 
+    }
+  }, [apiToken, accessTokenApi]);
+  
 
   useEffect(() => {
     localStorage.setItem("NavbarOpen", JSON.stringify(NavbarOpen));
@@ -53,6 +157,7 @@ function App() {
 
   return (
     <>
+      {/* <AccessToken /> */}
       <div className="flex flex-col h-screen justify-between">
         <Navbar
           setData={setData}
@@ -171,7 +276,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
           <Route path="/profile" element={<MyProfile />} />
-          <Route path="/orderdetailspage" element={<OrderDetailsPage />} />
+          <Route path="/ordersummarypage" element={<OrderDetailsPage />} />
           <Route path="/favpage" element={<FavPage />} />
 
           <Route

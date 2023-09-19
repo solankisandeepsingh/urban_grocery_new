@@ -23,42 +23,35 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
   const profileRef = useRef(null);
   const {apiToken} = useApiToken()
 
-  // const [nameUpdate, setNameUpdate] = useState(userInfo.name)
 
   const [updateUser, setUpdateUser] = useState({
     name: userInfo.name,
     email: userInfo.email,
-    // password: userInfo.password,
     profile: userInfo.profile,
   });
 
-  //   console.log(updateUser, " value={updateUser.email}");
-  console.log(updateUser);
-  console.log(userInfo, "userInfo");
 
   const handleInputChange = (event) => {
     const { value, name } = event.target;
-    console.log(value, name);
     setUpdateUser((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
 
-  const handleClickOutside = (event) => {
+  const handleClickMyProfileOutside = (event) => {
     if (profileRef.current && !profileRef.current.contains(event.target)) {
       setProfileView(false);
     }
   };
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickMyProfileOutside);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside); 
+      document.removeEventListener("mousedown", handleClickMyProfileOutside); 
     };
   }, []);
   const handleImageUpload = (event) => {
-    console.log("text Onchange");
     const file = event.target.files[0];
     if (file) {
       let config = {
@@ -83,7 +76,6 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
           config
         )
         .then((res) => {
-          console.log(res, "upload image");
 
           getUserData();
           toast.success("Profile successfully uploaded!", {
@@ -119,7 +111,6 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
         config
       )
       .then((res) => {
-        console.log(res, "res data will update user");
         // toast.success('Profile successfully uploaded!', {
         //   position: toast.POSITION.TOP_CENTER
         // });
@@ -162,7 +153,6 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
     updateProfileData.append("latitude", "44.968046");
     updateProfileData.append("longitude", "94.420307");
 
-    console.log(updateProfileData, "upd");
 
     const object = {};
     updateProfileData.forEach((value, key) => {
@@ -170,7 +160,6 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
       object.user_id = user_id;
     });
 
-    console.log(object);
 
     axios
       .post(
@@ -231,7 +220,7 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
                   {isValidImg ? (
                     <div className="group relative">
                       <a href="#!">
-                        <div class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsl(0,0%,98.4%,0.2)] bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-100"></div>
+                        <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsl(0,0%,98.4%,0.2)] bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-100"></div>
                       </a>
                       <AiFillEdit
                         onClick={() => inputRef.current.click()}

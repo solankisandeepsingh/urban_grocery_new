@@ -9,13 +9,11 @@ import { useApiToken } from "../zustand/useApiToken";
 export const Contact = () => {
   const [contact, setContact] = useState("");
   const { setisLoading } = useLoaderState();
-  const { jwt, setJwt } = useApiStore();
-  const {apiToken} = useApiToken()
+  const { apiToken } = useApiToken();
 
   const handleContact = () => {
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -32,7 +30,7 @@ export const Contact = () => {
         config
       )
       .then((res) => {
-        console.log(res.data.contact);
+        console.log(res?.data?.contact);
         setContact(res?.data?.contact);
         setisLoading(false);
       })
@@ -41,20 +39,13 @@ export const Contact = () => {
         setisLoading(false);
       });
   };
+ 
   useEffect(() => {
-    handleContact();
-  }, []);
-
+    if (apiToken) handleContact();
+  }, [apiToken]);
 
   return (
     <>
-      {/* <div className="flex flex-row justify-evenly mt-28">
-        <div className="w-[35%] h-full ">
-          <Aside />
-        </div>
-
-        <div class="w-[60%]"> */}
-
       <div className="flex flex-col mt-24 xs:justify-center xs:items-center md:items-start sm:items-start md:flex-row md:justify-evenly sm:justify-evenly sm:flex sm:flex-row ">
         <div className="xs:w-[85%] md:w-[35%] sm:w-[30%]  xs:hidden md:block sm:block h-full">
           <Aside />
@@ -62,10 +53,7 @@ export const Contact = () => {
 
         <div className="md:w-[60%] sm:w-[60%] xs:w-[85%] mb-3">
           <div class="">
-          <div dangerouslySetInnerHTML={{__html: contact}}>
-
-{/* {JSON.parse(item.description)} */}
-</div>
+            <div dangerouslySetInnerHTML={{ __html: contact }}></div>
           </div>
         </div>
       </div>

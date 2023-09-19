@@ -14,6 +14,7 @@ export const Success = ({ setNavbarOpen,NavbarOpen }) => {
   useEffect(()=>{
     setNavbarOpen(false)
   },[NavbarOpen])
+  
   const { config } = useCartStore();
   console.log(config);
   return (
