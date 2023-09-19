@@ -215,7 +215,7 @@ export const SimilarProduct = ({ id }) => {
   const addItemUI = (mainItem) => {
     console.log("INSIDE");
     let newArr = [];
-    if (mainItem.variants.length > 1) {
+    if (mainItem?.variants?.length > 1) {
       console.log("MORE <><><><><><>");
       newArr = [
         ...allCartItems,
@@ -274,9 +274,13 @@ export const SimilarProduct = ({ id }) => {
       });
   };
 
+  // useEffect(() => {
+  //   handleSimilarProduct();
+  // }, []);
+
   useEffect(() => {
-    handleSimilarProduct();
-  }, []);
+    if (apiToken) handleSimilarProduct();
+  }, [apiToken]);
   return (
     <div>
       <p className="text-[22px]  font-semibold">Similar products</p>
@@ -301,7 +305,7 @@ export const SimilarProduct = ({ id }) => {
                       // className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-24 md:ml-[23px] md:w-28 md:mt-4 sm:w-48 sm:h-32 rounded-lg "
                       className="xs:w-32 xs:h-24  md:w-32 md:h-24 object-cover object-center  sm:w-36 sm:h-32 rounded-lg "
                       src={
-                        item.variants.length == 1
+                        item?.variants?.length == 1
                           ? item.image
                           : item.variants[variant[item.id] || 0].images[0]
                       }
@@ -312,7 +316,7 @@ export const SimilarProduct = ({ id }) => {
                         {item.name}
                       </p>
                     </div>
-                    {item.variants.length == 1 &&
+                    {item?.variants?.length == 1 &&
                       item.variants.map((data) => {
                         return (
                           <div className="flex p-1 md:px-3 flex-col xs:justify-center xs:items-center xs:text-center md:justify-evenly sm:ml-0   ">
@@ -405,7 +409,7 @@ export const SimilarProduct = ({ id }) => {
                           </div>
                         );
                       })}
-                    {item.variants.length > 1 && (
+                    {item?.variants?.length > 1 && (
                       <div className=" md:flex md:flex-col px-3 md:justify-evenly  sm:flex xs:flex xs:justify-between ">
                         {/* ADD TO FAVOURITES  */}
                         {/* {user_id != 14 &&

@@ -31,12 +31,11 @@ const Search = ({ setData, name, data }) => {
   const { apiToken } = useApiToken();
 
   const { allCartItems, setAllCartItems } = useCartStore();
-  console.log(allCartItems, "allcartitems is not present");
+  
 
   const location = useLocation();
 
   const serchAPIData = () => {
-    console.log("normal search");
     let config = {
       headers: {
         // Authorization: `Bearer ${jwt}`,
@@ -58,10 +57,8 @@ const Search = ({ setData, name, data }) => {
         config
       )
       .then((res) => {
-        console.log(res.data);
         setSearchData(res.data);
         setArray(res.data.data);
-        console.log(res.data.data);
         setisLoading(false);
         setData(res.data.data);
         setOffset(0);
@@ -85,8 +82,7 @@ const Search = ({ setData, name, data }) => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
-      /* you can also use 'auto' behaviour
-         in place of 'smooth' */
+      
     });
   };
 
@@ -94,18 +90,20 @@ const Search = ({ setData, name, data }) => {
 
   const debouncedSearchTerm = useDebounce(searchInput, 800);
 
+  // useEffect(() => {
+  //   serchAPIData();
+  // }, [debouncedSearchTerm]);
+
   useEffect(() => {
-    serchAPIData();
-  }, [debouncedSearchTerm]);
+    if (apiToken) serchAPIData();
+  }, [apiToken,debouncedSearchTerm]);
 
   const handleChange = (e) => {
-    console.log(e.target.value);
     setSearchInput(e.target.value);
     navigate("/search");
   };
 
   const nextData = async () => {
-    console.log("IN NEXT DATA");
     if (location.pathname === "/search") {
       let config = {
         headers: {
@@ -115,7 +113,6 @@ const Search = ({ setData, name, data }) => {
       };
 
       setOffset(offset + 15);
-      console.log(searchInput, "NEXT DATA SEARCH TERM");
 
       var bodyFormData = new FormData();
       bodyFormData.append("accesskey", "90336");
@@ -132,18 +129,13 @@ const Search = ({ setData, name, data }) => {
           config
         )
 
-        // let parsedData =  data.json();
-        // console.log(parsedData);
-        // setArray(arrayy.concat(parsedData.data.data));
+        
         .then((res) => {
-          console.log("Running NEXT DATA");
           setSearchData(res.data);
-          console.log(arrayy);
           const tempArr = JSON.parse(JSON.stringify(arrayy));
           setArray([...arrayy, ...res.data.data]);
           // setNewItemsArray(tempArr.concat(res.data.data));
 
-          console.log(res.data.data);
           // setisLoading(false);
           setData([...arrayy, ...res.data.data]);
         })
@@ -155,16 +147,14 @@ const Search = ({ setData, name, data }) => {
   };
   console.log("item1>>>>>>>>>>>>>>", allCartItems);
   const allCartItemsHandler = (item, data) => {
-    // console.log("item1>>>>>>>>>>>>>>", allCartItems);
-    console.log("item", item);
+   
     const config = {
       headers: {
         // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
-    // console.log(data.id, "varaitn id");
-    // console.log(item.id, "main id");
+    
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
@@ -187,7 +177,6 @@ const Search = ({ setData, name, data }) => {
       )
       .then((res) => {
         setisLoading(false);
-        console.log(res, "res add item");
         // setallCartItems(res)
 
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
@@ -200,12 +189,10 @@ const Search = ({ setData, name, data }) => {
                 }
               : data
           );
-          console.log(newArr);
           setAllCartItems(newArr);
 
           return;
         }
-        console.log(item.id, "allCartItems Id in product caraousel");
 
         let item1 = {
           amount: 1,
@@ -230,19 +217,21 @@ const Search = ({ setData, name, data }) => {
         };
 
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
-        console.log(newArr);
 
-        // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
         setAllCartItems(newArr);
         setisLoading(false);
         toast.success("Item added to user cart successfully !", {
           position: toast.POSITION.TOP_CENTER,
+          style: {
+            backgroundColor: "darkGreen",
+            color: "white", 
+          },
         });
       })
       .catch((error) => {
         console.log(error);
         toast.error(
-          "Network Error. Please Check Your Connection And Try Again.",
+          "Network Error. Please check your connection and try again.",
           {
             position: toast.POSITION.TOP_CENTER,
           }
@@ -251,7 +240,6 @@ const Search = ({ setData, name, data }) => {
       });
   };
 
-  console.log(arrayy.length, searchData, "NEW items>>>>>>>>>>>>>>>>>");
 
   return (
     <div className="w-full max-w-screen-2xl bg-white md:h-[69px] md:mr-44">
@@ -281,7 +269,6 @@ const Search = ({ setData, name, data }) => {
         <button className="fixed right-0 bottom-0 text-[20px]">
           <FaArrowCircleUp
             onClick={() => {
-              console.log(offset);
               scrollToTop();
             }}
             style={{ display: visible ? "inline" : "none" }}

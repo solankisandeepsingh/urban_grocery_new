@@ -3,7 +3,6 @@ import { FaArrowLeft, FaShoppingCart, FaTrash } from "react-icons/fa";
 import Form from "./Form/Form";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { API_TOKEN } from "../Token/Token";
 import { QtyAmount } from "../Button/QtyAmount";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { Login } from "../Login.jsx/Login";
@@ -17,6 +16,7 @@ import { usePaymentStore } from "../zustand/usePaymentStore";
 import { useApiStore } from "../zustand/useApiStore";
 import { useMediaQuery } from "react-responsive";
 import { useApiToken } from "../zustand/useApiToken";
+import { SignUpwithOtp } from "../Login.jsx/SignUpwithOtp";
 
 function MyCart({
   // allCartItems,
@@ -29,6 +29,7 @@ function MyCart({
   // user_id,
   setUser_id,
   loggedIn,
+  setOpenLogin,
 }) {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
@@ -38,7 +39,9 @@ function MyCart({
   const [Payment, setPayment] = useState(false);
   const [reviewPage, setReviewPage] = useState(false);
   const [newUserLog, setNewUserLog] = useState(false);
+  const [newUserSignUpLog, setNewUserSignUpLog] = useState(false);
   const [totalItem, setTotalItem] = useState(0);
+
   const { allCartItems, setAllCartItems, setCartTotal } = useCartStore();
   const {
     userInfo: { user_id },
@@ -46,14 +49,38 @@ function MyCart({
   } = useUserStore();
   const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
-  const {apiToken} = useApiToken()
+  const { apiToken } = useApiToken();
   const { setTotalPrice, setTotalMRPPrice, setTotalItems } = usePaymentStore();
+  const [deleteProduct, setDeleteProduct] = useState(false);
+  let mycartRef = useRef(null);
 
   const isMobileOrTablet = useMediaQuery({ query: "(max-width: 767px)" });
+
+  console.log(newUserLog, "newUserlog");
 
   let menuRef = useRef();
 
   const accesskey = "90336";
+  const showDeleteModalBox = () => {
+    setDeleteProduct(true);
+  };
+  const handleDeleteModal = () => {
+    setDeleteProduct(false);
+  };
+
+  const handleClickMycartOutside = (event) => {
+    if (mycartRef.current && !mycartRef.current.contains(event.target)) {
+      setDeleteProduct(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickMycartOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickMycartOutside);
+    };
+  }, []);
 
   const back = () => {
     if (showForm) {
@@ -63,6 +90,7 @@ function MyCart({
       setPayment(false);
     }
     if (reviewPage) {
+      setShowForm(true);
       setReviewPage(false);
     }
   };
@@ -72,7 +100,6 @@ function MyCart({
     allCartItems.forEach((item) => {
       total += parseFloat(item.price) * item.amount;
     });
-    console.log(total, "tooooooooooooooooooooooooooooooooooooooo");
     setTotalMRPPrice(total);
   };
 
@@ -101,11 +128,17 @@ function MyCart({
     setTotalItems(totalAmount);
   };
 
+  // useEffect(() => {
+  //   total();
+  //   totalAmount();
+  //   unDiscountedTotel();
+  // }, [allCartItems]);
+
   useEffect(() => {
-    total();
+    if (apiToken) total();
     totalAmount();
     unDiscountedTotel();
-  }, [allCartItems]);
+  }, [apiToken, allCartItems]);
 
   const removeItemHandler = (item) => {
     let config = {
@@ -129,11 +162,11 @@ function MyCart({
       )
       .then((res) => {
         let newArr = allCartItems.filter((data) => data.id !== item.id);
-        console.log(newArr);
         setAllCartItems(newArr);
         let newPrice = price - item.amount * parseFloat(item.price);
         setPrice(newPrice);
         setCartTotal(newPrice);
+        setDeleteProduct(false);
         setisLoading(false);
       })
       .catch((err) => {
@@ -199,14 +232,10 @@ function MyCart({
         config
       )
       .then((res) => {
-        console.log(res, "[GET USER CART API RESPONSE]");
-        
-
         let addQtyAmount = res?.data?.data?.map((data) => ({
           ...data,
           amount: +data.qty,
         }));
-        console.log(addQtyAmount, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         // setAddItem(addQtyAmount);
 
         {
@@ -222,11 +251,13 @@ function MyCart({
       });
   };
 
+  // useEffect(() => {
+  //   getUserCarts(user_id);
+  // }, [accesskey]);
+  // console.log(newUserSignUpLog,user_id, "both check")
   useEffect(() => {
-    getUserCarts(user_id);
-  }, [accesskey]);
-  // console.log(allCartItems, " ADD ITEM IN MYCART <><><><><");
-
+    if (apiToken) getUserCarts(user_id);
+  }, [apiToken, accesskey]);
   return (
     <>
       <button
@@ -243,10 +274,16 @@ function MyCart({
         <div
           className={" xs:p-2 md:relative md:bg-lime sm:bg-lime xs:bg-white"}
         >
-          <div className={`${totalItem > 0 ? "visible":"invisible"}`+ " " + "hidden md:block  absolute top-1 right-0 px-1 rounded-full bg-red text-xs"}>
+          <div
+            className={
+              `${totalItem > 0 ? "visible" : "invisible"}` +
+              " " +
+              "hidden md:block  absolute top-1 right-0 px-1 rounded-full bg-red text-xs"
+            }
+          >
             {totalItem}
           </div>
-         
+
           <FaShoppingCart className="xs:text-2xl md:bg-lime sm:bg-lime md:text-white sm:text-white xs:text-lime " />
         </div>
         <div className="md:bg-lime sm:bg-lime xs:bg-white">
@@ -319,36 +356,34 @@ function MyCart({
                     "&::-webkit-scrollbar": { display: "none" },
                   }}
                 >
-
-                  {!showForm && allCartItems.length && !reviewPage
+                  {!showForm && allCartItems?.length && !reviewPage
                     ? allCartItems &&
                       allCartItems?.map((item, index) => {
-                        console.log(allCartItems, item, "<><><><><><><><><><><><><><><");
                         return (
                           <>
                             <div
-                              class={`mt-3 bg-white ${
-                                index === allCartItems.length - 1
+                              className={`mt-3 bg-white ${
+                                index === allCartItems?.length - 1
                                   ? "mb-[80px]"
                                   : ""
                               }  2xs:p-3 border-b-[2px] border-[#e8e8e8]`}
                             >
-                              <div class="flow-root">
+                              <div className="flow-root">
                                 <div
                                   role="list"
-                                  class=" divide-y divide-gray-200 "
+                                  className=" divide-y divide-gray-200 "
                                 >
-                                  <div class="flex p-2 bg-white items-center">
-                                    <div class=" bg-white md:h-[80px] md:w-[72px]  xs:h-24 xs:w-24 sm:h-44 sm:w-44 sm:rounded-lg flex-shrink-0 overflow-hidden rounded-md ">
+                                  <div className="flex p-2 bg-white items-center">
+                                    <div className=" bg-white md:h-[80px] md:w-[72px]  xs:h-24 xs:w-24 sm:h-44 sm:w-44 sm:rounded-lg flex-shrink-0 overflow-hidden rounded-md ">
                                       <img
                                         src={item?.image}
                                         alt="product"
-                                        class="h-full w-full object-cover object-center bg-white"
+                                        className="h-full w-full object-cover object-center bg-white"
                                       />
                                     </div>
 
-                                    <div class="bg-white ml-4 flex flex-1 flex-col truncate ...">
-                                      <div class=" bg-white md:text-xs xs:text-sm sm:text-3xl ">
+                                    <div className="bg-white ml-4 flex flex-1 flex-col truncate ...">
+                                      <div className=" bg-white md:text-xs xs:text-sm sm:text-3xl ">
                                         <p className="bg-white float-left	text-lightgray truncate ...">
                                           {item.name}
                                         </p>
@@ -367,7 +402,7 @@ function MyCart({
                                               ₹{item.discounted_price}.00{" "}
                                             </span>
 
-                                            <p class="bg-white text-gryColour text-[12px] md:text-[12px] font-bold sm:text-[21px]">
+                                            <p className="bg-white text-gryColour text-[12px] md:text-[12px] font-bold sm:text-[21px]">
                                               {" "}
                                               {item?.measurement + " "}
                                               {item?.unit}
@@ -388,35 +423,82 @@ function MyCart({
                                                 onClick={() =>
                                                   removeItemHandler(item)
                                                 }
+                                                // onClick={showDeleteModalBox}
                                                 className="bg-white hover:bg-RedColour hover:bg-opacity-20 cursor-pointer xs:text-[18px]  md:text-[15px] xs:text-sm sm:text-3xl text-red"
                                               />
                                             </div>
+                                            {/* {deleteProduct && (
+                                              <>
+                                                <div className="fixed  z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
+                                                  <div
+                                                    className="bg-[#c9bcbc] top-[5%] left-[5%] md:w-[500px] xs:w-[340px] sm:w-[500px] rounded-xl"
+                                                    ref={mycartRef}
+                                                  >
+                                                    <div className="flex justify-center items-center relative">
+                                                      <div className="container relative flex ">
+                                                        <div className="w-full p-8 md:px-12 mr-auto rounded-2xl ">
+                                                          <button className="absolute top-[5%] right-[5%]"></button>
+
+                                                          <p className="font-bold text-[16px]">
+                                                            Are you sure you
+                                                            want to remove this
+                                                            product?
+                                                          </p>
+                                                          <div className="flex text-center items-center justify-center gap-4">
+                                                            <button
+                                                              onClick={() =>
+                                                                removeItemHandler(
+                                                                  item
+                                                                )
+                                                              }
+                                                              type="button"
+                                                              className="bg-lime 2xs:px-2 2xs:mt-2 2xs:rounded xs:mt-3 xs:w-24 xs:rounded-lg xs:py-1 md:mt-3 md:w-[118px] sm:w-[130px] sm:mt-5  text-white md:font-bold md:py-3 sm:text-lg md:text-sm md:px-4 md:rounded-lg md:hover:opacity-90 hover:bg-customGreen"
+                                                            >
+                                                              Yes
+                                                            </button>
+                                                            <button
+                                                              type="button"
+                                                              onClick={
+                                                                handleDeleteModal
+                                                              }
+                                                              className="bg-RedColour 2xs:px-2 2xs:mt-2 2xs:rounded xs:mt-3 xs:w-24 xs:rounded-lg xs:py-1 md:mt-3 md:w-[118px] sm:w-[130px] sm:mt-5  text-white md:font-bold md:py-3 sm:text-lg md:text-sm md:px-4 md:rounded-lg md:hover:opacity-90 hover:bg-candy"
+                                                            >
+                                                              No
+                                                            </button>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </>
+                                            )} */}
                                           </div>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-                                {/* {console.log(user_id, "><><><CHECK USER ID BOOLEAN><><><")} */}
-                                {user_id === '' ? (
+
+                                {user_id === "" ? (
                                   newUserLog ? (
                                     <Login
-                                      // setLoggedIn={setLoggedIn}
-                                      // dispatchLogin={dispatchLogin}
-                                      // setUser_id={setUser_id}
+                                      setOpenLogin={setOpenLogin}
                                       user_id={user_id}
+                                      newUserLog={newUserLog}
                                       setNewUserLog={setNewUserLog}
-                                      // getUserCarts={getUserCarts}
-                                      // loggedIn={loggedIn}
-                                      // handleLogin={handleLogin}
-                                      // allCartItems={allCartItems}
                                       getUserCarts={getUserCarts}
                                     />
                                   ) : (
                                     <>
                                       <button
-                                        className="flex justify-between bg-lime p-3 mt-5  border-3 text-white fixed bottom-0  md:w-96 xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
-                                        onClick={() => setNewUserLog(true)}
+                                        className="flex justify-between bg-lime p-3 mt-5 ml-[-11px]  border-3 text-white fixed bottom-0  md:w-96 xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
+                                        onClick={() => {
+                                          console.log(
+                                            "proceed button before login"
+                                          );
+                                          setNewUserLog(true);
+                                        }}
                                       >
                                         <p className="p-2 bg-lime text-xl font-bold rounded-lg">
                                           Total : {currencyFormatter(price)}
@@ -453,9 +535,56 @@ function MyCart({
                       })
                     : null}
 
-                  {!showForm && !allCartItems.length ? (
+                  {/* {user_id === "" && allCartItems.length !== 0 ? (
+                    newUserSignUpLog ? (
+                      <Login
+                        user_id={user_id}
+                        setNewUserLog={setNewUserLog}
+                        setOpenLogin={setOpenLogin}
+                        setNewUserSignUpLog={setNewUserSignUpLog}
+                        getUserCarts={getUserCarts}
+                      />
+                    ) : (
+                      <>
+                        <button
+                          className="flex justify-between bg-lime p-3 mt-5  border-3 text-white fixed bottom-0  md:w-96 xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
+                          onClick={() => setNewUserLog(true)}
+                        >
+                          <p className="p-2 bg-lime text-xl font-bold rounded-lg">
+                            Total : {currencyFormatter(price)}
+                          </p>
+                          <div className="flex items-center min-w-max justify-center">
+                            <p className="p-2 bg-lime text-xl  rounded-lg">
+                              Proceed
+                            </p>
+                            <BsChevronCompactRight className="te" />
+                          </div>
+                        </button>
+                      </>
+                    )
+                  ) : (
+                    // <button
+                    //   className="flex justify-between mt-5 md:w-96 bg-lime p-3  text-white fixed bottom-0 md:ml-[-11px]  xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
+                    //   onClick={formHandler}
+                    // >
+                    //   <p className="p-2 bg-lime text-xl font-bold rounded-lg">
+                    //     Total : {currencyFormatter(price)}
+                    //   </p>
+                    //   <div className="flex items-center justify-center min-w-max">
+                    //     <p className="p-2 bg-lime text-xl  rounded-lg">
+                    //       Proceed
+                    //     </p>
+                    //     <BsChevronCompactRight className="te" />
+                    //   </div>
+                    // </button>
+                    ""
+                  )} */}
+
+                  {!showForm && !allCartItems?.length ? (
                     <div className="relative p-6 flex-auto text-center font-medium bg-white">
-                      <p className="bg-white text-lightgray text-md ">Your cart is empty</p>
+                      <p className="bg-white text-lightgray text-md ">
+                        Your cart is empty
+                      </p>
                     </div>
                   ) : null}
 

@@ -55,9 +55,15 @@ function Form({ user_id, setReviewPage, setShowForm }) {
       });
   };
 
+  // useEffect(() => {
+  //   getAddress();
+  // }, []);
+
   useEffect(() => {
-    getAddress();
-  }, []);
+    if (apiToken) {
+      getAddress();
+    }
+  }, [apiToken]);
 
   const handleOpenForm = () => {
     setFormOpen(true);
@@ -73,7 +79,7 @@ function Form({ user_id, setReviewPage, setShowForm }) {
 
   return (
     <>
-      {!formOpen && addList && (
+      {!formOpen && (
         <>
           <div className="p-3">
             <div className="font-bold text-2xl ">Select Delivery Address:</div>
@@ -87,7 +93,7 @@ function Form({ user_id, setReviewPage, setShowForm }) {
             </div>
           </div>
           <form>
-            {addList.map((item) => {
+            {addList && addList.map((item) => {
               return (
                 <label>
                   <div className=" hover:border-[2px] border-[2px] hover:border-lime flex cursor-pointer border-light_gray px-3 py-3 mt-1 gap-1 m-4 rounded-md">

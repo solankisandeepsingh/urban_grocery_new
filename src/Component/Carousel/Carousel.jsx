@@ -2,28 +2,20 @@ import React, { useEffect } from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 import { useSliderStore } from "../zustand/useSliderStore";
 import { useLoaderState } from "../zustand/useLoaderState";
-import { useApiStore } from "../zustand/useApiStore";
 import { useApiToken } from "../zustand/useApiToken";
 
 function CarouselComponent() {
   const { allCarouselImg, setAllCarouselImg } = useSliderStore();
   const {setisLoading} = useLoaderState();
-  const { jwt, setJwt } = useApiStore();
   const {apiToken} = useApiToken()
-  console.log(
-    allCarouselImg,
-    setAllCarouselImg,
-    "allllllllllll image slider will show"
-  );
+
 
   const handleSliderImg = () => {
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -48,27 +40,34 @@ function CarouselComponent() {
         setisLoading(false);
       });
   };
+  // useEffect(() => {
+  //   handleSliderImg();
+  // }, []);
+
   useEffect(() => {
+    if(apiToken)
     handleSliderImg();
-  }, []);
+  }, [apiToken]);
+
 
   return (
     <>
       <div className="rounded-xl">
-        <Carousel
+        {apiToken && <Carousel
           autoPlay
           infiniteLoop
           showThumbs={false}
           className="rounded-xl"
         >
-          {allCarouselImg?.map((item) => {
+          {allCarouselImg && allCarouselImg?.map((item) => {
             return (
               <div className="h-auto rounded-xl">
-                <img alt="" src={item.image} className="rounded-xl h-auto" />
+                <img alt="" src={item?.image} className="rounded-xl h-auto" />
               </div>
             );
           })}
-        </Carousel>
+        </Carousel>}
+        
       </div>
     </>
   );

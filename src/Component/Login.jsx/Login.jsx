@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Signup } from "./Signup";
 import axios from "axios";
-import { API_TOKEN } from "../Token/Token";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -19,16 +18,12 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { useApiToken } from "../zustand/useApiToken";
 
-export const Login = ({
-  // setUser_id,
-  // setLoggedIn,
-  setNewUserLog,
-  setOpenLogin,
-}) => {
+export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog }) => {
   const [logins, setLogins] = useState({
     phone: "",
     password: "",
   });
+
   const { allCartItems, config, clearCartApi, setAllCartItems } =
     useCartStore();
   const { setUserInfo } = useUserStore();
@@ -43,7 +38,9 @@ export const Login = ({
   const { jwt, setJwt } = useApiStore();
   const [visiblePassword, setVisiblePassword] = useState(false);
   let loginRef = useRef(null);
-  const {apiToken} = useApiToken()
+  const { apiToken } = useApiToken();
+
+  console.log(setNewUserSignUpLog, "LOGIN setNewUserSuingUPLog");
 
   const handleShow = (e) => {
     e.preventDefault();
@@ -57,71 +54,37 @@ export const Login = ({
     if (setNewUserLog) {
       setNewUserLog(false);
     }
-
+    if (setNewUserSignUpLog) {
+      setNewUserSignUpLog(false);
+    }
     if (setOpenLogin) {
       setOpenLogin(false);
     }
     navigate("/");
   };
-  console.log(allCartItems, "INSIDE LOGIN AFERT LOGIN");
 
-  const handleClickOutside = (event) => {
-    // Check if the click occurred outside the modal box
+  const handleClickLoginOutside = (event) => {
     if (loginRef.current && !loginRef.current.contains(event.target)) {
-      loginForm(false);
-      showRegisterForm(false);
+      setLoginForm(false);
+      setShowRegisterForm(false);
+
+      // setOpenLogin(true)
     }
   };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickLoginOutside);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickLoginOutside);
     };
   }, []);
-
-  // const getUserCarts = (user_id) => {
-  //   let config = {
-  //     headers: {
-  //       Authorization: `Bearer ${jwt}`,
-  //     },
-  //   };
-
-  //   var bodyFormdata = new FormData();
-  //   bodyFormdata.append("accesskey", '90336');
-  //   bodyFormdata.append("get_user_cart", "1");
-  //   bodyFormdata.append("user_id", user_id);
-  //   setisLoading(true);
-
-  //   return axios
-  //     .post(
-  //       "https://grocery.intelliatech.in/api-firebase/cart.php",
-  //       bodyFormdata,
-  //       config
-  //     )
-  //     .then((res) => {
-  //       console.log(res, "[GET USER CART API RESPONSE]");
-
-  //       let addQtyAmount = res?.data?.data?.map((data) => ({
-  //         ...data,
-  //         amount: +data.qty,
-  //       }));
-  //       console.log(addQtyAmount, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-  //       // setAddItem(addQtyAmount);
-
-  //       {
-  //         addQtyAmount && setAllCartItems(addQtyAmount);
-  //       }
-  //       setisLoading(false);
-  //       total();
-  //       totalAmount();
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       setisLoading(false);
-  //     });
-  // };
+  useEffect(() => {
+    "CHANGING OTP SIGNUP ENABLER";
+  }, [showSignUp]);
+  useEffect(() => {
+    "CHANGING Login Internal Modal";
+  }, [loginForm]);
 
   const handleShowVisivblePassword = () => {
     setVisiblePassword((prev) => !prev);
@@ -138,106 +101,7 @@ export const Login = ({
   };
 
   const handleSubmit = (e) => {
-    console.log("HANDLE LOGIN");
     e.preventDefault();
-
-    // setLoggedIn(true);
-
-    // if (!logins.phone || !logins.password) {
-    //   toast.error("Please enter both phone and password!", {
-    //     position: toast.POSITION.TOP_CENTER,
-    //   });
-    // } else {
-    //   const loginItem = new FormData();
-    //   loginItem.append("accesskey", "90336");
-    //   loginItem.append("mobile", logins.phone);
-    //   loginItem.append("password", logins.password);
-    //   loginItem.append("fcm_id", "YOUR_FCM_ID");
-    //   setisLoading(true);
-
-    //   let config = {
-    //     headers: {
-    //       Authorization: `Bearer ${jwt}`,
-    //     },
-    //   };
-
-    //   axios
-    //     .post(
-    //       "https://grocery.intelliatech.in/api-firebase/login.php",
-    //       loginItem,
-    //       config
-    //     )
-    //     .then((res) => {
-    //       console.log(res);
-
-    //       setisLoading(false);
-    //       if (res.data.user_id) {
-    //         setLoginData([...loginData, logins]);
-    //         console.log("LOGIN THRU CART<><><><>");
-    //         closeLoginModal();
-    //         navigate("/");
-    //         localStorage.setItem("token", `${jwt}`);
-    //         // dispatchLogin({ type: "LOGIN", payload: res.data.name });
-    //         console.log("LOGIN RESPONSEEEEEEEEEEEEEE", res.data);
-    //         setUserInfo(res.data);
-    //         let newUserId = res?.data?.user_id;
-    //         // setUser_id(newUserId);
-    //         // clearCart(newUserId);
-    //         toast.success("Login successfully !", {
-    //           position: toast.POSITION.TOP_CENTER,
-    //         });
-
-    //         const addMultipleItems = () => {
-    //           let arr = {};
-    //           allCartItems.forEach((item) => {
-    //             arr[item.product_variant_id] = item.amount;
-    //           });
-
-    //           let variants = Object.keys(arr).join(",");
-    //           let variantQty = Object.values(arr).join(",");
-    //           console.log("variants", variants);
-    //           console.log("variantQty", variantQty);
-
-    //           console.log(config);
-    //           var bodyFormdata = new FormData();
-    //           bodyFormdata.append("accesskey", "90336");
-    //           bodyFormdata.append("add_multiple_items", "1");
-    //           bodyFormdata.append("user_id", newUserId);
-    //           bodyFormdata.append("product_variant_id", variants);
-    //           bodyFormdata.append("qty", variantQty);
-    //           setisLoading(true);
-
-    //           return axios
-    //             .post(
-    //               "https://grocery.intelliatech.in/api-firebase/cart.php",
-    //               bodyFormdata,
-    //               config
-    //             )
-    //             .then((res) => {
-    //               console.log(res, "res<><><><><><><><>");
-    //               // getUserCarts(newUserId);
-    //               setisLoading(false);
-    //             })
-    //             .catch((error) => {
-    //               console.log(error);
-    //               setisLoading(false);
-    //             });
-    //         };
-
-    //         addMultipleItems();
-    //         console.log("getuser");
-    //         // getUserCarts(newUserId);
-    //       } else {
-    //         toast.error("Invalid phone OR password! !", {
-    //           position: toast.POSITION.TOP_CENTER,
-    //         });
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.log(err, "LOGIN ERROR ><><><><><><><><><");
-    //       setisLoading(false);
-    //     });
-    // }
 
     if (!logins.phone && !logins.password) {
       toast.error("Please enter both phone and password!", {
@@ -262,7 +126,6 @@ export const Login = ({
 
       let config = {
         headers: {
-          // Authorization: `Bearer ${jwt}`,
           Authorization: `Bearer ${apiToken}`,
         },
       };
@@ -274,24 +137,16 @@ export const Login = ({
           config
         )
         .then((res) => {
-          console.log(res);
-
           setisLoading(false);
 
           if (!res.data.error) {
-            // ... rest of your success logic ...
             setLoginData([...loginData, logins]);
-            console.log("LOGIN THRU CART<><><><>");
             closeLoginModal();
             navigate("/");
-            // localStorage.setItem("token", `${jwt}`);
             localStorage.setItem("token", `${apiToken}`);
-            // dispatchLogin({ type: "LOGIN", payload: res.data.name });
-            console.log("LOGIN RESPONSEEEEEEEEEEEEEE", res.data);
+
             setUserInfo(res.data);
             let newUserId = res?.data?.user_id;
-            // setUser_id(newUserId);
-            // clearCart(newUserId);
 
             toast.success("Logged in successfully!", {
               position: toast.POSITION.TOP_CENTER,
@@ -305,10 +160,7 @@ export const Login = ({
 
               let variants = Object.keys(arr).join(",");
               let variantQty = Object.values(arr).join(",");
-              console.log("variants", variants);
-              console.log("variantQty", variantQty);
 
-              console.log(config);
               var bodyFormdata = new FormData();
               bodyFormdata.append("accesskey", "90336");
               bodyFormdata.append("add_multiple_items", "1");
@@ -324,8 +176,6 @@ export const Login = ({
                   config
                 )
                 .then((res) => {
-                  console.log(res, "res<><><><><><><><>");
-                  // getUserCarts(newUserId);
                   setisLoading(false);
                 })
                 .catch((error) => {
@@ -335,8 +185,6 @@ export const Login = ({
             };
 
             addMultipleItems();
-            console.log("getuser");
-            // getUserCarts(newUserId);
           } else {
             toast.error("Invalid phone OR password!", {
               position: toast.POSITION.TOP_CENTER,
@@ -344,7 +192,6 @@ export const Login = ({
           }
         })
         .catch((err) => {
-          console.log(err, "LOGIN ERROR ><><><><><><><><><");
           setisLoading(false);
         });
     }
@@ -355,17 +202,6 @@ export const Login = ({
     });
   };
 
-  // const isWeakPassword = logins.password.length < 6;
-  // const isStrongPassword = logins.password.length > 7;
-
-  // const passwordStrengthMessage =
-  //   logins.password.length >= 6 ? "Strong Password" : "Weak Password";
-
-  // const strongPasswordRegex =
-  //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  // const weakPasswordRegex = /^(.{1,7}|[^a-zA-Z0-9])$/;
-
-  const handleForgotPassword = () => {};
   return (
     <>
       {loginForm && (
@@ -378,21 +214,21 @@ export const Login = ({
             >
               <div className="flex justify-center items-center relative">
                 <div className="container relative flex ">
-                <div className="mb-4 mt-32 w-[40%]">
-                      <img
-                        src="http://grocery.intelliatech.in/dist/img/logo.png"
-                        className="w-40 mx-4 "
-                        alt="Flowbite Logo"
-                      />
-                    </div>
-                 
+                  <div className="mb-4 mt-32 w-[40%]">
+                    <img
+                      src="http://grocery.intelliatech.in/dist/img/logo.png"
+                      className="w-40 mx-4 "
+                      alt="Flowbite Logo"
+                    />
+                  </div>
+
                   <div className="w-full p-8 md:px-12 mr-auto rounded-2xl ">
-                  <button
-                    className="absolute top-[5%] right-[5%]"
-                    onClick={closeLoginModal}
-                  >
-                    <AiOutlineCloseCircle className="text-red text-2xl hover:opacity-50" />
-                  </button>
+                    <button
+                      className="absolute top-[5%] right-[5%]"
+                      onClick={closeLoginModal}
+                    >
+                      <AiOutlineCloseCircle className="text-red text-2xl hover:opacity-50" />
+                    </button>
                     <div className="flex justify-between">
                       <h1 className="font-bold uppercase text-3xl">Login :</h1>
                     </div>
@@ -400,11 +236,20 @@ export const Login = ({
                       <div></div>
                       <div className="gap-5 mt-5">
                         <input
-                          className="w-full border-red-800  text-gray-900 mt-2 p-3 rounded-lg  focus:shadow-outline "
+                          className="w-full border-red-800 text-gray-900 mt-2 p-3 rounded-lg focus:shadow-outline"
                           type="text"
                           onChange={inputHandler}
+                          onKeyPress={(e) => {
+                            if (!/[0-9]/.test(e.key)) {
+                              e.preventDefault();
+                            }
+
+                            if (e.target.value?.length >= 13) {
+                              e.preventDefault();
+                            }
+                          }}
                           name="phone"
-                          value={logins.phone}
+                          value={logins.phone === "" ? "+91" : logins.phone}
                           placeholder="Phone"
                         />
 
@@ -428,7 +273,6 @@ export const Login = ({
                             )}
                           </div>
                         </div>
-                       
                       </div>
 
                       <div className="mb-8 mt-6 flex items-center justify-between">
@@ -455,7 +299,7 @@ export const Login = ({
                             className="text-danger transition ml-2 text-[green] duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
                             onClick={handleShow}
                           >
-                           Sign up now
+                            Sign up now
                           </a>
                         </p>
                       </div>
@@ -479,6 +323,8 @@ export const Login = ({
       {/* {showSignUp && <SignUpOtp setOpenLogin={setOpenLogin}/>} */}
       {showSignUp && (
         <SignUpwithOtp
+          setNewUserLog={setNewUserLog}
+          setLoginForm={setLoginForm}
           setShowRegisterForm={setShowRegisterForm}
           setPhoneNumber={setPhoneNumber}
           phoneNumber={phoneNumber}

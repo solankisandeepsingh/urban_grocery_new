@@ -10,7 +10,7 @@ export const Coditions = () => {
   const [conditons, setConditons] = useState("");
   const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
-  const {apiToken} = useApiToken()
+  const { apiToken } = useApiToken();
 
   const handleConditons = () => {
     let config = {
@@ -41,11 +41,15 @@ export const Coditions = () => {
         setisLoading(false);
       });
   };
+  // useEffect(() => {
+  //   handleConditons();
+  // }, []);
+
   useEffect(() => {
-    handleConditons();
-  }, []);
-
-
+    if (apiToken) {
+      handleConditons();
+    }
+  }, [apiToken]);
 
   return (
     <>
@@ -54,7 +58,7 @@ export const Coditions = () => {
           <Aside />
         </div>
 
-        <div class="w-[60%]"> */}
+        <div className="w-[60%]"> */}
 
       <div className="flex flex-col mt-24 xs:justify-center xs:items-center md:items-start sm:items-start md:flex-row md:justify-evenly sm:justify-evenly sm:flex sm:flex-row ">
         <div className="xs:w-[85%] md:w-[35%] sm:w-[30%] h-full">
@@ -62,11 +66,10 @@ export const Coditions = () => {
         </div>
 
         <div className="md:w-[60%] sm:w-[60%] xs:w-[85%] mb-3">
-          <div class="bg-white">
-          <div dangerouslySetInnerHTML={{__html: conditons}}>
-
-{/* {JSON.parse(item.description)} */}
-</div>
+          <div className="bg-white">
+            <div dangerouslySetInnerHTML={{ __html: conditons }}>
+              {/* {JSON.parse(item.description)} */}
+            </div>
           </div>
         </div>
       </div>

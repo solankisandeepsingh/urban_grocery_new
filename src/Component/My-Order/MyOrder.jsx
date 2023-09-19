@@ -59,15 +59,21 @@ export const MyOrder = ({ addItem,setNavbarOpen }) => {
       });
   };
 
-  useEffect(() => {
-    handlemyOrder();
+  // useEffect(() => {
+  //   handlemyOrder();
     
-  }, []);
+  // }, []);
+
+  useEffect(() => {
+    if (apiToken) {
+      handlemyOrder();
+    }
+  }, [apiToken]);
 
   const handleOrderDetails = (item) => {
     setOrderId(item);
     console.log(item, "item");
-    navigate("/orderdetailspage");
+    navigate("/ordersummarypage");
   };
 
   return (
@@ -110,7 +116,7 @@ export const MyOrder = ({ addItem,setNavbarOpen }) => {
                       <div className="flex justify-between text-center mt-3">
                         <div>
                           <p className=" ml-3  break-all">
-                            {item.items.length} Items
+                            {item?.items?.length} Items
                           </p>
                         </div>
                         <div>

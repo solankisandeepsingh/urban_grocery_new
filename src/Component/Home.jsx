@@ -27,55 +27,15 @@ function Home({
   setAddItem,
   isOpen,
   user_id,
-  setNavbarOpen
+  setNavbarOpen,
 }) {
   const { allImg, setAllImg } = useImgStore();
   const { jwt, setJwt } = useApiStore();
   console.log(allImg, setAllImg, "IMG STORE FROM ZUSTAND");
   const { setisLoading } = useLoaderState();
   const [visible, setVisible] = useState(false);
-  const {apiToken,accessTokenApi} = useApiToken()
-  setNavbarOpen(true)
-
-  // console.log(axioss);
-
-  // async function getData () {
-  //   try{
-  //     let imgData = new FormData();
-  //     imgData.append("accesskey", "90336");
-  //     imgData.append("get_user_data", "1");
-  //     imgData.append("user_id", "14");
-
-  //     const resp = await axioss.post("/get-user-data.php", imgData)
-  //     console.log(resp);
-  //   } catch (err){
-  //     console.log(err);
-  //   }
-  // }
-
-  // getData();
-
-  // axioss.interceptors.request.use(
-  //   (config) => {
-
-  //     const token = TokenService.getLocalAccessToken();
-  //     if (token) {
-  //       // config.headers["Authorization"] = 'Bearer ' + token;  // for Spring Boot back-end
-  //       config.headers["x-access-token"] = token; // for Node.js Express back-end
-  //     }
-  //     return config;
-  //   },
-  //   (error) => {
-  //     return Promise.reject(error);
-  //   }
-  // );
-
-  // const instance = axios.create({
-  //   baseURL: "https://grocery.intelliatech.in/api-firebase/get-user-data.php",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  // });
+  const { apiToken, accessTokenApi } = useApiToken();
+  setNavbarOpen(true);
 
   const toggleVisible = () => {
     const scrolled = document.documentElement.scrollTop;
@@ -90,8 +50,6 @@ function Home({
     window.scrollTo({
       top: 0,
       behavior: "smooth",
-      /* you can also use 'auto' behaviour
-         in place of 'smooth' */
     });
   };
 
@@ -161,7 +119,6 @@ function Home({
   return (
     <div className=" md:mt-0.5 xs:mt-14">
       <>
-      <AccessToken/>
         {/* <div className="md:invisible xs:visible">
           <Search
             setData={setData}
@@ -237,8 +194,6 @@ function Home({
             <div className="">
               <FlashSales />
             </div>
-            
-           
           </div>
         </div>
       </>

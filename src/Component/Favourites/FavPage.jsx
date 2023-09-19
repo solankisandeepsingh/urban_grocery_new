@@ -15,14 +15,10 @@ import { useApiToken } from "../zustand/useApiToken";
 
 export const FavPage = () => {
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
-  console.log(allCartItems, "After Destructure");
 
-  // const [variant, setVariant] = useState({ 0: 0 });
-  // const [favPos, setFavPos] = useState(false);
   const [removeFavPos, setRemoveFavPos] = useState(true);
   const navigate = useNavigate();
-  const { jwt } = useApiStore();
-  const {apiToken} = useApiToken()
+  const { apiToken } = useApiToken();
 
   const {
     userInfo: { user_id },
@@ -31,9 +27,6 @@ export const FavPage = () => {
   const { allFavItems, setAllFavItems } = useFavStore();
 
   const handleVariantChange = (id, e) => {
-    console.log(variant);
-    console.log(e.target.value);
-
     let updatedvariant = { ...variant, [id]: e.target.value };
 
     setVariant(updatedvariant);
@@ -42,7 +35,6 @@ export const FavPage = () => {
   const handleRemoveFavorite = (item) => {
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -61,10 +53,8 @@ export const FavPage = () => {
         config
       )
       .then((res) => {
-        console.log(res, "favdata");
         setisLoading(false);
         let newArrRemove = allFavItems.filter((fav) => {
-          console.log(fav, item, "string item an");
           return fav.id !== item.id;
         });
 
@@ -77,10 +67,8 @@ export const FavPage = () => {
   };
 
   const addItemUI = (mainItem) => {
-    console.log("INSIDE");
     let newArr = [];
-    if (mainItem.variants.length > 1) {
-      console.log('MORE <><><><><><>');
+    if (mainItem?.variants?.length > 1) {
       newArr = [
         ...allCartItems,
         {
@@ -91,32 +79,27 @@ export const FavPage = () => {
           product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
         },
       ];
-      
-    } else { 
-      console.log('LESS <><><><><><><>');
+    } else {
       newArr = [
-      ...allCartItems,
-      {
-        ...mainItem.variants[variant[mainItem.id] || 0],   
-         
-        amount: 1,
-        name: mainItem.name,
-        image: mainItem.image,
-        product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
-      },
-    ]}
+        ...allCartItems,
+        {
+          ...mainItem.variants[variant[mainItem.id] || 0],
+
+          amount: 1,
+          name: mainItem.name,
+          image: mainItem.image,
+          product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
+        },
+      ];
+    }
     setAllCartItems(newArr);
   };
   const addItemHandler = (item, data) => {
-    console.log("item", item);
     const config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
-    // console.log(data.id, "varaitn id");
-    // console.log(item.id, "main id");
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
@@ -132,9 +115,7 @@ export const FavPage = () => {
         bodyFormData,
         config
       )
-      .then(console.log(allCartItems, "[before some method]"))
       .then((res) => {
-        // setisLoading(false);
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
           let newArr = allCartItems.map((data) =>
             data.product_id === item.id
@@ -144,21 +125,10 @@ export const FavPage = () => {
                 }
               : data
           );
-          console.log(newArr);
           setAllCartItems(newArr);
-          // setAllCartItems((cart) =>
-          //   cart.map((data) =>
-          //     data.product_id === item.id
-          //       ? {
-          //           ...data,
-          //           amount: data.amount + 1,
-          //         }
-          //       : data
-          //   )
-          // );
+
           return;
         }
-        console.log(item.id, "Additem Id in product caraousel");
 
         let item1 = {
           amount: 1,
@@ -172,8 +142,6 @@ export const FavPage = () => {
         };
 
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
-        console.log(newArr);
-        // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
         setAllCartItems(newArr);
         setisLoading(false);
       })
@@ -192,21 +160,21 @@ export const FavPage = () => {
         {allFavItems?.length > 0 && (
           <div className="grid xs:grid-cols-2 md:grid-cols-8 sm:grid-cols-8 mt-24 xs:mx-9 xs:gap-4 sm:mx-14 sm:gap-[200px] ">
             {allFavItems?.length > 0 &&
-              allFavItems.map((item) => {
+              allFavItems?.map((item) => {
                 return (
                   <>
                     <div
                       className="w-72  xs:w-36  xs:h-auto md:w-40 md:h-[260px] sm:h-[284px] sm:w-[170px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green bg-[#FFFAED] cursor-pointer"
                       onClick={() => {
                         navigate(
-                          `/subcategory-details/${item.category_name}/product-details/${item.id}`
+                          `/subcategory-details/${item?.category_name}/product-details/${item?.id}`
                         );
                       }}
                     >
                       <img
                         className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-28  md:w-40  sm:w-48 sm:h-32 rounded-lg "
                         src={
-                          item.variants.length == 1
+                          item?.variants?.length == 1
                             ? item.image
                             : item.variants[variant[item.id] || 0].images[0]
                         }
@@ -217,7 +185,7 @@ export const FavPage = () => {
                           {item.name}
                         </p>
                       </div>
-                      {item.variants.length == 1 &&
+                      {item?.variants?.length == 1 &&
                         item.variants.map((data) => {
                           return (
                             <div className="flex p-1 md:px-3 flex-col xs:justify-center xs:items-center xs:text-center md:justify-evenly sm:ml-0   ">
@@ -257,22 +225,14 @@ export const FavPage = () => {
                               </div>
 
                               <div className="w-full ">
-                                {item.variants.some(
+                                {item?.variants?.some(
                                   (variant) => variant.stock > 0
                                 ) ? (
                                   allCartItems?.find(
                                     (i) => i.product_id === item.id
                                   ) ? (
                                     <>
-                                      <div
-                                        className="mt-3"
-                                        onClick={(e) => {
-                                          console.log(
-                                            e,
-                                            "EVENT IN IMMEDIATE PARENT ELEMENT"
-                                          );
-                                        }}
-                                      >
+                                      <div className="mt-3">
                                         <CartQuantity
                                           item={item}
                                           variant={variant}

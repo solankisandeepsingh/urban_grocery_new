@@ -169,7 +169,7 @@ export const Signup = ({
                               onChange={handleUserSignUp}
                             />
                             <div className="mt-6 mb-3">
-                              {userRegistraion.name.length >= 2 ? (
+                              {userRegistraion.name?.length >= 2 ? (
                                 NameRegex.test(userRegistraion.name) ? (
                                   <p className={`text-sm text-lime`}>null</p>
                                 ) : null
@@ -204,7 +204,7 @@ export const Signup = ({
                         </div>
 
                         <div className="mt-6 mb-3">
-                          {userRegistraion.password.length >= 6 ? (
+                          {userRegistraion.password?.length >= 6 ? (
                             strongPasswordRegex.test(
                               userRegistraion.password
                             ) ? (

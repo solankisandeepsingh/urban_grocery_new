@@ -20,6 +20,9 @@ export const SignUpwithOtp = ({
   setShowSignUp,
   setPhoneNumber,
   phoneNumber,
+  setNewUserSignUpLog,
+  setLoginForm,
+  setNewUserLog,
 }) => {
   const [closeSignup, setCloseSignUp] = useState(true);
   const [expandForm, setExpandForm] = useState(false);
@@ -29,16 +32,15 @@ export const SignUpwithOtp = ({
   const { apiToken } = useApiToken();
 
   const [showSignUpForm, setShowSignUpForm] = useState(false);
-
+  console.log(setLoginForm, "logingset", setShowSignUp, "set show sing up", setNewUserLog, "setnewuserlog");
   const getVerifyOtp = (e) => {
-    console.log("ver");
     let config = {
       headers: {
         // Authorization: `Bearer ${jwt }`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
-
+console.log(setNewUserLog, "NEW USER LOG");
     let verifyData = new FormData();
     verifyData.append("accesskey", "90336");
     verifyData.append("type", "verify-user");
@@ -52,18 +54,13 @@ export const SignUpwithOtp = ({
       )
       .then((res) => {
         // console.log(res, "res this is aleredy resgeistere");
-        console.log(res);
         if (res.data.error) {
           toast.error(res.data.message, {
             position: toast.POSITION.TOP_CENTER,
           });
-          console.log(res.data.message);
           setisLoading(false);
         } else {
-          console.log("phone number", phoneNumber);
-
           if (phoneNumber.length >= 12) {
-            console.log("phone number", phoneNumber);
             setExpandForm(true);
             genrateReCaptcha();
             setisLoading(false);
@@ -76,7 +73,7 @@ export const SignUpwithOtp = ({
                 window.confirmationResult = confirmationResult;
                 // ...
 
-                toast.success("OTP Has Been Sent Successfully", {
+                toast.success("OTP has been sent successfully", {
                   position: toast.POSITION.TOP_CENTER,
                 });
               })
@@ -132,8 +129,7 @@ export const SignUpwithOtp = ({
   const verifyOtp = (e) => {
     e.preventDefault();
 
-    if (OTP.length === 6) {
-      console.log("inside length 6");
+    if (OTP?.length === 6) {
       // debugger
       window.confirmationResult
         .confirm(OTP)
@@ -141,7 +137,6 @@ export const SignUpwithOtp = ({
           toast.success("Verification Successful", {
             position: toast.POSITION.TOP_CENTER,
           });
-          console.log(res, "otp confirmattiomn response");
           setShowRegisterForm(true);
           setShowSignUp(false);
           // setLoginForm()
@@ -153,17 +148,22 @@ export const SignUpwithOtp = ({
   };
 
   const handleCloseSignUp = () => {
-    setCloseSignUp((prev) => !prev);
-    setOpenLogin(false);
+    console.log('closing sign up');
+    // setCloseSignUp((prev) => !prev);
+    setShowSignUp(false);
+    // // setNewUserSignUpLog(true)
+    // setOpenLogin(false);
+    setLoginForm(true);
+    // setNewUserLog(false);
   };
   const isPhoneNumberValid = (phone) => {
-    return phone.replace(/\D/g, "").length === 10;
+    return phone.replace(/\D/g, "").length === 12;
   };
   return (
     <div>
       {closeSignup && (
         <>
-          <ToastContainer />
+          {/* <ToastContainer /> */}
           <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
             <div></div>
             <div className="relative w-[518px] h-[430px] my-6 mx-auto max-w-3xl bg-white rounded-lg">
@@ -181,8 +181,8 @@ export const SignUpwithOtp = ({
                 </span>
               </div>
               <div className="border-b border-b-light_gray mt-3"></div>
-              {/* <div class="flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-light_gray after:mt-0.5 after:flex-1 after:border-t after:border-light_gray">
-                <p class="mx-4 mb-0 text-center font-semibold">OR</p>
+              {/* <div className="flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-light_gray after:mt-0.5 after:flex-1 after:border-t after:border-light_gray">
+                <p className="mx-4 mb-0 text-center font-semibold">OR</p>
               </div> */}
 
               <div className="relative p-6 flex-auto ">
@@ -204,8 +204,14 @@ export const SignUpwithOtp = ({
                       className="w-[74%]  p-3 rounded-lg outline-none"
                       type="text"
                       disabled={expandForm}
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      // value={phoneNumber}
+                      value={phoneNumber === "" ? "+91" : phoneNumber}
+                      onChange={(e) => {
+                        const inputPhone = e.target.value;
+                        if (inputPhone?.length <= 13) {
+                          setPhoneNumber(inputPhone);
+                        }
+                      }}
                       placeholder="Phone"
                     />
                   </div>
@@ -225,7 +231,7 @@ export const SignUpwithOtp = ({
                           onChange={setOTP}
                           separator={<span className="mx-2">-</span>}
                           isInputNum={true}
-                          inputStyle="border border-GrayBlinkit rounded-md text-center  text-xl  mx-auto"
+                          inputStyle="border border-GrayBlinkit rounded-md text-left px-1 text-2xl  mx-auto"
                           numInputs={6}
                           renderSeparator={<span>-</span>}
                           renderInput={(props) => <input {...props} />}
@@ -236,15 +242,20 @@ export const SignUpwithOtp = ({
 
                   {expandForm === false ? (
                     <button
-                      className="rounded-full bg-lava_grey text-white xs:rounded-lg xs:text-xs w-[74%] ml-8 h-10 md:text-base md:font-medium inline-block font-medium ..."
+                      // className="rounded-full bg-lava_grey text-white xs:rounded-lg xs:text-xs w-[74%] ml-8 h-10 md:text-base md:font-medium inline-block font-medium ..."
+                      className={`${
+                        isPhoneNumberValid(phoneNumber)
+                          ? "bg-lime hover:bg-customGreen text-white cursor-pointer"
+                          : "bg-lava_grey text-white"
+                      } rounded-full xs:rounded-lg xs:text-xs w-[74%] ml-8 h-10 md:text-base md:font-medium inline-block font-medium`}
                       onClick={requstOtp}
-                      disabled={isPhoneNumberValid(phoneNumber)}
+                      disabled={!isPhoneNumberValid(phoneNumber)}
                     >
                       Next
                     </button>
                   ) : (
                     <button
-                      className="rounded-full bg-lime xs:rounded-lg xs:text-xs  xs:h-8 md:w-full xs:w-full md:h-10 md:text-base md:font-medium inline-block hover:bg-orange font-medium ..."
+                      className="rounded-full bg-lime hover:bg-customGreen xs:rounded-lg xs:text-xs  xs:h-8 md:w-full xs:w-full md:h-10 md:text-base md:font-medium inline-block font-medium ..."
                       onClick={verifyOtp}
                     >
                       Verify OTP

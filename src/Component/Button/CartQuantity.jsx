@@ -1,31 +1,25 @@
 import axios from "axios";
 import React from "react";
-import { API_TOKEN } from "../Token/Token";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiStore } from "../zustand/useApiStore";
-import { ToastContainer, toast } from "react-toastify";
 import { useApiToken } from "../zustand/useApiToken";
+import { toast } from "react-toastify";
 
 function CartQuantity({ item, variant }) {
-  console.log(item, variant, "FROM FLASH SALES I");
   const { allCartItems, setAllCartItems } = useCartStore();
   const { setisLoading } = useLoaderState();
   const {
     userInfo: { user_id },
   } = useUserStore();
-  const { jwt, setJwt } = useApiStore();
-  const {apiToken} = useApiToken()
+  const { apiToken } = useApiToken();
 
   const changeQuantity = (change) => {
-    console.log(change, "654654");
     if (change == "increase") {
       if (user_id) {
-        console.log("USER LOGGED IN");
         const config = {
           headers: {
-            // Authorization: `Bearer ${jwt}`,
             Authorization: `Bearer ${apiToken}`,
           },
         };
@@ -65,18 +59,18 @@ function CartQuantity({ item, variant }) {
                   : data
               );
 
-              console.log(newArr);
-
               setAllCartItems(newArr);
-              toast.success("Item Added To User Cart Successfully !", {
+              toast.success("Item added to user cart successfully !", {
                 position: toast.POSITION.TOP_CENTER,
+                style: {
+                  backgroundColor: "darkGreen",
+                  color: "white",
+                },
               });
               setisLoading(false);
               return;
             }
             let newArr = [...allCartItems, { ...item, amount: 1 }];
-            console.log(newArr);
-            // setAllCartItems((cart) => [...cart, { ...item, amount: 1 }]);
 
             setAllCartItems(newArr);
           })
@@ -86,25 +80,28 @@ function CartQuantity({ item, variant }) {
           });
       } else {
         let newArr = allCartItems.map((i) => {
-          console.log(variant, i);
-          // console.log(i.id, item.variants[variant[item.id] || 0].id, "YELLOOOO");
           if (
             (i.product_variant_id ?? i.id) ==
             item.variants[variant[item.id] || 0].id
           ) {
-            console.log("RUnning");
             return { ...i, amount: +i.amount + 1 };
           }
           return { ...i };
         });
+        toast.success("Item Added To User Cart Successfully !", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose:500,
+          style: {
+            backgroundColor: "darkGreen",
+            color: "white",
+          },
+        });
         setAllCartItems(newArr);
       }
     } else if (change == "decrease") {
-      console.log("decrease");
       if (user_id) {
         const config = {
           headers: {
-            // Authorization: `Bearer ${jwt}`,
             Authorization: `Bearer ${apiToken}`,
           },
         };
@@ -135,21 +132,13 @@ function CartQuantity({ item, variant }) {
             config
           )
           .then(() => {
-            console.log(allCartItems, "-1 CQ >><><><><><><><><><><");
-
             if (
               allCartItems.some((product) => {
-                console.log(product, item);
                 return product.amount === 1 && product.product_id === item.id;
               })
             ) {
               let newArr = allCartItems.filter(
                 (pro) => pro.product_id !== item.id || pro.amount !== 1
-              );
-
-              console.log(
-                newArr,
-                "Cart Quant -1 LAST ITEM ><>>>>>>>><><><<><><><>"
               );
 
               setisLoading(false);
@@ -165,10 +154,6 @@ function CartQuantity({ item, variant }) {
                     }
                   : data
               );
-              console.log(
-                newArr,
-                "Cart Quant MORE THAN 1 ><>>>><>><><><><>>>><><><<><><><>"
-              );
 
               setAllCartItems(newArr);
               setisLoading(false);
@@ -183,12 +168,6 @@ function CartQuantity({ item, variant }) {
       } else {
         if (
           allCartItems.some((product) => {
-            console.log(product, item);
-            console.log(
-              product.amount === 1,
-              (product.product_variant_id ?? product.id) ===
-                item.variants[variant[item.id] || 0].id
-            );
             return (
               product.amount === 1 &&
               (product.product_variant_id ?? product.id) ===
@@ -196,17 +175,7 @@ function CartQuantity({ item, variant }) {
             );
           })
         ) {
-          console.log("INSIDE 1");
           let newArr = allCartItems.filter((cartItem) => {
-            // console.log(pro.id === item.variants[variant[item.id]|| 0].id && pro.amount !== 1, "INSIDE IF");
-
-            // console.log(pro.id === item.variants[variant[item.id]|| 0].id , pro.amount !== 1, "CHECK");
-
-            // return pro.id === item.variants[variant[item.id]|| 0].id || pro.amount !== 1
-            console.log(
-              (cartItem.product_variant_id ?? cartItem.id) ==
-                item.variants[variant[item.id] || 0].id
-            );
             if (
               (cartItem.product_variant_id ?? cartItem.id) ==
               item.variants[variant[item.id] || 0].id
@@ -215,27 +184,15 @@ function CartQuantity({ item, variant }) {
             return true;
           });
 
-          console.log(
-            newArr,
-            "Cart Quant -1 LAST ITEM ><>>>>>>>><><><<><><><>"
-          );
-
           setAllCartItems(newArr);
         } else if (
           allCartItems.some((cartItem) => {
-            console.log(cartItem, item);
-            console.log(
-              cartItem.product_variant_id,
-              item.variants[variant[item.id] || 0].id
-            );
-            // console.log(cartItem.id , item.variants[variant[item.id]|| 0].id);
             return (
               (cartItem.product_variant_id ?? cartItem.id) ===
               item.variants[variant[item.id] || 0].id
             );
           })
         ) {
-          console.log();
           let newArr = allCartItems.map((cartItem) =>
             (cartItem.product_variant_id ?? cartItem.id) ===
               item.variants[variant[item.id] || 0].id && cartItem.amount > 1
@@ -244,10 +201,6 @@ function CartQuantity({ item, variant }) {
                   amount: cartItem.amount - 1,
                 }
               : cartItem
-          );
-          console.log(
-            newArr,
-            "Cart Quant MORE THAN 1 ><>>>><>><><><><>>>><><><<><><><>"
           );
 
           setAllCartItems(newArr);
@@ -263,7 +216,6 @@ function CartQuantity({ item, variant }) {
   const quantityDecrease = () => {
     const config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -277,7 +229,6 @@ function CartQuantity({ item, variant }) {
     const finditem = allCartItems.find((data) => data.product_id == item.id);
     const newQty =
       +finditem.amount !== 0 ? +finditem.amount - 1 : finditem.amount;
-    // console.log();
     bodyFormData.append("qty", newQty);
     setisLoading(true);
 
@@ -288,21 +239,15 @@ function CartQuantity({ item, variant }) {
         config
       )
       .then(() => {
-        console.log(allCartItems, "-1 CQ >><><><><><><><><><><");
-
         if (
           allCartItems.some((product) => {
-            console.log(product);
             return product.amount === 1;
           })
         ) {
           let newArr = allCartItems.filter(
             (pro) => pro.product_id !== item.id || pro.amount !== 1
           );
-          console.log(
-            newArr,
-            "Cart Quant -1 LAST ITEM ><>>>>>>>><><><<><><><>"
-          );
+
           setisLoading(false);
 
           setAllCartItems(newArr);
@@ -317,7 +262,6 @@ function CartQuantity({ item, variant }) {
                 }
               : data
           );
-          console.log(newArr, "Cart Quant MORE THAN 1 ><>>>>>>>><><><<><><><>");
 
           setAllCartItems(newArr);
           setisLoading(false);
@@ -335,7 +279,6 @@ function CartQuantity({ item, variant }) {
   const quantityIncrease = () => {
     const config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -364,7 +307,6 @@ function CartQuantity({ item, variant }) {
               ? { ...data, amount: +data.amount + 1 }
               : data
           );
-          console.log(newArr);
 
           setAllCartItems(newArr);
           setisLoading(false);
@@ -372,8 +314,7 @@ function CartQuantity({ item, variant }) {
           return;
         }
         let newArr = [...allCartItems, { ...item, amount: 1 }];
-        console.log(newArr);
-        // setAllCartItems((cart) => [...cart, { ...item, amount: 1 }]);
+
         setAllCartItems(newArr);
       })
       .catch((error) => {
@@ -383,29 +324,13 @@ function CartQuantity({ item, variant }) {
   };
 
   const findItemNumber = () => {
-    console.log(variant, item);
     let index = allCartItems.findIndex((i) => {
-      console.log(
-        i,
-        i.product_variant_id,
-        i.id,
-        "i",
-        item,
-        "item",
-        variant,
-        "FINDDDDD>>>>><"
-      );
-      // console.log( +item.variants[variant[item.id] || 0].id);
-
       // return true
       return (
         (i.product_variant_id ?? i.id) ==
         +item.variants[variant?.[item.id] || 0].id
       );
     });
-    console.log(index);
-    console.log(allCartItems);
-    console.log(allCartItems[index].amount);
 
     return allCartItems[index].amount;
   };
@@ -420,10 +345,7 @@ function CartQuantity({ item, variant }) {
         <button
           className="md:text-lg xs:text-sm sm:text-4xl "
           onClick={() => {
-            console.log(user_id);
             changeQuantity("decrease");
-
-            // user_id ? quantityDecrease() : quantityDecreaseUI();
           }}
         >
           -
@@ -438,12 +360,7 @@ function CartQuantity({ item, variant }) {
         <button
           className="md:text-lg xs:text-sm sm:text-2xl"
           onClick={() => {
-            console.log("klklklk");
-
-            console.log(user_id);
             changeQuantity("increase");
-            // quantityIncreaseBoth();
-            // user_id ? quantityIncrease() : quantityIncreaseUI();
           }}
         >
           +

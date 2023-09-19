@@ -5,13 +5,12 @@ import axios from "axios";
 import { useCartStore } from "../../zustand/useCartStore";
 import { useUserStore } from "../../zustand/useUserStore";
 import { useLoaderState } from "../../zustand/useLoaderState";
-import { useApiStore } from "../../zustand/useApiStore";
 import { currencyFormatter } from "../../../utils/utils";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useApiToken } from "../../zustand/useApiToken";
 
-export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
+export const SubCategory = ({ setAddItem, addItem, setNavbarOpen }) => {
   const [allproducts, setAllProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
@@ -20,21 +19,16 @@ export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
   } = useUserStore();
   const navigate = useNavigate();
   const { setisLoading } = useLoaderState();
-  const { jwt, setJwt } = useApiStore();
   const { category_id } = useParams();
   const { apiToken } = useApiToken();
-  setNavbarOpen(true)
+  setNavbarOpen(true);
 
   const addItemHandler = (item, data) => {
-    console.log("item", item);
     const config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
-    // console.log(data.id, "varaitn id");
-    // console.log(item.id, "main id");
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
@@ -64,19 +58,9 @@ export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
           );
           console.log(newArr);
           setAllCartItems(newArr);
-          // setAllCartItems((cart) =>
-          //   cart.map((data) =>
-          //     data.product_id === item.id
-          //       ? {
-          //           ...data,
-          //           amount: data.amount + 1,
-          //         }
-          //       : data
-          //   )
-          // );
+
           return;
         }
-        console.log(item.id, "Additem Id in product caraousel");
 
         let item1 = {
           amount: 1,
@@ -90,12 +74,13 @@ export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
         };
 
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
-        console.log(newArr);
-        toast.success("Item Added To User Cart Successfully !", {
+        toast.success("Item added to user cart successfully !", {
           position: toast.POSITION.TOP_CENTER,
-          className:"bg-slate-300"
+          style: {
+            backgroundColor: "darkGreen",
+            color: "white",
+          },
         });
-        // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
         setAllCartItems(newArr);
         setisLoading(false);
       })
@@ -112,19 +97,14 @@ export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
   };
 
   const handleVariantChange = (id, e) => {
-    console.log(variant);
-    console.log(e.target.value);
-
     let updatedvariant = { ...variant, [id]: e.target.value };
 
     setVariant(updatedvariant);
   };
 
   const addItemUI = (mainItem) => {
-    console.log("INSIDE");
     let newArr = [];
-    if (mainItem.variants.length > 1) {
-      console.log("MORE <><><><><><>");
+    if (mainItem?.variants?.length > 1) {
       newArr = [
         ...allCartItems,
         {
@@ -136,7 +116,13 @@ export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
         },
       ];
     } else {
-      console.log("LESS <><><><><><><>");
+      toast.success("Item added to user cart Successfully !", {
+        position: toast.POSITION.TOP_CENTER,
+        style: {
+          backgroundColor: "darkGreen",
+          color: "white",
+        },
+      });
       newArr = [
         ...allCartItems,
         {
@@ -154,7 +140,6 @@ export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
 
   let config = {
     headers: {
-      // Authorization: `Bearer ${jwt}`,
       Authorization: `Bearer ${apiToken}`,
     },
   };
@@ -172,7 +157,7 @@ export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
           config
         )
         .then((res) => {
-          console.log(res.data.data);
+          console.log(res?.data?.data);
           setAllProducts(res?.data?.data);
           setIsLoading(false);
         })
@@ -186,17 +171,16 @@ export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
 
   useEffect(() => {}, [allproducts, category_id]);
 
+  //  useEffect(() => {
+  //   if (apiToken);
+  // }, [apiToken,allproducts, category_id]);
+
   const allCartItemsHandler = (item, data) => {
-    // console.log("item1>>>>>>>>>>>>>>", allCartItems);
-    console.log("item", item);
     const config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
-    // console.log(data.id, "varaitn id");
-    // console.log(item.id, "main id");
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
@@ -204,11 +188,8 @@ export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
     bodyFormData.append("product_id", `${data.id}`);
     bodyFormData.append("product_variant_id", `${item.id}`);
 
-    // const qtys = (item.qty || 0) + 1;
-
     bodyFormData.append("qty", 1);
 
-    // console.log("item", qtys);
     setisLoading(true);
 
     axios
@@ -219,10 +200,8 @@ export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
       )
       .then((res) => {
         setisLoading(false);
-        console.log(res, "res add item");
-        // setallCartItems(res)
+
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
-          // console.log("addtiem", allCartItems);
           let newArr = allCartItems.map((data) =>
             data.product_id === item.id
               ? {
@@ -236,7 +215,6 @@ export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
 
           return;
         }
-        console.log(item.id, "allCartItems Id in product caraousel");
 
         let item1 = {
           amount: 1,
@@ -261,8 +239,6 @@ export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
         };
 
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
-        console.log(newArr);
-        // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
         setAllCartItems(newArr);
         setisLoading(false);
       })
@@ -275,13 +251,12 @@ export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
   return (
     <>
       <div>
-        {/* <ToastContainer /> */}
-        <ToastContainer toastStyle={{ backgroundColor: "customGreen" }} />
+        <ToastContainer />
         <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-7 sm:grid-cols-3 flex flex-wrap md:ml-5 ">
           {isLoading ? (
             <p className="m-auto">Loading...</p>
-          ) : allproducts && allproducts.length > 0 ? (
-            allproducts.map((item) => {
+          ) : allproducts && allproducts?.length > 0 ? (
+            allproducts?.map((item) => {
               return (
                 <div
                   className="w-72  xs:my-3 xs:w-36  xs:h-auto md:w-40 md:h-[235px] sm:h-[250px] sm:w-[170px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green bg-[#ffffff] cursor-pointer"
@@ -295,7 +270,7 @@ export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
                     // className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-24 md:ml-[23px] md:w-28 md:mt-4 sm:w-48 sm:h-32 rounded-lg "
                     className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-28 md:w-40 sm:w-48 sm:h-32 rounded-lg "
                     src={
-                      item.variants.length == 1
+                      item?.variants?.length == 1
                         ? item.image
                         : item.variants[variant[item.id] || 0].images[0]
                     }
@@ -306,38 +281,10 @@ export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
                       {item.name}
                     </p>
                   </div>
-                  {item.variants.length == 1 &&
+                  {item?.variants?.length == 1 &&
                     item.variants.map((data) => {
                       return (
                         <div className="flex p-1 md:px-3 flex-col xs:justify-center xs:items-center xs:text-center md:justify-evenly sm:ml-0   ">
-                          {/* {console.log(allFavItems.find((fav)=>{
-                              console.log(fav.id, item.id, "HEREEEEEEEEEEEEE<><><><><><>");
-                               return fav.id === item.id
-                            }))}; */}
-
-                          {/* ADD TO FAVOURITES  */}
-                          {/* {user_id != 14 &&
-                              (allFavItems.find((fav) => {
-                                return fav.id === item.id;
-                              }) ? (
-                                <FaHeart
-                                  className="text-red absolute top-2 text-xl animate-hbeat hover:scale-125 transition-all  right-2 "
-                                  onClick={(e) => {
-                                    setFavPos((prev)=> !prev)
-                                    e.stopPropagation();
-                                    handleRemoveFavorite(item);
-                                  }}
-                                />
-                              ) : (
-                                <FaRegHeart
-                                  className={`text-[light_gray] group-hover:top-2 group-active:top-2 absolute ${!favPos ? '-top-5' : 'top-2'} text-xl hover:scale-125  transition-all right-2`}
-                                  onClick={(e) => {
-                                    setFavPos((prev)=> !prev)
-                                    e.stopPropagation();
-                                    handleAddFavorite(item);
-                                  }}
-                                />
-                              ))} */}
                           <div className="  w-full md:px-3 ">
                             <p className="2xs:text-base xs:text-sm t sm:text-xl  md:text-sm font-light  px-1 py-1 flex md:flex-row  justify-between items-center">
                               <span className=" font-bold text-xs">
@@ -355,22 +302,14 @@ export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
                           </div>
 
                           <div className="w-full ">
-                            {item.variants.some(
+                            {item?.variants.some(
                               (variant) => variant.stock > 0
                             ) ? (
                               allCartItems?.find(
                                 (i) => i.product_id === item.id
                               ) ? (
                                 <>
-                                  <div
-                                    className="mt-3"
-                                    onClick={(e) => {
-                                      console.log(
-                                        e,
-                                        "EVENT IN IMMEDIATE PARENT ELEMENT"
-                                      );
-                                    }}
-                                  >
+                                  <div className="mt-3">
                                     <CartQuantity
                                       item={item}
                                       variant={variant}
@@ -399,41 +338,15 @@ export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
                         </div>
                       );
                     })}
-                  {item.variants.length > 1 && (
+                  {item?.variants?.length > 1 && (
                     <div className=" md:flex md:flex-col px-3 md:justify-evenly  sm:flex xs:flex xs:justify-between ">
-                      {/* ADD TO FAVOURITES  */}
-                      {/* {user_id != 14 &&
-                          (allFavItems.find((fav) => {
-                            return fav.id === item.id;
-                          }) ? (
-                            <FaHeart
-                              className="text-red absolute top-2 text-xl animate-hbeat hover:scale-125 transition-all  right-2 "
-                              onClick={(e) => {
-                                setFavPos((prev)=> !prev)
-                                e.stopPropagation();
-                                handleRemoveFavorite(item);
-                              }}
-                            />
-                          ) : (
-                            <FaRegHeart
-                              className={`text-[light_gray] group-hover:top-2 group-active:top-2 absolute ${!favPos ? '-top-5' : 'top-2'} text-xl hover:scale-125  transition-all right-2`}
-                              onClick={(e) => {
-                                setFavPos((prev)=> !prev)
-                                e.stopPropagation();
-                                handleAddFavorite(item);
-                              }}
-                            />
-                          ))} */}
-
                       <div className="" onClick={(e) => e.stopPropagation()}>
                         <select
-                          // value={"selectedVariant"}
                           onChange={(e) => {
                             handleVariantChange(item.id, e);
                           }}
                           className="block w-full py-2 px-1 items-center border border-gray-300  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs text-center font-bold"
                         >
-                          {/* <option value="">City</option> */}
                           {item.variants.map((variant, index) => (
                             <option
                               key={variant.id}
@@ -452,12 +365,6 @@ export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
                         </select>
                       </div>
 
-                      {/* <div className=" xs:text-left  sm:mt-2 md:mt-[15px] md:mx-4 xs:mx-4 sm:mx-4 md:text-left ">
-                          <p className="2xs:text-base  xs:text-sm t sm:text-xl  xs:mt-4 md:mt-[-3px] sm:mt-[12px] md:text-sm text-gryColour font-light bg-white">
-                            ₹{item.variants[0].price}{" "}
-                          </p>
-                        </div> */}
-
                       <div>
                         {item.variants.some((variant) => variant.stock > 0) ? (
                           allCartItems?.find(
@@ -466,22 +373,8 @@ export const SubCategory = ({ setAddItem, addItem,setNavbarOpen }) => {
                               item?.variants?.[variant?.[item?.id] || 0]?.id
                           ) ? (
                             <>
-                              <div
-                                className="mt-3"
-                                // onClick={(e) => {
-                                //   console.log(
-                                //     e,
-                                //     "EVENT IN IMMEDIATE PARENT ELEMENT"
-                                //   );
-                                // }}
-                              >
-                                <CartQuantity
-                                  item={item}
-                                  variant={variant}
-                                  // setAllCartItems={setAllCartItems}
-                                  // allCartItems={allCartItems}
-                                  // user_id={user_id}
-                                />
+                              <div className="mt-3">
+                                <CartQuantity item={item} variant={variant} />
                               </div>
                             </>
                           ) : (

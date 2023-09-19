@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
@@ -19,7 +18,6 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [chosenPayment, setChosenPayment] = useState("");
   const { setisLoading } = useLoaderState();
-  const { jwt, setJwt } = useApiStore();
   const { apiToken } = useApiToken();
   const {
     userInfo: { user_id },
@@ -36,25 +34,28 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
       return item.id == deliveryAddress;
     });
 
-  // console.log(`${address + ' '+ area_name + ' ' + city_name + ' '+ country}`)
   let varArr = allCartItems.map((item) => {
     return item.product_variant_id;
   });
   let qtyArr = allCartItems.map((item) => {
     return `${item.amount}`;
   });
-  console.log(varArr, qtyArr);
-  useEffect(() => {
-    setNavbarOpen(false);
-  }, [NavbarOpen]);
+  // useEffect(() => {
+  //   setNavbarOpen(false);
+  // }, [NavbarOpen]);
 
   useEffect(() => {
-    let config = {
+    if (apiToken) setNavbarOpen(false);
+  }, [apiToken, NavbarOpen]);
+  
+
+  useEffect(() => {
+    const config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
+    
     let paymentMethod = new FormData();
     paymentMethod.append("accesskey", "90336");
     paymentMethod.append("settings", "1");
@@ -108,7 +109,6 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
 
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -181,7 +181,6 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
   let placeOrder = () => {
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -465,8 +464,6 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
                   </div>
                 </li>
               </div>
-
-              
 
               {/* <div className="flex justify-between font-bold text-[12px] mt-[-36px]">
                 <p className="text-[#8d9191] px-3">Final_Amount</p>

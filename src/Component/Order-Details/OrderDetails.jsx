@@ -165,7 +165,7 @@ export const OrderDetails = ({ setDetailsOrder, orderId }) => {
                   </div>
                   <hr className="mt-2" />
 
-                  {item.status_name.length > 0 && (
+                  {item?.status_name?.length > 0 && (
                     <div className="mt-2">
                       <h2 className="font-bold">Order-Staus</h2>
                       <p className="text-center">Order</p>

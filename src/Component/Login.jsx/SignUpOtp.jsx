@@ -102,8 +102,8 @@ export const SignUpOtp = ({ setOpenLogin }) => {
                   x
                 </span>
               </div>
-              <div class="flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-light_gray after:mt-0.5 after:flex-1 after:border-t after:border-light_gray">
-                <p class="mx-4 mb-0 text-center font-semibold">OR</p>
+              <div className="flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-light_gray after:mt-0.5 after:flex-1 after:border-t after:border-light_gray">
+                <p className="mx-4 mb-0 text-center font-semibold">OR</p>
               </div>
 
               <div className="relative p-6 flex-auto">
