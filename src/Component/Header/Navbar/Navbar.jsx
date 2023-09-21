@@ -119,7 +119,7 @@ export const Navbar = ({
           {NavbarOpen && (
             <div className="">
               <div
-                className="relative xs:my-2 ml-[-100px]  md:hidden sm:hidden border "
+                className="relative xs:my-2 ml-[-100px]  md:hidden sm:hidden "
                 onClick={(e) => {
                   e.stopPropagation()
                   console.log("on-on",mobileOpen);

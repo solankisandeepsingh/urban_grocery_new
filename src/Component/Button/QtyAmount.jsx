@@ -159,7 +159,6 @@ export const QtyAmount = ({ item }) => {
             return { ...cartItem, amount: cartItem.amount + 1 };
           } else return cartItem;
         })
-        
       );
     }
   };
