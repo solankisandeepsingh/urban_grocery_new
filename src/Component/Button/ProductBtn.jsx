@@ -118,6 +118,11 @@ function CartQuantity({ item }) {
           setisLoading(false);
 
           return;
+        }else{
+          toast.success("Item added to user cart successfully !", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 500,
+          });
         }
         let newArr = [...allCartItems, { ...item, amount: 1 }];
         toast.success("Item added to user cart successfully !", {

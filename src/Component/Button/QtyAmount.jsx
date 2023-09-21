@@ -151,10 +151,15 @@ export const QtyAmount = ({ item }) => {
     } else {
       setAllCartItems(
         allCartItems.map((cartItem) => {
+          toast.success("Item added to user cart successfully !", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 500,
+          });
           if (item.id === cartItem.id) {
             return { ...cartItem, amount: cartItem.amount + 1 };
           } else return cartItem;
         })
+        
       );
     }
   };
