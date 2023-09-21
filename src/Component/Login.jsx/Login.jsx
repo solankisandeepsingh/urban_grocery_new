@@ -18,12 +18,12 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { useApiToken } from "../zustand/useApiToken";
 
-export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog }) => {
+export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog,getUserCarts,cartFuncs }) => {
   const [logins, setLogins] = useState({
     phone: "",
     password: "",
   });
-
+  console.log(getUserCarts,cartFuncs,'logincart');
   const { allCartItems, config, clearCartApi, setAllCartItems } =
     useCartStore();
   const { setUserInfo } = useUserStore();
@@ -145,9 +145,9 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog }) => {
             closeLoginModal();
             navigate("/");
             localStorage.setItem("token", `${apiToken}`);
-
             setUserInfo(res.data);
             let newUserId = res?.data?.user_id;
+            
 
             toast.success("Logged in successfully!", {
               position: toast.POSITION.TOP_CENTER,
@@ -178,6 +178,13 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog }) => {
                 )
                 .then((res) => {
                   setisLoading(false);
+                  // cartFuncs?.cartFuncs(newUserId)
+                  getUserCarts(newUserId);
+                  
+                  if(cartFuncs){
+                    cartFuncs(newUserId)
+                  }
+                  console.log(cartFuncs,'cartt')
                 })
                 .catch((error) => {
                   console.log(error);
@@ -185,6 +192,8 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog }) => {
                 });
             };
 
+          
+            
             addMultipleItems();
           } else {
             toast.error("Invalid phone OR password!", {

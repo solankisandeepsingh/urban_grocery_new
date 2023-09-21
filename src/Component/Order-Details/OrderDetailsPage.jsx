@@ -68,7 +68,7 @@ export const OrderDetailsPage = () => {
                             </p>
                             <p>
                               {moment(
-                                item.date_added,
+                                item.order_time,
                                 "YYYY-MM-DD,HH:mm"
                               ).format("DD-MM-YYYY, h:mm A")}
                             </p>
@@ -77,7 +77,7 @@ export const OrderDetailsPage = () => {
                                 item.order_time, 'MM-DD-YYYY HH:mm:ss',true).format("YYYY-MM-DD HH:mm:ss")}
                             </p> */}
 
-                            {console.log(item.date_added ,"time")}
+                            {console.log(item.order_time ,"time")}
                           </div>
                           <div className="flex justify-between py-2 border-b border-b-light_gray">
                             <p className="text-graycolor text-[16px]">Total</p>

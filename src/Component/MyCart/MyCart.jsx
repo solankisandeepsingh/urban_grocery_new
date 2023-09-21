@@ -75,7 +75,7 @@ function MyCart({
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickMycartOutside);
-
+    
     return () => {
       document.removeEventListener("mousedown", handleClickMycartOutside);
     };

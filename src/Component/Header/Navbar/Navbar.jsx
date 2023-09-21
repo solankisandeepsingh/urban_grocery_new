@@ -143,7 +143,6 @@ export const Navbar = ({
                     ) : (
                       <FaUserCircle className=" xs:text-3xl text-lime  md:text-2xl mr-1 cursor-pointer" />
                     )}
-
                     {name}
                     <div className="md:mt-1 xs:mt-1 bg-white ">
                       <FaCaretDown className="bg-white" />

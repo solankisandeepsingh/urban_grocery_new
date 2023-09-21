@@ -45,7 +45,7 @@ export const Success = ({ setNavbarOpen,NavbarOpen }) => {
             onClick={() => navigate("/myorder")}
           >
             <BsCart3 className=" text-white text-2xl mr-1 xs:text-[14px] sm:text-[20px] md:text-[20px]" />
-            MyCart
+            My Orders
           </button>
 
           <button

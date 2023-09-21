@@ -887,7 +887,7 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
                     setReviewOpen(false);
                   }}
                 >
-                  <AiOutlineCloseCircle className="text-red text-2xl hover:opacity-50" />
+                  <AiOutlineCloseCircle className="text-red text-2xl hover:opacity-50"/>
                 </button>
                 <div className="w-full p-8 md:px-12 mr-auto rounded-2xl shadow-2xl">
                   <div className="flex justify-between">

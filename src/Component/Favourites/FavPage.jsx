@@ -168,7 +168,7 @@ export const FavPage = () => {
     <ToastContainer/>
       <div>
         {allFavItems?.length > 0 && (
-          <div className="grid xs:grid-cols-2 md:grid-cols-8 sm:grid-cols-8 mt-24 xs:mx-9 xs:gap-4 sm:mx-14 sm:gap-[200px] ">
+          <div className="grid xs:grid-cols-2 md:grid-cols-6 sm:grid-cols-4 mt-24 xs:mx-9 xs:gap-4 sm:mx-14 sm:gap-6 md:gap-5 ">
             {allFavItems?.length > 0 &&
               allFavItems?.map((item) => {
                 return (
