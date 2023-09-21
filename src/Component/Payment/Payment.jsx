@@ -243,7 +243,6 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
   };
 
   const handlePaymentMethod = (id) => {
-    console.log(id);
     setChosenPayment(id);
   };
 
@@ -296,25 +295,7 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
       labelFor: "paytm",
     },
   ];
-  // const methodIcons = {
-  //   cod_payment_method : "as",
-  //   razorpay_payment_method :
-  // }
-  const handleCreditCardSubmit = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const cardNumber = formData.get("cardNumber");
-    const expiryDate = formData.get("expiryDate");
-    const cvv = formData.get("cvv");
-    // Handle credit card payment method with the form data
-    console.log("Credit Card");
-    console.log("Card Number:", cardNumber);
-    console.log("Expiry Date:", expiryDate);
-    console.log("CVV:", cvv);
-  };
-
-  // const handleSuccessPay = () => {};
-  console.log(allCartItems, "allcartitem");
+  
 
   return (
     <>
@@ -339,8 +320,6 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
                         handlePaymentMethod(item.code);
                       }}
                     >
-                      {/* {console.log(paymentMethods[`${item.id}`])} */}
-                      {console.log(item, "MYITEM<><><>")}
                       <input
                         className="mr-2 leading-tight"
                         type="radio"

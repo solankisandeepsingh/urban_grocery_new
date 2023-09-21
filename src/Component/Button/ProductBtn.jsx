@@ -40,8 +40,6 @@ function CartQuantity({ item }) {
         config
       )
       .then(() => {
-        console.log(allCartItems, "-1 CQ >><><><><><><><><><><");
-
         if (
           allCartItems.some((product) => {
             return product.amount === 1;
@@ -50,7 +48,7 @@ function CartQuantity({ item }) {
           let newArr = allCartItems.filter(
             (pro) => pro.product_id !== item.id || pro.amount !== 1
           );
-         
+
           setisLoading(false);
 
           setAllCartItems(newArr);
@@ -68,7 +66,6 @@ function CartQuantity({ item }) {
 
           setAllCartItems(newArr);
           setisLoading(false);
-         
 
           return;
         }
@@ -95,6 +92,12 @@ function CartQuantity({ item }) {
 
     const newQty = (+finditem.amount || 0) + 1;
     bodyFormData.append("qty", newQty);
+    if (newQty > 10) {
+      toast.error("Quantity limit has been exceeded", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
     setisLoading(true);
 
     axios
@@ -117,13 +120,9 @@ function CartQuantity({ item }) {
           return;
         }
         let newArr = [...allCartItems, { ...item, amount: 1 }];
-        console.log(newArr);
         toast.success("Item added to user cart successfully !", {
           position: toast.POSITION.TOP_CENTER,
-          style: {
-            backgroundColor: "darkGreen",
-            color: "white", 
-          },
+          autoClose: 500,
         });
         setAllCartItems(newArr);
       })
@@ -135,7 +134,6 @@ function CartQuantity({ item }) {
 
   const findItemNumber = () => {
     let index = allCartItems.findIndex((i) => +i.product_id === +item.id);
-    console.log(allCartItems[index].amount);
     return allCartItems[index].amount;
   };
 

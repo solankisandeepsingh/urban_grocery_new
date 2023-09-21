@@ -28,18 +28,15 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
   const handleDropdown1Change = (event) => {
     const selectedValue = event.target.value;
     setCityDropdown(selectedValue);
-    console.log(selectedValue);
   };
 
   const handleDropdown2Change = (event) => {
     const selectedValue = event.target.value;
-    console.log(selectedValue);
     setAreaDropdown(selectedValue);
   };
 
   const handleOtherText = (event) => {
     const { name, value } = event.target;
-    // console.log(value);
     setOtherField(value);
   };
 
@@ -90,7 +87,6 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
           config
         )
         .then((res) => {
-          console.log(res, "hi");
           toast.success("Address added Successfully", {
             position: toast.POSITION.TOP_CENTER,
            
@@ -125,13 +121,11 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
 
   useEffect(() => {
     if (initialRender) {
-      console.log("initial");
       setIntialrender(false);
     } else {
       if (!cityDropdown) {
         return;
       }
-      console.log("calling areas api");
       const areaData = new FormData();
       areaData.append("accesskey", "90336");
       areaData.append("city_id", `${cityDropdown}`);

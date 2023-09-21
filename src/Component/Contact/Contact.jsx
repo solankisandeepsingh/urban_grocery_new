@@ -1,9 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { API_TOKEN } from "../Token/Token";
 import { Aside } from "../Aside/Aside";
 import { useLoaderState } from "../zustand/useLoaderState";
-import { useApiStore } from "../zustand/useApiStore";
 import { useApiToken } from "../zustand/useApiToken";
 
 export const Contact = () => {
@@ -30,7 +28,6 @@ export const Contact = () => {
         config
       )
       .then((res) => {
-        console.log(res?.data?.contact);
         setContact(res?.data?.contact);
         setisLoading(false);
       })

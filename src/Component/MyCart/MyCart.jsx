@@ -56,7 +56,6 @@ function MyCart({
 
   const isMobileOrTablet = useMediaQuery({ query: "(max-width: 767px)" });
 
-  console.log(newUserLog, "newUserlog");
 
   let menuRef = useRef();
 
@@ -254,7 +253,6 @@ function MyCart({
   // useEffect(() => {
   //   getUserCarts(user_id);
   // }, [accesskey]);
-  // console.log(newUserSignUpLog,user_id, "both check")
   useEffect(() => {
     if (apiToken) getUserCarts(user_id);
   }, [apiToken, accesskey]);

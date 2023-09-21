@@ -15,13 +15,11 @@ export const OrderDetails = ({ setDetailsOrder, orderId }) => {
     navigate("/myorder");
     setDetailsOrder(false);
   };
-  console.log(orderId, "orderId");
   return (
     <>
       <div className="md:w-[60%]  border border-light_gray p-5 xs:w-full ">
         {orderId &&
           allOrderDetails.map((item) => {
-            console.log(item.id, "itemmmmmmmmmmmmmmm");
             if (item.id === orderId)
               return (
                 <div className="">

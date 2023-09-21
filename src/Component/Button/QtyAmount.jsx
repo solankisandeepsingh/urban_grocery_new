@@ -30,13 +30,10 @@ export const QtyAmount = ({ item }) => {
       bodyFormData.append("product_variant_id", item.product_variant_id);
 
       const finditem = allCartItems.find((data) => {
-        console.log(data);
         return data.product_id === item.product_id;
       });
       const newQty = +finditem.amount !== 0 ? +finditem.amount - 1 : 0;
       bodyFormData.append("qty", newQty);
-
-      console.log("newQty", newQty);
 
       setisLoading(true);
 
@@ -86,13 +83,6 @@ export const QtyAmount = ({ item }) => {
           })
         );
       } else {
-        // console.log("Item > 1");
-        // console.log(allCartItems.map((cartItem) => {
-        //     if (item.id === cartItem.id) {
-        //       return { ...cartItem, amount: cartItem.amount - 1 };
-        //     } else return cartItem
-        //   }));
-
         setAllCartItems(
           allCartItems.map((cartItem) => {
             if (item.id === cartItem.id) {
@@ -119,7 +109,6 @@ export const QtyAmount = ({ item }) => {
       bodyFormData.append("product_id", item.product_id);
       bodyFormData.append("product_variant_id", item.product_variant_id);
       const finditem = allCartItems.find((data) => {
-        console.log(data);
         return data.product_id == item.product_id;
       });
       const newQty = (+finditem.amount || 0) + 1;
@@ -139,7 +128,6 @@ export const QtyAmount = ({ item }) => {
           config
         )
         .then((res) => {
-          console.log(">>>>>>>>>>>>>>resonse", res);
           setisLoading(false);
           if (allCartItems.some((cartItem) => cartItem.id === item.id)) {
             let newArr = allCartItems.map((data) =>
@@ -148,10 +136,7 @@ export const QtyAmount = ({ item }) => {
             setAllCartItems(newArr);
             toast.success("Item added to user cart successfully !", {
               position: toast.POSITION.TOP_CENTER,
-              style: {
-                backgroundColor: "darkGreen",
-                color: "white", 
-              },
+              autoClose: 500,
             });
             return;
           }

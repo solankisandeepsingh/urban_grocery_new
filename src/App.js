@@ -18,16 +18,12 @@ import { Privacy } from "./Component/Privacy/Privacy";
 import { Coditions } from "./Component/Term & Conditions/Coditions";
 import { Contact } from "./Component/Contact/Contact";
 import { About } from "./Component/About/About";
-import { API_TOKEN } from "./Component/Token/Token";
 import Loader from "./Component/Loader";
-import Review from "./Component/MyCart/Review/Review";
 import { OrderDetails } from "./Component/Order-Details/OrderDetails";
 import { MyProfile } from "./Component/Profile/MyProfile";
 import { OrderDetailsPage } from "./Component/Order-Details/OrderDetailsPage";
-import Search from "./Component/Header/Search/Search";
 import { FavPage } from "./Component/Favourites/FavPage";
 import { Footer } from "./Component/Footer/Footer";
-import { AccessToken } from "./Component/AccessToken/AccessToken";
 import axios from "./api/axios";
 import { useApiToken } from "./Component/zustand/useApiToken";
 
@@ -45,111 +41,40 @@ function App() {
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
-  // const [loading, setLoading] = useState(true);
   const [user_id, setUser_id] = useState("14");
   const [NavbarOpen, setNavbarOpen] = useState(true);
   const { apiToken, accessTokenApi } = useApiToken();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         'https://grocery.intelliatech.in/api-firebase/verify-token.php?generate_token',
-  //         {
-  //           params: {
-  //             key: 'generate_token',
-  //           },
-  //         }
-  //       );
-
-  //       console.log(response, 'jwt response');
-  //       accessTokenApi(response?.data);
-  //     } catch (error) {
-  //       console.log(error, 'Api Error');
-  //     }
-  //   };
-
-  //   if (!apiToken) {
-  //     fetchData();
-  //   }
-  // }, [apiToken, accessTokenApi]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         "https://grocery.intelliatech.in/api-firebase/verify-token.php?generate_token",
-  //         {
-  //           params: {
-  //             key: "generate_token",
-  //           },
-  //         }
-  //       );
-
-  //       const token = response?.data;
-
-  //       if (token) {
-  //         localStorage.setItem("accessToken", token);
-  //         accessTokenApi(token);
-  //       } else {
-  //         console.log("Token is not valid.");
-  //       }
-  //     } catch (error) {
-  //       console.error("API Error:", error);
-  //     }
-  //   };
-
-  //   const TokenStore = localStorage.getItem("accessToken");
-
-  //   if (!apiToken && !TokenStore) {
-  //     fetchData();
-  //   } else {
-  //     if (TokenStore) {
-  //       accessTokenApi(TokenStore);
-  //     } else {
-  //       fetchData();
-  //     }
-  //   }
-  // }, [apiToken, accessTokenApi]);
-
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "https://grocery.intelliatech.in/api-firebase/verify-token.php?generate_token",
+    const fetchToken = async () => {
+      accessTokenApi("");
+      const generateTokenResponse = await axios.get(
+        "https://grocery.intelliatech.in/api-firebase/verify-token.php?generate_token",
+        {
+          params: {
+            key: "generate_token",
+          },
+        }
+      );
+      const generatedToken = generateTokenResponse?.data;
+      if (generatedToken) {
+        accessTokenApi(generatedToken);
+        const verifyTokenResponse = await axios.post(
+          "https://grocery.intelliatech.in/api-firebase/verify-token.php?verify_token",
           {
-            params: {
-              key: "generate_token",
+            headers: {
+              Authorization: `Bearer ${generatedToken}`,
             },
           }
         );
-  
-        const token = response?.data;
-  
-        if (token) {
-          localStorage.setItem("accessToken", token);
-          accessTokenApi(token);
-        } else {
-          console.log("Token is not valid.");
-          localStorage.removeItem("accessToken");
-        }
-      } catch (error) {
-        console.error("API Error:", error);
-        localStorage.removeItem("accessToken");
+
+        console.log("Verify Token Response:", verifyTokenResponse.data);
+      } else {
+        console.log("Token is not valid.");
       }
     };
-  
-    const storedToken = localStorage.getItem("accessToken");
-  
-    if (!apiToken && !storedToken) {
-      fetchData();
-    } else {
-      if (storedToken) {
-        accessTokenApi(storedToken);
-      } 
-    }
-  }, [apiToken, accessTokenApi]);
-  
+    fetchToken();
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("NavbarOpen", JSON.stringify(NavbarOpen));
@@ -157,7 +82,6 @@ function App() {
 
   return (
     <>
-      {/* <AccessToken /> */}
       <div className="flex flex-col h-screen justify-between">
         <Navbar
           setData={setData}
@@ -179,11 +103,8 @@ function App() {
             path="/login"
             element={
               <Login
-                // dispatchLogin={dispatchLogin}
-                // setLoggedIn={setLoggedIn}
-                // user_id={user_id}
+               
                 setUser_id={setUser_id}
-                // handleLogin={handleLogin}
               />
             }
           />
@@ -257,18 +178,7 @@ function App() {
             }
           />
 
-          {/* <Route
-            path="/review"
-            element={
-              <Review
-                NavbarOpen={NavbarOpen}
-                setNavbarOpen={setNavbarOpen}
-                setData={true}
-                user_id={user_id}
-                setUser_id={setUser_id}
-              />
-            }
-          /> */}
+        
 
           <Route path="/wallet" element={<Wallet />} />
           <Route path="/privacy" element={<Privacy />} />

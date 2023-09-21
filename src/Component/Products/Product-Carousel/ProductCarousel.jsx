@@ -19,7 +19,6 @@ import { useApiToken } from "../../zustand/useApiToken";
 
 export const ProductCarousel = ({}) => {
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
-  console.log(allCartItems, "After Destructure");
   const { allProducts, setAllProducts } = useProductsStore();
 
   // const [variant, setVariant] = useState({ 0: 0 });
@@ -37,9 +36,6 @@ export const ProductCarousel = ({}) => {
   const [fav, setFav] = useState();
 
   const handleVariantChange = (id, e) => {
-    console.log(variant);
-    console.log(e.target.value);
-
     let updatedvariant = { ...variant, [id]: e.target.value };
 
     setVariant(updatedvariant);
@@ -385,10 +381,7 @@ export const ProductCarousel = ({}) => {
       toast.success("Item added to user cart successfully !", {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 500,
-        style: {
-          backgroundColor: "darkGreen",
-          color: "white",
-        },
+       
       });
       newArr = [
         ...allCartItems,
@@ -406,7 +399,6 @@ export const ProductCarousel = ({}) => {
   };
 
   const addItemHandler = (item, data) => {
-    console.log("item", item);
     const config = {
       headers: {
         // Authorization: `Bearer ${jwt}`,
@@ -428,7 +420,6 @@ export const ProductCarousel = ({}) => {
         bodyFormData,
         config
       )
-      .then(console.log(allCartItems, "[before some method]"))
       .then((res) => {
         // setisLoading(false);
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
@@ -440,12 +431,10 @@ export const ProductCarousel = ({}) => {
                 }
               : data
           );
-          console.log(newArr);
           setAllCartItems(newArr);
 
           return;
         }
-        console.log(item.id, "Additem Id in product caraousel");
 
         let item1 = {
           amount: 1,
@@ -462,13 +451,8 @@ export const ProductCarousel = ({}) => {
         toast.success("Item added to user cart successfully !", {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 500,
-          style: {
-            backgroundColor: "darkGreen",
-            color: "white",
-          },
+         
         });
-        console.log(newArr);
-        // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
 
         setAllCartItems(newArr);
         setisLoading(false);
@@ -594,12 +578,7 @@ export const ProductCarousel = ({}) => {
                                       <>
                                         <div
                                           className="mt-3"
-                                          onClick={(e) => {
-                                            console.log(
-                                              e,
-                                              "EVENT IN IMMEDIATE PARENT ELEMENT"
-                                            );
-                                          }}
+                                          onClick={(e) => {}}
                                         >
                                           <CartQuantity
                                             item={item}

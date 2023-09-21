@@ -19,9 +19,7 @@ function Form({ user_id, setReviewPage, setShowForm }) {
 
   const { deliveryAddress, setDeliveryAddress, addList, setAddList } =
     useUserStore();
-  console.log(setAddList);
   const handleOptionChange = (event) => {
-    console.log(event.target.value);
     setDeliveryAddress(event.target.value);
   };
 

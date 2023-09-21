@@ -33,7 +33,7 @@ export const Signup = ({
   const [closeSignup, setCloseSignUp] = useState(true);
   const { setisLoading } = useLoaderState();
   const { jwt, setJwt } = useApiStore();
-  const {apiToken} = useApiToken()
+  const { apiToken } = useApiToken();
   const [signUpvisiblePassword, setSignUpVisiblePassword] = useState(false);
 
   const handleUserSignUp = (e) => {
@@ -61,21 +61,9 @@ export const Signup = ({
     formData.append("accesskey", "90336");
     formData.append("type", "register");
     formData.append("name", userRegistraion.name);
-    // formData.append("email", "singh@yahoo.com");
     formData.append("password", userRegistraion.password);
-    // formData.append("country_code", "91");
-    formData.append("mobile", phoneNumber);
-    // formData.append("mobile", "+917042719919");
-    // formData.append("fcm_id", "YOUR_FCM_ID");
-    // formData.append("dob", "08-09-1993");
-    // formData.append("city_id", "1");
-    // formData.append("area_id", "1");
-    // formData.append("street", "Vijay");
-    // formData.append("pincode", "191104");
-    // formData.append("api_key", "abc@123");
-    // formData.append("referral_code", "QCZYBEXHK5");
-    // formData.append("latitude", "44.968046");
-    // formData.append("longitude", "-f");
+    formData.append("mobile", "+91" + phoneNumber);
+    
     setisLoading(true);
 
     axios
@@ -85,7 +73,6 @@ export const Signup = ({
         config
       )
       .then((res) => {
-        console.log(res);
         if (res.data.error) {
           toast.error(res.data.message);
           setisLoading(false);
@@ -100,7 +87,6 @@ export const Signup = ({
       })
       .catch((err) => {
         toast.error("An error occurred. Please try again.");
-        console.log("already registered", err);
         setisLoading(false);
       });
     setUserRegistration({

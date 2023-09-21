@@ -30,7 +30,6 @@ export const About = () => {
         config
       )
       .then((res) => {
-        console.log(res);
         setAbout(res?.data?.about);
         setisLoading(false);
       })

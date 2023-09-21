@@ -31,7 +31,6 @@ function Home({
 }) {
   const { allImg, setAllImg } = useImgStore();
   const { jwt, setJwt } = useApiStore();
-  console.log(allImg, setAllImg, "IMG STORE FROM ZUSTAND");
   const { setisLoading } = useLoaderState();
   const [visible, setVisible] = useState(false);
   const { apiToken, accessTokenApi } = useApiToken();

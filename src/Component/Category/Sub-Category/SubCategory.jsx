@@ -44,7 +44,6 @@ export const SubCategory = ({ setAddItem, addItem, setNavbarOpen }) => {
         bodyFormData,
         config
       )
-      .then(console.log(allCartItems, "[before some method]"))
       .then((res) => {
         // setisLoading(false);
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
@@ -76,10 +75,7 @@ export const SubCategory = ({ setAddItem, addItem, setNavbarOpen }) => {
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
         toast.success("Item added to user cart successfully !", {
           position: toast.POSITION.TOP_CENTER,
-          style: {
-            backgroundColor: "darkGreen",
-            color: "white",
-          },
+          
         });
         setAllCartItems(newArr);
         setisLoading(false);
@@ -116,12 +112,10 @@ export const SubCategory = ({ setAddItem, addItem, setNavbarOpen }) => {
         },
       ];
     } else {
-      toast.success("Item added to user cart Successfully !", {
+      toast.success("Item added to user cart successfully !", {
         position: toast.POSITION.TOP_CENTER,
-        style: {
-          backgroundColor: "darkGreen",
-          color: "white",
-        },
+        autoClose:500,
+       
       });
       newArr = [
         ...allCartItems,
@@ -157,7 +151,6 @@ export const SubCategory = ({ setAddItem, addItem, setNavbarOpen }) => {
           config
         )
         .then((res) => {
-          console.log(res?.data?.data);
           setAllProducts(res?.data?.data);
           setIsLoading(false);
         })
@@ -210,7 +203,6 @@ export const SubCategory = ({ setAddItem, addItem, setNavbarOpen }) => {
                 }
               : data
           );
-          console.log(newArr);
           setAllCartItems(newArr);
 
           return;

@@ -75,9 +75,9 @@ export const Address = ({ isOpen, setIsOpen }) => {
         config
       )
       .then((res) => {
-        console.log("delete response:", res);
         toast.info("Address deleted successfully !", {
           position: toast.POSITION.TOP_CENTER,
+          autoClose:500
         });
         getAddress();
       })

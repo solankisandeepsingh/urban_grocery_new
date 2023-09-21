@@ -10,6 +10,7 @@ import { useLoaderState } from "../zustand/useLoaderState";
 import CartQuantity from "../Button/CartQuantity";
 import Carousel from "react-multi-carousel";
 import { useApiToken } from "../zustand/useApiToken";
+import { ToastContainer, toast } from "react-toastify";
 
 export const SimilarProduct = ({ id }) => {
   console.log(id);
@@ -138,10 +139,8 @@ export const SimilarProduct = ({ id }) => {
       });
   };
   const addItemHandler = (item, data) => {
-    console.log("item", item);
     const config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -164,7 +163,6 @@ export const SimilarProduct = ({ id }) => {
       )
       .then(console.log(allCartItems, "[before some method]"))
       .then((res) => {
-        // setisLoading(false);
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
           let newArr = allCartItems.map((data) =>
             data.product_id === item.id
@@ -176,19 +174,9 @@ export const SimilarProduct = ({ id }) => {
           );
           console.log(newArr);
           setAllCartItems(newArr);
-          // setAllCartItems((cart) =>
-          //   cart.map((data) =>
-          //     data.product_id === item.id
-          //       ? {
-          //           ...data,
-          //           amount: data.amount + 1,
-          //         }
-          //       : data
-          //   )
-          // );
+         
           return;
         }
-        console.log(item.id, "Additem Id in product caraousel");
 
         let item1 = {
           amount: 1,
@@ -202,8 +190,11 @@ export const SimilarProduct = ({ id }) => {
         };
 
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
-        console.log(newArr);
-        // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
+        toast.success("Item added to user cart successfully !", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 500,
+         
+        });
         setAllCartItems(newArr);
         setisLoading(false);
       })
@@ -213,10 +204,8 @@ export const SimilarProduct = ({ id }) => {
       });
   };
   const addItemUI = (mainItem) => {
-    console.log("INSIDE");
     let newArr = [];
     if (mainItem?.variants?.length > 1) {
-      console.log("MORE <><><><><><>");
       newArr = [
         ...allCartItems,
         {
@@ -228,7 +217,12 @@ export const SimilarProduct = ({ id }) => {
         },
       ];
     } else {
-      console.log("LESS <><><><><><><>");
+      toast.success("Item added to user cart successfully !", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 500,
+       
+      });
+
       newArr = [
         ...allCartItems,
         {
@@ -282,7 +276,9 @@ export const SimilarProduct = ({ id }) => {
     if (apiToken) handleSimilarProduct();
   }, [apiToken]);
   return (
-    <div>
+    <>
+    <ToastContainer/>
+     <div>
       <p className="text-[22px]  font-semibold">Similar products</p>
 
       <div className="">
@@ -411,39 +407,15 @@ export const SimilarProduct = ({ id }) => {
                       })}
                     {item?.variants?.length > 1 && (
                       <div className=" md:flex md:flex-col px-3 md:justify-evenly  sm:flex xs:flex xs:justify-between ">
-                        {/* ADD TO FAVOURITES  */}
-                        {/* {user_id != 14 &&
-                          (allFavItems.find((fav) => {
-                            return fav.id === item.id;
-                          }) ? (
-                            <FaHeart
-                              className="text-red absolute top-2 text-xl animate-hbeat hover:scale-125 transition-all  right-2 "
-                              onClick={(e) => {
-                                setFavPos((prev)=> !prev)
-                                e.stopPropagation();
-                                handleRemoveFavorite(item);
-                              }}
-                            />
-                          ) : (
-                            <FaRegHeart
-                              className={`text-[light_gray] group-hover:top-2 group-active:top-2 absolute ${!favPos ? '-top-5' : 'top-2'} text-xl hover:scale-125  transition-all right-2`}
-                              onClick={(e) => {
-                                setFavPos((prev)=> !prev)
-                                e.stopPropagation();
-                                handleAddFavorite(item);
-                              }}
-                            />
-                          ))} */}
+                      
 
                         <div className="" onClick={(e) => e.stopPropagation()}>
                           <select
-                            // value={"selectedVariant"}
                             onChange={(e) => {
                               handleVariantChange(item.id, e);
                             }}
                             className="block w-full py-2 px-1 items-center border border-gray-300  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs text-center font-bold"
                           >
-                            {/* <option value="">City</option> */}
                             {item.variants.map((variant, index) => (
                               <option
                                 key={variant.id}
@@ -462,11 +434,7 @@ export const SimilarProduct = ({ id }) => {
                           </select>
                         </div>
 
-                        {/* <div className=" xs:text-left  sm:mt-2 md:mt-[15px] md:mx-4 xs:mx-4 sm:mx-4 md:text-left ">
-                          <p className="2xs:text-base  xs:text-sm t sm:text-xl  xs:mt-4 md:mt-[-3px] sm:mt-[12px] md:text-sm text-gryColour font-light bg-white">
-                            ₹{item.variants[0].price}{" "}
-                          </p>
-                        </div> */}
+                        
 
                         <div>
                           {item.variants.some(
@@ -480,19 +448,12 @@ export const SimilarProduct = ({ id }) => {
                               <>
                                 <div
                                   className="mt-3"
-                                  // onClick={(e) => {
-                                  //   console.log(
-                                  //     e,
-                                  //     "EVENT IN IMMEDIATE PARENT ELEMENT"
-                                  //   );
-                                  // }}
+                               
                                 >
                                   <CartQuantity
                                     item={item}
                                     variant={variant}
-                                    // setAllCartItems={setAllCartItems}
-                                    // allCartItems={allCartItems}
-                                    // user_id={user_id}
+                                  
                                   />
                                 </div>
                               </>
@@ -524,5 +485,7 @@ export const SimilarProduct = ({ id }) => {
         </Carousel>
       </div>
     </div>
+    </>
+   
   );
 };

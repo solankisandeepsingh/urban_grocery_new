@@ -20,7 +20,7 @@ export const Success = ({ setNavbarOpen,NavbarOpen }) => {
   return (
     <>
       <div className="flex flex-col items-center text-center justify-center mt-24">
-        <div className="md:mt-24 sm:mt-36">
+        <div className="md:mt-6 sm:mt-36">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="text-lime w-28 h-28 sm:w-40 sm:h-40 xs:w-24 xs:h-24"
@@ -39,20 +39,20 @@ export const Success = ({ setNavbarOpen,NavbarOpen }) => {
         <p className="text-4xl font-bold xs:text-[18px] sm:text-[30px]">
           Order Placed Successfully!
         </p>
-        <div className="flex flex-col gap-3 md:mt-4 sm:mt-4">
+        <div className="flex gap-3 md:mt-4 sm:mt-4 md:py-8">
           <button
-            className="inline-flex items-center px-3 py-2 xs:text-[12px] sm:text-[20px] md:text-[24px] rounded-lg text-lime bg-indigo-600 border border-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring"
+            className="inline-flex items-center px-4 py-2 xs:text-[12px] sm:text-[20px] md:text-[16px] rounded-lg bg-lime text-white bg-indigo-600 border hover:bg-customGreen  focus:outline-none focus:ring"
             onClick={() => navigate("/myorder")}
           >
-            <BsCart3 className=" text-lime text-2xl mr-1 xs:text-[14px] sm:text-[20px] md:text-[24px]" />
+            <BsCart3 className=" text-white text-2xl mr-1 xs:text-[14px] sm:text-[20px] md:text-[20px]" />
             MyCart
           </button>
 
           <button
-            className="inline-flex items-center px-3 py-2 xs:text-[12px] sm:text-[20px] md:text-[24px] rounded-lg text-lime bg-indigo-600 border border-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring"
+            className="inline-flex items-center px-3 py-2 xs:text-[12px] sm:text-[20px] md:text-[16px] rounded-lg  bg-lime text-white hover:bg-customGreen  border border-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring"
             onClick={goToHome}
           >
-            <FaHome className="mr-1 text-graycolor text-lime text-2xl xs:text-[14px] sm:text-[20px] md:text-[24px]" />
+            <FaHome className="mr-1 text-white text-2xl xs:text-[14px] sm:text-[20px] md:text-[20px]" />
             Home 
           </button>
         </div>

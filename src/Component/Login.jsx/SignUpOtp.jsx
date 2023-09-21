@@ -36,7 +36,6 @@ export const SignUpOtp = ({ setOpenLogin }) => {
 
   function onSignup(e) {
     e.preventDefault();
-    console.log("why not clokci");
     setLoading(true);
     onCaptchVerify();
 
@@ -65,7 +64,6 @@ export const SignUpOtp = ({ setOpenLogin }) => {
     window.confirmationResult
       .confirm(otp)
       .then(async (res) => {
-        console.log(res);
         setUser(res.user);
         setLoading(false);
       })

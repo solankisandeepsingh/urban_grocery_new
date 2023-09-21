@@ -20,7 +20,6 @@ export const MyOrder = ({ addItem,setNavbarOpen }) => {
   } = useUserStore();
   const navigate = useNavigate();
   const { orderId, setOrderId } = useOrderDetails();
-  console.log(orderId, "order");
 
   // const [orderData, setOrderData] = useState("");
   const { allOrderDetails, setAllOrderDetails } = useOrderDetails();
@@ -72,7 +71,6 @@ export const MyOrder = ({ addItem,setNavbarOpen }) => {
 
   const handleOrderDetails = (item) => {
     setOrderId(item);
-    console.log(item, "item");
     navigate("/ordersummarypage");
   };
 
@@ -134,7 +132,7 @@ export const MyOrder = ({ addItem,setNavbarOpen }) => {
                         <div className="  break-all text-sm">
                           {item.items &&
                             item.items.map((data) => (
-                              <p className="ml-3   ">{data.product_name}</p>
+                              <p className="ml-3 font-bold">{data.product_name}</p>
                             ))}
                         </div>
                       </div>

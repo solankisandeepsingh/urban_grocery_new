@@ -29,10 +29,8 @@ import { SimilarProduct } from "../../Similar-Products/SimilarProduct";
 import { useApiToken } from "../../zustand/useApiToken";
 
 export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
-  // console.log('ProductDetails');
   const [productPageData, setProductPage] = useState([]);
   const [wishlist, setWishlist] = useState(false);
-  // const [favPos, setFavPos] = useState(true);
   const [reviewList, setReviewList] = useState(false);
   const [reviewOpen, setReviewOpen] = useState(false);
   const [images, setImages] = useState([]);
@@ -65,8 +63,6 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
   };
 
   const handleVariantChange = (id, e) => {
-    console.log(variant);
-    console.log(e.target.value);
 
     let updatedvariant = { ...variant, [id]: e.target.value };
 
@@ -74,15 +70,11 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
   };
 
   const addItemHandler = (item, data) => {
-    console.log("item IN PDP", item, data);
     const config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
-    // console.log(data.id, "varaitn id");
-    // console.log(item.id, "main id");
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
@@ -112,19 +104,9 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
           );
           console.log(newArr);
           setAllCartItems(newArr);
-          // setAllCartItems((cart) =>
-          //   cart.map((data) =>
-          //     data.product_id === item.id
-          //       ? {
-          //           ...data,
-          //           amount: data.amount + 1,
-          //         }
-          //       : data
-          //   )
-          // );
+        
           return;
         }
-        console.log(item.id, "Additem Id in product caraousel");
 
         let item1 = {
           amount: 1,
@@ -138,13 +120,10 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
         };
 
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
-        console.log(newArr);
         toast.success("Item added to user cart successfully !", {
           position: toast.POSITION.TOP_CENTER,
-          style: {
-            backgroundColor: "darkGreen",
-            color: "white", 
-          },
+          autoClose:500
+          
         });
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
         setAllCartItems(newArr);
@@ -153,7 +132,7 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
       .catch((error) => {
         console.log(error);
         toast.error(
-          "Network Error. Please Check Your Connection And Try Again.",
+          "Network Error. Please check your connection and try again.",
           {
             position: toast.POSITION.TOP_CENTER,
           }
@@ -162,10 +141,8 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
       });
   };
   const addItemUI = (mainItem) => {
-    console.log("INSIDE");
     let newArr = [];
     if (mainItem?.variants?.length > 1) {
-      console.log("MORE <><><><><><>");
       newArr = [
         ...allCartItems,
         {
@@ -177,13 +154,9 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
         },
       ];
     } else {
-      console.log("LESS <><><><><><><>");
       toast.success("Item added to user cart successfully !", {
         position: toast.POSITION.TOP_CENTER,
-        style: {
-          backgroundColor: "darkGreen",
-          color: "white", 
-        },
+        autoClose:300
       });
       newArr = [
         ...allCartItems,
@@ -223,7 +196,6 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
   const addReview = () => {
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -236,8 +208,6 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
       bodyFormData.append("user_id", userInfo.user_id);
       bodyFormData.append("rate", value);
       bodyFormData.append("review", review);
-      // bodyFormData.append("images[]", images);
-      // bodyFormData.append("images[]", review);
 
       images.forEach((image, index) => {
         bodyFormData.append(`images[]`, image);
@@ -253,7 +223,6 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
         )
         .then((res) => {
           console.log(res);
-          // setReviewList(res.data.product_review);
           setisLoading(false);
           setReviewOpen(false);
           res.data.error
@@ -280,7 +249,6 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
   const productReviews = () => {
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -298,9 +266,7 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
         config
       )
       .then((res) => {
-        console.log(res.data);
         setReviewList(res.data.product_review);
-        // checkImageValidity(res.data.product_review[1].user_profile)
         setisLoading(false);
       })
       .catch((error) => {
@@ -309,34 +275,19 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
   };
 
   const imagesHandler = (event) => {
-    console.log(event.target.files);
     const files = event.target.files;
     const imagesArray = Array.from(files);
-    console.log(imagesArray);
     setImages(imagesArray);
   };
   const inputHandler = (event) => {
     setReview(event.target.value);
   };
 
-  //  function checkImageValidity(url) {
-  //     console.log(url, "RUNNING");
-  //     var img = new Image();
-  //     img.onload = function () {
-  //       console.log('IMG VALID');
-  //       // setisValidImg(true); // Image is valid
-  //     };
-  //     img.onerror = function () {
-  //       // setisValidImg(false); // Image is broken or invalid
-  //       console.log('IMG INVALID');
-  //     };
-  //     img.src = url;
-  //   }
+ 
 
   const productDetail = () => {
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -377,7 +328,6 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
   const allCartItemsHandler = (item, data) => {
     const config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -451,9 +401,7 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
     return data.id === id;
   });
 
-  const handleWishlist = () => {
-    setWishlist((prev) => !prev);
-  };
+ 
 
 
   const handleRemoveFavorite = (item) => {
@@ -480,13 +428,11 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
       .then((res) => {
         console.log(res, "favdata");
         setisLoading(false);
-        // setFavPos((prev) => !prev);
         setWishlist((prev) => !prev);
 
         let newArr = allFavItems.filter((fav) => {
           return fav.id !== item.id;
         });
-        console.log(newArr);
         setAllFavItems(newArr);
       })
       .catch((err) => {
@@ -498,7 +444,6 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
   const handleAddFavorite = (item) => {
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -524,7 +469,6 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
 
         console.log(res, "favdata");
         let newArr = [...allFavItems, item];
-        console.log(newArr);
         setAllFavItems(newArr);
       })
       .catch((err) => {

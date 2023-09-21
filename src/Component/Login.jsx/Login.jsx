@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { Signup } from "./Signup";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -30,27 +30,21 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog }) => {
   const [showSignUp, setShowSignUp] = useState(false);
   const [loginForm, setLoginForm] = useState(true);
   const [showRegisterForm, setShowRegisterForm] = useState(false);
-  const countryCode = "+91";
-  const [phoneNumber, setPhoneNumber] = useState(countryCode);
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [loginData, setLoginData] = useState([]);
   const navigate = useNavigate();
   const { setisLoading } = useLoaderState();
-  const { jwt, setJwt } = useApiStore();
   const [visiblePassword, setVisiblePassword] = useState(false);
   let loginRef = useRef(null);
   const { apiToken } = useApiToken();
 
-  console.log(setNewUserSignUpLog, "LOGIN setNewUserSuingUPLog");
 
   const handleShow = (e) => {
     e.preventDefault();
     setLoginForm(false);
     setShowSignUp(true);
-    // setOpenLogin(false)
-    // setLoginFormModals(false);
   };
   const closeLoginModal = () => {
-    // setLoginFormModals(false);
     if (setNewUserLog) {
       setNewUserLog(false);
     }
@@ -68,7 +62,6 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog }) => {
       setLoginForm(false);
       setShowRegisterForm(false);
 
-      // setOpenLogin(true)
     }
   };
 
@@ -91,10 +84,15 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog }) => {
   };
 
   const inputHandler = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setLogins({ ...logins, [name]: value });
+   let name = e.target.name;
+    let value = e.target.value.slice(3,e?.target?.value?.length);
+   setLogins({ ...logins, [name]: value });
   };
+  const passwordHandler = (e) => {
+    let name = e.target.name;
+    let value = e.target.value
+  setLogins({ ...logins, [name]: value });
+  }
 
   const clearCart = () => {
     clearCartApi();
@@ -106,21 +104,24 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog }) => {
     if (!logins.phone && !logins.password) {
       toast.error("Please enter both phone and password!", {
         position: toast.POSITION.TOP_CENTER,
+        autoClose:500
       });
     } else if (!logins.phone) {
       toast.error("Please enter a valid phone number!", {
         position: toast.POSITION.TOP_CENTER,
+        autoClose:500
       });
     } else if (!logins.password) {
       toast.error("Please enter a password!", {
         position: toast.POSITION.TOP_CENTER,
+        autoClose:500
       });
     } else {
       setisLoading(true);
 
       const loginItem = new FormData();
       loginItem.append("accesskey", "90336");
-      loginItem.append("mobile", logins.phone);
+      loginItem.append("mobile", "+91" + logins.phone);
       loginItem.append("password", logins.password);
       loginItem.append("fcm_id", "YOUR_FCM_ID");
 
@@ -188,6 +189,7 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog }) => {
           } else {
             toast.error("Invalid phone OR password!", {
               position: toast.POSITION.TOP_CENTER,
+              autoClose:500
             });
           }
         })
@@ -249,7 +251,7 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog }) => {
                             }
                           }}
                           name="phone"
-                          value={logins.phone === "" ? "+91" : logins.phone}
+                          value={`+91${logins?.phone}`}
                           placeholder="Phone"
                         />
 
@@ -258,8 +260,8 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog }) => {
                             className="w-full bg-gray-100 border-gray-400 text-gray-900 mt-2 p-3 rounded-lg focus:shadow-outline"
                             type={visiblePassword ? "text" : "password"}
                             placeholder="Password"
-                            onChange={inputHandler}
-                            value={logins.password}
+                            onChange={passwordHandler}
+                            value={logins?.password}
                             name="password"
                           />
                           <div
@@ -284,11 +286,7 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog }) => {
                         >
                           Login
                         </button>
-                        {/* <div className="" onClick={handleForgotPassword}>
-                          <p className="cursor-pointer xs:ml-8">
-                            Forgot password?
-                          </p>
-                        </div> */}
+                        
                       </div>
 
                       <div className="text-center lg:text-left">
@@ -320,7 +318,6 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog }) => {
         />
       )}
 
-      {/* {showSignUp && <SignUpOtp setOpenLogin={setOpenLogin}/>} */}
       {showSignUp && (
         <SignUpwithOtp
           setNewUserLog={setNewUserLog}
@@ -332,7 +329,6 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog }) => {
           setOpenLogin={setOpenLogin}
         />
       )}
-      {/* <SignUpwithOtp setOpenLogin={setOpenLogin}/> */}
     </>
   );
 };

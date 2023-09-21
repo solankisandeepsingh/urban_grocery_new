@@ -9,9 +9,8 @@ import { useApiToken } from "../zustand/useApiToken";
 
 function CarouselComponent() {
   const { allCarouselImg, setAllCarouselImg } = useSliderStore();
-  const {setisLoading} = useLoaderState();
-  const {apiToken} = useApiToken()
-
+  const { setisLoading } = useLoaderState();
+  const { apiToken } = useApiToken();
 
   const handleSliderImg = () => {
     let config = {
@@ -40,34 +39,35 @@ function CarouselComponent() {
         setisLoading(false);
       });
   };
-  // useEffect(() => {
-  //   handleSliderImg();
-  // }, []);
 
   useEffect(() => {
-    if(apiToken)
-    handleSliderImg();
+    if (apiToken) handleSliderImg();
   }, [apiToken]);
-
 
   return (
     <>
       <div className="rounded-xl">
-        {apiToken && <Carousel
-          autoPlay
-          infiniteLoop
-          showThumbs={false}
-          className="rounded-xl"
-        >
-          {allCarouselImg && allCarouselImg?.map((item) => {
-            return (
-              <div className="h-auto rounded-xl">
-                <img alt="" src={item?.image} className="rounded-xl h-auto" />
-              </div>
-            );
-          })}
-        </Carousel>}
-        
+        {apiToken && (
+          <Carousel
+            autoPlay
+            infiniteLoop
+            showThumbs={false}
+            className="rounded-xl"
+          >
+            {allCarouselImg &&
+              allCarouselImg?.map((item) => {
+                return (
+                  <div className="h-auto rounded-xl">
+                    <img
+                      alt=""
+                      src={item?.image}
+                      className="rounded-xl h-auto"
+                    />
+                  </div>
+                );
+              })}
+          </Carousel>
+        )}
       </div>
     </>
   );

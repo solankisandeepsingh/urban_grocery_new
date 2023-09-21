@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { API_TOKEN } from "../../Token/Token";
 import { useLoaderState } from "../../zustand/useLoaderState";
 import { useUserStore } from "../../zustand/useUserStore";
 import CartQuantity from "../../Button/ProductBtn";
@@ -12,11 +11,10 @@ import { FaArrowCircleUp } from "react-icons/fa";
 import { useCartStore } from "../../zustand/useCartStore";
 import { useSearchStore } from "../../zustand/useSearchStore";
 import { useApiToken } from "../../zustand/useApiToken";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 const Search = ({ setData, name, data }) => {
   const [searchData, setSearchData] = useState("");
-  // const [inputSearch, setInputSearch] = useState("a");
   const [arrayy, setArray] = useState([]);
   const [newItemsArray, setNewItemsArray] = useState(arrayy);
   const [visible, setVisible] = useState(false);
@@ -27,7 +25,6 @@ const Search = ({ setData, name, data }) => {
   const {
     userInfo: { user_id },
   } = useUserStore();
-  const { jwt } = useApiStore();
   const { apiToken } = useApiToken();
 
   const { allCartItems, setAllCartItems } = useCartStore();
@@ -38,7 +35,6 @@ const Search = ({ setData, name, data }) => {
   const serchAPIData = () => {
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -57,10 +53,10 @@ const Search = ({ setData, name, data }) => {
         config
       )
       .then((res) => {
-        setSearchData(res.data);
-        setArray(res.data.data);
+        setSearchData(res?.data);
+        setArray(res?.data?.data);
         setisLoading(false);
-        setData(res.data.data);
+        setData(res?.data?.data);
         setOffset(0);
       })
       .catch((err) => {
@@ -90,9 +86,7 @@ const Search = ({ setData, name, data }) => {
 
   const debouncedSearchTerm = useDebounce(searchInput, 800);
 
-  // useEffect(() => {
-  //   serchAPIData();
-  // }, [debouncedSearchTerm]);
+ 
 
   useEffect(() => {
     if (apiToken) serchAPIData();
@@ -107,7 +101,6 @@ const Search = ({ setData, name, data }) => {
     if (location.pathname === "/search") {
       let config = {
         headers: {
-          // Authorization: `Bearer ${jwt}`,
           Authorization: `Bearer ${apiToken}`,
         },
       };
@@ -121,7 +114,6 @@ const Search = ({ setData, name, data }) => {
       bodyFormData.append("search", searchInput);
       bodyFormData.append("offset", offset + 15);
 
-      // setisLoading(true);
       let data = axios
         .post(
           "https://grocery.intelliatech.in/api-firebase/products-search.php",
@@ -131,26 +123,21 @@ const Search = ({ setData, name, data }) => {
 
         
         .then((res) => {
-          setSearchData(res.data);
+          setSearchData(res?.data);
           const tempArr = JSON.parse(JSON.stringify(arrayy));
-          setArray([...arrayy, ...res.data.data]);
-          // setNewItemsArray(tempArr.concat(res.data.data));
+          setArray([...arrayy, ...res?.data?.data]);
 
-          // setisLoading(false);
-          setData([...arrayy, ...res.data.data]);
+          setData([...arrayy, ...res?.data?.data]);
         })
         .catch((err) => {
           console.log(err);
-          // setisLoading(false);
         });
     } else return;
   };
-  console.log("item1>>>>>>>>>>>>>>", allCartItems);
   const allCartItemsHandler = (item, data) => {
    
     const config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -162,11 +149,9 @@ const Search = ({ setData, name, data }) => {
     bodyFormData.append("product_id", `${data.id}`);
     bodyFormData.append("product_variant_id", `${item.id}`);
 
-    // const qtys = (item.qty || 0) + 1;
 
     bodyFormData.append("qty", 1);
 
-    // console.log("item", qtys);
     setisLoading(true);
 
     axios
@@ -177,10 +162,8 @@ const Search = ({ setData, name, data }) => {
       )
       .then((res) => {
         setisLoading(false);
-        // setallCartItems(res)
 
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
-          // console.log("addtiem", allCartItems);
           let newArr = allCartItems.map((data) =>
             data.product_id === item.id
               ? {
@@ -222,10 +205,7 @@ const Search = ({ setData, name, data }) => {
         setisLoading(false);
         toast.success("Item added to user cart successfully !", {
           position: toast.POSITION.TOP_CENTER,
-          style: {
-            backgroundColor: "darkGreen",
-            color: "white", 
-          },
+          autoClose: 500,
         });
       })
       .catch((error) => {
@@ -242,6 +222,8 @@ const Search = ({ setData, name, data }) => {
 
 
   return (
+    <>
+    <ToastContainer/>
     <div className="w-full max-w-screen-2xl bg-white md:h-[69px] md:mr-44">
       <div className="inline-flex justify-center relative text-black-500 bg-white xs:my-4 xs:mx-4 sm:ml-36 md:my-3  xs:mt-20 ">
         <svg
@@ -327,17 +309,10 @@ const Search = ({ setData, name, data }) => {
                         allCartItems.find((i) => i.product_id === item.id) ? (
                           <>
                             <div className="md:mt-2 md:ml-6 xs:mt-2.5 sm:mt-4 ">
-                              {console.log(
-                                item,
-                                "Item",
-                                allCartItems,
-                                "allCartItems",
-                                "In ProductCarousel, calling CartQuantity"
-                              )}
+                              
                               <CartQuantity
                                 item={item}
-                                // setallCartItems={setallCartItems}
-                                // allCartItems={allCartItems}
+                             
                               />
                             </div>
                           </>
@@ -362,6 +337,8 @@ const Search = ({ setData, name, data }) => {
         ))}
       </InfiniteScroll>
     </div>
+    </>
+    
   );
 };
 

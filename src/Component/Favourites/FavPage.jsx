@@ -4,14 +4,13 @@ import { currencyFormatter } from "../../utils/utils";
 import CartQuantity from "../Button/CartQuantity";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useUserStore } from "../zustand/useUserStore";
-import { useApiStore } from "../zustand/useApiStore";
 import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../zustand/useCartStore";
 import axios from "../../api/axios";
 import { useState } from "react";
-import { FaHeart, FaRegHeart, FaTrash } from "react-icons/fa";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useApiToken } from "../zustand/useApiToken";
+import { ToastContainer, toast } from "react-toastify";
 
 export const FavPage = () => {
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
@@ -80,6 +79,11 @@ export const FavPage = () => {
         },
       ];
     } else {
+      toast.success("Item added to user cart successfully !", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose:500,
+        
+      });
       newArr = [
         ...allCartItems,
         {
@@ -142,6 +146,11 @@ export const FavPage = () => {
         };
 
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
+        toast.success("Item added to user cart successfully !", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose:500
+          
+        });
         setAllCartItems(newArr);
         setisLoading(false);
       })
@@ -156,6 +165,7 @@ export const FavPage = () => {
   };
   return (
     <>
+    <ToastContainer/>
       <div>
         {allFavItems?.length > 0 && (
           <div className="grid xs:grid-cols-2 md:grid-cols-8 sm:grid-cols-8 mt-24 xs:mx-9 xs:gap-4 sm:mx-14 sm:gap-[200px] ">
@@ -175,28 +185,23 @@ export const FavPage = () => {
                         className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-28  md:w-40  sm:w-48 sm:h-32 rounded-lg "
                         src={
                           item?.variants?.length == 1
-                            ? item.image
-                            : item.variants[variant[item.id] || 0].images[0]
+                            ? item?.image
+                            : item?.variants[variant[item?.id] || 0].images[0]
                         }
                         alt={item.name}
                       />
                       <div className=" pt-2 md:py-2 md:mx-4 xs:mx-2 sm:mx-4 ">
                         <p className="md:text-sm xs:text-sm sm:text-[20px]  font-medium   truncate ">
-                          {item.name}
+                          {item?.name}
                         </p>
                       </div>
                       {item?.variants?.length == 1 &&
-                        item.variants.map((data) => {
+                        item?.variants.map((data) => {
                           return (
                             <div className="flex p-1 md:px-3 flex-col xs:justify-center xs:items-center xs:text-center md:justify-evenly sm:ml-0   ">
                               {user_id != 14 &&
                                 (allFavItems.find((fav) => {
-                                  {
-                                    console.log(
-                                      fav.id === item.id,
-                                      "faviddddddddddddd"
-                                    );
-                                  }
+                                
                                   return fav.id === item.id;
                                 }) ? (
                                   <AiOutlineCloseCircle
@@ -211,14 +216,14 @@ export const FavPage = () => {
                               <div className="  w-full md:px-3 ">
                                 <p className="2xs:text-base xs:text-sm t sm:text-xl  md:text-sm font-light  px-1 py-1 flex md:flex-row  justify-between items-center">
                                   <span className=" font-bold text-xs">
-                                    {currencyFormatter(data.price)}{" "}
+                                    {currencyFormatter(data?.price)}{" "}
                                   </span>
                                   <div>
                                     <span className="text-gryColour text-xs">
-                                      {data.measurement}{" "}
+                                      {data?.measurement}{" "}
                                     </span>
                                     <span className="font-normal text-gryColour text-xs  ">
-                                      {data.measurement_unit_name}
+                                      {data?.measurement_unit_name}
                                     </span>
                                   </div>
                                 </p>

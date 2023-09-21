@@ -20,7 +20,6 @@ import { NavLink } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 export const Aside = () => {
   const location = useLocation();
-  console.log(location, "loca");
   return (
     <>
       <div className="max-w-[100%]">

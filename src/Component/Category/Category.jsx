@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
-import { API_TOKEN } from "../Token/Token";
 import { useProductsStore } from "../zustand/useProductsStore";
 import { useLoaderState } from "../zustand/useLoaderState";
-import { useApiStore } from "../zustand/useApiStore";
 import { useApiToken } from "../zustand/useApiToken";
 export const Category = () => {
   const { allCategories, setAllCategories } = useProductsStore();
   const { setisLoading } = useLoaderState();
   const { apiToken } = useApiToken();
-
 
   const categryData = () => {
     const config = {
@@ -39,10 +36,6 @@ export const Category = () => {
       });
   };
 
-  // useEffect(() => {
-  //   categryData();
-  // }, []);
-
   useEffect(() => {
     if (apiToken) categryData();
   }, [apiToken]);
@@ -50,14 +43,9 @@ export const Category = () => {
   return (
     <>
       <div className="shadow-sm border xs:h-36 md:h-72 sm:h-72 border-[#e8e8e8] xs:my-3 md:p-5 md:mt-7 bg-[#fcfff3] rounded-md">
-        
-
         <div className="xs:my-2 xs:mx-2 mt-20 flex justify-between">
           <div className="text-customBlack text-[16px]">
             <h1 className="font-okra font-600">Shop By Category</h1>
-          </div>
-          <div className=" text-customGreen text-[16px]	">
-            <h1 className="cursor-pointer font-okra font-600">View All</h1>
           </div>
         </div>
 

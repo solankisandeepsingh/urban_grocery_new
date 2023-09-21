@@ -32,19 +32,16 @@ export const SignUpwithOtp = ({
   const { apiToken } = useApiToken();
 
   const [showSignUpForm, setShowSignUpForm] = useState(false);
-  console.log(setLoginForm, "logingset", setShowSignUp, "set show sing up", setNewUserLog, "setnewuserlog");
   const getVerifyOtp = (e) => {
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt }`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
-console.log(setNewUserLog, "NEW USER LOG");
     let verifyData = new FormData();
     verifyData.append("accesskey", "90336");
     verifyData.append("type", "verify-user");
-    verifyData.append("mobile", phoneNumber);
+    verifyData.append("mobile", "+91" + phoneNumber);
     setisLoading(true);
     axios
       .post(
@@ -53,20 +50,19 @@ console.log(setNewUserLog, "NEW USER LOG");
         config
       )
       .then((res) => {
-        // console.log(res, "res this is aleredy resgeistere");
         if (res.data.error) {
           toast.error(res.data.message, {
             position: toast.POSITION.TOP_CENTER,
           });
           setisLoading(false);
         } else {
-          if (phoneNumber.length >= 12) {
+          if (phoneNumber.length >= 10) {
             setExpandForm(true);
             genrateReCaptcha();
             setisLoading(false);
 
             let appVerifier = window.recaptchaVerifier;
-            const formatPh = "+" + phoneNumber;
+            const formatPh = "+91" + phoneNumber;
 
             signInWithPhoneNumber(auth, formatPh, appVerifier)
               .then((confirmationResult) => {
@@ -148,7 +144,6 @@ console.log(setNewUserLog, "NEW USER LOG");
   };
 
   const handleCloseSignUp = () => {
-    console.log('closing sign up');
     // setCloseSignUp((prev) => !prev);
     setShowSignUp(false);
     // // setNewUserSignUpLog(true)
@@ -157,7 +152,7 @@ console.log(setNewUserLog, "NEW USER LOG");
     // setNewUserLog(false);
   };
   const isPhoneNumberValid = (phone) => {
-    return phone.replace(/\D/g, "").length === 12;
+    return phone.replace(/\D/g, "").length === 10;
   };
   return (
     <div>
@@ -205,10 +200,15 @@ console.log(setNewUserLog, "NEW USER LOG");
                       type="text"
                       disabled={expandForm}
                       // value={phoneNumber}
-                      value={phoneNumber === "" ? "+91" : phoneNumber}
+                      // value={phoneNumber === "" ? "+91" : phoneNumber}
+                      value={`+91${phoneNumber}`}
                       onChange={(e) => {
-                        const inputPhone = e.target.value;
-                        if (inputPhone?.length <= 13) {
+                        const inputPhone = e.target.value.slice(
+                          3,
+                          e.target.value.length
+                        );
+                        // setPhoneNumber(inputPhone);
+                        if (inputPhone?.length <= 10) {
                           setPhoneNumber(inputPhone);
                         }
                       }}

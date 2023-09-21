@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 import { Aside } from "../Aside/Aside";
 import { useLoaderState } from "../zustand/useLoaderState";
-import { useApiStore } from "../zustand/useApiStore";
 import { useApiToken } from "../zustand/useApiToken";
 
 export const Faq = () => {
@@ -29,7 +27,6 @@ export const Faq = () => {
         config
       )
       .then((res) => {
-        console.log(res?.data?.message);
         setFaqData(res?.data?.message);
         setisLoading(false);
       })
@@ -39,17 +36,11 @@ export const Faq = () => {
       });
   };
 
-  // useEffect(() => {
-  //   handleFaq();
-  // }, []);
-
   useEffect(() => {
     if (apiToken) handleFaq();
   }, [apiToken]);
   return (
     <>
-      
-
       <div className="flex flex-col mt-24 xs:justify-center xs:items-center md:items-start sm:items-start md:flex-row md:justify-evenly sm:justify-evenly sm:flex sm:flex-row ">
         <div className="xs:w-[85%] md:w-[35%] sm:w-[30%]  xs:hidden md:block sm:block h-full">
           <Aside />

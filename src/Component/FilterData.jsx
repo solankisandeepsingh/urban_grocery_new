@@ -17,8 +17,7 @@ import { ToastContainer, toast } from "react-toastify";
 import InfiniteLoader from "./Infinite-loader";
 
 function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
-  const {allCartItems,setAllCartItems, variant, setVariant}= useCartStore();
-  console.log(allCartItems,"allcartitem is here")
+  const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
   const { setisLoading } = useLoaderState();
   const [offset, setOffset] = useState(0);
   const { searchInput, setSearchInput } = useSearchStore();
@@ -31,16 +30,15 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
   } = useUserStore();
   const { jwt, setJwt } = useApiStore();
   const debouncedSearchTerm = useDebounce(searchInput, 800);
-  const {apiToken} = useApiToken()
+  const { apiToken } = useApiToken();
 
   const addItemHandler = (item, data) => {
     const config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
-  
+
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
@@ -69,7 +67,7 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
               : data
           );
           setAllCartItems(newArr);
-        
+
           return;
         }
 
@@ -88,25 +86,24 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
         toast.success("Item added to user cart successfully !", {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 500,
-          style: {
-            backgroundColor: "darkGreen",
-            color: "white",
-          },
+         
         });
         setAllCartItems(newArr);
         setisLoading(false);
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Network error. Please check your connection and try again.", {
-          position: toast.POSITION.TOP_CENTER,
-        });
+        toast.error(
+          "Network error. Please check your connection and try again.",
+          {
+            position: toast.POSITION.TOP_CENTER,
+          }
+        );
         setisLoading(false);
       });
   };
 
   const handleVariantChange = (id, e) => {
-
     let updatedvariant = { ...variant, [id]: e.target.value };
 
     setVariant(updatedvariant);
@@ -125,31 +122,27 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
           product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
         },
       ];
-      
-    } else { 
+    } else {
       toast.success("Item added to user cart successfully !", {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 500,
-        style: {
-          backgroundColor: "darkGreen",
-          color: "white",
-        },
+       
       });
       newArr = [
-      ...allCartItems,
-      {
-        ...mainItem.variants[variant[mainItem.id] || 0],   
-         
-        amount: 1,
-        name: mainItem.name,
-        image: mainItem.image,
-        product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
-      },
-    ]}
+        ...allCartItems,
+        {
+          ...mainItem.variants[variant[mainItem.id] || 0],
+
+          amount: 1,
+          name: mainItem.name,
+          image: mainItem.image,
+          product_variant_id: mainItem.variants[variant[mainItem.id] || 0].id,
+        },
+      ];
+    }
     setAllCartItems(newArr);
   };
   const serchAPIData = () => {
-    console.log("normal search");
     let config = {
       headers: {
         // Authorization: `Bearer ${jwt}`,
@@ -171,10 +164,8 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
         config
       )
       .then((res) => {
-        console.log(res.data);
         setSearchData(res.data);
         setArray(res.data.data);
-        console.log(res.data.data);
         setisLoading(false);
         setData(res.data.data);
         setOffset(0);
@@ -188,13 +179,12 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
   //   serchAPIData();
   // }, [debouncedSearchTerm]);
 
-  useEffect(()=>{
-    if(apiToken){
+  useEffect(() => {
+    if (apiToken) {
       serchAPIData();
     }
-  },[apiToken,debouncedSearchTerm])
+  }, [apiToken, debouncedSearchTerm]);
   const nextData = async () => {
-    console.log("IN NEXT DATA");
     if (location.pathname === "/search") {
       let config = {
         headers: {
@@ -219,13 +209,10 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
           config
         )
 
-       
         .then((res) => {
           setSearchData(res.data);
-          console.log(arrayy);
           setArray([...arrayy, ...res.data.data]);
 
-          console.log(res.data.data);
           setData([...arrayy, ...res.data.data]);
         })
         .catch((err) => {
@@ -235,218 +222,203 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
   };
   return (
     <>
-    <ToastContainer/>
+      <ToastContainer />
       <div className="md:mt-20 ">
-      <div className="md:invisible xs:visible ">
-        {/* <Search setName={setName} setData={setData} data={data}/> */}
-      </div>
-     
-     
-      <InfiniteScroll
-        dataLength={data?.length || 0}
-        next={nextData}
-        hasMore={!(data?.length >= searchData.total)}
-        // loader={<InfiniteLoader/>}
-        // endMessage={
-        //   <p style={{ textAlign: "center" }}>
-        //     <b>Yay! You have seen it all</b>
-        //   </p>
-        // }
-      >
+        <div className="md:invisible xs:visible ">
+          {/* <Search setName={setName} setData={setData} data={data}/> */}
+        </div>
 
-      <div className=" xs:grid xs:grid-cols-2 md:grid md:grid-cols-7 sm:grid-cols-3 flex flex-wrap md:ml-5  ">
-
-        {data && data?.length > 0 ? (
-          data.map((item) => {
-            return (
-              <>
-                <div
-                    className="w-72  xs:my-3 xs:w-36  xs:h-auto md:w-40 md:h-[235px] sm:h-[250px] sm:w-[170px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green bg-[#ffffff] cursor-pointer"
-                    onClick={() => {
-                      navigate(
-                        `/subcategory-details/${item.category_name}/product-details/${item.id}`
-                      );
-                    }}
-                  >
-                    <img
-                      className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-28 md:w-40 sm:w-48 sm:h-32 rounded-lg "
-                      src={
-                        item?.variants?.length == 1
-                          ? item.image
-                          : item.variants[variant[item.id] || 0].images[0]
-                      }
-                      alt={item.name}
-                    />
-                    <div className=" pt-2 md:py-2 md:mx-4 xs:mx-2 sm:mx-4 ">
-                      <p className="md:text-sm xs:text-sm sm:text-[20px]  font-medium   truncate ">
-                        {item.name}
-                      </p>
-                    </div>
-                    {item?.variants?.length == 1 &&
-                      item.variants.map((data) => {
-                        return (
-                          <div className="flex p-1 md:px-3 flex-col xs:justify-center xs:items-center xs:text-center md:justify-evenly sm:ml-0   ">
-                           
-                            <div className="  w-full md:px-3 ">
-                              <p className="2xs:text-base xs:text-sm t sm:text-xl  md:text-sm font-light  px-1 py-1 flex md:flex-row  justify-between items-center">
-                                <span className=" font-bold text-xs">
-                                  {currencyFormatter(data.price)}{" "}
-                                </span>
-                                <div>
-                                  <span className="text-gryColour text-xs">
-                                    {data.measurement}{" "}
+        <InfiniteScroll
+          dataLength={data?.length || 0}
+          next={nextData}
+          hasMore={!(data?.length >= searchData.total)}
+          // loader={<InfiniteLoader/>}
+          // endMessage={
+          //   <p style={{ textAlign: "center" }}>
+          //     <b>Yay! You have seen it all</b>
+          //   </p>
+          // }
+        >
+          <div className=" xs:grid xs:grid-cols-2 md:grid md:grid-cols-7 sm:grid-cols-3 flex flex-wrap md:ml-5  ">
+            {data && data?.length > 0 ? (
+              data.map((item) => {
+                return (
+                  <>
+                    <div
+                      className="w-72  xs:my-3 xs:w-36  xs:h-auto md:w-40 md:h-[235px] sm:h-[250px] sm:w-[170px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green bg-[#ffffff] cursor-pointer"
+                      onClick={() => {
+                        navigate(
+                          `/subcategory-details/${item.category_name}/product-details/${item.id}`
+                        );
+                      }}
+                    >
+                      <img
+                        className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-28 md:w-40 sm:w-48 sm:h-32 rounded-lg "
+                        src={
+                          item?.variants?.length == 1
+                            ? item.image
+                            : item.variants[variant[item.id] || 0].images[0]
+                        }
+                        alt={item.name}
+                      />
+                      <div className=" pt-2 md:py-2 md:mx-4 xs:mx-2 sm:mx-4 ">
+                        <p className="md:text-sm xs:text-sm sm:text-[20px]  font-medium   truncate ">
+                          {item.name}
+                        </p>
+                      </div>
+                      {item?.variants?.length == 1 &&
+                        item.variants.map((data) => {
+                          return (
+                            <div className="flex p-1 md:px-3 flex-col xs:justify-center xs:items-center xs:text-center md:justify-evenly sm:ml-0   ">
+                              <div className="  w-full md:px-3 ">
+                                <p className="2xs:text-base xs:text-sm t sm:text-xl  md:text-sm font-light  px-1 py-1 flex md:flex-row  justify-between items-center">
+                                  <span className=" font-bold text-xs">
+                                    {currencyFormatter(data.price)}{" "}
                                   </span>
-                                  <span className="font-normal text-gryColour text-xs  ">
-                                    {data.measurement_unit_name}
-                                  </span>
-                                </div>
-                              </p>
-                            </div>
+                                  <div>
+                                    <span className="text-gryColour text-xs">
+                                      {data.measurement}{" "}
+                                    </span>
+                                    <span className="font-normal text-gryColour text-xs  ">
+                                      {data.measurement_unit_name}
+                                    </span>
+                                  </div>
+                                </p>
+                              </div>
 
-                            <div className="w-full ">
-                              {item.variants.some(
-                                (variant) => variant.stock > 0
-                              ) ? (
-                                allCartItems?.find(
-                                  (i) => i.product_id === item.id
+                              <div className="w-full ">
+                                {item.variants.some(
+                                  (variant) => variant.stock > 0
                                 ) ? (
-                                  <>
-                                    <div
-                                      className="mt-3"
+                                  allCartItems?.find(
+                                    (i) => i.product_id === item.id
+                                  ) ? (
+                                    <>
+                                      <div className="mt-3" onClick={(e) => {}}>
+                                        <CartQuantity
+                                          item={item}
+                                          variant={variant}
+                                        />
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <button
+                                      className=" md:h-8 mt-2 md:mt-3 md:text-base !leading-none   sm:h-10 sm:text-xs  text-lime border border-lightgreen bg-transparent w-full hover:bg-opacity-75 font-medium bg-white rounded-lg uppercase px-3 py-1.5 "
                                       onClick={(e) => {
-                                        console.log(
-                                          e,
-                                          "EVENT IN IMMEDIATE PARENT ELEMENT"
-                                        );
+                                        e.stopPropagation();
+                                        user_id
+                                          ? addItemHandler(data, item)
+                                          : addItemUI(item);
                                       }}
                                     >
-                                      <CartQuantity
-                                        item={item}
-                                        variant={variant}
-                                      />
-                                    </div>
-                                  </>
+                                      Add
+                                    </button>
+                                  )
                                 ) : (
-                                  <button
-                                    className=" md:h-8 mt-2 md:mt-3 md:text-base !leading-none   sm:h-10 sm:text-xs  text-lime border border-lightgreen bg-transparent w-full hover:bg-opacity-75 font-medium bg-white rounded-lg uppercase px-3 py-1.5 "
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      user_id
-                                        ? addItemHandler(data, item)
-                                        : addItemUI(item);
-                                    }}
-                                  >
-                                    Add
-                                  </button>
-                                )
-                              ) : (
-                                <p className="  text-orange md:text-[11px] text-sm font-medium md:mt-4 pb-4 sm:text-xs xs:text-[11px] sm:my-[25px] sm:text-[11px]  sm:break-normal">
-                                  Out of stock
-                                </p>
-                              )}
+                                  <p className="  text-orange md:text-[11px] text-sm font-medium md:mt-4 pb-4 sm:text-xs xs:text-[11px] sm:my-[25px] sm:text-[11px]  sm:break-normal">
+                                    Out of stock
+                                  </p>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        );
-                      })}
-                    {item?.variants?.length > 1 && (
-                      <div className=" md:flex md:flex-col px-3 md:justify-evenly  sm:flex xs:flex xs:justify-between ">
-                      
-
-                        <div className="" onClick={(e) => e.stopPropagation()}>
-                          <select
-                            // value={"selectedVariant"}
-                            onChange={(e) => {
-                              handleVariantChange(item.id, e);
-                            }}
-                            className="block w-full py-2 px-1 items-center border border-gray-300  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs text-center font-bold"
+                          );
+                        })}
+                      {item?.variants?.length > 1 && (
+                        <div className=" md:flex md:flex-col px-3 md:justify-evenly  sm:flex xs:flex xs:justify-between ">
+                          <div
+                            className=""
+                            onClick={(e) => e.stopPropagation()}
                           >
-                            {/* <option value="">City</option> */}
-                            {item.variants.map((variant, index) => (
-                              <option
-                                key={variant.id}
-                                value={index}
-                                className=" my-2 items-center text-center text-xs font-bold"
-                              >
-                                <span className="p-5">
-                                  {currencyFormatter(variant.price)}{" "}
-                                </span>
-                                <span>{variant.measurement} </span>
-                                <p className="font-normal text-blue border">
-                                  {variant.measurement_unit_name}
-                                </p>
-                              </option>
-                            ))}
-                          </select>
-                        </div>
+                            <select
+                              // value={"selectedVariant"}
+                              onChange={(e) => {
+                                handleVariantChange(item.id, e);
+                              }}
+                              className="block w-full py-2 px-1 items-center border border-gray-300  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs text-center font-bold"
+                            >
+                              {/* <option value="">City</option> */}
+                              {item.variants.map((variant, index) => (
+                                <option
+                                  key={variant.id}
+                                  value={index}
+                                  className=" my-2 items-center text-center text-xs font-bold"
+                                >
+                                  <span className="p-5">
+                                    {currencyFormatter(variant.price)}{" "}
+                                  </span>
+                                  <span>{variant.measurement} </span>
+                                  <p className="font-normal text-blue border">
+                                    {variant.measurement_unit_name}
+                                  </p>
+                                </option>
+                              ))}
+                            </select>
+                          </div>
 
-                        {/* <div className=" xs:text-left  sm:mt-2 md:mt-[15px] md:mx-4 xs:mx-4 sm:mx-4 md:text-left ">
+                          {/* <div className=" xs:text-left  sm:mt-2 md:mt-[15px] md:mx-4 xs:mx-4 sm:mx-4 md:text-left ">
                           <p className="2xs:text-base  xs:text-sm t sm:text-xl  xs:mt-4 md:mt-[-3px] sm:mt-[12px] md:text-sm text-gryColour font-light bg-white">
                             ₹{item.variants[0].price}{" "}
                           </p>
                         </div> */}
 
-                        <div>
-                          {item.variants.some(
-                            (variant) => variant.stock > 0
-                          ) ? (
-                            allCartItems?.find(
-                              (i) =>
-                                (i.product_variant_id ?? i.id) ===
-                                item?.variants?.[variant?.[item?.id] || 0]?.id
+                          <div>
+                            {item.variants.some(
+                              (variant) => variant.stock > 0
                             ) ? (
-                              <>
-                                <div
-                                  className="mt-3"
-                                
+                              allCartItems?.find(
+                                (i) =>
+                                  (i.product_variant_id ?? i.id) ===
+                                  item?.variants?.[variant?.[item?.id] || 0]?.id
+                              ) ? (
+                                <>
+                                  <div className="mt-3">
+                                    <CartQuantity
+                                      item={item}
+                                      variant={variant}
+                                    />
+                                  </div>
+                                </>
+                              ) : (
+                                <button
+                                  className=" md:h-8 mt-3 md:text-xs   sm:h-10 sm:text-base  text-lime border border-lightgreen bg-transparent w-full hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    user_id
+                                      ? addItemHandler(variant, item)
+                                      : addItemUI(item);
+                                  }}
                                 >
-                                  <CartQuantity
-                                    item={item}
-                                    variant={variant}
-                                   
-                                  />
-                                </div>
-                              </>
+                                  Add
+                                </button>
+                              )
                             ) : (
-                              <button
-                                className=" md:h-8 mt-3 md:text-xs   sm:h-10 sm:text-base  text-lime border border-lightgreen bg-transparent w-full hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  user_id
-                                    ? addItemHandler(variant, item)
-                                    : addItemUI(item);
-                                }}
-                              >
-                                Add
-                              </button>
-                            )
-                          ) : (
-                            <p className="  text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:text-xs  xs:text-xs">
-                              Out of stock
-                            </p>
-                          )}
+                              <p className="  text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:text-xs  xs:text-xs">
+                                Out of stock
+                              </p>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
-              </>
-            );
-          })
-        ) : (
-          <div className="text-center justify-center items-center h-[100vh] w-[100vw]">
-            <div className="w-[50%] border-[1px] shadow-md  self-center m-auto bg-[#EDEDED] rounded-lg py-[70px]">
-              <p className="xs:text-xl md:text-3xl mb-3">No product found.</p>
-              <p className="xs:text-sm md:text-lg text-[gray]">
-                Please try a differnet search
-              </p>
-            </div>
+                      )}
+                    </div>
+                  </>
+                );
+              })
+            ) : (
+              <div className="text-center justify-center items-center h-[100vh] w-[100vw]">
+                <div className="w-[50%] border-[1px] shadow-md  self-center m-auto bg-[#EDEDED] rounded-lg py-[70px]">
+                  <p className="xs:text-xl md:text-3xl mb-3">
+                    No product found.
+                  </p>
+                  <p className="xs:text-sm md:text-lg text-[gray]">
+                    Please try a differnet search
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
-        )}
+        </InfiniteScroll>
       </div>
-      </InfiniteScroll>
-
-    </div>
     </>
-  
   );
 }
 

@@ -37,25 +37,28 @@ export const Navbar = ({
 
   const [profileView, setProfileView] = useState(false);
 
-  const handleClickNavOutside = (event) => {
+  const handleClickOutside = (event) => {
     if (
       menuRef.current &&
       !menuRef.current.contains(event.target) &&
       !deskRef.current.contains(event.target)
     ) {
-      console.log("indghhgj");
       setIsOpen(false);
       setMobileOpen(false);
     }
   };
+
   useEffect(() => {
-    document.addEventListener("click", handleClickNavOutside);
+    console.log("on-on",mobileOpen, "useeffect")
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickNavOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
   useEffect(() => {
     setShowSearch(true);
   }, []);
@@ -116,19 +119,21 @@ export const Navbar = ({
           {NavbarOpen && (
             <div className="">
               <div
-                // className="relative xs:my-2 ml-[-145px]  md:hidden sm:hidden"
-                className="relative xs:my-2 ml-[-100px]  md:hidden sm:hidden"
-                onClick={() => {
-                  setMobileOpen(!mobileOpen);
+                className="relative xs:my-2 ml-[-100px]  md:hidden sm:hidden border "
+                onClick={(e) => {
+                  e.stopPropagation()
+                  console.log("on-on",mobileOpen);
+                  setMobileOpen((prev)=>{
+                    return !prev
+                  })
+                  // setMobileOpen((prev) => {
+                  //   console.log(prev, "clicked");
+                  //   // prev ? return false : true
+                  // });
                 }}
               >
                 {!(user_id == false) ? (
-                  <div
-                    className="flex items-center justify-center text-center h-[30px] rounded-lg md:px-2 md:mt-5 xs:mt-3 bg-white"
-                    onClick={() => {
-                      setMobileOpen(!mobileOpen);
-                    }}
-                  >
+                  <div className="flex items-center justify-center text-center h-[30px] rounded-lg md:px-2 md:mt-5 xs:mt-3 bg-white">
                     {isValidImg ? (
                       <img
                         src={profile}
@@ -148,18 +153,11 @@ export const Navbar = ({
                   <div
                     className="xs:w-20  md:w-24 h-[30px] md:ml-[-145px] rounded-lg md:px-2 md:mt-3  bg-white"
                     onClick={() => {
-                      console.log("working");
                       setOpenLogin(true);
                     }}
                     ref={mobRef}
                   >
-                    {/* <button className=" text-white font-bold bg-lime md:p-2 md:mb-2.5  xs:p-1  xs:mr-16 xs:mt-3  rounded-lg sm:text-md md:text-md text-center">
-                    {name}
-                  </button> */}
-                    <button
-                      className="flex justify-center items-center text-center my-2.5 text-lime"
-                      // onClick={() => setMobileOpen((prev) => !prev)}
-                    >
+                    <button className="flex justify-center items-center text-center my-2.5 text-lime">
                       {name}
                     </button>
                   </div>
@@ -352,7 +350,6 @@ export const Navbar = ({
                   <div
                     className="xs:w-20  md:w-24 h-[32px]  rounded-lg md:ml-[-75px] md:px-4 !leading-tight  bg-white"
                     onClick={() => {
-                      console.log("working");
                       // setOpenLogin(true);
                       setOpenLogin((prev) => !prev);
                     }}
@@ -480,12 +477,8 @@ export const Navbar = ({
                 setFormdata={setFormdata}
                 setData={setData}
                 setNavbarOpen={setNavbarOpen}
-                // setLoggedIn={setLoggedIn}
                 dispatchLogin={dispatchLogin}
-                // user_id={user_id}
                 setUser_id={setUser_id}
-                // loggedIn={loggedIn}
-                // handleLogin={handleLogin}
               />
             )}
           </div>
