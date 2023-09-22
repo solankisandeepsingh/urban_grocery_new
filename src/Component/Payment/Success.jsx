@@ -1,6 +1,6 @@
 import React from "react";
 import { BsCart3 } from "react-icons/bs";
-import { FaArrowLeft, FaHome } from "react-icons/fa";
+import {  FaHome } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../zustand/useCartStore";
 import { useEffect } from "react";
@@ -19,7 +19,7 @@ export const Success = ({ setNavbarOpen,NavbarOpen }) => {
   console.log(config);
   return (
     <>
-      <div className="flex flex-col items-center text-center justify-center mt-24">
+      <div className="flex flex-col items-center text-center justify-center mt-24 sm:mt-10">
         <div className="md:mt-6 sm:mt-36">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -39,7 +39,7 @@ export const Success = ({ setNavbarOpen,NavbarOpen }) => {
         <p className="text-4xl font-bold xs:text-[18px] sm:text-[30px]">
           Order Placed Successfully!
         </p>
-        <div className="flex gap-3 md:mt-4 sm:mt-4 md:py-8">
+        <div className="flex gap-3 md:mt-4 sm:mt-4 md:py-8 xs:py-4">
           <button
             className="inline-flex items-center px-4 py-2 xs:text-[12px] sm:text-[20px] md:text-[16px] rounded-lg bg-lime text-white bg-indigo-600 border hover:bg-customGreen  focus:outline-none focus:ring"
             onClick={() => navigate("/myorder")}

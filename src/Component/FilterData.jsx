@@ -16,7 +16,7 @@ import { useApiToken } from "./zustand/useApiToken";
 import { ToastContainer, toast } from "react-toastify";
 import InfiniteLoader from "./Infinite-loader";
 
-function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
+function FilterData({ data, setName, setData }) {
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
   const { setisLoading } = useLoaderState();
   const [offset, setOffset] = useState(0);
@@ -28,7 +28,6 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
   const {
     userInfo: { user_id },
   } = useUserStore();
-  const { jwt, setJwt } = useApiStore();
   const debouncedSearchTerm = useDebounce(searchInput, 800);
   const { apiToken } = useApiToken();
 
@@ -56,7 +55,6 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
       )
       .then(console.log(allCartItems, "[before some method]"))
       .then((res) => {
-        // setisLoading(false);
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
           let newArr = allCartItems.map((data) =>
             data.product_id === item.id
@@ -86,7 +84,6 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
         toast.success("Item added to user cart successfully !", {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 500,
-         
         });
         setAllCartItems(newArr);
         setisLoading(false);
@@ -126,7 +123,6 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
       toast.success("Item added to user cart successfully !", {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 500,
-       
       });
       newArr = [
         ...allCartItems,
@@ -145,7 +141,6 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
   const serchAPIData = () => {
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -175,9 +170,7 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
         setisLoading(false);
       });
   };
-  // useEffect(() => {
-  //   serchAPIData();
-  // }, [debouncedSearchTerm]);
+
 
   useEffect(() => {
     if (apiToken) {
@@ -188,7 +181,6 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
     if (location.pathname === "/search") {
       let config = {
         headers: {
-          // Authorization: `Bearer ${jwt}`,
           Authorization: `Bearer ${apiToken}`,
         },
       };
@@ -223,9 +215,9 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
   return (
     <>
       <ToastContainer />
-      <div className="md:mt-20 ">
+      <div className=" ">
         <div className="md:invisible xs:visible ">
-          {/* <Search setName={setName} setData={setData} data={data}/> */}
+          <Search setName={setName} setData={setData} data={data} />
         </div>
 
         <InfiniteScroll
@@ -239,7 +231,7 @@ function FilterData({ data, name, setName, setData, setAddItem, addItem }) {
           //   </p>
           // }
         >
-          <div className=" xs:grid xs:grid-cols-2 md:grid md:grid-cols-7 sm:grid-cols-3 flex flex-wrap md:ml-5  ">
+          <div className=" xs:grid xs:grid-cols-2 md:grid md:grid-cols-7 sm:grid-cols-4 flex flex-wrap md:ml-5 xs:ml-7 xs:mt-14 sm:ml-4 md:mt-10">
             {data && data?.length > 0 ? (
               data.map((item) => {
                 return (

@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { mockProduct } from "../../Models/MockProduct";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import CartQuantity from "../Button/CartQuantity";
 import axios from "axios";
-import { API_TOKEN } from "../Token/Token";
 import { useProductsStore } from "../zustand/useProductsStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
-import { useApiStore } from "../zustand/useApiStore";
 import { currencyFormatter } from "../../utils/utils";
 import { useApiToken } from "../zustand/useApiToken";
 import { ToastContainer, toast } from "react-toastify";
@@ -20,7 +17,6 @@ function Allproducts({ setNavbarOpen }) {
   const {
     userInfo: { user_id },
   } = useUserStore();
-  const { jwt, setJwt } = useApiStore();
   const navigate = useNavigate();
   const { apiToken } = useApiToken();
   setNavbarOpen(true);
@@ -144,7 +140,6 @@ function Allproducts({ setNavbarOpen }) {
         {
           type: "packet",
           id: "879",
-          // product_id: "915",
           product_id: "917",
           price: "500",
           discounted_price: "9",
@@ -215,78 +210,6 @@ function Allproducts({ setNavbarOpen }) {
     },
   ];
 
-  const allCartItemsHandler = (item, data) => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${apiToken}`,
-      },
-    };
-    const bodyFormData = new FormData();
-    bodyFormData.append("accesskey", "90336");
-    bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", user_id);
-    bodyFormData.append("product_id", `${data.id}`);
-    bodyFormData.append("product_variant_id", `${item.id}`);
-
-    bodyFormData.append("qty", 1);
-
-    setisLoading(true);
-
-    axios
-      .post(
-        "https://grocery.intelliatech.in/api-firebase/cart.php",
-        bodyFormData,
-        config
-      )
-      .then((res) => {
-        setisLoading(false);
-        // setallCartItems(res)
-        if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
-          let newArr = allCartItems.map((data) =>
-            data.product_id === item.id
-              ? {
-                  ...data,
-                  amount: data.amount + 1,
-                }
-              : data
-          );
-          setAllCartItems(newArr);
-
-          return;
-        }
-
-        let item1 = {
-          amount: 1,
-          discounted_price: item.discounted_price,
-          id: item.id,
-          image: data.image,
-          images: [
-            "http://grocery.intelliatech.in/upload/variant_images/1676618514.4521-883.png",
-          ],
-          price: item.price,
-          product_id: item.product_id,
-          product_variant_id: item.id,
-          qty: 1,
-          save_for_later: "0",
-          serve_for: "Available",
-          slug: "butterscotch-flavorsome-cake",
-          stock: "29",
-
-          type: "packet",
-          unit: "gm",
-          user_id: user_id,
-        };
-
-        let newArr = [...allCartItems, { ...item1, amount: 1 }];
-        // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
-        setAllCartItems(newArr);
-        setisLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setisLoading(false);
-      });
-  };
   const handleVariantChange = (id, e) => {
     let updatedvariant = { ...variant, [id]: e.target.value };
 
@@ -390,7 +313,7 @@ function Allproducts({ setNavbarOpen }) {
   return (
     <>
       <ToastContainer />
-      <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-7 sm:grid-cols-3 flex flex-wrap xs:ml-7  md:ml-5 sm:ml-16 ">
+      <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-7 sm:grid-cols-4 flex flex-wrap xs:ml-7 md:ml-5 sm:ml-4 ">
         {allProducts &&
           allProducts.map((item) => {
             return (
@@ -404,7 +327,6 @@ function Allproducts({ setNavbarOpen }) {
                   }}
                 >
                   <img
-                    // className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-24 md:ml-[23px] md:w-28 md:mt-4 sm:w-48 sm:h-32 rounded-lg "
                     className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-28 md:w-40 sm:w-48 sm:h-32 rounded-lg "
                     src={
                       item?.variants?.length == 1
@@ -422,34 +344,6 @@ function Allproducts({ setNavbarOpen }) {
                     item.variants.map((data) => {
                       return (
                         <div className="flex p-1 md:px-3 flex-col xs:justify-center xs:items-center xs:text-center md:justify-evenly sm:ml-0   ">
-                          {/* {console.log(allFavItems.find((fav)=>{
-                              console.log(fav.id, item.id, "HEREEEEEEEEEEEEE<><><><><><>");
-                               return fav.id === item.id
-                            }))}; */}
-
-                          {/* ADD TO FAVOURITES  */}
-                          {/* {user_id != 14 &&
-                              (allFavItems.find((fav) => {
-                                return fav.id === item.id;
-                              }) ? (
-                                <FaHeart
-                                  className="text-red absolute top-2 text-xl animate-hbeat hover:scale-125 transition-all  right-2 "
-                                  onClick={(e) => {
-                                    setFavPos((prev)=> !prev)
-                                    e.stopPropagation();
-                                    handleRemoveFavorite(item);
-                                  }}
-                                />
-                              ) : (
-                                <FaRegHeart
-                                  className={`text-[light_gray] group-hover:top-2 group-active:top-2 absolute ${!favPos ? '-top-5' : 'top-2'} text-xl hover:scale-125  transition-all right-2`}
-                                  onClick={(e) => {
-                                    setFavPos((prev)=> !prev)
-                                    e.stopPropagation();
-                                    handleAddFavorite(item);
-                                  }}
-                                />
-                              ))} */}
                           <div className="  w-full md:px-3 ">
                             <p className="2xs:text-base xs:text-sm t sm:text-xl  md:text-sm font-light  px-1 py-1 flex md:flex-row  justify-between items-center">
                               <span className=" font-bold text-xs">
@@ -505,39 +399,13 @@ function Allproducts({ setNavbarOpen }) {
                     })}
                   {item?.variants?.length > 1 && (
                     <div className=" md:flex md:flex-col px-3 md:justify-evenly  sm:flex xs:flex xs:justify-between ">
-                      {/* ADD TO FAVOURITES  */}
-                      {/* {user_id != 14 &&
-                          (allFavItems.find((fav) => {
-                            return fav.id === item.id;
-                          }) ? (
-                            <FaHeart
-                              className="text-red absolute top-2 text-xl animate-hbeat hover:scale-125 transition-all  right-2 "
-                              onClick={(e) => {
-                                setFavPos((prev)=> !prev)
-                                e.stopPropagation();
-                                handleRemoveFavorite(item);
-                              }}
-                            />
-                          ) : (
-                            <FaRegHeart
-                              className={`text-[light_gray] group-hover:top-2 group-active:top-2 absolute ${!favPos ? '-top-5' : 'top-2'} text-xl hover:scale-125  transition-all right-2`}
-                              onClick={(e) => {
-                                setFavPos((prev)=> !prev)
-                                e.stopPropagation();
-                                handleAddFavorite(item);
-                              }}
-                            />
-                          ))} */}
-
                       <div className="" onClick={(e) => e.stopPropagation()}>
                         <select
-                          // value={"selectedVariant"}
                           onChange={(e) => {
                             handleVariantChange(item.id, e);
                           }}
                           className="block w-full py-2 px-1 items-center border border-gray-300  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs text-center font-bold"
                         >
-                          {/* <option value="">City</option> */}
                           {item.variants.map((variant, index) => (
                             <option
                               key={variant.id}
@@ -556,12 +424,6 @@ function Allproducts({ setNavbarOpen }) {
                         </select>
                       </div>
 
-                      {/* <div className=" xs:text-left  sm:mt-2 md:mt-[15px] md:mx-4 xs:mx-4 sm:mx-4 md:text-left ">
-                          <p className="2xs:text-base  xs:text-sm t sm:text-xl  xs:mt-4 md:mt-[-3px] sm:mt-[12px] md:text-sm text-gryColour font-light bg-white">
-                            ₹{item.variants[0].price}{" "}
-                          </p>
-                        </div> */}
-
                       <div>
                         {item.variants.some((variant) => variant.stock > 0) ? (
                           allCartItems?.find(
@@ -570,22 +432,8 @@ function Allproducts({ setNavbarOpen }) {
                               item?.variants?.[variant?.[item?.id] || 0]?.id
                           ) ? (
                             <>
-                              <div
-                                className="mt-3"
-                                // onClick={(e) => {
-                                //   console.log(
-                                //     e,
-                                //     "EVENT IN IMMEDIATE PARENT ELEMENT"
-                                //   );
-                                // }}
-                              >
-                                <CartQuantity
-                                  item={item}
-                                  variant={variant}
-                                  // setAllCartItems={setAllCartItems}
-                                  // allCartItems={allCartItems}
-                                  // user_id={user_id}
-                                />
+                              <div className="mt-3">
+                                <CartQuantity item={item} variant={variant} />
                               </div>
                             </>
                           ) : (

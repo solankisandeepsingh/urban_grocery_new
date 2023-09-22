@@ -1,5 +1,4 @@
 import React from "react";
-import { Aside } from "../../Aside/Aside";
 import { useCartStore } from "../../zustand/useCartStore";
 import { useUserStore } from "../../zustand/useUserStore";
 import { useNavigate } from "react-router";
@@ -8,13 +7,7 @@ import { HiOfficeBuilding } from "react-icons/hi";
 import { FaHome } from "react-icons/fa";
 import { BsChevronCompactRight } from "react-icons/bs";
 
-function Review({
-  price,
-  totalItem,
-  setReviewPage,
-  setShowModal,
-  setNavbarOpen,
-}) {
+function Review({ price, setReviewPage, setShowModal, setNavbarOpen }) {
   const { allCartItems } = useCartStore();
   const navigate = useNavigate();
   const handlePayment = () => {
@@ -32,11 +25,9 @@ function Review({
 
   return (
     <>
-      {/* <div className="flex border border-light_gray gap-1 m-4 rounded-md"> */}
       <div className="flex border border-light_gray gap-1 m-4 rounded-md">
         <div className=" xs:w-full">
           <div>
-            {/* <div className="h-auto flex text-center"> */}
             <div className="h-auto">
               <div className="">
                 <h2 className="text-2xl font-bold mt-4 xs:text-center">
@@ -48,7 +39,9 @@ function Review({
                       return (
                         <div
                           className={` bg-white ${
-                            index === allCartItems?.length - 1 ? "mb-[50px]" : ""
+                            index === allCartItems?.length - 1
+                              ? "mb-[50px]"
+                              : ""
                           }  2xs:p-3 border-b-[2px] border-[#e8e8e8]`}
                         >
                           <div className="flow-root">
@@ -70,22 +63,11 @@ function Review({
                                     <br />
 
                                     <div className="flex justify-between mt-0.5">
-                                      {/* <p className="text-lightgray font-semi-bold">
-                                        {item.serve_for}
-                                      </p> */}
                                       <div>
-                                        {/* <p className="text-left text-lime">
-                                          {" "}
-                                          {currencyFormatter(
-                                            item.discounted_price
-                                          )}{" "}
-                                        </p> */}
-
                                         <p className="2xs:text-base xs:text-sm  sm:text-xl md:text-xs text-gryColour  font-medium inline line-through bg-white">
                                           ₹{item.price}.00{" "}
                                         </p>
                                         <span className="text-xs sm:text-xl xs:text-sm xs:ml-1 md:text-xs text-lime font-bold bg-white">
-                                          {/* ₹{item.discounted_price}.00{" "} */}
                                           {currencyFormatter(
                                             item.discounted_price
                                           )}
@@ -135,57 +117,25 @@ function Review({
                             <span className="">{country} </span>
                           </div>
                         </div>
-                        {/* <div className="w-[10%] flex gap-4 items-center"></div> */}
                       </div>
                     </div>
 
-                    {/* <div>
-                      <p className="bg-white  text-sm font-medium ">
-                        <span className="text-[gray]">Deliver to:</span>{" "}
-                        {address +
-                          " " +
-                          area_name +
-                          " " +
-                          city_name +
-                          " " +
-                          country}
-                      </p>
-                    </div> */}
-
-                    {/* <div className="mb-3 flex justify-between px-5 mt-5">
-                      <p className="bg-white text-md font-medium text-black ">
-                        Total Items: {totalItem}
-                      </p>
-                      <p className="bg-white text-md font-medium text-lime">
-                        Total Price: {currencyFormatter(price)}
-                      </p>
-                    </div> */}
-
                     <button
-                      className="flex justify-between mt-5 mb-1 bg-lime p-3 text-white fixed bottom-0 md:w-[346px] xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
+                      className="flex justify-between mt-5 mb-1 bg-lime p-3 text-white fixed bottom-0 md:w-[353px] md:ml-[-1px] xs:w-[340px] sm:w-[750px] 2xs:w-[260px] sm:ml-[-10px] rounded-lg"
                       onClick={() => {
                         handlePayment();
                       }}
                     >
-                      <p className="p-2 bg-lime text-xl font-bold rounded-lg">
+                      <p className="p-2 bg-lime text-xl font-bold rounded-lg xs:text-[18px] sm:text-xl">
                         Total : {currencyFormatter(price)}
                       </p>
                       <div className="flex items-center justify-center min-w-max">
-                        <p className="py-2 bg-lime text-xl  rounded-lg">
+                        <p className="py-2 bg-lime text-xl sm:text-xl rounded-lg xs:text-[18px]">
                           Proceed to Pay
                         </p>
                         <BsChevronCompactRight className="te" />
                       </div>
                     </button>
-
-                    {/* <button
-                      onClick={() => {
-                        handlePayment();
-                      }}
-                      className="bg-lime text-white hover:opacity-90 sm:w-full md:w-[90%] mx-4 sm:text-2xl md:text-lg px-4 py-1.5 rounded-lg"
-                    >
-                      Proceed to Pay
-                    </button> */}
                   </div>
                 </div>
               </div>
