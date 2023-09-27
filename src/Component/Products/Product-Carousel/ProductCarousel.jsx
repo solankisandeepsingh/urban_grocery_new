@@ -34,6 +34,7 @@ export const ProductCarousel = ({}) => {
   const { setisLoading } = useLoaderState();
   const { allFavItems, setAllFavItems } = useFavStore();
   const [fav, setFav] = useState();
+  const [visible, setVisible] = useState(false);
 
   const handleVariantChange = (id, e) => {
     let updatedvariant = { ...variant, [id]: e.target.value };
@@ -381,7 +382,6 @@ export const ProductCarousel = ({}) => {
       toast.success("Item added to user cart successfully !", {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 500,
-       
       });
       newArr = [
         ...allCartItems,
@@ -451,7 +451,6 @@ export const ProductCarousel = ({}) => {
         toast.success("Item added to user cart successfully !", {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 500,
-         
         });
 
         setAllCartItems(newArr);
@@ -470,6 +469,10 @@ export const ProductCarousel = ({}) => {
   };
 
   const viewAllProducts = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     navigate("/allproducts");
   };
 
@@ -493,7 +496,7 @@ export const ProductCarousel = ({}) => {
 
         <div className="md:my-2 ">
           {apiToken && (
-            <Carousel responsive={responsive} className="z-0">
+            <Carousel responsive={responsive} className="z-01">
               {allProducts &&
                 allProducts.map((item) => {
                   return (

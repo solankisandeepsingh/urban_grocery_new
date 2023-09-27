@@ -28,7 +28,7 @@ import { useFavStore } from "../../zustand/useFavStore";
 import { SimilarProduct } from "../../Similar-Products/SimilarProduct";
 import { useApiToken } from "../../zustand/useApiToken";
 
-export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
+export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
   const [productPageData, setProductPage] = useState([]);
   const [wishlist, setWishlist] = useState(false);
   const [reviewList, setReviewList] = useState(false);
@@ -52,7 +52,28 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   let imageModalRef = useRef(null);
   const { apiToken } = useApiToken();
-  setNavbarOpen(true)
+  setNavbarOpen(true);
+
+  const [selectedImages, setSelectedImages] = useState([]);
+
+  const onSelectFile = (event) => {
+    const selectedFiles = event.target.files;
+    const selectedFilesArray = Array.from(selectedFiles);
+
+    const imagesArray = selectedFilesArray.map((file) => {
+      return URL.createObjectURL(file);
+    });
+
+    setSelectedImages((previousImages) => previousImages.concat(imagesArray));
+
+    // FOR BUG IN CHROME
+    event.target.value = "";
+  };
+
+  function deleteHandler(image) {
+    setSelectedImages(selectedImages.filter((e) => e !== image));
+    URL.revokeObjectURL(image);
+  }
 
   const handleImageClick = (image, index) => {
     if (image) {
@@ -63,11 +84,27 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
   };
 
   const handleVariantChange = (id, e) => {
-
     let updatedvariant = { ...variant, [id]: e.target.value };
 
     setVariant(updatedvariant);
   };
+
+  const handleClickShowModalOutside = (event) => {
+    if (
+      imageModalRef.current &&
+      !imageModalRef.current.contains(event.target)
+    ) {
+      setShowImageModal(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickShowModalOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickShowModalOutside);
+    };
+  }, []);
 
   const addItemHandler = (item, data) => {
     const config = {
@@ -104,7 +141,7 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
           );
           console.log(newArr);
           setAllCartItems(newArr);
-        
+
           return;
         }
 
@@ -122,8 +159,7 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
         toast.success("Item added to user cart successfully !", {
           position: toast.POSITION.TOP_CENTER,
-          autoClose:500
-          
+          autoClose: 500,
         });
         // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
         setAllCartItems(newArr);
@@ -156,7 +192,7 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
     } else {
       toast.success("Item added to user cart successfully !", {
         position: toast.POSITION.TOP_CENTER,
-        autoClose:300
+        autoClose: 300,
       });
       newArr = [
         ...allCartItems,
@@ -187,9 +223,11 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
     }
   };
   useEffect(() => {
-
     return () => {
-      document.removeEventListener("mousedown", handleClickProuctDetailsOutside);
+      document.removeEventListener(
+        "mousedown",
+        handleClickProuctDetailsOutside
+      );
     };
   }, []);
 
@@ -277,13 +315,23 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
   const imagesHandler = (event) => {
     const files = event.target.files;
     const imagesArray = Array.from(files);
-    setImages(imagesArray);
+    setSelectedImages(imagesArray);
   };
+
+  // const handleImageChange = (event) => {
+  //   const files = Array.from(event.target.files);
+  //   setSelectedImages([...selectedImages, ...files]);
+  // };
+
+  const handleImageDelete = (index) => {
+    const updatedImages = [...selectedImages];
+    updatedImages.splice(index, 1);
+    setSelectedImages(updatedImages);
+  };
+
   const inputHandler = (event) => {
     setReview(event.target.value);
   };
-
- 
 
   const productDetail = () => {
     let config = {
@@ -323,7 +371,7 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
       productDetail();
       productReviews();
     }
-  }, [apiToken,id]);
+  }, [apiToken, id]);
 
   const allCartItemsHandler = (item, data) => {
     const config = {
@@ -400,9 +448,6 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
   const filterData = productPageData.filter((data) => {
     return data.id === id;
   });
-
- 
-
 
   const handleRemoveFavorite = (item) => {
     let config = {
@@ -482,7 +527,6 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
     <>
       <ToastContainer />
 
-      {/*Produc-details Page */}
       <div className="2xs:mt-10 xs:mt-10 md:w-[50%] md:p-20 xs:p-8">
         {filterData &&
           filterData.map((item) => {
@@ -508,14 +552,6 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
                   </div>
 
                   <div className="xs:flex-col md:ml-[750px] md:p-6 md:fixed xs:bg-[#f7f7f7] xs:p-2 sm:px-3 md:bg-[#f7f7f7] md:rounded-xl">
-                    {/* {item &&
-                      item.variants.map((item) =>
-                        item.stock > 0 ? null : (
-                          <p className="text-orange text-sm md:text-lg font-medium sm:text-2xl">
-                            Out of stock
-                          </p>
-                        )
-                      )} */}
                     <div className="2xs:flex 2xs:mt-4 xs:flex xs:mt-4 sm:mt-8 md:flex md:gap-4 sm:gap-7 xs:gap-6 2xs:gap-3">
                       <div className="2xs:flex xs:flex 2xs:gap-1 xs:gap-1  md:flex md:gap-1 ">
                         {user_id !== 14 &&
@@ -541,26 +577,11 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
                           />
                         )}
                         <p className="2xs:text-xs xs:text-sm sm:text-3xl md:text-sm ">
-                          Add Wishlist
+                          Add to favourites
                         </p>
                       </div>
-                      {/* <div className="2xs:flex xs:flex 2xs:gap-1 xs:gap-1  md:flex md:gap-1 ">
-                        {wishlist ? (
-                          <FaHeart
-                            className="2xs:text-xs xs:text-sm sm:text-3xl  md:text-lg  text-red animate-hbeat"
-                            onClick={handleWishlist}
-                          />
-                        ) : (
-                          <FaRegHeart
-                            className="2xs:text-xs xs:text-sm sm:text-3xl  md:text-lg  text-lime "
-                            onClick={handleWishlist}
-                          />
-                        )}
-                        <p className="2xs:text-xs xs:text-sm sm:text-3xl md:text-sm">
-                          Wish_List
-                        </p>
-                      </div> */}
-                      <div className="2xs:flex xs:flex xs:gap-1  md:flex md:gap-1 ">
+
+                      {/* <div className="2xs:flex xs:flex xs:gap-1  md:flex md:gap-1 ">
                         <FaArrowsAlt className="2xs:text-xs xs:text-sm sm:text-3xl md:text-lg text-lime " />
                         <p className="2xs:text-xs xs:text-sm sm:text-3xl md:text-sm">
                           Share
@@ -571,7 +592,7 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
                         <p className="2xs:text-xs xs:text-sm sm:text-3xl md:text-sm">
                           Similar_Products
                         </p>
-                      </div>
+                      </div> */}
                     </div>
 
                     <div className="data 2xs:mt-3 xs:mb-3 ">
@@ -621,14 +642,6 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
                                     Not Cancellable
                                   </div>
                                 </div>
-                                {/* {data.stock > 0 && (
-                                  <button
-                                    className="bg-lime 2xs:px-2 2xs:mt-2 2xs:rounded xs:mt-3 xs:w-24 xs:rounded-lg xs:py-1 md:mt-3 md:w-[118px] sm:w-[130px] sm:mt-5  text-white md:font-bold md:py-3 sm:text-lg md:text-sm md:px-4 md:rounded-lg md:hover:opacity-90"
-                                    onClick={() => allCartItemsHandler(data, item)}
-                                  >
-                                    Add to cart
-                                  </button>
-                                )} */}
 
                                 <div>
                                   {item.variants.some(
@@ -639,26 +652,15 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
                                     ) ? (
                                       <>
                                         <div className="bg-lime 2xs:px-2 2xs:mt-2 2xs:rounded xs:mt-3 xs:w-24 xs:rounded-lg xs:py-1 md:mt-3 md:w-[118px] sm:w-[130px] sm:mt-5 md:text-2xl text-white md:font-bold md:py-2 sm:text-lg md:px-4 md:rounded-lg md:hover:opacity-90">
-                                          {/* <ProductBtn
-                                            item={item}
-                                            setAllCartItems={setAllCartItems}
-                                            allCartItems={allCartItems}
-                                          /> */}
                                           <CartQuantity
                                             item={item}
                                             variant={variant}
-                                            // setAllCartItems={setAllCartItems}
-                                            // allCartItems={allCartItems}
-                                            // user_id={user_id}
                                           />
                                         </div>
                                       </>
                                     ) : (
                                       <button
                                         className="bg-lime 2xs:px-2 2xs:mt-2 2xs:rounded xs:mt-3 xs:w-24 xs:rounded-lg xs:py-1 md:mt-3 md:w-[118px] sm:w-[130px] sm:mt-5  text-white md:font-bold md:py-3 sm:text-lg md:text-sm md:px-4 md:rounded-lg md:hover:opacity-90"
-                                        // onClick={() =>
-                                        //   allCartItemsHandler(data, item)
-                                        // }
                                         onClick={(e) => {
                                           e.stopPropagation();
                                           user_id
@@ -697,12 +699,7 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
                     <h1 className="font-bold text-2xl">RATINGS AND REVIEWS</h1>
                     <div className="flex items-center   gap-1 border-b border-[#e8e8e8e8]">
                       <p className="font-bold  text-[40px]">{item.ratings}</p>
-                      {/* <div className="flex text-yellow_rating mt-2 sm:mt-3 sm:text-2xl md:text-sm">
-                                      <Rating
-                                        star={4.3}
-                                        reviews={item.number_of_ratings}
-                                      />
-                                    </div> */}
+
                       <div className="flex justify-between items-center w-full">
                         <MUIRating
                           name="half-rating-read"
@@ -732,21 +729,6 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
                       </h2>
                       {reviewList?.length > 0 ? (
                         reviewList.map((review, mainindex) => {
-                          // const img = new Image();
-                          // // let validImg;
-                          // img.src = review.user_profile;
-
-                          // img.onload = () => {
-                          //   setisValidImg(true);
-                          // };
-                          // img.onerror = () => {
-                          //   // validImg = 0;
-                          //   setisValidImg(false);
-
-                          // };
-                          // console.log("AFTER REVIEWLIST POPULATED");
-                          // checkImageValidity(review.user_profile)
-
                           return (
                             <div className="border-b px-3 border-[#e8e8e8e8] mb-3">
                               <div className="flex items-center gap-3">
@@ -769,24 +751,12 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
                                 precision={0.1}
                                 readOnly
                               />
-                              {/* <div className="flex gap-2">
-                                {review.images.length > 0 &&
-                                  review.images.map((image) => {
-                                    return (
-                                      <img
-                                        src={image}
-                                        className="w-24 h-24 rounded-lg object-cover"
-                                      />
-                                    );
-                                  })}
-                              </div> */}
 
                               <div>
                                 <div className="xs:grid xs:grid-cols-3 md:grid-cols-6 relative sm:grid-cols-6 gap-2">
                                   {review?.images?.length > 0 &&
                                     review.images.map((image, index) =>
                                       index < 3 ? (
-                                        // <div className="last:opacity-70 last:before:absolute last:before:content-['+3'] text-3xl text-[#f5f5f5] before:w-24 before:h-24 ">
                                         <div
                                           onClick={() =>
                                             handleImageClick(image, mainindex)
@@ -877,7 +847,7 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
       </div>
 
       {reviewOpen && (
-        <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
+        <div className="fixed z-40 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
           <div className="bg-white rounded top-[5%] left-[5%]">
             <div className="flex justify-center items-center relative">
               <div className="container relative  ">
@@ -887,7 +857,7 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
                     setReviewOpen(false);
                   }}
                 >
-                  <AiOutlineCloseCircle className="text-red text-2xl hover:opacity-50"/>
+                  <AiOutlineCloseCircle className="text-red text-2xl hover:opacity-50" />
                 </button>
                 <div className="w-full p-8 md:px-12 mr-auto rounded-2xl shadow-2xl">
                   <div className="flex justify-between">
@@ -922,22 +892,68 @@ export const ProductDetails = ({ isOpen, setIsOpen,setNavbarOpen }) => {
                         </div>
                       </div>
 
-                      <label
-                        className=" text-[gray] font-bold text-lg pl-3 inline-block mt-5"
-                        htmlFor="images"
-                      >
-                        Add product images
-                      </label>
-                      <input
-                        className="w-full bg-gray-100 border-gray-400 text-gray-900  p-3 rounded-lg  focus:shadow-outline"
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        onChange={imagesHandler}
-                        // value={logins.password}
-                        name="review images"
-                        id="images"
-                      />
+                      <div className="">
+                        <label
+                          className="text-[gray] font-bold text-lg pl-3 inline-block mt-5"
+                          htmlFor="images"
+                        >
+                          Add product images
+                        </label>
+                        <div className="flex gap-4 mt-4">
+                          <label className="custom-file-upload border w-14 h-20 border-border_gray p-4 rounded-lg flex items-center justify-center hover:bg-light_green cursor-pointer">
+                            <p className="text-3xl">+</p>
+                            <input
+                              type="file"
+                              name="images"
+                              onChange={onSelectFile}
+                              multiple
+                              accept="image/png, image/jpeg, image/webp"
+                              className="hidden"
+                            />
+                          </label>
+
+                          {selectedImages.length > 0 &&
+                            (selectedImages.length > 10 ? (
+                              <p className="error">
+                                <span>
+                                  <AiOutlineCloseCircle />{" "}
+                                  <b> {selectedImages.length - 10} </b> of them{" "}
+                                </span>
+                              </p>
+                            ) : (
+                              ""
+                            ))}
+
+                          <div className="images flex flex-wrap gap-3 ">
+                            {selectedImages &&
+                              selectedImages.map((image, index) => {
+                                return (
+                                  <div key={image} className="image relative ">
+                                    <img
+                                      src={image}
+                                      height="200"
+                                      alt="upload"
+                                      className="w-20 h-20 object-cover rounded-md"
+                                    />
+                                    <div className="bg-[#f2f2f2]">
+                                    <AiOutlineCloseCircle
+                                      className="cursor-pointer absolute bg-[#fff] bg-opacity-90  hover:opacity-100 opacity-50 rounded-full top-[-4px] text-red text-[28px] right-0"
+                                      onClick={() => deleteHandler(image)}
+                                    />
+                                    </div>
+                                    
+                                    {/* <span
+                                    className="cursor-pointer absolute top-[-10px] right-0 p-1 bg-red-500 text-white"
+                                    onClick={() => deleteHandler(image)}
+                                  >
+                                    x
+                                  </span> */}
+                                  </div>
+                                );
+                              })}
+                          </div>
+                        </div>
+                      </div>
 
                       <label
                         className=" text-[gray] font-bold pl-3 text-lg inline-block mt-5"

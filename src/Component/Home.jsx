@@ -27,15 +27,17 @@ function Home({
   setAddItem,
   isOpen,
   user_id,
-  setNavbarOpen,
+  setNavbarOpen
 }) {
   const { allImg, setAllImg } = useImgStore();
   const { jwt, setJwt } = useApiStore();
+  console.log(allImg, setAllImg, "IMG STORE FROM ZUSTAND");
   const { setisLoading } = useLoaderState();
   const [visible, setVisible] = useState(false);
-  const { apiToken, accessTokenApi } = useApiToken();
-  setNavbarOpen(true);
+  const {apiToken,accessTokenApi} = useApiToken()
+  setNavbarOpen(true)
 
+  
   const toggleVisible = () => {
     const scrolled = document.documentElement.scrollTop;
     if (scrolled > 300) {
@@ -49,6 +51,7 @@ function Home({
     window.scrollTo({
       top: 0,
       behavior: "smooth",
+     
     });
   };
 
@@ -86,30 +89,7 @@ function Home({
       });
   };
 
-  // useEffect(() => {
-  //   (async function createJwt() {
-  //     const alg = "HS256";
-  //     const secret = new TextEncoder().encode(
-  //       "replace_with_your_strong_jwt_secret_key"
-  //     );
-
-  //     const jwt = await new SignJWT({ "urn:example:claim": true })
-  //       .setProtectedHeader({ alg })
-  //       // .setIssuedAt()
-  //       .setIssuer("eKart")
-  //       .setAudience("eKart Authentication")
-
-  //       .sign(secret);
-
-  //     console.log(jwt);
-  //     setJwt(jwt);
-  //     // console.log(jwt.sign(secret, {iss : "eKart", sub : 'eKart Authentication' }).then((res)=> console.log(res)))
-  //   })();
-  // }, []);
-
-  // useEffect(() => {
-  //   if (jwt) handleHomeImg();
-  // }, [jwt]);
+  
 
   useEffect(() => {
     if (apiToken) handleHomeImg();
@@ -118,6 +98,7 @@ function Home({
   return (
     <div className=" md:mt-0.5 xs:mt-14">
       <>
+      <AccessToken/>
         {/* <div className="md:invisible xs:visible">
           <Search
             setData={setData}
@@ -193,6 +174,8 @@ function Home({
             <div className="">
               <FlashSales />
             </div>
+            
+           
           </div>
         </div>
       </>

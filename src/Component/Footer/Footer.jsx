@@ -7,7 +7,7 @@ export const Footer = () => {
     <footer>
       <div className="bg-offWhite py-4 text-gray-400">
         <div className="container px-4 mx-auto">
-          <div className="-mx-4 flex flex-wrap justify-between">
+          <div className="-mx-4 flex flex-wrap justify-between sm:justify-around">
             <div className="px-4 my-4 w-full sm:w-auto">
               <div>
                 <h2 className="inline-block text-2xl pb-4 mb-4 border-b-4 border-blue-600">

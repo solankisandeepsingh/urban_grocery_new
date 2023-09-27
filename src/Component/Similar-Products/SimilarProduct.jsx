@@ -174,7 +174,7 @@ export const SimilarProduct = ({ id }) => {
           );
           console.log(newArr);
           setAllCartItems(newArr);
-         
+
           return;
         }
 
@@ -193,7 +193,6 @@ export const SimilarProduct = ({ id }) => {
         toast.success("Item added to user cart successfully !", {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 500,
-         
         });
         setAllCartItems(newArr);
         setisLoading(false);
@@ -220,7 +219,6 @@ export const SimilarProduct = ({ id }) => {
       toast.success("Item added to user cart successfully !", {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 500,
-       
       });
 
       newArr = [
@@ -277,215 +275,181 @@ export const SimilarProduct = ({ id }) => {
   }, [apiToken]);
   return (
     <>
-    <ToastContainer/>
-     <div>
-      <p className="text-[22px]  font-semibold">Similar products</p>
+      <ToastContainer />
+      <div>
+        <p className="text-[22px]  font-semibold">Similar products</p>
 
-      <div className="">
-        <Carousel responsive={responsive}>
-          {similarProduct &&
-            similarProduct.map((item) => {
-              return (
-                <>
-                  <div
-                    className="xs:w-32 md:w-32 xs:h-[200px]  xs:my-3 md:h-[230px] sm:w-36 sm:h-[260px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green bg-[#FFFAED] cursor-pointer"
-                    onClick={() => {
-                      console.log("Similar");
-                      navigate(
-                        `/subcategory-details/${item.category_name}/product-details/${item.id}`,
-                        { replace: true }
-                      );
-                    }}
-                  >
-                    <img
-                      // className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-24 md:ml-[23px] md:w-28 md:mt-4 sm:w-48 sm:h-32 rounded-lg "
-                      className="xs:w-32 xs:h-24  md:w-32 md:h-24 object-cover object-center  sm:w-36 sm:h-32 rounded-lg "
-                      src={
-                        item?.variants?.length == 1
-                          ? item.image
-                          : item.variants[variant[item.id] || 0].images[0]
-                      }
-                      alt={item.name}
-                    />
-                    <div className=" pt-2 md:py-2 md:mx-4 xs:mx-2 sm:mx-4 ">
-                      <p className="md:text-sm xs:text-sm sm:text-[20px]  font-medium   truncate ">
-                        {item.name}
-                      </p>
-                    </div>
-                    {item?.variants?.length == 1 &&
-                      item.variants.map((data) => {
-                        return (
-                          <div className="flex p-1 md:px-3 flex-col xs:justify-center xs:items-center xs:text-center md:justify-evenly sm:ml-0   ">
-                            {/* {console.log(allFavItems.find((fav)=>{
-                              console.log(fav.id, item.id, "HEREEEEEEEEEEEEE<><><><><><>");
-                               return fav.id === item.id
-                            }))}; */}
-
-                            {/* ADD TO FAVOURITES  */}
-                            {/* {user_id != 14 &&
-                              (allFavItems.find((fav) => {
-                                return fav.id === item.id;
-                              }) ? (
-                                <FaHeart
-                                  className="text-red absolute top-2 text-xl animate-hbeat hover:scale-125 transition-all  right-2 "
-                                  onClick={(e) => {
-                                    setFavPos((prev)=> !prev)
-                                    e.stopPropagation();
-                                    handleRemoveFavorite(item);
-                                  }}
-                                />
-                              ) : (
-                                <FaRegHeart
-                                  className={`text-[light_gray] group-hover:top-2 group-active:top-2 absolute ${!favPos ? '-top-5' : 'top-2'} text-xl hover:scale-125  transition-all right-2`}
-                                  onClick={(e) => {
-                                    setFavPos((prev)=> !prev)
-                                    e.stopPropagation();
-                                    handleAddFavorite(item);
-                                  }}
-                                />
-                              ))} */}
-                            <div className=" w-full">
-                              <p className="2xs:text-base xs:text-sm t sm:text-xl  md:text-sm font-light  px-1 py-1 flex md:flex-row  justify-between items-center">
-                                <span className=" font-bold text-xs">
-                                  {currencyFormatter(data.price)}{" "}
-                                </span>
-                                <div>
-                                  <span className="text-gryColour text-xs">
-                                    {data.measurement}{" "}
+        <div className="">
+          <Carousel responsive={responsive} className="z-0">
+            {similarProduct &&
+              similarProduct.map((item) => {
+                return (
+                  <>
+                    <div
+                      className="xs:w-32 md:w-32 xs:h-[200px] z-0  xs:my-3 md:h-[230px] sm:w-36 sm:h-[260px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green bg-[#FFFAED] cursor-pointer"
+                      onClick={() => {
+                        console.log("Similar");
+                        navigate(
+                          `/subcategory-details/${item.category_name}/product-details/${item.id}`,
+                          { replace: true }
+                        );
+                      }}
+                    >
+                      <img
+                        // className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-24 md:ml-[23px] md:w-28 md:mt-4 sm:w-48 sm:h-32 rounded-lg "
+                        className="xs:w-32 xs:h-24  md:w-32 md:h-24 object-cover object-center  sm:w-36 sm:h-32 rounded-lg "
+                        src={
+                          item?.variants?.length == 1
+                            ? item.image
+                            : item.variants[variant[item.id] || 0].images[0]
+                        }
+                        alt={item.name}
+                      />
+                      <div className=" pt-2 md:py-2 md:mx-4 xs:mx-2 sm:mx-4 ">
+                        <p className="md:text-sm xs:text-sm sm:text-[20px]  font-medium   truncate ">
+                          {item.name}
+                        </p>
+                      </div>
+                      {item?.variants?.length == 1 &&
+                        item.variants.map((data) => {
+                          return (
+                            <div className="flex p-1 md:px-3 flex-col xs:justify-center xs:items-center xs:text-center md:justify-evenly sm:ml-0   ">
+                              <div className=" w-full">
+                                <p className="2xs:text-base xs:text-sm t sm:text-xl  md:text-sm font-light  px-1 py-1 flex md:flex-row  justify-between items-center">
+                                  <span className=" font-bold text-xs md:text-[11px]">
+                                    {currencyFormatter(data.price)}{" "}
                                   </span>
-                                  <span className="font-normal text-gryColour text-xs  ">
-                                    {data.measurement_unit_name}
-                                  </span>
-                                </div>
-                              </p>
-                            </div>
+                                  <div className="mt-[-2px]">
+                                    <span className="text-gryColour text-xs md:text-[11px]">
+                                      {data.measurement}{" "}
+                                    </span>
+                                    <span className="font-normal text-gryColour text-xs md:text-[11px] ">
+                                      {data.measurement_unit_name}
+                                    </span>
+                                  </div>
+                                </p>
+                              </div>
 
-                            <div className="w-full ">
-                              {item.variants.some(
-                                (variant) => variant.stock > 0
-                              ) ? (
-                                allCartItems?.find(
-                                  (i) => i.product_id === item.id
+                              <div className="w-full ">
+                                {item.variants.some(
+                                  (variant) => variant.stock > 0
                                 ) ? (
-                                  <>
-                                    <div
-                                      className="mt-3"
+                                  allCartItems?.find(
+                                    (i) => i.product_id === item.id
+                                  ) ? (
+                                    <>
+                                      <div
+                                        className="mt-3"
+                                        onClick={(e) => {
+                                          console.log(
+                                            e,
+                                            "EVENT IN IMMEDIATE PARENT ELEMENT"
+                                          );
+                                        }}
+                                      >
+                                        <CartQuantity
+                                          item={item}
+                                          variant={variant}
+                                        />
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <button
+                                      className=" md:h-8 mt-2 md:mt-3 md:text-base !leading-none   sm:h-10 sm:text-xs  text-lime border border-lightgreen bg-transparent w-full hover:bg-opacity-75 font-medium bg-white rounded-lg uppercase px-3 py-1.5 "
                                       onClick={(e) => {
-                                        console.log(
-                                          e,
-                                          "EVENT IN IMMEDIATE PARENT ELEMENT"
-                                        );
+                                        e.stopPropagation();
+                                        user_id
+                                          ? addItemHandler(data, item)
+                                          : addItemUI(item);
                                       }}
                                     >
-                                      <CartQuantity
-                                        item={item}
-                                        variant={variant}
-                                      />
-                                    </div>
-                                  </>
+                                      Add
+                                    </button>
+                                  )
                                 ) : (
-                                  <button
-                                    className=" md:h-8 mt-2 md:mt-3 md:text-base !leading-none   sm:h-10 sm:text-xs  text-lime border border-lightgreen bg-transparent w-full hover:bg-opacity-75 font-medium bg-white rounded-lg uppercase px-3 py-1.5 "
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      user_id
-                                        ? addItemHandler(data, item)
-                                        : addItemUI(item);
-                                    }}
-                                  >
-                                    Add
-                                  </button>
-                                )
-                              ) : (
-                                <p className="  text-orange md:text-[11px] text-sm font-medium md:mt-4 pb-4 sm:text-xs xs:text-[11px] sm:my-[25px] sm:text-[11px]  sm:break-normal">
-                                  Out of stock
-                                </p>
-                              )}
+                                  <p className="  text-orange md:text-[11px] text-sm font-medium md:mt-4 pb-4 sm:text-xs xs:text-[11px] sm:my-[25px] sm:text-[11px]  sm:break-normal">
+                                    Out of stock
+                                  </p>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        );
-                      })}
-                    {item?.variants?.length > 1 && (
-                      <div className=" md:flex md:flex-col px-3 md:justify-evenly  sm:flex xs:flex xs:justify-between ">
-                      
-
-                        <div className="" onClick={(e) => e.stopPropagation()}>
-                          <select
-                            onChange={(e) => {
-                              handleVariantChange(item.id, e);
-                            }}
-                            className="block w-full py-2 px-1 items-center border border-gray-300  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs text-center font-bold"
+                          );
+                        })}
+                      {item?.variants?.length > 1 && (
+                        <div className=" md:flex md:flex-col px-3 md:justify-evenly  sm:flex xs:flex xs:justify-between ">
+                          <div
+                            className=""
+                            onClick={(e) => e.stopPropagation()}
                           >
-                            {item.variants.map((variant, index) => (
-                              <option
-                                key={variant.id}
-                                value={index}
-                                className=" my-2 items-center text-center text-xs font-bold"
-                              >
-                                <span className="p-5">
-                                  {currencyFormatter(variant.price)}{" "}
-                                </span>
-                                <span>{variant.measurement} </span>
-                                <p className="font-normal text-blue border">
-                                  {variant.measurement_unit_name}
-                                </p>
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-
-                        
-
-                        <div>
-                          {item.variants.some(
-                            (variant) => variant.stock > 0
-                          ) ? (
-                            allCartItems?.find(
-                              (i) =>
-                                (i.product_variant_id ?? i.id) ===
-                                item?.variants?.[variant?.[item?.id] || 0]?.id
-                            ) ? (
-                              <>
-                                <div
-                                  className="mt-3"
-                               
+                            <select
+                              onChange={(e) => {
+                                handleVariantChange(item.id, e);
+                              }}
+                              className="block w-full py-2 px-1 items-center border border-gray-300  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs text-center font-bold"
+                            >
+                              {item.variants.map((variant, index) => (
+                                <option
+                                  key={variant.id}
+                                  value={index}
+                                  className=" my-2 items-center text-center text-xs font-bold"
                                 >
-                                  <CartQuantity
-                                    item={item}
-                                    variant={variant}
-                                  
-                                  />
-                                </div>
-                              </>
+                                  <span className="p-5">
+                                    {currencyFormatter(variant.price)}{" "}
+                                  </span>
+                                  <span>{variant.measurement} </span>
+                                  <p className="font-normal text-blue border">
+                                    {variant.measurement_unit_name}
+                                  </p>
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+
+                          <div>
+                            {item.variants.some(
+                              (variant) => variant.stock > 0
+                            ) ? (
+                              allCartItems?.find(
+                                (i) =>
+                                  (i.product_variant_id ?? i.id) ===
+                                  item?.variants?.[variant?.[item?.id] || 0]?.id
+                              ) ? (
+                                <>
+                                  <div className="mt-3">
+                                    <CartQuantity
+                                      item={item}
+                                      variant={variant}
+                                    />
+                                  </div>
+                                </>
+                              ) : (
+                                <button
+                                  className=" md:h-8 mt-3 md:text-xs   sm:h-10 sm:text-base  text-lime border border-lightgreen bg-transparent w-full hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    user_id
+                                      ? addItemHandler(variant, item)
+                                      : addItemUI(item);
+                                  }}
+                                >
+                                  Add
+                                </button>
+                              )
                             ) : (
-                              <button
-                                className=" md:h-8 mt-3 md:text-xs   sm:h-10 sm:text-base  text-lime border border-lightgreen bg-transparent w-full hover:bg-opacity-75 font-medium rounded-lg text-sm px-3 py-1.5 text-center"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  user_id
-                                    ? addItemHandler(variant, item)
-                                    : addItemUI(item);
-                                }}
-                              >
-                                Add
-                              </button>
-                            )
-                          ) : (
-                            <p className="  text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:text-xs  xs:text-xs">
-                              Out of stock
-                            </p>
-                          )}
+                              <p className="  text-orange md:text-[11px] text-sm font-medium mt-4 pb-4 sm:text-xs  xs:text-xs">
+                                Out of stock
+                              </p>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
-                </>
-              );
-            })}
-        </Carousel>
+                      )}
+                    </div>
+                  </>
+                );
+              })}
+          </Carousel>
+        </div>
       </div>
-    </div>
     </>
-   
   );
 };

@@ -127,11 +127,7 @@ function MyCart({
     setTotalItems(totalAmount);
   };
 
-  // useEffect(() => {
-  //   total();
-  //   totalAmount();
-  //   unDiscountedTotel();
-  // }, [allCartItems]);
+  
 
   useEffect(() => {
     if (apiToken) total();
@@ -142,7 +138,6 @@ function MyCart({
   const removeItemHandler = (item) => {
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -250,17 +245,14 @@ function MyCart({
       });
   };
 
-  // useEffect(() => {
-  //   getUserCarts(user_id);
-  // }, [accesskey]);
+  
   useEffect(() => {
     if (apiToken) getUserCarts(user_id);
   }, [apiToken, accesskey]);
   return (
     <>
       <button
-        // className="relative md:bg-lime sm:bg-lime xs:bg-skyblue  text-white items-center float-right flex gap-1
-        // font-bold py-1 rounded shadow xs:my-2 xs:px-2 2xs:my-2 2xs:py-2 2xs:px-1"
+       
         className="relative md:bg-lime sm:bg-lime xs:bg-skyblue  text-white items-center float-right flex gap-1
         font-bold md:px-2 rounded shadow  "
         type="button"
@@ -287,9 +279,7 @@ function MyCart({
         <div className="md:bg-lime sm:bg-lime xs:bg-white">
           {price > 0 && allCartItems ? (
             <>
-              {/* <div className=" hidden md:block sm:block bg-lime text-sm">
-                {totalItem} items
-              </div> */}
+             
               <div className="block md:hidden absolute top-1 right-1 px-1 rounded-full bg-red text-xs">
                 {totalItem}
               </div>
@@ -408,7 +398,6 @@ function MyCart({
                                             </p>
                                           </div>
                                           <div className="flex items-center justify-evenly xs:gap-4 md:justify-around sm:justify-between text-center w-[50%]">
-                                            {/* <div className=""> */}
                                             <div className="bg-white">
                                               <QtyAmount
                                                 item={item}
@@ -421,56 +410,10 @@ function MyCart({
                                                 onClick={() =>
                                                   removeItemHandler(item)
                                                 }
-                                                // onClick={showDeleteModalBox}
                                                 className="bg-white hover:bg-RedColour hover:bg-opacity-20 cursor-pointer xs:text-[18px]  md:text-[15px] xs:text-sm sm:text-3xl text-red"
                                               />
                                             </div>
-                                            {/* {deleteProduct && (
-                                              <>
-                                                <div className="fixed  z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
-                                                  <div
-                                                    className="bg-[#c9bcbc] top-[5%] left-[5%] md:w-[500px] xs:w-[340px] sm:w-[500px] rounded-xl"
-                                                    ref={mycartRef}
-                                                  >
-                                                    <div className="flex justify-center items-center relative">
-                                                      <div className="container relative flex ">
-                                                        <div className="w-full p-8 md:px-12 mr-auto rounded-2xl ">
-                                                          <button className="absolute top-[5%] right-[5%]"></button>
-
-                                                          <p className="font-bold text-[16px]">
-                                                            Are you sure you
-                                                            want to remove this
-                                                            product?
-                                                          </p>
-                                                          <div className="flex text-center items-center justify-center gap-4">
-                                                            <button
-                                                              onClick={() =>
-                                                                removeItemHandler(
-                                                                  item
-                                                                )
-                                                              }
-                                                              type="button"
-                                                              className="bg-lime 2xs:px-2 2xs:mt-2 2xs:rounded xs:mt-3 xs:w-24 xs:rounded-lg xs:py-1 md:mt-3 md:w-[118px] sm:w-[130px] sm:mt-5  text-white md:font-bold md:py-3 sm:text-lg md:text-sm md:px-4 md:rounded-lg md:hover:opacity-90 hover:bg-customGreen"
-                                                            >
-                                                              Yes
-                                                            </button>
-                                                            <button
-                                                              type="button"
-                                                              onClick={
-                                                                handleDeleteModal
-                                                              }
-                                                              className="bg-RedColour 2xs:px-2 2xs:mt-2 2xs:rounded xs:mt-3 xs:w-24 xs:rounded-lg xs:py-1 md:mt-3 md:w-[118px] sm:w-[130px] sm:mt-5  text-white md:font-bold md:py-3 sm:text-lg md:text-sm md:px-4 md:rounded-lg md:hover:opacity-90 hover:bg-candy"
-                                                            >
-                                                              No
-                                                            </button>
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              </>
-                                            )} */}
+                                          
                                           </div>
                                         </div>
                                       </div>
@@ -490,7 +433,7 @@ function MyCart({
                                   ) : (
                                     <>
                                       <button
-                                        className="flex justify-between bg-lime p-3 mt-5 ml-[-11px]  border-3 text-white fixed bottom-0  md:w-96 xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
+                                        className="flex justify-between bg-lime p-3 mt-5 ml-[-11px]  border-3 text-white fixed bottom-0  md:w-96 xs:w-[370px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
                                         onClick={() => {
                                           console.log(
                                             "proceed button before login"
@@ -512,7 +455,7 @@ function MyCart({
                                   )
                                 ) : (
                                   <button
-                                    className="flex justify-between mt-5 md:w-96 bg-lime p-3 text-white fixed bottom-0 md:ml-[-11px]  xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
+                                    className="flex justify-between mt-5 md:w-96 bg-lime p-3 text-white fixed bottom-0 md:ml-[-11px] xs:ml-[-10px]  xs:w-[370px] sm:w-[763px] 2xs:w-[260px] rounded-lg"
                                     onClick={formHandler}
                                   >
                                     <p className="p-2 bg-lime text-xl font-bold rounded-lg">
@@ -533,50 +476,7 @@ function MyCart({
                       })
                     : null}
 
-                  {/* {user_id === "" && allCartItems.length !== 0 ? (
-                    newUserSignUpLog ? (
-                      <Login
-                        user_id={user_id}
-                        setNewUserLog={setNewUserLog}
-                        setOpenLogin={setOpenLogin}
-                        setNewUserSignUpLog={setNewUserSignUpLog}
-                        getUserCarts={getUserCarts}
-                      />
-                    ) : (
-                      <>
-                        <button
-                          className="flex justify-between bg-lime p-3 mt-5  border-3 text-white fixed bottom-0  md:w-96 xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
-                          onClick={() => setNewUserLog(true)}
-                        >
-                          <p className="p-2 bg-lime text-xl font-bold rounded-lg">
-                            Total : {currencyFormatter(price)}
-                          </p>
-                          <div className="flex items-center min-w-max justify-center">
-                            <p className="p-2 bg-lime text-xl  rounded-lg">
-                              Proceed
-                            </p>
-                            <BsChevronCompactRight className="te" />
-                          </div>
-                        </button>
-                      </>
-                    )
-                  ) : (
-                    // <button
-                    //   className="flex justify-between mt-5 md:w-96 bg-lime p-3  text-white fixed bottom-0 md:ml-[-11px]  xs:w-[350px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
-                    //   onClick={formHandler}
-                    // >
-                    //   <p className="p-2 bg-lime text-xl font-bold rounded-lg">
-                    //     Total : {currencyFormatter(price)}
-                    //   </p>
-                    //   <div className="flex items-center justify-center min-w-max">
-                    //     <p className="p-2 bg-lime text-xl  rounded-lg">
-                    //       Proceed
-                    //     </p>
-                    //     <BsChevronCompactRight className="te" />
-                    //   </div>
-                    // </button>
-                    ""
-                  )} */}
+                 
 
                   {!showForm && !allCartItems?.length ? (
                     <div className="relative p-6 flex-auto text-center font-medium bg-white">

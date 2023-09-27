@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Signup } from "./Signup";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -17,18 +17,26 @@ import { useApiStore } from "../zustand/useApiStore";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useApiToken } from "../zustand/useApiToken";
+import { Forgot } from "./Forgot";
 
-export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog,getUserCarts,cartFuncs }) => {
+export const Login = ({
+  setNewUserLog,
+  setOpenLogin,
+  setNewUserSignUpLog,
+  getUserCarts,
+  cartFuncs,
+}) => {
   const [logins, setLogins] = useState({
     phone: "",
     password: "",
   });
-  console.log(getUserCarts,cartFuncs,'logincart');
+  console.log(getUserCarts, cartFuncs, "logincart");
   const { allCartItems, config, clearCartApi, setAllCartItems } =
     useCartStore();
   const { setUserInfo } = useUserStore();
   const [showSignUp, setShowSignUp] = useState(false);
   const [loginForm, setLoginForm] = useState(true);
+  const [forgotForm, setForgotForm] = useState(false);
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loginData, setLoginData] = useState([]);
@@ -37,7 +45,6 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog,getUser
   const [visiblePassword, setVisiblePassword] = useState(false);
   let loginRef = useRef(null);
   const { apiToken } = useApiToken();
-
 
   const handleShow = (e) => {
     e.preventDefault();
@@ -54,6 +61,7 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog,getUser
     if (setOpenLogin) {
       setOpenLogin(false);
     }
+
     navigate("/");
   };
 
@@ -61,7 +69,6 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog,getUser
     if (loginRef.current && !loginRef.current.contains(event.target)) {
       setLoginForm(false);
       setShowRegisterForm(false);
-
     }
   };
 
@@ -84,15 +91,15 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog,getUser
   };
 
   const inputHandler = (e) => {
-   let name = e.target.name;
-    let value = e.target.value.slice(3,e?.target?.value?.length);
-   setLogins({ ...logins, [name]: value });
+    let name = e.target.name;
+    let value = e.target.value.slice(3, e?.target?.value?.length);
+    setLogins({ ...logins, [name]: value });
   };
   const passwordHandler = (e) => {
     let name = e.target.name;
-    let value = e.target.value
-  setLogins({ ...logins, [name]: value });
-  }
+    let value = e.target.value;
+    setLogins({ ...logins, [name]: value });
+  };
 
   const clearCart = () => {
     clearCartApi();
@@ -104,17 +111,17 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog,getUser
     if (!logins.phone && !logins.password) {
       toast.error("Please enter both phone and password!", {
         position: toast.POSITION.TOP_CENTER,
-        autoClose:500
+        autoClose: 500,
       });
     } else if (!logins.phone) {
       toast.error("Please enter a valid phone number!", {
         position: toast.POSITION.TOP_CENTER,
-        autoClose:500
+        autoClose: 500,
       });
     } else if (!logins.password) {
       toast.error("Please enter a password!", {
         position: toast.POSITION.TOP_CENTER,
-        autoClose:500
+        autoClose: 500,
       });
     } else {
       setisLoading(true);
@@ -147,10 +154,10 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog,getUser
             localStorage.setItem("token", `${apiToken}`);
             setUserInfo(res.data);
             let newUserId = res?.data?.user_id;
-            
 
             toast.success("Logged in successfully!", {
               position: toast.POSITION.TOP_CENTER,
+              autoClose: 500,
             });
 
             const addMultipleItems = () => {
@@ -180,11 +187,11 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog,getUser
                   setisLoading(false);
                   // cartFuncs?.cartFuncs(newUserId)
                   getUserCarts(newUserId);
-                  
-                  if(cartFuncs){
-                    cartFuncs(newUserId)
+
+                  if (cartFuncs) {
+                    cartFuncs(newUserId);
                   }
-                  console.log(cartFuncs,'cartt')
+                  console.log(cartFuncs, "cartt");
                 })
                 .catch((error) => {
                   console.log(error);
@@ -192,13 +199,11 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog,getUser
                 });
             };
 
-          
-            
             addMultipleItems();
           } else {
             toast.error("Invalid phone OR password!", {
               position: toast.POSITION.TOP_CENTER,
-              autoClose:500
+              autoClose: 500,
             });
           }
         })
@@ -213,11 +218,17 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog,getUser
     });
   };
 
+  const openForgotPassword = (e) => {
+    e.preventDefault();
+    console.log("hello");
+    setForgotForm(true);
+  };
+
   return (
     <>
+      <ToastContainer />
       {loginForm && (
         <>
-          <ToastContainer />
           <div className="fixed  z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
             <div
               className="bg-[#f5f5f5] rounded top-[5%] left-[5%] md:w-[500px] xs:w-[340px] sm:w-[500px]"
@@ -295,7 +306,13 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog,getUser
                         >
                           Login
                         </button>
-                        
+
+                        <p
+                          className="cursor-pointer"
+                          onClick={openForgotPassword}
+                        >
+                          Forgot Password
+                        </p>
                       </div>
 
                       <div className="text-center lg:text-left">
@@ -330,12 +347,22 @@ export const Login = ({ setNewUserLog, setOpenLogin, setNewUserSignUpLog,getUser
       {showSignUp && (
         <SignUpwithOtp
           setNewUserLog={setNewUserLog}
+          loginForm={loginForm}
           setLoginForm={setLoginForm}
           setShowRegisterForm={setShowRegisterForm}
           setPhoneNumber={setPhoneNumber}
           phoneNumber={phoneNumber}
           setShowSignUp={setShowSignUp}
           setOpenLogin={setOpenLogin}
+        />
+      )}
+      {forgotForm && (
+        <Forgot
+          phoneNumber={phoneNumber}
+          setForgotForm={setForgotForm}
+          setPhoneNumber={setPhoneNumber}
+          setLoginForm={setLoginForm}
+         
         />
       )}
     </>

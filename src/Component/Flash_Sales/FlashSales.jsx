@@ -166,7 +166,7 @@ export const FlashSales = () => {
               return (
                 <>
                   <div
-                    className="w-72  xs:my-3 xs:w-36  xs:h-auto md:w-40 md:h-[280px] sm:h-[250px] sm:w-[170px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green bg-[#ffffff] cursor-pointer"
+                    className="w-72  xs:my-3 xs:w-36  xs:h-auto md:w-40 md:h-[280px] sm:h-[352px] sm:w-[210px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green bg-[#ffffff] cursor-pointer"
                     onClick={() => {
                       navigate(
                         `/subcategory-details/${item.category_name}/product-details/${item.id}`
@@ -174,7 +174,7 @@ export const FlashSales = () => {
                     }}
                   >
                     <img
-                      className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-28 md:w-40 sm:w-48 sm:h-32 rounded-lg "
+                      className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-28 md:w-40 sm:w-56 sm:h-36 rounded-lg "
                       src={
                         item?.variants?.length == 1
                           ? item.image

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { API_TOKEN } from "../Token/Token";
 import axios from "axios";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useLoaderState } from "../zustand/useLoaderState";
-import { useApiStore } from "../zustand/useApiStore";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useApiToken } from "../zustand/useApiToken";
 
 export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
@@ -21,7 +19,6 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
   const [cityDropdown, setCityDropdown] = useState("");
   const [areaDropdown, setAreaDropdown] = useState("");
   const [initialRender, setIntialrender] = useState(true);
-  const { jwt, setJwt } = useApiStore();
   const { setisLoading } = useLoaderState();
   const { apiToken } = useApiToken();
   const [otherField, setOtherField] = useState("");
@@ -49,8 +46,6 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
       Authorization: `Bearer ${apiToken}`,
     },
   };
-
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -89,7 +84,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
         .then((res) => {
           toast.success("Address added Successfully", {
             position: toast.POSITION.TOP_CENTER,
-           
+            autoClose:500,
           });
           getAddress();
           setFormOpen(false);
@@ -169,15 +164,25 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
                       onChange={handleInputChange}
                     />
                   </div>
+
                   <div>
                     <input
-                      className="w-full h-[30px] mt-2 p-2 rounded-lg text-xs  border border-light_gray"
+                      className={`w-full h-[30px] mt-2 p-2 rounded-lg text-xs border ${
+                        addressData.pincode.length !== 6
+                          ? "border-red-500"
+                          : "border-light_gray"
+                      }`}
                       placeholder="Pincode*"
-                      type="number"
+                      type="text"
                       name="pincode"
                       value={addressData.pincode}
                       onChange={handleInputChange}
                     />
+                    {addressData.pincode.length !== 6 && (
+                      <p className="text-red text-xs mt-1 ml-1">
+                        Pincode must be exactly 6 digits
+                      </p>
+                    )}
                   </div>
                 </div>
 
