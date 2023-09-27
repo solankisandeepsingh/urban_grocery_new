@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { auth } from "../Firebase/firebase.config";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { FaMobileAlt } from "react-icons/fa";
+import { FaArrowLeft, FaMobileAlt } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import OtpInput from "react-otp-input";
@@ -17,14 +17,33 @@ export const SignUpwithOtp = ({
   setPhoneNumber,
   phoneNumber,
   setLoginForm,
+  loginForm,
 }) => {
   const [closeSignup, setCloseSignUp] = useState(true);
   const [expandForm, setExpandForm] = useState(false);
   const [OTP, setOTP] = useState("");
   const { setisLoading } = useLoaderState();
   const { apiToken } = useApiToken();
-
   const [showSignUpForm, setShowSignUpForm] = useState(false);
+  const [resendDisabled, setResendDisabled] = useState(false);
+  const [timer, setTimer] = useState(60);
+
+  const startResendTimer = () => {
+    setResendDisabled(true);
+    let seconds = 30;
+    setTimer(seconds);
+
+    const interval = setInterval(() => {
+      seconds -= 1;
+      setTimer(seconds);
+
+      if (seconds === 0) {
+        clearInterval(interval);
+        setResendDisabled(false);
+      }
+    }, 1000);
+  };
+
   const getVerifyOtp = (e) => {
     let config = {
       headers: {
@@ -46,7 +65,7 @@ export const SignUpwithOtp = ({
         if (res.data.error) {
           toast.error(res.data.message, {
             position: toast.POSITION.TOP_CENTER,
-            autoClose:500,
+            autoClose: 500,
           });
           setisLoading(false);
         } else {
@@ -65,7 +84,7 @@ export const SignUpwithOtp = ({
 
                 toast.success("OTP has been sent successfully", {
                   position: toast.POSITION.TOP_CENTER,
-                  autoClose:500,
+                  autoClose: 500,
                 });
               })
               .catch((error) => {});
@@ -93,6 +112,7 @@ export const SignUpwithOtp = ({
   const requstOtp = (e) => {
     e.preventDefault();
     getVerifyOtp();
+    startResendTimer();
   };
 
   const verifyOtp = (e) => {
@@ -104,7 +124,7 @@ export const SignUpwithOtp = ({
         .then((res) => {
           toast.success("Verification Successful", {
             position: toast.POSITION.TOP_CENTER,
-            autoClose:300,
+            autoClose: 300,
           });
           setShowRegisterForm(true);
           setShowSignUp(false);
@@ -115,6 +135,19 @@ export const SignUpwithOtp = ({
     }
   };
 
+  const resendOtp = () => {
+    if (!resendDisabled) {
+      getVerifyOtp();
+    } else {
+      setResendDisabled(true);
+      toast.success("Resend OTP has been sent successfully", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 500,
+      });
+      startResendTimer();
+    }
+  };
+
   const handleCloseSignUp = () => {
     setShowSignUp(false);
     setLoginForm(true);
@@ -122,6 +155,19 @@ export const SignUpwithOtp = ({
   const isPhoneNumberValid = (phone) => {
     return phone.replace(/\D/g, "").length === 10;
   };
+
+  useEffect(() => {
+    if (timer === 0) {
+      setResendDisabled(false);
+    }
+  }, [timer]);
+
+  const handleLoginShow = () => {
+    setShowSignUp(false);
+    setLoginForm(true);
+    setPhoneNumber("");
+  };
+
   return (
     <>
       {/* <ToastContainer /> */}
@@ -133,6 +179,13 @@ export const SignUpwithOtp = ({
               <div className="relative w-[518px] h-[430px] my-6 mx-auto max-w-3xl bg-white rounded-lg">
                 <div id="recaptcha-container"></div>
                 <div className="px-5 py-2 flex justify-between text-center items-center rounded-sm-y">
+                  <span>
+                    {" "}
+                    <FaArrowLeft
+                      className="bg-white cursor-pointer"
+                      onClick={handleLoginShow}
+                    />
+                  </span>
                   <h3 className="text-2xl  text-center text-GrayBlinkit">
                     Register{" "}
                   </h3>
@@ -211,17 +264,31 @@ export const SignUpwithOtp = ({
                             : "bg-lava_grey text-white"
                         } rounded-full xs:rounded-lg xs:text-xs w-[74%] ml-8 h-10 md:text-base md:font-medium inline-block font-medium`}
                         onClick={requstOtp}
-                        disabled={!isPhoneNumberValid(phoneNumber)}
+                        disabled={
+                          !isPhoneNumberValid(phoneNumber) || resendDisabled
+                        }
                       >
                         Next
                       </button>
                     ) : (
-                      <button
-                        className="rounded-full bg-lime hover:bg-customGreen xs:rounded-lg xs:text-xs  xs:h-8 md:w-full xs:w-full md:h-10 md:text-base md:font-medium inline-block font-medium ..."
-                        onClick={verifyOtp}
-                      >
-                        Verify OTP
-                      </button>
+                      <div className="flex items-center justify-between gap-2">
+                        <button
+                          className="rounded-full bg-lime hover:bg-customGreen text-white xs:rounded-lg xs:text-xs xs:h-8 md:w-full xs:w-full md:h-10 md:text-base md:font-medium inline-block font-medium ..."
+                          onClick={verifyOtp}
+                        >
+                          Verify OTP
+                        </button>
+                        {resendDisabled ? (
+                          <p className="text-xs font-bold">Valid Up to{timer}</p>
+                        ) : (
+                          <button
+                            className="rounded-full bg-Light_BLUE text-white hover:bg-Crayola_blue xs:rounded-lg xs:text-xs xs:h-8 md:w-full xs:w-full md:h-10 md:text-base md:font-medium inline-block font-medium ..."
+                            onClick={resendOtp}
+                          >
+                            Resend OTP
+                          </button>
+                        )}
+                      </div>
                     )}
                   </form>
                 </div>

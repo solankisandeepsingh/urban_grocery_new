@@ -63,7 +63,7 @@ export const Signup = ({
     formData.append("name", userRegistraion.name);
     formData.append("password", userRegistraion.password);
     formData.append("mobile", "+91" + phoneNumber);
-    
+
     setisLoading(true);
 
     axios
@@ -109,7 +109,7 @@ export const Signup = ({
   };
 
   const strongPasswordRegex =
-    /^(?=.*[ A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+    "^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,}$";
   const NameRegex = /^(?=.*[ A-Za-z]){2,}$/;
 
   return (
@@ -143,7 +143,7 @@ export const Signup = ({
                       </div>
                       <form>
                         <div></div>
-                        <div className="gap-5 mt-5">
+                        <div className="gap-5 mt-5"> 
                           <div>
                             <input
                               className=" w-full bg-gray-100 border-gray-400 text-gray-900 mt-1 p-3 rounded-lg focus:shadow-outline"
@@ -190,7 +190,7 @@ export const Signup = ({
                         </div>
 
                         <div className="mt-6 mb-3">
-                          {userRegistraion.password?.length >= 6 ? (
+                          {userRegistraion.password?.length >= 8 ? (
                             strongPasswordRegex.test(
                               userRegistraion.password
                             ) ? (
@@ -205,7 +205,7 @@ export const Signup = ({
                             )
                           ) : (
                             <p className={`text-sm text-RedColour`}>
-                              Password must be at least 6 characters long.
+                              Password must be at least 8 characters long.
                             </p>
                           )}
                         </div>

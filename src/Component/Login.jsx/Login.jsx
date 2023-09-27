@@ -17,6 +17,7 @@ import { useApiStore } from "../zustand/useApiStore";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useApiToken } from "../zustand/useApiToken";
+import { Forgot } from "./Forgot";
 
 export const Login = ({
   setNewUserLog,
@@ -35,6 +36,7 @@ export const Login = ({
   const { setUserInfo } = useUserStore();
   const [showSignUp, setShowSignUp] = useState(false);
   const [loginForm, setLoginForm] = useState(true);
+  const [forgotForm, setForgotForm] = useState(false);
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loginData, setLoginData] = useState([]);
@@ -216,12 +218,17 @@ export const Login = ({
     });
   };
 
+  const openForgotPassword = (e) => {
+    e.preventDefault();
+    console.log("hello");
+    setForgotForm(true);
+  };
+
   return (
     <>
-    <ToastContainer />
+      <ToastContainer />
       {loginForm && (
         <>
-          
           <div className="fixed  z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
             <div
               className="bg-[#f5f5f5] rounded top-[5%] left-[5%] md:w-[500px] xs:w-[340px] sm:w-[500px]"
@@ -299,6 +306,13 @@ export const Login = ({
                         >
                           Login
                         </button>
+
+                        <p
+                          className="cursor-pointer"
+                          onClick={openForgotPassword}
+                        >
+                          Forgot Password
+                        </p>
                       </div>
 
                       <div className="text-center lg:text-left">
@@ -333,12 +347,22 @@ export const Login = ({
       {showSignUp && (
         <SignUpwithOtp
           setNewUserLog={setNewUserLog}
+          loginForm={loginForm}
           setLoginForm={setLoginForm}
           setShowRegisterForm={setShowRegisterForm}
           setPhoneNumber={setPhoneNumber}
           phoneNumber={phoneNumber}
           setShowSignUp={setShowSignUp}
           setOpenLogin={setOpenLogin}
+        />
+      )}
+      {forgotForm && (
+        <Forgot
+          phoneNumber={phoneNumber}
+          setForgotForm={setForgotForm}
+          setPhoneNumber={setPhoneNumber}
+          setLoginForm={setLoginForm}
+         
         />
       )}
     </>

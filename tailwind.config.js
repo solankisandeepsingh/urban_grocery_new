@@ -50,7 +50,7 @@ module.exports = {
       lightSky: "#0072A0",
       skybluelight: "#ADD8E6",
       Crayola_blue: "#1778F2",
-      TWITTER_BLUE: "#1D9BF0",
+      Light_BLUE: "#1D9BF0",
       gmail_color: "#EA4335",
       graycolor: "rgba(0,0,0,.6)",
       blackColour: "#000",

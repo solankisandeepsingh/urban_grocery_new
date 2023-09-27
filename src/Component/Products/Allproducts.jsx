@@ -21,6 +21,9 @@ function Allproducts({ setNavbarOpen }) {
   const { apiToken } = useApiToken();
   setNavbarOpen(true);
 
+
+  
+
   const mockData = [
     {
       id: "906",
@@ -32,7 +35,7 @@ function Allproducts({ setNavbarOpen }) {
       total_allowed_quantity: "0",
       slug: "artisanal-dark-sugar-free-chocolate-bar-1",
       description:
-        "<ul>\r\n<li>Sugarfree Chocolates</li>\r\n<li>Weight : 460 gm</li>\r\n</ul>",
+        "<ul>\r\n<li>Sugarfree Chocolates</li>\r\n<li>Weight :460 gm</li>\r\n</ul>",
       status: "1",
       category_name: "Chocolate",
       tax_percentage: "0",
