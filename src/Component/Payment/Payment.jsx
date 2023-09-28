@@ -9,6 +9,7 @@ import { usePaymentStore } from "../zustand/usePaymentStore";
 import CryptoJS, { HmacSHA256 } from "crypto-js";
 import { useApiStore } from "../zustand/useApiStore";
 import { useApiToken } from "../zustand/useApiToken";
+import { toast } from "react-toastify";
 
 // import {  SiRazorpay } from "../react-icons/si";
 
@@ -47,7 +48,6 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
   useEffect(() => {
     if (apiToken) setNavbarOpen(false);
   }, [apiToken, NavbarOpen]);
-  
 
   useEffect(() => {
     const config = {
@@ -55,7 +55,7 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
         Authorization: `Bearer ${apiToken}`,
       },
     };
-    
+
     let paymentMethod = new FormData();
     paymentMethod.append("accesskey", "90336");
     paymentMethod.append("settings", "1");
@@ -120,14 +120,18 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
     );
 
     if (!result) {
-      alert("Server error. Are you online?");
+      // alert("Server error. Are you online?");
+      toast.error("Server error. Are you online? ", {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose:800
+      });
       return;
     }
 
     const { amount, id: order_id, currency } = result.data;
 
     const options = {
-      key: "rzp_test_kYyI51d6qc5O2x", // Enter the Key ID generated from the Dashboard
+      key: "rzp_test_kYyI51d6qc5O2x",
       amount: amount.toString(),
       currency: currency,
       name: "IntelliaTech.",
@@ -135,9 +139,6 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
       image: "http://grocery.intelliatech.in/dist/img/logo.png",
       order_id: order_id,
       handler: function (response) {
-        // alert(response.razorpay_payment_id);
-        // alert(response.razorpay_order_id);
-        // alert(response.razorpay_signature);
         console.log(order_id, response.razorpay_payment_id);
 
         let generated_signature = HmacSHA256(
@@ -162,8 +163,8 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
         }
       },
       prefill: {
-        name: "Soumya Dey",
-        email: "SoumyaDey@example.com",
+        name: "",
+        email: "text@example.com",
         contact: "9999999999",
       },
       notes: {
@@ -202,16 +203,6 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
     orderData.append("latitude", "44.456321");
     orderData.append("longitude", "12.456987");
     orderData.append("payment_method", `${chosenPayment}`);
-    // orderData.append("discount", "0");
-    // orderData.append("tax_percentage", "0");
-    // orderData.append("tax_amount", "0");
-    // orderData.append("area_id", "1");
-    // orderData.append("order_note", "home");
-    // orderData.append("order_from", "test ");
-    // orderData.append("local_pickup", "0");
-    // orderData.append("wallet_used", "false");
-    // orderData.append("status", "awaiting_payment ");
-    // orderData.append("delivery_time", "Today - Evening (4:00pm to 7:00pm)");
 
     setisLoading(true);
 
@@ -295,13 +286,10 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
       labelFor: "paytm",
     },
   ];
-  
 
   return (
     <>
-      {/* <div className="flex justify-evenly items-center text-center"> */}
       <div className="xs:flex h-[100vh] xs:flex-col xs:my-[60px] md:flex md:flex-row md:justify-between rounded-md border-light_gray md:items-center border md:text-center xs:mx-3 sm:m-20 bg-[#fafafa] px-5">
-        {/* <div className=" flex w-[50%] items-center justify-center"> */}
         <div className="xs:w-full self-start h-auto min-h-[75vh] sm:w-[620px] md:w-[35%] ">
           <div className="mt-5  rounded-lg shadow-2xl min-h-[75vh] h-auto">
             <div className="bg-[#6ba9c5] py-2 rounded-t-lg">
@@ -394,7 +382,7 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
               <div className="flex flex-col p-3 list-none mt-2 mb-4 shadow-sm">
                 <h2 className="font-bold text-start">Payment Details</h2>
 
-                <li className="cursor-pointer">
+                <li className="">
                   <div className="flex justify-between mt-2">
                     <p className="sm:text-lg md:text-sm">Items</p>
                     <p className="sm:text-lg md:text-sm text-customGreen font-bold">
@@ -402,7 +390,7 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
                     </p>
                   </div>
                 </li>
-                <li className="cursor-pointer">
+                <li className="">
                   <div className="flex justify-between mt-2">
                     <p className="sm:text-lg md:text-sm">Discount</p>
                     <p className="sm:text-lg md:text-sm text-customGreen font-bold">
@@ -411,7 +399,7 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
                   </div>
                 </li>
 
-                <li className="cursor-pointer">
+                <li className="">
                   <div className="flex justify-between mt-2">
                     <p className="sm:text-lg md:text-sm">Delivery Charge</p>
                     <p className="sm:text-lg md:text-sm text-customGreen font-bold">
@@ -422,7 +410,7 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
 
                 {/* FOR PROMO CODE */}
 
-                {/* <li className="cursor-pointer">
+                {/* <li className="">
                   <div className="flex justify-between mt-2">
                     <p className="sm:text-lg md:text-sm">Promo Code</p>
                     <p className="sm:text-lg md:text-sm">
@@ -432,7 +420,7 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
                 </li> */}
                 <div className="border-b border-light_gray my-2 "></div>
 
-                <li className="cursor-pointer">
+                <li className="">
                   <div className="flex justify-between mt-4">
                     <p className="sm:text-lg md:text-xl font-bold">
                       Order Total

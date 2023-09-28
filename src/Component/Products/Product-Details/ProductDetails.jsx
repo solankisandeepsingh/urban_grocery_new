@@ -580,19 +580,6 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
                           Add to favourites
                         </p>
                       </div>
-
-                      {/* <div className="2xs:flex xs:flex xs:gap-1  md:flex md:gap-1 ">
-                        <FaArrowsAlt className="2xs:text-xs xs:text-sm sm:text-3xl md:text-lg text-lime " />
-                        <p className="2xs:text-xs xs:text-sm sm:text-3xl md:text-sm">
-                          Share
-                        </p>
-                      </div>
-                      <div className="2xs:flex xs:flex xs:gap-1 md:flex md:gap-1 ">
-                        <FaAlignLeft className="2xs:text-xs xs:text-sm xs:gap-1 sm:text-3xl md:text-lg text-lime" />
-                        <p className="2xs:text-xs xs:text-sm sm:text-3xl md:text-sm">
-                          Similar_Products
-                        </p>
-                      </div> */}
                     </div>
 
                     <div className="data 2xs:mt-3 xs:mb-3 ">
@@ -936,12 +923,12 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
                                       className="w-20 h-20 object-cover rounded-md"
                                     />
                                     <div className="bg-[#f2f2f2]">
-                                    <AiOutlineCloseCircle
-                                      className="cursor-pointer absolute bg-[#fff] bg-opacity-90  hover:opacity-100 opacity-50 rounded-full top-[-4px] text-red text-[28px] right-0"
-                                      onClick={() => deleteHandler(image)}
-                                    />
+                                      <AiOutlineCloseCircle
+                                        className="cursor-pointer absolute bg-[#fff] bg-opacity-90  hover:opacity-100 opacity-50 rounded-full top-[-4px] text-red text-[28px] right-0"
+                                        onClick={() => deleteHandler(image)}
+                                      />
                                     </div>
-                                    
+
                                     {/* <span
                                     className="cursor-pointer absolute top-[-10px] right-0 p-1 bg-red-500 text-white"
                                     onClick={() => deleteHandler(image)}
