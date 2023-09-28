@@ -27,6 +27,7 @@ export const SignUpwithOtp = ({
   const [showSignUpForm, setShowSignUpForm] = useState(false);
   const [resendDisabled, setResendDisabled] = useState(false);
   const [timer, setTimer] = useState(60);
+  
 
   const startResendTimer = () => {
     setResendDisabled(true);
@@ -54,8 +55,6 @@ export const SignUpwithOtp = ({
       setTimer(formatTime(minutes, seconds));
     }, 1000);
   };
-  
-  
 
   const getVerifyOtp = (e) => {
     let config = {
@@ -151,7 +150,7 @@ export const SignUpwithOtp = ({
   const resendOtp = () => {
     if (!resendDisabled) {
       getVerifyOtp();
-    } else {
+
       setResendDisabled(true);
       toast.success("Resend OTP has been sent successfully", {
         position: toast.POSITION.TOP_CENTER,
@@ -159,7 +158,7 @@ export const SignUpwithOtp = ({
       });
       startResendTimer();
     }
-  };
+  }; 
 
   const handleCloseSignUp = () => {
     setShowSignUp(false);
@@ -292,7 +291,7 @@ export const SignUpwithOtp = ({
                           Verify OTP
                         </button>
                         {resendDisabled ? (
-                          <p className="text-xs font-bold text-red">{timer}</p>
+                          <p className="text-xs font-bold text-red ">{timer}</p>
                         ) : (
                           <button
                             className="rounded-full bg-Light_BLUE text-white hover:bg-Crayola_blue xs:rounded-lg xs:text-xs xs:h-8 md:w-full xs:w-full md:h-10 md:text-base md:font-medium inline-block font-medium ..."
@@ -311,7 +310,7 @@ export const SignUpwithOtp = ({
             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
           </>
         )}
-        {showSignUpForm && <Signup />}
+        {showSignUpForm && <Signup />}  
       </div>
     </>
   );

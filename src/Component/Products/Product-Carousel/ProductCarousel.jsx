@@ -482,7 +482,7 @@ export const ProductCarousel = ({}) => {
       <div className="xs:mt-4 xs:p-2 md:mt-7 shadow-sm border border-[#e8e8e8] rounded-md md:p-5 bg-[#fcfff3]">
         <div className="xs:my-5 mt-20 flex justify-between">
           <div className="text-customBlack text-[24px]">
-            <h1 className="font-okra font-600">All Proudct</h1>
+            <h1 className="font-okra font-600">All product</h1>
           </div>
           <div className=" text-customGreen text-[20px]	">
             <h1

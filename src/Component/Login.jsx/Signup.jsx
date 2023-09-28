@@ -18,6 +18,8 @@ import {
   AiOutlineCloseCircle,
 } from "react-icons/ai";
 import { useApiToken } from "../zustand/useApiToken";
+import { useNavigate } from "react-router-dom";
+
 
 export const Signup = ({
   setOpenLogin,
@@ -35,7 +37,7 @@ export const Signup = ({
   const { jwt, setJwt } = useApiStore();
   const { apiToken } = useApiToken();
   const [signUpvisiblePassword, setSignUpVisiblePassword] = useState(false);
-
+  const navigate = useNavigate();
   const handleUserSignUp = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -109,16 +111,15 @@ export const Signup = ({
   };
 
   const strongPasswordRegex =
-    "^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,}$";
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   const NameRegex = /^(?=.*[ A-Za-z]){2,}$/;
 
   return (
     <div>
       <>
+        <ToastContainer />
         {closeSignup && (
           <>
-            <ToastContainer />
-
             <div className="fixed  z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
               <div className="bg-[#f5f5f5] rounded top-[5%] md:h-[360px] xs:h-[380px] left-[5%] md:w-[500px] xs:w-[340px] sm:w-[500px]">
                 <div className="flex justify-center items-center relative">
@@ -143,7 +144,7 @@ export const Signup = ({
                       </div>
                       <form>
                         <div></div>
-                        <div className="gap-5 mt-5"> 
+                        <div className="gap-5 mt-5">
                           <div>
                             <input
                               className=" w-full bg-gray-100 border-gray-400 text-gray-900 mt-1 p-3 rounded-lg focus:shadow-outline"
@@ -199,8 +200,9 @@ export const Signup = ({
                               </p>
                             ) : (
                               <p className={`text-sm text-red`}>
-                                Password must contain letters, numbers and
-                                symbols
+                                Password must contain at least one lowercase
+                                letter, one uppercase letter, one number, and
+                                one symbol (@$!%*?&).
                               </p>
                             )
                           ) : (
@@ -231,6 +233,7 @@ export const Signup = ({
                             Sign Up
                           </button>
                         </div>
+                        {/* <p className="" onClick={(e)=>navigate("/conditons")}>Terms and conditions</p> */}
                       </form>
                     </div>
                   </div>
