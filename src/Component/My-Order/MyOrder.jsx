@@ -9,7 +9,6 @@ import { useLoaderState } from "../zustand/useLoaderState";
 import { useUserStore } from "../zustand/useUserStore";
 import { useOrderDetails } from "../zustand/useOrderDetails";
 import { useNavigate } from "react-router-dom";
-import { useApiStore } from "../zustand/useApiStore";
 import { useApiToken } from "../zustand/useApiToken";
 
 export const MyOrder = ({ addItem,setNavbarOpen }) => {
@@ -25,7 +24,6 @@ export const MyOrder = ({ addItem,setNavbarOpen }) => {
   const { allOrderDetails, setAllOrderDetails } = useOrderDetails();
   // const [orderId, setOrderId] = useState("");
   const { setisLoading } = useLoaderState();
-  const { jwt, setJwt } = useApiStore();
   const {apiToken} = useApiToken()
   setNavbarOpen(true)
 
@@ -152,13 +150,13 @@ export const MyOrder = ({ addItem,setNavbarOpen }) => {
                               ? "bg-lime text-white"
                               : item.active_status === "return"
                               ? "bg-GreenColour text-white"
-                              : item.active_status === "awaiting"
+                              : item.active_status === "awaiting_payment"
                               ? "bg-yellowAwaiting text-black"
                               : item.active_status === "processed"
                               ? "bg-TWITTER_BLUE text-white"
                               : item.active_status === "shipped"
                               ? "bg-gmail_color text-black"
-                              : item.active_status === "cancel"
+                              : item.active_status === "cancelled"
                               ? "bg-RedColour text-white"
                               : item.active_status === "ready_to_pickup"
                               ? "bg-green text-white"

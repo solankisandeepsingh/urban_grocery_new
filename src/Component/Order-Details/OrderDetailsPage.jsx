@@ -3,22 +3,78 @@ import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useOrderDetails } from "../zustand/useOrderDetails";
 import { currencyFormatter } from "../../utils/utils";
-import { useUserStore } from "../zustand/useUserStore";
 import { dateFormet } from "../../utils/dateFormet";
 import moment from "moment/moment";
+import { useApiToken } from "../zustand/useApiToken";
+import axios from "axios";
+import { useUserStore } from "../zustand/useUserStore";
+import { ToastContainer, toast } from "react-toastify";
+import { useState } from "react";
+import { CancelOrder } from "./CancelOrder";
 
 export const OrderDetailsPage = () => {
   const { orderId, setOrderId } = useOrderDetails();
   const { allOrderDetails } = useOrderDetails();
   const { addList } = useUserStore();
+  console.log(orderId, "order id");
+  console.log(allOrderDetails, "allorderdetails");
+
+  const { apiToken } = useApiToken();
+  const [cancelModal, setCancelModal] = useState(false);
 
   const navigate = useNavigate();
   const handleBackMyorder = () => {
     navigate("/myorder");
   };
 
+  // const handleOrderCancel = (e) => {
+  //   e.preventDefault();
+
+  //   const config = {
+  //     headers: {
+  //       Authorization: `Bearer ${apiToken}`,
+  //     },
+  //   };
+
+  //   const cancelData = new FormData();
+  //   cancelData.append("accesskey", "90336");
+  //   cancelData.append("update_order_status", "1");
+  //   cancelData.append("id", orderId);
+  //   cancelData.append("status", "cancelled");
+
+  //   console.log(orderId, "order id");
+
+  //   axios
+  //     .post(
+  //       "https://grocery.intelliatech.in/api-firebase/order-process.php",
+  //       cancelData,
+  //       config
+  //     )
+  //     .then((res) => {
+  //       if (res.data.error) {
+  //         toast.error(res.data.message, {
+  //           position: toast.POSITION.TOP_CENTER,
+  //           autoClose: 500,
+  //         });
+  //       } else {
+  //         toast.success(res.data.message, {
+  //           position: toast.POSITION.TOP_CENTER,
+  //           autoClose: 500,
+  //         });
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
+  // };
+
+  const handleCancleItem = () => {
+    setCancelModal((prev) => !prev);
+  };
+
   return (
     <>
+      <ToastContainer />
       <div>
         {orderId &&
           allOrderDetails.map((item, index) => {
@@ -67,14 +123,17 @@ export const OrderDetailsPage = () => {
                               Order-Date
                             </p>
                             <p>
-                             { moment(item.date_added, "DD-MM-YYYY hh:mm:ssa").format("DD-MM-YYYY, h:mm A")}
+                              {moment(
+                                item.date_added,
+                                "DD-MM-YYYY hh:mm:ssa"
+                              ).format("DD-MM-YYYY, h:mm A")}
                             </p>
                             {/* <p>
                               { moment(
                                 item.order_time, 'MM-DD-YYYY HH:mm:ss',true).format("YYYY-MM-DD HH:mm:ss")}
                             </p> */}
 
-                            {console.log(item.date_added ,"time")}
+                            {console.log(item.date_added, "time")}
                             {/* {console.log(item.date.added ,"dateaded")} */}
                           </div>
                           <div className="flex justify-between py-2 border-b border-b-light_gray">
@@ -113,44 +172,65 @@ export const OrderDetailsPage = () => {
                       </>
                     </div>
                   </div>
-                  <div className="w-[40%] xs:hidden md:block sm:block overflow-y-hidden">
-                    <div className="overflow-y-scroll scrollbar-none max-h-[90vh]">
-                      <p className="text-blackColour font-bold my-2">
-                        Order Items ({item?.items?.length})
-                      </p>
-                      {item.items &&
-                        item.items.map((data) => {
-                          return (
-                            <div
-                              key={data.id}
-                              className="flex bg-[#f5f5f5] rounded-md p-3 mb-4 border-b border-b-light_gray"
-                            >
-                              <div className="w-[100px] h-[80px] mr-4">
-                                <img
-                                  src={data.image}
-                                  alt=""
-                                  className="w-full h-full rounded-2xl"
-                                />
+
+                  <div className="w-[40%] xs:hidden md:block sm:block overflow-y-hidden relative">
+                    <div>
+                      <div className="overflow-y-scroll scrollbar-none max-h-[90vh]">
+                        <p className="text-blackColour font-bold my-2">
+                          Order Items ({item?.items?.length})
+                        </p>
+                        {item.items &&
+                          item.items.map((data) => {
+                            return (
+                              <div
+                                key={data.id}
+                                className="flex bg-[#f5f5f5] rounded-md p-3 mb-4 border-b border-b-light_gray"
+                              >
+                                <div className="w-[100px] h-[80px] mr-4">
+                                  <img
+                                    src={data.image}
+                                    alt=""
+                                    className="w-full h-full rounded-2xl"
+                                  />
+                                </div>
+                                <div className="flex-grow flex flex-col">
+                                  <div className="mb-2 text-blackColour">
+                                    {data.product_name}
+                                  </div>
+                                  <div className="font-bold text-customGreen">
+                                    {currencyFormatter(data.discounted_price)}
+                                  </div>
+                                  <div className="text-lightgray">
+                                    Qty: {data.quantity}
+                                  </div>
+                                </div>
+                                <div className="flex flex-col text-[16px] ml-auto">
+                                  <div className="text-lightgray">
+                                    {data.variant_name}
+                                  </div>
+                                </div>
                               </div>
-                              <div className="flex-grow flex flex-col">
-                                <div className="mb-2 text-blackColour">
-                                  {data.product_name}
-                                </div>
-                                <div className="font-bold text-customGreen">
-                                  {currencyFormatter(data.discounted_price)}
-                                </div>
-                                <div className="text-lightgray">
-                                  Qty: {data.quantity}
-                                </div>
-                              </div>
-                              <div className="flex flex-col text-[16px] ml-auto">
-                                <div className="text-lightgray">
-                                  {data.variant_name}
-                                </div>
-                              </div>
+                            );
+                          })}
+                      </div>
+
+                      <div>
+                        {((item.active_status === "received" ||
+                          item.active_status === "processed" ||
+                          item.active_status === "shipped") && (
+                          <div
+                            className="flex shadow-sm bg-red text-white cursor-pointer bottom-0 left-36 justify-center items-center mb-4 m-2 p-1 rounded-lg w-32 text-[12px]"
+                            onClick={handleCancleItem}
+                          >
+                            <p>Cancel Order</p>
+                          </div>
+                        )) ||
+                          (item.active_status === "delivered" && (
+                            <div className="flex shadow-sm bg-Crayola_blue text-white cursor-pointer bottom-0 left-0 justify-center items-center mb-4 m-2 p-1 rounded-lg w-32 text-[12px]">
+                              <p>Return Order</p>
                             </div>
-                          );
-                        })}
+                          ))}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -158,6 +238,10 @@ export const OrderDetailsPage = () => {
             else return null;
           })}
       </div>
+
+      {cancelModal && (
+        <CancelOrder setCancelModal={setCancelModal} orderId={orderId} />
+      )}
     </>
   );
 };

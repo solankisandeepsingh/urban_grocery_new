@@ -34,6 +34,7 @@ export const Forgot = ({
   const { apiToken } = useApiToken();
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [id, setId] = useState("");
 
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
@@ -61,12 +62,39 @@ export const Forgot = ({
   };
 
   const validateConfirmPassword = (newPassword) => {
-    setIsMatch(newPassword === password);
-    if (!isMatch) {
+    const match = newPassword === password;
+    setIsMatch(match);
+
+    if (!match) {
       setConfirmPasswordError("Passwords do not match.");
     } else {
       setConfirmPasswordError("Passwords match");
     }
+  };
+
+  const verfiyUser = () => {
+    let config = {
+      headers: {
+        Authorization: `Bearer ${apiToken}`,
+      },
+    };
+    const verifydata = new FormData();
+    verifydata.append("accesskey", "90336");
+    verifydata.append("type", "verify-user");
+    verifydata.append("mobile", "+91" + phoneNumber);
+
+    axios
+      .post(
+        "https://grocery.intelliatech.in/api-firebase/user-registration.php",
+        verifydata,
+        config
+      )
+      .then((res) => {
+        setId(res?.data?.id);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getVerifyOtp = (e) => {
@@ -108,6 +136,8 @@ export const Forgot = ({
                   position: toast.POSITION.TOP_CENTER,
                   autoClose: 500,
                 });
+                setId(res.data.id);
+                verfiyUser();
               })
               .catch((error) => {});
           }
@@ -178,7 +208,7 @@ export const Forgot = ({
     const changePasswordData = new FormData();
     changePasswordData.append("accesskey", "90336");
     changePasswordData.append("type", "change-password");
-    changePasswordData.append("id", user_id);
+    changePasswordData.append("id", id);
     changePasswordData.append("password", password);
 
     axios
@@ -188,8 +218,14 @@ export const Forgot = ({
         config
       )
       .then((res) => {
-        console.log(res.data);
-        
+        console.log(res.data, "new user id here is");
+        setPassword(res.message);
+        setForgotForm(false);
+        setLoginForm(true);
+        toast.success("Profile updated successfully", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 500,
+        });
       })
       .catch((err) => {
         console.error(err);
@@ -316,7 +352,7 @@ export const Forgot = ({
                       name="password"
                       id="password"
                       className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
-                        passwordError && "border-red-500"
+                        passwordError && "border-lime"
                       }`}
                       required
                       value={password}
@@ -334,8 +370,10 @@ export const Forgot = ({
                     </div>
                   </div>
 
-                  {passwordError && (
-                    <p className="text-red-500 text-sm mt-1">{passwordError}</p>
+                  {passwordError ? (
+                    <p className="text-red text-sm mt-1">{passwordError}</p>
+                  ) : (
+                    <p className="text-lime">Strong Password</p>
                   )}
                 </div>
                 {/* <div>
@@ -376,7 +414,7 @@ export const Forgot = ({
                       name="confirmPassword"
                       id="confirmPassword"
                       className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
-                        confirmPasswordError ? "border-red-500" : "" // Conditionally add red border
+                        confirmPasswordError ? "border-red-500" : ""
                       }`}
                       required
                       value={confirmPassword}
@@ -397,7 +435,7 @@ export const Forgot = ({
                   {confirmPasswordError && (
                     <p
                       className={`text-sm mt-1 ${
-                        isMatch ? "text-green-500" : "text-red-500"
+                        isMatch ? "text-lime" : "text-red"
                       }`}
                     >
                       {confirmPasswordError}
