@@ -626,10 +626,14 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
                                       alt=""
                                       className="w-9 h-9 ml-auto mr-auto "
                                     />
-                                    Not Cancellable
+                                    {item.cancelable_status === "1" ? (
+                                      <p> Cancellable </p>
+                                    ) : (
+                                      <p> Not Cancellable </p>
+                                    )}
                                   </div>
                                 </div>
-
+                              
                                 <div>
                                   {item.variants.some(
                                     (variant) => variant.stock > 0

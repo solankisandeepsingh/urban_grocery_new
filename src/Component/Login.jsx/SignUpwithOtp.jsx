@@ -10,6 +10,7 @@ import "../../../src/index.css";
 import axios from "axios";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiToken } from "../zustand/useApiToken";
+import { Alert } from "@mui/material";
 
 export const SignUpwithOtp = ({
   setShowRegisterForm,
@@ -27,7 +28,8 @@ export const SignUpwithOtp = ({
   const [showSignUpForm, setShowSignUpForm] = useState(false);
   const [resendDisabled, setResendDisabled] = useState(false);
   const [timer, setTimer] = useState(60);
-  
+  // const [saveRecaptca,setSaveRecaptcha] = useState("")
+  const [saveRecaptca, setSaveRecaptcha] = useState("null");
 
   const startResendTimer = () => {
     setResendDisabled(true);
@@ -57,6 +59,8 @@ export const SignUpwithOtp = ({
   };
 
   const getVerifyOtp = (e) => {
+    console.log("Verify OTP Ran>>>>>>>>>>>>>>");
+    console.log(saveRecaptca,"saveRecaptcha<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>")
     let config = {
       headers: {
         Authorization: `Bearer ${apiToken}`,
@@ -74,38 +78,64 @@ export const SignUpwithOtp = ({
         config
       )
       .then((res) => {
+        console.log("Verify OTP Res>>>>>>>>>>>>>>", res);
+
+        console.log(setSaveRecaptcha,"<<<<<<<<<<<<<<<<<<<<<<<<<<saveRecaptcha>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>")
+
         if (res.data.error) {
+          console.log("We got error>>>>>>>>>>>>>>>>", res.data.error);
           toast.error(res.data.message, {
             position: toast.POSITION.TOP_CENTER,
             autoClose: 500,
           });
           setisLoading(false);
         } else {
+          console.log("We got Success>>>>>>>>>>>>>>>>", res.data);
+
           if (phoneNumber.length >= 10) {
+            console.log(
+              "We got More than 10 digits>>>>>>>>>>>>>>>>",
+              phoneNumber
+            );
             setExpandForm(true);
-            genrateReCaptcha();
+            // genrateReCaptcha();
+            if (!window.recaptchaVerifier) {
+              genrateReCaptcha();
+            }
             setisLoading(false);
 
             let appVerifier = window.recaptchaVerifier;
-            const formatPh = "+91" + phoneNumber;
+            console.log(
+              "We got More than 10 digits>>>>>>>>>>>>>>>>",
+              appVerifier
+            );
 
+            const formatPh = "+91" + phoneNumber;
+            console.log("We got More than 10 digits>>>>>>>>>>>>>>>>", formatPh);
             signInWithPhoneNumber(auth, formatPh, appVerifier)
               .then((confirmationResult) => {
-                window.confirmationResult = confirmationResult;
-                // ...
+                console.log(
+                  "We triggered Firebase API>>>>>>>>>>>>>>",
+                  confirmationResult
+                );
 
+                window.confirmationResult = confirmationResult;
                 toast.success("OTP has been sent successfully", {
                   position: toast.POSITION.TOP_CENTER,
                   autoClose: 500,
                 });
               })
-              .catch((error) => {});
+              .catch((error) => {
+                console.log(
+                  error,
+                  "FIREBASE API FAILED>>>>>>>>>>>>>>>>>>>>>>>"
+                );
+              });
           }
         }
       })
       .catch((err) => {
         console.log(err);
-
         toast.error("An Error Occurred. Please Try Again Later.");
       });
   };
@@ -116,7 +146,10 @@ export const SignUpwithOtp = ({
       "recaptcha-container",
       {
         size: "invisible",
-        callback: (response) => {},
+        callback: (response) => {
+          console.log(response, "Recaptcha response");
+          setSaveRecaptcha(response);
+        },
       }
     );
   };
@@ -148,17 +181,11 @@ export const SignUpwithOtp = ({
   };
 
   const resendOtp = () => {
-    if (!resendDisabled) {
-      getVerifyOtp();
-
-      setResendDisabled(true);
-      toast.success("Resend OTP has been sent successfully", {
-        position: toast.POSITION.TOP_CENTER,
-        autoClose: 500,
-      });
-      startResendTimer();
-    }
-  }; 
+    console.log("resend otp>>>>>>>>>>>>>>");
+    getVerifyOtp();
+    setResendDisabled(true);
+    startResendTimer();
+  };
 
   const handleCloseSignUp = () => {
     setShowSignUp(false);
@@ -310,7 +337,7 @@ export const SignUpwithOtp = ({
             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
           </>
         )}
-        {showSignUpForm && <Signup />}  
+        {showSignUpForm && <Signup />}
       </div>
     </>
   );

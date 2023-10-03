@@ -308,7 +308,7 @@ export const Login = ({
                         </button>
 
                         <p
-                          className="cursor-pointer"
+                          className="cursor-pointer hover:text-lightgray"
                           onClick={openForgotPassword}
                         >
                           Forgot Password
