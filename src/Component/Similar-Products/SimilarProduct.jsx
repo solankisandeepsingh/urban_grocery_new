@@ -275,7 +275,6 @@ export const SimilarProduct = ({ id }) => {
   }, [apiToken]);
   return (
     <>
-      <ToastContainer />
       <div>
         <p className="text-[22px]  font-semibold">Similar products</p>
 

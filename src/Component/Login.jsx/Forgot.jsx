@@ -190,16 +190,7 @@ export const Forgot = ({
       });
   };
 
-  // const genrateReCaptcha = () => {
-  //   window.recaptchaVerifier = new RecaptchaVerifier(
-  //     auth,
-  //     "recaptcha-container",
-  //     {
-  //       size: "invisible",
-  //       callback: (response) => {},
-  //     }
-  //   );
-  // };
+
 
   const genrateReCaptcha = () => {
     window.recaptchaVerifier = new RecaptchaVerifier(
@@ -397,7 +388,7 @@ export const Forgot = ({
                 ) : (
                   <div className="flex items-center justify-between gap-2">
                     <button
-                      className="rounded-full bg-lime hover:bg-customGreen xs:rounded-lg xs:text-xs  xs:h-8 md:w-full xs:w-full md:h-10 md:text-base md:font-medium inline-block font-medium ..."
+                      className="rounded-full bg-lime hover:bg-customGreen text-white xs:rounded-lg xs:text-xs  xs:h-8 md:w-full xs:w-full md:h-10 md:text-base md:font-medium inline-block font-medium ..."
                       onClick={verifyOtp}
                     >
                       Verify OTP

@@ -243,7 +243,6 @@ export const SubCategory = ({ setAddItem, addItem, setNavbarOpen }) => {
   return (
     <>
       <div>
-        <ToastContainer />
         <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-7 sm:grid-cols-3 flex flex-wrap md:ml-5 xs:ml-7 ">
           {isLoading ? (
             <p className="m-auto">Loading...</p>

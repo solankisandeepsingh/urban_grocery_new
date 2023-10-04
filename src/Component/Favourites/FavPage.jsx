@@ -165,7 +165,6 @@ export const FavPage = () => {
   };
   return (
     <>
-    <ToastContainer/>
       <div>
         {allFavItems?.length > 0 && (
           <div className="grid xs:grid-cols-2 md:grid-cols-6 sm:grid-cols-4 mt-24 xs:mx-9 xs:gap-4 sm:mx-14 sm:gap-6 md:gap-5 ">

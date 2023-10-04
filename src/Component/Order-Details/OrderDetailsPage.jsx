@@ -29,58 +29,16 @@ export const OrderDetailsPage = () => {
     navigate("/myorder");
   };
 
-  // const handleOrderCancel = (e) => {
-  //   e.preventDefault();
-
-  //   const config = {
-  //     headers: {
-  //       Authorization: `Bearer ${apiToken}`,
-  //     },
-  //   };
-
-  //   const cancelData = new FormData();
-  //   cancelData.append("accesskey", "90336");
-  //   cancelData.append("update_order_status", "1");
-  //   cancelData.append("id", orderId);
-  //   cancelData.append("status", "cancelled");
-
-  //   console.log(orderId, "order id");
-
-  //   axios
-  //     .post(
-  //       "https://grocery.intelliatech.in/api-firebase/order-process.php",
-  //       cancelData,
-  //       config
-  //     )
-  //     .then((res) => {
-  //       if (res.data.error) {
-  //         toast.error(res.data.message, {
-  //           position: toast.POSITION.TOP_CENTER,
-  //           autoClose: 500,
-  //         });
-  //       } else {
-  //         toast.success(res.data.message, {
-  //           position: toast.POSITION.TOP_CENTER,
-  //           autoClose: 500,
-  //         });
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
-  // };
-
   const handleCancleItem = () => {
     setCancelModal((prev) => !prev);
   };
 
-  const handleReturnItem=()=>{
+  const handleReturnItem = () => {
     setReturnModal((prev) => !prev);
-  }
+  };
 
   return (
     <>
-      <ToastContainer />
       <div>
         {orderId &&
           allOrderDetails.map((item, index) => {
@@ -221,21 +179,30 @@ export const OrderDetailsPage = () => {
                       </div>
 
                       <div>
-                        {((item.active_status === "received" ||
-                          item.active_status === "processed" ||
-                          item.active_status === "shipped") && (
-                          <div
-                            className="flex shadow-sm bg-red text-white cursor-pointer bottom-0 left-36 justify-center items-center mb-4 m-2 p-1 rounded-lg w-32 text-[12px]"
-                            onClick={handleCancleItem}
-                          >
-                            <p>Cancel Order</p>
-                          </div>
-                        )) ||
+                        {item.active_status === "cancelled" ? (
+                          <p className="text-red font-bold">
+                            This order has been cancelled
+                          </p>
+                        ) : (
+                          ((item.active_status === "received" ||
+                            item.active_status === "processed" ||
+                            item.active_status === "shipped") && (
+                            <div
+                              className="flex shadow-sm bg-red text-white cursor-pointer bottom-0 left-36 justify-center items-center mb-4 m-2 p-1 rounded-lg w-32 text-[12px]"
+                              onClick={handleCancleItem}
+                            >
+                              <p>Cancel Order</p>
+                            </div>
+                          )) ||
                           (item.active_status === "delivered" && (
-                            <div className="flex shadow-sm bg-Crayola_blue text-white cursor-pointer bottom-0 left-0 justify-center items-center mb-4 m-2 p-1 rounded-lg w-32 text-[12px]"   onClick={handleReturnItem}>
+                            <div
+                              className="flex shadow-sm bg-Crayola_blue text-white cursor-pointer bottom-0 left-0 justify-center items-center mb-4 m-2 p-1 rounded-lg w-32 text-[12px]"
+                              onClick={handleReturnItem}
+                            >
                               <p>Return Order</p>
                             </div>
-                          ))}
+                          ))
+                        )}
                       </div>
                     </div>
                   </div>
@@ -249,7 +216,7 @@ export const OrderDetailsPage = () => {
         <CancelOrder setCancelModal={setCancelModal} orderId={orderId} />
       )}
       {ReturnModal && (
-        <ReturnOrder setReturnModal={setReturnModal} orderId={orderId}/>
+        <ReturnOrder setReturnModal={setReturnModal} orderId={orderId} />
       )}
     </>
   );

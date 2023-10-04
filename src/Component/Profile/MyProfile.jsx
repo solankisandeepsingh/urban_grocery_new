@@ -203,7 +203,6 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
 
   return (
     <div className="justify-center items-center text-center mt-24">
-      <ToastContainer />
 
       <div className="fixed  z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
         <div className="bg-white rounded top-[5%] left-[5%]" ref={profileRef}>

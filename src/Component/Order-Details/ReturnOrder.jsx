@@ -11,7 +11,6 @@ export const ReturnOrder = ({ setReturnModal, orderId }) => {
 
   const { apiToken } = useApiToken();
 
-
   const handleClickReturnModalOutside = (event) => {
     if (returnRef.current && !returnRef.current.contains(event.target)) {
       setReturnModal(false);
@@ -53,7 +52,6 @@ export const ReturnOrder = ({ setReturnModal, orderId }) => {
         if (res.data.error) {
           toast.error(res.data.message, {
             position: toast.POSITION.TOP_CENTER,
-            autoClose: 500,
           });
           setReturnModal(false);
         } else {
@@ -86,7 +84,6 @@ export const ReturnOrder = ({ setReturnModal, orderId }) => {
                   onClick={() => setReturnModal(false)}
                 >
                   <AiOutlineCloseCircle className="text-red relative text-xl animate-hbeat hover:scale-125 transition-all cursor-pointer " />
-                  
                 </button>
                 <div className="flex justify-center text-center items-center">
                   <p className="font-bold">

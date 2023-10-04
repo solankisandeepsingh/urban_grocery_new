@@ -26,6 +26,7 @@ import { FavPage } from "./Component/Favourites/FavPage";
 import { Footer } from "./Component/Footer/Footer";
 import axios from "./api/axios";
 import { useApiToken } from "./Component/zustand/useApiToken";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -82,6 +83,7 @@ function App() {
 
   return (
     <>
+    <ToastContainer/>
       <div className="flex flex-col h-screen justify-between">
         <Navbar
           setData={setData}

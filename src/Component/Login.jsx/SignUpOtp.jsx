@@ -84,7 +84,6 @@ export const SignUpOtp = ({ setOpenLogin }) => {
     <>
       {closeSignup && (
         <>
-          <ToastContainer />
           <div className="fixed z-50 top-0  left-0 w-full h-full flex justify-center items-center border rounded-lg bg-black bg-opacity-75">
             <div className="relative w-auto my-6 mx-auto max-w-3xl bg-white rounded-lg">
               <div className="px-5 py-2 flex justify-between text-center items-center rounded-sm-y">

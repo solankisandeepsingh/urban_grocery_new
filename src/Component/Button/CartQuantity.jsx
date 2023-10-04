@@ -219,7 +219,6 @@ function CartQuantity({ item, variant }) {
 
   return (
     <>
-      {/* <ToastContainer /> */}
       <div
         className="rounded-lg bg-lime text-white gap-1 hover:bg-blue-700 font-bold px-2 md:h-[28px] xs:h-[28px] w-full sm:h-[36px] flex justify-evenly "
         onClick={(e) => e.stopPropagation()}

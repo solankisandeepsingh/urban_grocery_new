@@ -13,7 +13,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useSearchStore } from "./zustand/useSearchStore";
 import { useDebounce } from "../utils/useDebounce";
 import { useApiToken } from "./zustand/useApiToken";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import InfiniteLoader from "./Infinite-loader";
 
 function FilterData({ data, setName, setData }) {
@@ -214,7 +214,6 @@ function FilterData({ data, setName, setData }) {
   };
   return (
     <>
-      <ToastContainer />
       <div className=" ">
         <div className="md:invisible xs:visible ">
           <Search setName={setName} setData={setData} data={data} />
