@@ -10,6 +10,7 @@ import { auth } from "../Firebase/firebase.config";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { useEffect } from "react";
 import { useUserStore } from "../zustand/useUserStore";
+import { useLoaderState } from "../zustand/useLoaderState";
 
 export const Forgot = ({
   phoneNumber,
@@ -35,6 +36,37 @@ export const Forgot = ({
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [id, setId] = useState("");
+  const { setisLoading } = useLoaderState();
+  const [resendBtn, setResendBtn] = useState(false);
+  const [timer, setTimer] = useState(60);
+  const [saveForgotRecaptca, setSaveForgotRecaptcha] = useState("null");
+
+  const startResendTime = () => {
+    setResendBtn(true);
+    let minutes = 1;
+    let seconds = 59;
+
+    const formatTime = (minutes, seconds) => {
+      return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    };
+
+    setTimer(formatTime(minutes, seconds));
+
+    const interval = setInterval(() => {
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(interval);
+          setResendBtn(false);
+        } else {
+          minutes -= 1;
+          seconds = 59;
+        }
+      } else {
+        seconds -= 1;
+      }
+      setTimer(formatTime(minutes, seconds));
+    }, 1000);
+  };
 
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
@@ -49,10 +81,10 @@ export const Forgot = ({
   };
 
   const validatePassword = (newPassword) => {
-    const regex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,}$/;
+    const regex =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!regex.test(newPassword)) {
       setPasswordError(
-        "Password must contain 1 capital letter and 1 special symbol."
+        "Password must be eight characters including one uppercase letter, one lowercase letter, one special character, ."
       );
       setIsMatch(false);
     } else {
@@ -82,6 +114,7 @@ export const Forgot = ({
     verifydata.append("accesskey", "90336");
     verifydata.append("type", "verify-user");
     verifydata.append("mobile", "+91" + phoneNumber);
+    setisLoading(true);
 
     axios
       .post(
@@ -91,6 +124,7 @@ export const Forgot = ({
       )
       .then((res) => {
         setId(res?.data?.id);
+        setisLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -107,6 +141,7 @@ export const Forgot = ({
     formData.append("accesskey", "90336");
     formData.append("type", "forgot-password-mobile");
     formData.append("mobile", "+91" + phoneNumber);
+    setisLoading(true);
     axios
       .post(
         `https://grocery.intelliatech.in/api-firebase/user-registration.php`,
@@ -119,10 +154,15 @@ export const Forgot = ({
             position: toast.POSITION.TOP_CENTER,
             autoClose: 500,
           });
+          setisLoading(false);
         } else {
           if (phoneNumber.length >= 10) {
             setExpandForm(true);
-            genrateReCaptcha();
+            // genrateReCaptcha();
+            if (!window.recaptchaVerifier) {
+              genrateReCaptcha();
+            }
+            setisLoading(false);
 
             let appVerifier = window.recaptchaVerifier;
             const formatPh = "+91" + phoneNumber;
@@ -150,15 +190,35 @@ export const Forgot = ({
       });
   };
 
+  // const genrateReCaptcha = () => {
+  //   window.recaptchaVerifier = new RecaptchaVerifier(
+  //     auth,
+  //     "recaptcha-container",
+  //     {
+  //       size: "invisible",
+  //       callback: (response) => {},
+  //     }
+  //   );
+  // };
+
   const genrateReCaptcha = () => {
     window.recaptchaVerifier = new RecaptchaVerifier(
       auth,
       "recaptcha-container",
       {
         size: "invisible",
-        callback: (response) => {},
+        callback: (response) => {
+          console.log(response, "Recaptcha response");
+          setSaveForgotRecaptcha(response);
+        },
       }
     );
+  };
+
+  const handleForgotSubmit = (e) => {
+    e.preventDefault();
+    getVerifyOtp();
+    startResendTime();
   };
 
   const verifyOtp = (e) => {
@@ -184,10 +244,17 @@ export const Forgot = ({
     }
   };
 
-  const handleForgotSubmit = (e) => {
-    e.preventDefault();
+  const handleResendOtp = () => {
     getVerifyOtp();
+    setResendBtn(true);
+    startResendTime();
   };
+
+  useEffect(() => {
+    if (timer === 0) {
+      setResendBtn(false);
+    }
+  }, [timer]);
 
   const isPhoneNumberValid = (phone) => {
     return phone.replace(/\D/g, "").length === 10;
@@ -322,17 +389,30 @@ export const Forgot = ({
                         : "bg-lava_grey text-white"
                     } rounded-full xs:rounded-lg xs:text-xs w-[74%] ml-8 h-10 md:text-base md:font-medium inline-block font-medium`}
                     onClick={handleForgotSubmit}
-                    disabled={!isPhoneNumberValid(phoneNumber)}
+                    // disabled={!isPhoneNumberValid(phoneNumber)}
+                    disabled={!isPhoneNumberValid(phoneNumber) || resendBtn}
                   >
                     Next
                   </button>
                 ) : (
-                  <button
-                    className="rounded-full bg-lime hover:bg-customGreen xs:rounded-lg xs:text-xs  xs:h-8 md:w-full xs:w-full md:h-10 md:text-base md:font-medium inline-block font-medium ..."
-                    onClick={verifyOtp}
-                  >
-                    Verify OTP
-                  </button>
+                  <div className="flex items-center justify-between gap-2">
+                    <button
+                      className="rounded-full bg-lime hover:bg-customGreen xs:rounded-lg xs:text-xs  xs:h-8 md:w-full xs:w-full md:h-10 md:text-base md:font-medium inline-block font-medium ..."
+                      onClick={verifyOtp}
+                    >
+                      Verify OTP
+                    </button>
+                    {resendBtn ? (
+                      <p className="text-xs font-bold text-red ">{timer}</p>
+                    ) : (
+                      <button
+                        className="rounded-full bg-Light_BLUE text-white hover:bg-Crayola_blue xs:rounded-lg xs:text-xs xs:h-8 md:w-full xs:w-full md:h-10 md:text-base md:font-medium inline-block font-medium ..."
+                        onClick={handleResendOtp}
+                      >
+                        Resend OTP
+                      </button>
+                    )}
+                  </div>
                 )}
               </form>
             )}
@@ -370,36 +450,10 @@ export const Forgot = ({
                     </div>
                   </div>
 
-                  {passwordError ? (
+                  {passwordError && (
                     <p className="text-red text-sm mt-1">{passwordError}</p>
-                  ) : (
-                    <p className="text-lime">Strong Password</p>
                   )}
                 </div>
-                {/* <div>
-                  <label
-                    htmlFor="confirmPassword"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Confirm Password
-                  </label>
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    id="confirmPassword"
-                    className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${
-                      confirmPasswordError && "border-red-500"
-                    }`}
-                    required
-                    value={confirmPassword}
-                    onChange={handleConfirmPasswordChange}
-                  />
-                  {confirmPasswordError && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {confirmPasswordError}
-                    </p>
-                  )}
-                </div> */}
 
                 <div>
                   <div className="relative">
