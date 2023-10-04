@@ -11,6 +11,7 @@ import { useUserStore } from "../zustand/useUserStore";
 import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
 import { CancelOrder } from "./CancelOrder";
+import { ReturnOrder } from "./ReturnOrder";
 
 export const OrderDetailsPage = () => {
   const { orderId, setOrderId } = useOrderDetails();
@@ -21,6 +22,7 @@ export const OrderDetailsPage = () => {
 
   const { apiToken } = useApiToken();
   const [cancelModal, setCancelModal] = useState(false);
+  const [ReturnModal, setReturnModal] = useState(false);
 
   const navigate = useNavigate();
   const handleBackMyorder = () => {
@@ -71,6 +73,10 @@ export const OrderDetailsPage = () => {
   const handleCancleItem = () => {
     setCancelModal((prev) => !prev);
   };
+
+  const handleReturnItem=()=>{
+    setReturnModal((prev) => !prev);
+  }
 
   return (
     <>
@@ -226,7 +232,7 @@ export const OrderDetailsPage = () => {
                           </div>
                         )) ||
                           (item.active_status === "delivered" && (
-                            <div className="flex shadow-sm bg-Crayola_blue text-white cursor-pointer bottom-0 left-0 justify-center items-center mb-4 m-2 p-1 rounded-lg w-32 text-[12px]">
+                            <div className="flex shadow-sm bg-Crayola_blue text-white cursor-pointer bottom-0 left-0 justify-center items-center mb-4 m-2 p-1 rounded-lg w-32 text-[12px]"   onClick={handleReturnItem}>
                               <p>Return Order</p>
                             </div>
                           ))}
@@ -241,6 +247,9 @@ export const OrderDetailsPage = () => {
 
       {cancelModal && (
         <CancelOrder setCancelModal={setCancelModal} orderId={orderId} />
+      )}
+      {ReturnModal && (
+        <ReturnOrder setReturnModal={setReturnModal} orderId={orderId}/>
       )}
     </>
   );

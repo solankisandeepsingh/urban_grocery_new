@@ -28,7 +28,6 @@ export const SignUpwithOtp = ({
   const [showSignUpForm, setShowSignUpForm] = useState(false);
   const [resendDisabled, setResendDisabled] = useState(false);
   const [timer, setTimer] = useState(60);
-  // const [saveRecaptca,setSaveRecaptcha] = useState("")
   const [saveRecaptca, setSaveRecaptcha] = useState("null");
 
   const startResendTimer = () => {

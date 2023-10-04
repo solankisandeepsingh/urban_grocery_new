@@ -261,15 +261,12 @@ export const Login = ({
                           className="w-full border-red-800 text-gray-900 mt-2 p-3 rounded-lg focus:shadow-outline"
                           type="text"
                           onChange={inputHandler}
-                          onKeyPress={(e) => {
-                            if (!/[0-9]/.test(e.key)) {
-                              e.preventDefault();
-                            }
-
-                            if (e.target.value?.length >= 13) {
+                          onKeyDown={(e) => {
+                            if (!/[0-9]/.test(e.key) && e.key !== "Backspace") {
                               e.preventDefault();
                             }
                           }}
+                          maxLength={13}
                           name="phone"
                           value={`+91${logins?.phone}`}
                           placeholder="Phone"
@@ -362,7 +359,6 @@ export const Login = ({
           setForgotForm={setForgotForm}
           setPhoneNumber={setPhoneNumber}
           setLoginForm={setLoginForm}
-         
         />
       )}
     </>

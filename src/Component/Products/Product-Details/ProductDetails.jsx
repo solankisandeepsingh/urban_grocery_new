@@ -51,6 +51,7 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   let imageModalRef = useRef(null);
+  let reviewRef = useRef(null);
   const { apiToken } = useApiToken();
   setNavbarOpen(true);
 
@@ -103,6 +104,20 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
 
     return () => {
       document.removeEventListener("mousedown", handleClickShowModalOutside);
+    };
+  }, []);
+
+  const handleClickReviewModalOutside = (event) => {
+    if (reviewRef.current && !reviewRef.current.contains(event.target)) {
+      setReviewOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickReviewModalOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickReviewModalOutside);
     };
   }, []);
 
@@ -633,7 +648,7 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
                                     )}
                                   </div>
                                 </div>
-                              
+
                                 <div>
                                   {item.variants.some(
                                     (variant) => variant.stock > 0
@@ -721,7 +736,10 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
                       {reviewList?.length > 0 ? (
                         reviewList.map((review, mainindex) => {
                           return (
-                            <div className="border-b px-3 border-[#e8e8e8e8] mb-3">
+                            <div
+                              className="border-b px-3 border-[#e8e8e8e8] mb-3"
+                              ref={reviewRef}
+                            >
                               <div className="flex items-center gap-3">
                                 {isValidImg ? (
                                   <img
@@ -776,6 +794,14 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
                                         className="bg-white p-4 sm:h-[auto] rounded-lg grid grid-cols-3 gap-2 h-auto mt-3"
                                         ref={imageModalRef}
                                       >
+                                        <button
+                                          className="absolute top-[32.3%] right-[37.8%]"
+                                          onClick={() =>
+                                            setShowImageModal(false)
+                                          }
+                                        >
+                                          <AiOutlineCloseCircle className="text-red relative text-[18px] animate-hbeat hover:scale-125 transition-all cursor-pointer " />
+                                        </button>
                                         <>
                                           {review.images.map((image, index) => (
                                             <img
