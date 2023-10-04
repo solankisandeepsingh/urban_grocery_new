@@ -315,7 +315,6 @@ function Allproducts({ setNavbarOpen }) {
 
   return (
     <>
-      <ToastContainer />
       <div className="mt-20 xs:grid xs:grid-cols-2 md:grid md:grid-cols-7 sm:grid-cols-4 flex flex-wrap xs:ml-7 md:ml-5 sm:ml-4 ">
         {allProducts &&
           allProducts.map((item) => {

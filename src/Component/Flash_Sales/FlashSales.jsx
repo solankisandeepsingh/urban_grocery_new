@@ -155,7 +155,6 @@ export const FlashSales = () => {
  
   return (
     <>
-      <ToastContainer />
       <div className="md:mt-7  shadow-sm border border-[#e8e8e8] rounded-md p-2 bg-[#fcfff3]">
         <div className="text-customBlack text-[24px] p-2">
           <h1 className="font-okra font-600">Flash Sales</h1>

@@ -98,7 +98,6 @@ function Home({
   return (
     <div className=" md:mt-0.5 xs:mt-14">
       <>
-      <AccessToken/>
         {/* <div className="md:invisible xs:visible">
           <Search
             setData={setData}

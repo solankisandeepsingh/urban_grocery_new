@@ -215,7 +215,6 @@ const Search = ({ setData, name, data }) => {
 
   return (
     <>
-      <ToastContainer />
       <div className="w-full max-w-screen-2xl bg-white md:h-[69px] md:mr-44">
         <div className="inline-flex justify-center relative text-black-500 bg-white xs:my-4 xs:mx-4 sm:ml-36 md:my-3  xs:mt-20 ">
           <svg

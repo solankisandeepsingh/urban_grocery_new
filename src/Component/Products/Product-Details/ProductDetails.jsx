@@ -540,7 +540,6 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
 
   return (
     <>
-      <ToastContainer />
 
       <div className="2xs:mt-10 xs:mt-10 md:w-[50%] md:p-20 xs:p-8">
         {filterData &&
