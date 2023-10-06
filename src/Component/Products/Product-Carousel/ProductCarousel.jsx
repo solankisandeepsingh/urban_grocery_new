@@ -495,7 +495,7 @@ export const ProductCarousel = ({}) => {
 
         <div className="md:my-2 ">
           {apiToken && (
-            <Carousel responsive={responsive} className="z-01">
+            <Carousel responsive={responsive} className="z-0  ">
               {allProducts &&
                 allProducts.map((item) => {
                   return (

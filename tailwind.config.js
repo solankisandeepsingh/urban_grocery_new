@@ -59,6 +59,7 @@ module.exports = {
       GrayBlinkit: "#666",
       yellowAwaiting: "#FFDC56",
       RedColour: "#FF0000",
+      bluecolour:"#1877f2",
       colorGray: "rgb(255, 255, 255)",
     },
     borderColor: {
@@ -71,6 +72,7 @@ module.exports = {
       border_gray: "rgba(0,0,0,.1)",
       GrayBlinkit: "#666",
       GreenBlinkit: "rgb(12, 131, 31)",
+      RedColour: "#FF0000",
     },
     bgColour :{
       offWhite : "#FAF9F6"

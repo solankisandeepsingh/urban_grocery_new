@@ -304,10 +304,10 @@ export const Login = ({
                         </button>
 
                         <p
-                          className="cursor-pointer hover:text-lightgray"
+                          className="cursor-pointer text-bluecolour text-[14px] hover:underline hover:underline-offset-3 transition-all duration-300"
                           onClick={openForgotPassword}
                         >
-                          Forgot Password
+                          Forgot Password?
                         </p>
                       </div>
 
@@ -356,8 +356,10 @@ export const Login = ({
         <Forgot
           phoneNumber={phoneNumber}
           setForgotForm={setForgotForm}
+          forgotForm={forgotForm}
           setPhoneNumber={setPhoneNumber}
           setLoginForm={setLoginForm}
+          
         />
       )}
     </>

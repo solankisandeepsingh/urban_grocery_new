@@ -540,7 +540,6 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
 
   return (
     <>
-
       <div className="2xs:mt-10 xs:mt-10 md:w-[50%] md:p-20 xs:p-8">
         {filterData &&
           filterData.map((item) => {
@@ -957,13 +956,6 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
                                         onClick={() => deleteHandler(image)}
                                       />
                                     </div>
-
-                                    {/* <span
-                                    className="cursor-pointer absolute top-[-10px] right-0 p-1 bg-red-500 text-white"
-                                    onClick={() => deleteHandler(image)}
-                                  >
-                                    x
-                                  </span> */}
                                   </div>
                                 );
                               })}

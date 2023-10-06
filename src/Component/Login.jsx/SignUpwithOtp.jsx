@@ -59,7 +59,10 @@ export const SignUpwithOtp = ({
 
   const getVerifyOtp = (e) => {
     console.log("Verify OTP Ran>>>>>>>>>>>>>>");
-    console.log(saveRecaptca,"saveRecaptcha<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>")
+    console.log(
+      saveRecaptca,
+      "saveRecaptcha<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>"
+    );
     let config = {
       headers: {
         Authorization: `Bearer ${apiToken}`,
@@ -79,7 +82,10 @@ export const SignUpwithOtp = ({
       .then((res) => {
         console.log("Verify OTP Res>>>>>>>>>>>>>>", res);
 
-        console.log(setSaveRecaptcha,"<<<<<<<<<<<<<<<<<<<<<<<<<<saveRecaptcha>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>")
+        console.log(
+          setSaveRecaptcha,
+          "<<<<<<<<<<<<<<<<<<<<<<<<<<saveRecaptcha>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>"
+        );
 
         if (res.data.error) {
           console.log("We got error>>>>>>>>>>>>>>>>", res.data.error);
@@ -263,6 +269,11 @@ export const SignUpwithOtp = ({
                           );
                           if (inputPhone?.length <= 10) {
                             setPhoneNumber(inputPhone);
+                          }
+                        }}
+                        onKeyDown={(e) => {
+                          if (!/[0-9]/.test(e.key) && e.key !== "Backspace") {
+                            e.preventDefault();
                           }
                         }}
                         placeholder="Phone"

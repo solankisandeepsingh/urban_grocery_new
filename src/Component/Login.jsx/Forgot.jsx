@@ -17,6 +17,7 @@ export const Forgot = ({
   setPhoneNumber,
   setForgotForm,
   setLoginForm,
+  forgotForm,
 }) => {
   const [visibleNewPassword, setVisibleNewPassword] = useState(false);
   const [visibleConfirmPassword, setVisibleConfirmPassword] = useState(false);
@@ -81,10 +82,11 @@ export const Forgot = ({
   };
 
   const validatePassword = (newPassword) => {
-    const regex =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!regex.test(newPassword)) {
       setPasswordError(
-        "Password must be eight characters including one uppercase letter, one lowercase letter, one special character, ."
+        "Password must be 8 characters including one uppercase letter, one lowercase letter, one special character, ."
       );
       setIsMatch(false);
     } else {
@@ -190,8 +192,6 @@ export const Forgot = ({
       });
   };
 
-
-
   const genrateReCaptcha = () => {
     window.recaptchaVerifier = new RecaptchaVerifier(
       auth,
@@ -289,9 +289,21 @@ export const Forgot = ({
         console.error(err);
       });
   };
+  // const handleForgotShow = () => {
+  //   setForgotForm(false);
+  //   setLoginForm(true);
+  // };
+
   const handleForgotShow = () => {
-    setForgotForm(false);
-    setLoginForm(true);
+    if (expandForm) {
+      setExpandForm(false);
+      setForgotForm(true);
+      setLoginForm(false);
+    } else if (forgotForm) {
+      setExpandForm(false);
+      setForgotForm(false);
+      setLoginForm(true);
+    }
   };
   return (
     <>
@@ -341,6 +353,11 @@ export const Forgot = ({
                       );
                       if (forgotPhone?.length <= 10) {
                         setPhoneNumber(forgotPhone);
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (!/[0-9]/.test(e.key) && e.key !== "Backspace") {
+                        e.preventDefault();
                       }
                     }}
                     name="phone"
