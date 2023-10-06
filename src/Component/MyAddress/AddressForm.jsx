@@ -54,7 +54,8 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
       !addressData?.name ||
       !addressData?.pincode ||
       !addressData?.address ||
-      !addressData?.type
+      !addressData?.type ||
+      !areaDropdown || !cityDropdown
     ) {
       toast.error("Please fill all the fields", {
         position: toast.POSITION.TOP_CENTER,

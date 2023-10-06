@@ -106,13 +106,14 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
     let createRazorpayId = new FormData();
     createRazorpayId.append("accesskey", "90336");
     createRazorpayId.append("amount", `${totalPrice * 100}`);
+    setisLoading(true); 
 
     let config = {
       headers: {
         Authorization: `Bearer ${apiToken}`,
       },
     };
-
+  
     const result = await axios.post(
       "https://grocery.intelliatech.in/api-firebase/create-razorpay-order.php",
       createRazorpayId,
@@ -123,10 +124,12 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
       // alert("Server error. Are you online?");
       toast.error("Server error. Are you online? ", {
         position: toast.POSITION.TOP_RIGHT,
-        autoClose:800
+        autoClose: 800,
       });
       return;
     }
+    setisLoading(false);
+
 
     const { amount, id: order_id, currency } = result.data;
 
