@@ -32,7 +32,6 @@ export const Coditions = () => {
         config
       )
       .then((res) => {
-        console.log(res?.data?.terms);
         setConditons(res?.data?.terms);
         setisLoading(false);
       })

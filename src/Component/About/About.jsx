@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 
 import { Aside } from "../Aside/Aside";
 import { useLoaderState } from "../zustand/useLoaderState";
-import { useApiStore } from "../zustand/useApiStore";
 import { useApiToken } from "../zustand/useApiToken";
 
 export const About = () => {
@@ -38,9 +37,7 @@ export const About = () => {
         setisLoading(false);
       });
   };
-  // useEffect(() => {
-  //   handleAbout();
-  // }, []);
+
 
   useEffect(() => {
     if (apiToken) handleAbout();
@@ -63,8 +60,6 @@ export const About = () => {
                 ),
               }}
             >
-              {/* {JSON.parse(item.description)} */}
-              {console.log(about, "about us")}
             </div>
           </div>
         </div>

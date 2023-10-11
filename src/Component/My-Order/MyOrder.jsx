@@ -46,7 +46,6 @@ export const MyOrder = ({ addItem,setNavbarOpen }) => {
         config
       )
       .then((res) => {
-        // console.log(res.data.data, "myorder data will displayyyyyyyyyyy");
         setAllOrderDetails(res?.data?.data);
         setisLoading(false);
       })

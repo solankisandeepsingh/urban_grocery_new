@@ -13,13 +13,11 @@ import { useApiToken } from "../zustand/useApiToken";
 import { ToastContainer, toast } from "react-toastify";
 
 export const SimilarProduct = ({ id }) => {
-  console.log(id);
   const [similarProduct, setSimilarProduct] = useState([]);
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
   const {
     userInfo: { user_id },
   } = useUserStore();
-  const { jwt, setJwt } = useApiStore();
   const navigate = useNavigate();
   const { setisLoading } = useLoaderState();
   const { apiToken } = useApiToken();
@@ -45,107 +43,20 @@ export const SimilarProduct = ({ id }) => {
   };
 
   const handleVariantChange = (id, e) => {
-    console.log(variant);
-    console.log(e.target.value);
 
     let updatedvariant = { ...variant, [id]: e.target.value };
 
     setVariant(updatedvariant);
   };
 
-  const allCartItemsHandler = (item, data) => {
-    // console.log("item1>>>>>>>>>>>>>>", allCartItems);
-    console.log("item", item);
-    const config = {
-      headers: {
-        // Authorization: `Bearer ${jwt}`,
-        Authorization: `Bearer ${apiToken}`,
-      },
-    };
-    // console.log(data.id, "varaitn id");
-    // console.log(item.id, "main id");
-    const bodyFormData = new FormData();
-    bodyFormData.append("accesskey", "90336");
-    bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", user_id);
-    bodyFormData.append("product_id", `${data.id}`);
-    bodyFormData.append("product_variant_id", `${item.id}`);
-
-    // const qtys = (item.qty || 0) + 1;
-
-    bodyFormData.append("qty", 1);
-
-    // console.log("item", qtys);
-    setisLoading(true);
-
-    axios
-      .post(
-        "https://grocery.intelliatech.in/api-firebase/cart.php",
-        bodyFormData,
-        config
-      )
-      .then((res) => {
-        setisLoading(false);
-        console.log(res, "res add item");
-        // setallCartItems(res)
-        if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
-          // console.log("addtiem", allCartItems);
-          let newArr = allCartItems.map((data) =>
-            data.product_id === item.id
-              ? {
-                  ...data,
-                  amount: data.amount + 1,
-                }
-              : data
-          );
-          console.log(newArr);
-          setAllCartItems(newArr);
-
-          return;
-        }
-        console.log(item.id, "allCartItems Id in product caraousel");
-
-        let item1 = {
-          amount: 1,
-          discounted_price: item.discounted_price,
-          id: item.id,
-          image: data.image,
-          images: [
-            "http://grocery.intelliatech.in/upload/variant_images/1676618514.4521-883.png",
-          ],
-          price: item.price,
-          product_id: item.product_id,
-          product_variant_id: item.id,
-          qty: 1,
-          save_for_later: "0",
-          serve_for: "Available",
-          slug: "butterscotch-flavorsome-cake",
-          stock: "29",
-
-          type: "packet",
-          unit: "gm",
-          user_id: user_id,
-        };
-
-        let newArr = [...allCartItems, { ...item1, amount: 1 }];
-        console.log(newArr);
-        // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
-        setAllCartItems(newArr);
-        setisLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setisLoading(false);
-      });
-  };
+ 
   const addItemHandler = (item, data) => {
     const config = {
       headers: {
         Authorization: `Bearer ${apiToken}`,
       },
     };
-    // console.log(data.id, "varaitn id");
-    // console.log(item.id, "main id");
+   
     const bodyFormData = new FormData();
     bodyFormData.append("accesskey", "90336");
     bodyFormData.append("add_to_cart", "1");
@@ -161,7 +72,6 @@ export const SimilarProduct = ({ id }) => {
         bodyFormData,
         config
       )
-      .then(console.log(allCartItems, "[before some method]"))
       .then((res) => {
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
           let newArr = allCartItems.map((data) =>
@@ -172,7 +82,6 @@ export const SimilarProduct = ({ id }) => {
                 }
               : data
           );
-          console.log(newArr);
           setAllCartItems(newArr);
 
           return;
@@ -287,7 +196,6 @@ export const SimilarProduct = ({ id }) => {
                     <div
                       className="xs:w-32 md:w-32 xs:h-[200px] z-0  xs:my-3 md:h-[230px] sm:w-36 sm:h-[260px] rounded-xl md:mt-4 container border-2 border-light_gray hover:border-light_green bg-[#FFFAED] cursor-pointer"
                       onClick={() => {
-                        console.log("Similar");
                         navigate(
                           `/subcategory-details/${item.category_name}/product-details/${item.id}`,
                           { replace: true }

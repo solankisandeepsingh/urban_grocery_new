@@ -40,7 +40,6 @@ export const ReturnOrder = ({ setReturnModal, orderId }) => {
     cancelData.append("id", orderId);
     cancelData.append("status", "delivered ");
 
-    console.log(orderId, "order id");
 
     axios
       .post(

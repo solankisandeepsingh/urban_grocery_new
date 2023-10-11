@@ -3,12 +3,8 @@ import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useOrderDetails } from "../zustand/useOrderDetails";
 import { currencyFormatter } from "../../utils/utils";
-import { dateFormet } from "../../utils/dateFormet";
 import moment from "moment/moment";
-import { useApiToken } from "../zustand/useApiToken";
-import axios from "axios";
 import { useUserStore } from "../zustand/useUserStore";
-import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
 import { CancelOrder } from "./CancelOrder";
 import { ReturnOrder } from "./ReturnOrder";
@@ -17,10 +13,7 @@ export const OrderDetailsPage = () => {
   const { orderId, setOrderId } = useOrderDetails();
   const { allOrderDetails } = useOrderDetails();
   const { addList } = useUserStore();
-  console.log(orderId, "order id");
-  console.log(allOrderDetails, "allorderdetails");
 
-  const { apiToken } = useApiToken();
   const [cancelModal, setCancelModal] = useState(false);
   const [ReturnModal, setReturnModal] = useState(false);
 
@@ -92,13 +85,8 @@ export const OrderDetailsPage = () => {
                                 "DD-MM-YYYY hh:mm:ssa"
                               ).format("DD-MM-YYYY, h:mm A")}
                             </p>
-                            {/* <p>
-                              { moment(
-                                item.order_time, 'MM-DD-YYYY HH:mm:ss',true).format("YYYY-MM-DD HH:mm:ss")}
-                            </p> */}
+                           
 
-                            {console.log(item.date_added, "time")}
-                            {/* {console.log(item.date.added ,"dateaded")} */}
                           </div>
                           <div className="flex justify-between py-2 border-b border-b-light_gray">
                             <p className="text-graycolor text-[16px]">Total</p>

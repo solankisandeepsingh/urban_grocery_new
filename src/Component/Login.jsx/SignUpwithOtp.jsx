@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { auth } from "../Firebase/firebase.config";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { FaArrowLeft, FaMobileAlt } from "react-icons/fa";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import OtpInput from "react-otp-input";
 import { Signup } from "./Signup";
@@ -10,7 +10,6 @@ import "../../../src/index.css";
 import axios from "axios";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiToken } from "../zustand/useApiToken";
-import { Alert } from "@mui/material";
 
 export const SignUpwithOtp = ({
   setShowRegisterForm,
@@ -58,11 +57,6 @@ export const SignUpwithOtp = ({
   };
 
   const getVerifyOtp = (e) => {
-    console.log("Verify OTP Ran>>>>>>>>>>>>>>");
-    console.log(
-      saveRecaptca,
-      "saveRecaptcha<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>"
-    );
     let config = {
       headers: {
         Authorization: `Bearer ${apiToken}`,
@@ -80,28 +74,14 @@ export const SignUpwithOtp = ({
         config
       )
       .then((res) => {
-        console.log("Verify OTP Res>>>>>>>>>>>>>>", res);
-
-        console.log(
-          setSaveRecaptcha,
-          "<<<<<<<<<<<<<<<<<<<<<<<<<<saveRecaptcha>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>"
-        );
-
         if (res.data.error) {
-          console.log("We got error>>>>>>>>>>>>>>>>", res.data.error);
           toast.error(res.data.message, {
             position: toast.POSITION.TOP_CENTER,
             autoClose: 500,
           });
           setisLoading(false);
         } else {
-          console.log("We got Success>>>>>>>>>>>>>>>>", res.data);
-
           if (phoneNumber.length >= 10) {
-            console.log(
-              "We got More than 10 digits>>>>>>>>>>>>>>>>",
-              phoneNumber
-            );
             setExpandForm(true);
             // genrateReCaptcha();
             if (!window.recaptchaVerifier) {
@@ -110,32 +90,17 @@ export const SignUpwithOtp = ({
             setisLoading(false);
 
             let appVerifier = window.recaptchaVerifier;
-            console.log(
-              "We got More than 10 digits>>>>>>>>>>>>>>>>",
-              appVerifier
-            );
 
             const formatPh = "+91" + phoneNumber;
-            console.log("We got More than 10 digits>>>>>>>>>>>>>>>>", formatPh);
             signInWithPhoneNumber(auth, formatPh, appVerifier)
               .then((confirmationResult) => {
-                console.log(
-                  "We triggered Firebase API>>>>>>>>>>>>>>",
-                  confirmationResult
-                );
-
                 window.confirmationResult = confirmationResult;
                 toast.success("OTP has been sent successfully", {
                   position: toast.POSITION.TOP_CENTER,
                   autoClose: 500,
                 });
               })
-              .catch((error) => {
-                console.log(
-                  error,
-                  "FIREBASE API FAILED>>>>>>>>>>>>>>>>>>>>>>>"
-                );
-              });
+              .catch((error) => {});
           }
         }
       })
@@ -152,7 +117,6 @@ export const SignUpwithOtp = ({
       {
         size: "invisible",
         callback: (response) => {
-          console.log(response, "Recaptcha response");
           setSaveRecaptcha(response);
         },
       }
@@ -186,7 +150,6 @@ export const SignUpwithOtp = ({
   };
 
   const resendOtp = () => {
-    console.log("resend otp>>>>>>>>>>>>>>");
     getVerifyOtp();
     setResendDisabled(true);
     startResendTimer();
