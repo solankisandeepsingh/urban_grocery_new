@@ -86,7 +86,7 @@ export const Forgot = ({
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!regex.test(newPassword)) {
       setPasswordError(
-        "Password must be 8 characters including one uppercase letter, one lowercase letter, one special character, ."
+        "Password must be 8 characters including one uppercase letter, one lowercase letter, one special character,number ."
       );
       setIsMatch(false);
     } else {
@@ -98,12 +98,6 @@ export const Forgot = ({
   const validateConfirmPassword = (newPassword) => {
     const match = newPassword === password;
     setIsMatch(match);
-
-    if (!match) {
-      setConfirmPasswordError("Passwords do not match.");
-    } else {
-      setConfirmPasswordError("Passwords match");
-    }
   };
 
   const verfiyUser = () => {
@@ -181,7 +175,9 @@ export const Forgot = ({
                 setId(res.data.id);
                 verfiyUser();
               })
-              .catch((error) => {});
+              .catch((error) => {
+                console.log(error);
+              });
           }
         }
       })
@@ -199,7 +195,6 @@ export const Forgot = ({
       {
         size: "invisible",
         callback: (response) => {
-          console.log(response, "Recaptcha response");
           setSaveForgotRecaptcha(response);
         },
       }
@@ -228,7 +223,7 @@ export const Forgot = ({
         })
         .catch((err) => {
           console.log(err);
-          toast.success("Incorrect Otp please check the otp", {
+          toast.error("Error: Incorrect OTP. Please try again.", {
             position: toast.POSITION.TOP_CENTER,
           });
         });
@@ -276,8 +271,7 @@ export const Forgot = ({
         config
       )
       .then((res) => {
-        console.log(res.data, "new user id here is");
-        setPassword(res.message);
+        setPassword(res?.message);
         setForgotForm(false);
         setLoginForm(true);
         toast.success("Profile updated successfully", {
@@ -464,7 +458,7 @@ export const Forgot = ({
                 </div>
 
                 <div>
-                  <div className="relative">
+                  <div className="relative mt-2">
                     <label
                       htmlFor="confirmPassword"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -494,7 +488,7 @@ export const Forgot = ({
                     </div>
                   </div>
 
-                  {confirmPasswordError && (
+                  {/* {confirmPasswordError && (
                     <p
                       className={`text-sm mt-1 ${
                         isMatch ? "text-lime" : "text-red"
@@ -502,15 +496,24 @@ export const Forgot = ({
                     >
                       {confirmPasswordError}
                     </p>
-                  )}
+                  )} */}
                 </div>
+                {password !== "" && isMatch ? (
+                  <p className="text-lime">Password Match</p>
+                ) : password === "" ? null : (
+                  <p className="text-red">Password does not Match</p>
+                )}
 
                 <div className="mt-4">
                   <button
                     type="submit"
-                    className="w-full text-white bg-lime hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                    disabled={!isMatch}
+                    className={`w-full text-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 ${
+                      !isMatch
+                        ? "opacity-50 cursor-not-allowed bg-gryColour"
+                        : "cursor-pointer bg-lime"
+                    }`}
                     onClick={handleClickSubmit}
+                    disabled={!isMatch}
                   >
                     Reset Password
                   </button>

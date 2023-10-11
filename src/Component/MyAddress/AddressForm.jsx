@@ -55,7 +55,8 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
       !addressData?.pincode ||
       !addressData?.address ||
       !addressData?.type ||
-      !areaDropdown || !cityDropdown
+      !areaDropdown ||
+      !cityDropdown
     ) {
       toast.error("Please fill all the fields", {
         position: toast.POSITION.TOP_CENTER,
@@ -85,7 +86,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
         .then((res) => {
           toast.success("Address added Successfully", {
             position: toast.POSITION.TOP_CENTER,
-            autoClose:500,
+            autoClose: 500,
           });
           getAddress();
           setFormOpen(false);
@@ -135,6 +136,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
         .catch((err) => console.log(err));
     }
   }, [cityDropdown]);
+  const regex = /^[1-9]\d{2}\s?\d{3}$/;
 
   return (
     <div className="fixed z-50 top-0  left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
@@ -179,10 +181,34 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
                       value={addressData.pincode}
                       onChange={handleInputChange}
                     />
-                    {addressData.pincode.length !== 6 && (
+                    {/* {addressData.pincode.length !== 6 && (
                       <p className="text-red text-xs mt-1 ml-1">
                         Pincode must be exactly 6 digits
                       </p>
+                    )} */}
+
+                    {/* {!regex.test(addressData.pincode) && (
+  <p className="text-red text-xs mt-1 ml-1">
+    {addressData.pincode.length <= 6
+      ? ""
+      : "Pincode cannot exceed 6 digits"}
+  </p>
+)} */}
+
+                    {!regex.test(addressData.pincode) && (
+                      <>
+                        <p className="text-red text-xs mt-1 ml-1">
+                          {!addressData?.pincode
+                            ? ""
+                            : addressData.pincode.length <= 6
+                            ? ""
+                            : addressData.pincode.length > 6
+                            ? "Pincode cannot exceed 6 digits"
+                            : "Pincode is invalid"}
+                        </p>
+                        {addressData.pincode.length > 6 &&
+                          toast.error("Pincode is invalid")}
+                      </>
                     )}
                   </div>
                 </div>

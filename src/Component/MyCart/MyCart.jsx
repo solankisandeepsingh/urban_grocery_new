@@ -56,7 +56,6 @@ function MyCart({
 
   const isMobileOrTablet = useMediaQuery({ query: "(max-width: 767px)" });
 
-
   let menuRef = useRef();
 
   const accesskey = "90336";
@@ -75,7 +74,7 @@ function MyCart({
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickMycartOutside);
-    
+
     return () => {
       document.removeEventListener("mousedown", handleClickMycartOutside);
     };
@@ -126,8 +125,6 @@ function MyCart({
     setTotalItem(totalAmount);
     setTotalItems(totalAmount);
   };
-
-  
 
   useEffect(() => {
     if (apiToken) total();
@@ -245,14 +242,12 @@ function MyCart({
       });
   };
 
-  
   useEffect(() => {
     if (apiToken) getUserCarts(user_id);
   }, [apiToken, accesskey]);
   return (
     <>
       <button
-       
         className="relative md:bg-lime sm:bg-lime xs:bg-skyblue  text-white items-center float-right flex gap-1
         font-bold md:px-2 rounded shadow  "
         type="button"
@@ -279,7 +274,6 @@ function MyCart({
         <div className="md:bg-lime sm:bg-lime xs:bg-white">
           {price > 0 && allCartItems ? (
             <>
-             
               <div className="block md:hidden absolute top-1 right-1 px-1 rounded-full bg-red text-xs">
                 {totalItem}
               </div>
@@ -413,7 +407,6 @@ function MyCart({
                                                 className="bg-white hover:bg-RedColour hover:bg-opacity-20 cursor-pointer xs:text-[18px]  md:text-[15px] xs:text-sm sm:text-3xl text-red"
                                               />
                                             </div>
-                                          
                                           </div>
                                         </div>
                                       </div>
@@ -435,9 +428,6 @@ function MyCart({
                                       <button
                                         className="flex justify-between bg-lime p-3 mt-5 ml-[-11px]  border-3 text-white fixed bottom-0  md:w-96 xs:w-[370px] sm:w-[750px] 2xs:w-[260px] rounded-lg"
                                         onClick={() => {
-                                          console.log(
-                                            "proceed button before login"
-                                          );
                                           setNewUserLog(true);
                                         }}
                                       >
@@ -475,8 +465,6 @@ function MyCart({
                         );
                       })
                     : null}
-
-                 
 
                   {!showForm && !allCartItems?.length ? (
                     <div className="relative p-6 flex-auto text-center font-medium bg-white">

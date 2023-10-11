@@ -1,21 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Category } from "./Category/Category";
 import CarouselComponent from "./Carousel/Carousel";
-import Search from "./Header/Search/Search";
 import { ProductCarousel } from "./Products/Product-Carousel/ProductCarousel";
-import { API_TOKEN } from "./Token/Token";
 import { useImgStore } from "./zustand/useImgStore";
 import axios from "axios";
-import { FoodDelivery } from "../Food Delivery Image/FoodDelivery";
-import { LocallySourced } from "../Food Delivery Image/LocallySourced";
 import { useLoaderState } from "./zustand/useLoaderState";
-import { Link } from "react-router-dom";
 import { FlashSales } from "./Flash_Sales/FlashSales";
-import { SignJWT } from "jose";
-import axioss from "../api/axios";
-import { useApiStore } from "./zustand/useApiStore";
-import { Footer } from "./Footer/Footer";
-import { AccessToken } from "./AccessToken/AccessToken";
 import { useApiToken } from "./zustand/useApiToken";
 
 function Home({
@@ -30,8 +20,6 @@ function Home({
   setNavbarOpen
 }) {
   const { allImg, setAllImg } = useImgStore();
-  const { jwt, setJwt } = useApiStore();
-  console.log(allImg, setAllImg, "IMG STORE FROM ZUSTAND");
   const { setisLoading } = useLoaderState();
   const [visible, setVisible] = useState(false);
   const {apiToken,accessTokenApi} = useApiToken()

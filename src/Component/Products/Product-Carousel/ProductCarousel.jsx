@@ -290,80 +290,7 @@ export const ProductCarousel = ({}) => {
     },
   };
 
-  // const handleRemoveFavorite = (item) => {
-  //   let config = {
-  //     headers: {
-  //       Authorization: `Bearer ${API_TOKEN}`,
-  //     },
-  //   };
-
-  //   let favData = new FormData();
-  //   favData.append("accesskey", "90336");
-  //   favData.append("remove_from_favorites", "1");
-  //   favData.append("user_id", user_id);
-  //   favData.append("product_id", item.id);
-  //   setisLoading(true);
-
-  //   axios
-  //     .post(
-  //       `https://grocery.intelliatech.in/api-firebase/favorites.php`,
-
-  //       favData,
-  //       config
-  //     )
-  //     .then((res) => {
-  //       console.log(res, "favdata");
-  //       setisLoading(false);
-  //       // setFavPos((prev) => !prev);
-
-  //       let newArr = allFavItems.filter((fav) => {
-  //         return fav.id !== item.id;
-  //       });
-  //       console.log(newArr);
-  //       setAllFavItems(newArr);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       setisLoading(false);
-  //     });
-  // };
-
-  // const handleAddFavorite = (item) => {
-  //   let config = {
-  //     headers: {
-  //       Authorization: `Bearer ${API_TOKEN}`,
-  //     },
-  //   };
-
-  //   let favData = new FormData();
-  //   favData.append("accesskey", "90336");
-  //   favData.append("add_to_favorites", "1");
-  //   favData.append("user_id", user_id);
-  //   favData.append("product_id", item.id);
-  //   setisLoading(true);
-
-  //   axios
-  //     .post(
-  //       `https://grocery.intelliatech.in/api-firebase/favorites.php`,
-
-  //       favData,
-  //       config
-  //     )
-  //     .then((res) => {
-  //       setisLoading(false);
-  //       // setFavPos((prev) => !prev);
-
-  //       console.log(res, "favdata");
-  //       let newArr = [...allFavItems, item];
-  //       console.log(newArr);
-  //       setAllFavItems(newArr);
-  //     })
-  //     .catch((err) => {
-  //       setisLoading(false);
-
-  //       console.log(err);
-  //     });
-  // };
+  
 
   const addItemUI = (mainItem) => {
     let newArr = [];
@@ -526,34 +453,7 @@ export const ProductCarousel = ({}) => {
                           item.variants.map((data) => {
                             return (
                               <div className="flex p-1 md:px-3 flex-col xs:justify-center xs:items-center xs:text-center md:justify-evenly sm:ml-0   ">
-                                {/* {console.log(allFavItems.find((fav)=>{
-                              console.log(fav.id, item.id, "HEREEEEEEEEEEEEE<><><><><><>");
-                               return fav.id === item.id
-                            }))}; */}
-
-                                {/* ADD TO FAVOURITES  */}
-                                {/* {user_id != 14 &&
-                              (allFavItems?.find((fav) => {
-                                return fav.id === item.id;
-                              }) ? (
-                                <FaHeart
-                                  className="text-red absolute top-5 text-xl animate-hbeat hover:scale-125 transition-all right-8 "
-                                  onClick={(e) => {
-                                    setFavPos(true)
-                                    e.stopPropagation();
-                                    handleRemoveFavorite(item);
-                                  }}
-                                />
-                              ) : (
-                                <FaRegHeart
-                                  className={`text-[light_gray] group-hover:top-2 group-active:top-2 absolute ${!favPos ? '-top-8' : 'top-5'} text-xl hover:scale-125  transition-all right-8`}
-                                  onClick={(e) => {
-                                    setFavPos(true)
-                                    e.stopPropagation();
-                                    handleAddFavorite(item);
-                                  }}
-                                />
-                              ))} */}
+                               
                                 <div className="  w-full md:px-3 ">
                                   <p className="2xs:text-base xs:text-sm t sm:text-xl  md:text-sm font-light  px-1 py-1 flex md:flex-row  justify-between items-center">
                                     <span className=" font-bold text-xs">
@@ -685,19 +585,12 @@ export const ProductCarousel = ({}) => {
                                   <>
                                     <div
                                       className="mt-3"
-                                      // onClick={(e) => {
-                                      //   console.log(
-                                      //     e,
-                                      //     "EVENT IN IMMEDIATE PARENT ELEMENT"
-                                      //   );
-                                      // }}
+                                     
                                     >
                                       <CartQuantity
                                         item={item}
                                         variant={variant}
-                                        // setAllCartItems={setAllCartItems}
-                                        // allCartItems={allCartItems}
-                                        // user_id={user_id}
+                                       
                                       />
                                     </div>
                                   </>

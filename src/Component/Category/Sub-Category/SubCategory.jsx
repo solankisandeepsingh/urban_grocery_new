@@ -55,7 +55,6 @@ export const SubCategory = ({ setAddItem, addItem, setNavbarOpen }) => {
                 }
               : data
           );
-          console.log(newArr);
           setAllCartItems(newArr);
 
           return;

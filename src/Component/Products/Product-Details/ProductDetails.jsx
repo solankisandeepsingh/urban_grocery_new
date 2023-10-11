@@ -28,7 +28,7 @@ import { useFavStore } from "../../zustand/useFavStore";
 import { SimilarProduct } from "../../Similar-Products/SimilarProduct";
 import { useApiToken } from "../../zustand/useApiToken";
 
-export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
+export const ProductDetails = ({}) => {
   const [productPageData, setProductPage] = useState([]);
   const [wishlist, setWishlist] = useState(false);
   const [reviewList, setReviewList] = useState(false);
@@ -42,7 +42,6 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
   const [value, setValue] = React.useState(0);
   const [isValidImg, setisValidImg] = useState(false);
   const [review, setReview] = useState("");
-  const { jwt, setJwt } = useApiStore();
   const { allFavItems, setAllFavItems } = useFavStore();
   const {
     userInfo: { user_id },
@@ -51,30 +50,7 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   let imageModalRef = useRef(null);
-  let reviewRef = useRef(null);
   const { apiToken } = useApiToken();
-  setNavbarOpen(true);
-
-  const [selectedImages, setSelectedImages] = useState([]);
-
-  const onSelectFile = (event) => {
-    const selectedFiles = event.target.files;
-    const selectedFilesArray = Array.from(selectedFiles);
-
-    const imagesArray = selectedFilesArray.map((file) => {
-      return URL.createObjectURL(file);
-    });
-
-    setSelectedImages((previousImages) => previousImages.concat(imagesArray));
-
-    // FOR BUG IN CHROME
-    event.target.value = "";
-  };
-
-  function deleteHandler(image) {
-    setSelectedImages(selectedImages.filter((e) => e !== image));
-    URL.revokeObjectURL(image);
-  }
 
   const handleImageClick = (image, index) => {
     if (image) {
@@ -84,42 +60,10 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
     }
   };
 
-  const handleVariantChange = (id, e) => {
-    let updatedvariant = { ...variant, [id]: e.target.value };
-
-    setVariant(updatedvariant);
+  const deleteHandler = (image) => {
+    setImages(images.filter((e) => e !== image));
+    URL.revokeObjectURL(image);
   };
-
-  const handleClickShowModalOutside = (event) => {
-    if (
-      imageModalRef.current &&
-      !imageModalRef.current.contains(event.target)
-    ) {
-      setShowImageModal(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickShowModalOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickShowModalOutside);
-    };
-  }, []);
-
-  const handleClickReviewModalOutside = (event) => {
-    if (reviewRef.current && !reviewRef.current.contains(event.target)) {
-      setReviewOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickReviewModalOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickReviewModalOutside);
-    };
-  }, []);
 
   const addItemHandler = (item, data) => {
     const config = {
@@ -142,9 +86,8 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
         bodyFormData,
         config
       )
-      .then(console.log(allCartItems, "[before some method]"))
+
       .then((res) => {
-        // setisLoading(false);
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
           let newArr = allCartItems.map((data) =>
             data.product_id === item.id
@@ -154,7 +97,6 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
                 }
               : data
           );
-          console.log(newArr);
           setAllCartItems(newArr);
 
           return;
@@ -174,16 +116,14 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
         let newArr = [...allCartItems, { ...item1, amount: 1 }];
         toast.success("Item added to user cart successfully !", {
           position: toast.POSITION.TOP_CENTER,
-          autoClose: 500,
         });
-        // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
         setAllCartItems(newArr);
         setisLoading(false);
       })
       .catch((error) => {
         console.log(error);
         toast.error(
-          "Network Error. Please check your connection and try again.",
+          "Network error. Please check your connection and try again.",
           {
             position: toast.POSITION.TOP_CENTER,
           }
@@ -193,7 +133,7 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
   };
   const addItemUI = (mainItem) => {
     let newArr = [];
-    if (mainItem?.variants?.length > 1) {
+    if (mainItem.variants.length > 1) {
       newArr = [
         ...allCartItems,
         {
@@ -205,10 +145,6 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
         },
       ];
     } else {
-      toast.success("Item added to user cart successfully !", {
-        position: toast.POSITION.TOP_CENTER,
-        autoClose: 300,
-      });
       newArr = [
         ...allCartItems,
         {
@@ -224,12 +160,7 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
     setAllCartItems(newArr);
   };
 
-  const closeModal = () => {
-    setSelectedImage(null);
-    setShowImageModal(false);
-  };
-
-  const handleClickProuctDetailsOutside = (event) => {
+  const handleClickOutside = (event) => {
     if (
       imageModalRef.current &&
       !imageModalRef.current.contains(event.target)
@@ -238,11 +169,10 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
     }
   };
   useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
-      document.removeEventListener(
-        "mousedown",
-        handleClickProuctDetailsOutside
-      );
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -275,9 +205,9 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
           config
         )
         .then((res) => {
-          console.log(res);
           setisLoading(false);
           setReviewOpen(false);
+          productReviews();
           res.data.error
             ? toast.error(`${res.data.message}`, {
                 position: toast.POSITION.TOP_RIGHT,
@@ -297,6 +227,7 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
         position: toast.POSITION.TOP_RIGHT,
       });
     }
+    setImages("");
   };
 
   const productReviews = () => {
@@ -323,25 +254,14 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
         setisLoading(false);
       })
       .catch((error) => {
+        console.log(error)
         setisLoading(false);
       });
   };
 
   const imagesHandler = (event) => {
-    const files = event.target.files;
-    const imagesArray = Array.from(files);
-    setSelectedImages(imagesArray);
-  };
-
-  // const handleImageChange = (event) => {
-  //   const files = Array.from(event.target.files);
-  //   setSelectedImages([...selectedImages, ...files]);
-  // };
-
-  const handleImageDelete = (index) => {
-    const updatedImages = [...selectedImages];
-    updatedImages.splice(index, 1);
-    setSelectedImages(updatedImages);
+    let newImages = event.target.files;
+    setImages([...images, ...newImages]);
   };
 
   const inputHandler = (event) => {
@@ -371,12 +291,12 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
         setisLoading(false);
       })
       .catch((error) => {
+        console.log(error);
         setisLoading(false);
       });
   };
 
   // useEffect(() => {
-  //   console.log("rendered");
   //   productDetail();
   //   productReviews();
   // }, [id]);
@@ -388,78 +308,6 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
     }
   }, [apiToken, id]);
 
-  const allCartItemsHandler = (item, data) => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${apiToken}`,
-      },
-    };
-
-    const bodyFormData = new FormData();
-    bodyFormData.append("accesskey", "90336");
-    bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", "14");
-
-    bodyFormData.append("product_id", `${data.id}`);
-    bodyFormData.append("product_variant_id", `${item.id}`);
-
-    // const qtys = (item.qty || 0) + 1;
-
-    bodyFormData.append("qty", 1);
-
-    setisLoading(true);
-
-    axios
-      .post(
-        "https://grocery.intelliatech.in/api-firebase/cart.php",
-        bodyFormData,
-        config
-      )
-      .then((res) => {
-        // setAllCartItems(res)
-        if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
-          let newArr = allCartItems.map((data) =>
-            data.product_id === item.id
-              ? {
-                  ...data,
-                  amount: data.amount + 1,
-                }
-              : data
-          );
-          setAllCartItems(newArr);
-          return;
-        }
-        let item1 = {
-          amount: 1,
-          discounted_price: item.discounted_price,
-          id: item.id,
-          image: data.image,
-          images: [
-            "http://grocery.intelliatech.in/upload/variant_images/1676618514.4521-883.png",
-          ],
-          price: item.price,
-          product_id: item.product_id,
-          product_variant_id: item.id,
-          qty: 1,
-          save_for_later: "0",
-          serve_for: "Available",
-          slug: "butterscotch-flavorsome-cake",
-          stock: "29",
-
-          type: "packet",
-          unit: "gm",
-          user_id: "14",
-        };
-        let newArr = [...allCartItems, { ...item1, amount: 1 }];
-        setAllCartItems(newArr);
-        setisLoading(false);
-        // setAllCartItems((cart) => [...cart, { ...item1, amount: 1 }]);
-      })
-      .catch((error) => {
-        setisLoading(false);
-      });
-  };
-
   const filterData = productPageData.filter((data) => {
     return data.id === id;
   });
@@ -467,7 +315,7 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
   const handleRemoveFavorite = (item) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${apiToken}`,
+        Authorization: `Bearer ${API_TOKEN}`,
       },
     };
 
@@ -486,7 +334,6 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
         config
       )
       .then((res) => {
-        console.log(res, "favdata");
         setisLoading(false);
         setWishlist((prev) => !prev);
 
@@ -524,10 +371,8 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
       )
       .then((res) => {
         setisLoading(false);
-        // setFavPos((prev) => !prev);
         setWishlist((prev) => !prev);
 
-        console.log(res, "favdata");
         let newArr = [...allFavItems, item];
         setAllFavItems(newArr);
       })
@@ -639,11 +484,7 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
                                       alt=""
                                       className="w-9 h-9 ml-auto mr-auto "
                                     />
-                                    {item.cancelable_status === "1" ? (
-                                      <p> Cancellable </p>
-                                    ) : (
-                                      <p> Not Cancellable </p>
-                                    )}
+                                    Not Cancellable
                                   </div>
                                 </div>
 
@@ -690,9 +531,9 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
                 </div>
 
                 <div className="text-left md:ml-20 xs:ml-1 mb-3">
-                  <div dangerouslySetInnerHTML={{ __html: item.description }}>
-                    {/* {JSON.parse(item.description)} */}
-                  </div>
+                  <div
+                    dangerouslySetInnerHTML={{ __html: item.description }}
+                  ></div>
 
                   <div className="mt-4">
                     <div className="">
@@ -734,21 +575,18 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
                       {reviewList?.length > 0 ? (
                         reviewList.map((review, mainindex) => {
                           return (
-                            <div
-                              className="border-b px-3 border-[#e8e8e8e8] mb-3"
-                              ref={reviewRef}
-                            >
+                            <div className="border-b px-3 border-[#e8e8e8e8] mb-3">
                               <div className="flex items-center gap-3">
                                 {isValidImg ? (
+                                  <FaUserCircle className="text-2xl " />
+                                ) : (
                                   <img
-                                    className="h-10 w-10"
+                                    className="h-10 w-10 rounded-full"
                                     src={review.user_profile}
                                     alt=""
                                   />
-                                ) : (
-                                  <FaUserCircle className="text-2xl" />
                                 )}
-                                <div className="text-md mt-2 font-semibold text-[gray]">
+                                <div className="text-md mt-2 font-semibold  text-[gray]">
                                   {review.username}
                                 </div>
                               </div>
@@ -761,7 +599,7 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
 
                               <div>
                                 <div className="xs:grid xs:grid-cols-3 md:grid-cols-6 relative sm:grid-cols-6 gap-2">
-                                  {review?.images?.length > 0 &&
+                                  {review.images.length > 0 &&
                                     review.images.map((image, index) =>
                                       index < 3 ? (
                                         <div
@@ -769,7 +607,7 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
                                             handleImageClick(image, mainindex)
                                           }
                                           className={`${
-                                            review?.images?.length > 2
+                                            review.images.length > 2
                                               ? 'last:before:content-["+3"]  cursor-pointer before:w-24 before:h-24 last:opacity-60  last:before:absolute'
                                               : ""
                                           } 
@@ -787,27 +625,22 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
 
                                 {showImageModal &&
                                   reviewIndex === mainindex && (
-                                    <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
+                                    <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75 ">
                                       <div
-                                        className="bg-white p-4 sm:h-[auto] rounded-lg grid grid-cols-3 gap-2 h-auto mt-3"
+                                        className="bg-white p-3 sm:h-[auto] rounded-lg flex items-center justify-evenly gap-1 relative h-auto mt-3"
                                         ref={imageModalRef}
                                       >
-                                        <button
-                                          className="absolute top-[32.3%] right-[37.8%]"
-                                          onClick={() =>
-                                            setShowImageModal(false)
-                                          }
-                                        >
-                                          <AiOutlineCloseCircle className="text-red relative text-[18px] animate-hbeat hover:scale-125 transition-all cursor-pointer " />
+                                        <button onClick={()=>setShowImageModal(false)}>
+                                          <AiOutlineCloseCircle className="cursor-pointer absolute bg-[#fff] bg-opacity-90  hover:opacity-100 opacity-50 rounded-full top-[-1px] text-red text-[24px] right-0"/>
                                         </button>
                                         <>
                                           {review.images.map((image, index) => (
                                             <img
                                               key={index}
                                               src={image}
-                                              className={`w-24 h-24 rounded-lg  object-cover ${
+                                              className={`w-24 h-24 rounded-lg object-cover ${
                                                 image === selectedImage
-                                                  ? "border-4 border-blue-500"
+                                                  ? "border-2 border-border_gray"
                                                   : ""
                                               }`}
                                             />
@@ -825,13 +658,6 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
                         <p>No Customer Reviews</p>
                       )}
                     </div>
-                    {/* <MUIRating
-                                  name="simple-controlled"
-                                  value={value}
-                                  onChange={(event, newValue) => {
-                                    setValue(newValue);
-                                  }}
-                                /> */}
                   </div>
                   {item.manufacturer && (
                     <>
@@ -857,12 +683,10 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
               </>
             );
           })}
-
-        {/*  Similar products Page */}
       </div>
 
       {reviewOpen && (
-        <div className="fixed z-40 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
+        <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
           <div className="bg-white rounded top-[5%] left-[5%]">
             <div className="flex justify-center items-center relative">
               <div className="container relative  ">
@@ -907,58 +731,41 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
                         </div>
                       </div>
 
-                      <div className="">
-                        <label
-                          className="text-[gray] font-bold text-lg pl-3 inline-block mt-5"
-                          htmlFor="images"
-                        >
-                          Add product images
+                      <label
+                        className=" text-[gray] font-bold text-lg pl-3 inline-block mt-5"
+                        htmlFor="images"
+                      >
+                        Add product images
+                      </label>
+
+                      <div className="flex gap-4 mt-4">
+                        <label className="custom-file-upload border w-14 h-20 border-border_gray p-4 rounded-lg flex items-center justify-center hover:bg-light_green cursor-pointer">
+                          <p className="text-3xl">+</p>
+                          <input
+                            type="file"
+                            multiple
+                            onChange={(e) => imagesHandler(e)}
+                          />
                         </label>
-                        <div className="flex gap-4 mt-4">
-                          <label className="custom-file-upload border w-14 h-20 border-border_gray p-4 rounded-lg flex items-center justify-center hover:bg-light_green cursor-pointer">
-                            <p className="text-3xl">+</p>
-                            <input
-                              type="file"
-                              name="images"
-                              onChange={onSelectFile}
-                              multiple
-                              accept="image/png, image/jpeg, image/webp"
-                              className="hidden"
-                            />
-                          </label>
 
-                          {selectedImages.length > 0 &&
-                            (selectedImages.length > 10 ? (
-                              <p className="error">
-                                <span>
-                                  <AiOutlineCloseCircle />{" "}
-                                  <b> {selectedImages.length - 10} </b> of them{" "}
-                                </span>
-                              </p>
-                            ) : (
-                              ""
-                            ))}
-
-                          <div className="images flex flex-wrap gap-3 ">
-                            {selectedImages &&
-                              selectedImages.map((image, index) => {
-                                return (
-                                  <div key={image} className="image relative ">
-                                    <img
-                                      src={image}
-                                      height="200"
-                                      alt="upload"
-                                      className="w-20 h-20 object-cover rounded-md"
+                        <div>
+                          <div className="images flex flex-wrap gap-3">
+                            {images &&
+                              images.map((image, index) => (
+                                <div key={index} className="image relative ">
+                                  <img
+                                    src={URL.createObjectURL(image)}
+                                    alt={`Image ${index}`}
+                                    className="w-20 h-20 object-cover rounded-md "
+                                  />
+                                  <div className="bg-[#f2f2f2]">
+                                    <AiOutlineCloseCircle
+                                      className="cursor-pointer absolute bg-[#fff] bg-opacity-90  hover:opacity-100 opacity-50 rounded-full top-[-4px] text-red text-[28px] right-0"
+                                      onClick={() => deleteHandler(image)}
                                     />
-                                    <div className="bg-[#f2f2f2]">
-                                      <AiOutlineCloseCircle
-                                        className="cursor-pointer absolute bg-[#fff] bg-opacity-90  hover:opacity-100 opacity-50 rounded-full top-[-4px] text-red text-[28px] right-0"
-                                        onClick={() => deleteHandler(image)}
-                                      />
-                                    </div>
                                   </div>
-                                );
-                              })}
+                                </div>
+                              ))}
                           </div>
                         </div>
                       </div>
@@ -982,7 +789,6 @@ export const ProductDetails = ({ isOpen, setIsOpen, setNavbarOpen }) => {
 
                     <div className="mb-8 mt-6 flex items-center justify-between">
                       <button
-                        // type="submit"
                         className="inline-block  bg-lime px-7 pb-2.5 pt-3 text-sm rounded-lg font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out "
                         data-te-ripple-init
                         data-te-ripple-color="light"

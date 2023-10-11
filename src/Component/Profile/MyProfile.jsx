@@ -87,7 +87,6 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
           console.log(err);
         });
     }
-    console.log(file, "file");
   };
 
   const getUserData = () => {

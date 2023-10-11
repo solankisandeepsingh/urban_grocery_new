@@ -2,23 +2,19 @@ import React, { useState, useEffect } from "react";
 
 import { FaHome, FaPlus } from "react-icons/fa";
 import { HiOfficeBuilding, HiLocationMarker } from "react-icons/hi";
-import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineDelete } from "react-icons/ai";
 import { AddressForm } from "./AddressForm";
 import axios from "axios";
-import { API_TOKEN } from "../Token/Token";
 import { Aside } from "../Aside/Aside";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useUserStore } from "../zustand/useUserStore";
-import { useApiStore } from "../zustand/useApiStore";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import { useApiToken } from "../zustand/useApiToken";
 
-export const Address = ({ isOpen, setIsOpen }) => {
+export const Address = () => {
   const [formOpen, setFormOpen] = useState(false);
-  // const [addList, setAddlist] = useState([]);
   const { setisLoading } = useLoaderState();
   const { addList, setAddList } = useUserStore();
-  const { jwt, setJwt } = useApiStore();
   const { apiToken } = useApiToken();
 
   const {
@@ -54,9 +50,7 @@ export const Address = ({ isOpen, setIsOpen }) => {
       });
   };
 
-  // useEffect(() => {
-  //   getAddress();
-  // }, []);
+
 
   useEffect(() => {
     if (apiToken) getAddress();
@@ -75,9 +69,10 @@ export const Address = ({ isOpen, setIsOpen }) => {
         config
       )
       .then((res) => {
-        toast.info("Address deleted successfully !", {
+        toast("Address deleted successfully !", {
           position: toast.POSITION.TOP_CENTER,
-          autoClose:500
+          autoClose:500,
+          className: 'foo-bar'
         });
         getAddress();
       })

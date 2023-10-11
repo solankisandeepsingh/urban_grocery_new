@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useRef } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import { useApiToken } from "../zustand/useApiToken";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
@@ -8,9 +8,7 @@ export const CancelOrder = ({ setCancelModal, orderId }) => {
   let cancelRef = useRef(null);
 
   const { apiToken } = useApiToken();
-  const closeModalBox = () => {
-    setCancelModal(false);
-  };
+
 
   const handleClickCancelModalOutside = (event) => {
     if (cancelRef.current && !cancelRef.current.contains(event.target)) {
@@ -41,7 +39,6 @@ export const CancelOrder = ({ setCancelModal, orderId }) => {
     cancelData.append("id", orderId);
     cancelData.append("status", "cancelled");
 
-    console.log(orderId, "order id");
 
     axios
       .post(

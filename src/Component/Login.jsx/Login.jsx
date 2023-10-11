@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Signup } from "./Signup";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   AiFillEye,
@@ -13,7 +13,6 @@ import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { SignUpwithOtp } from "./SignUpwithOtp";
-import { useApiStore } from "../zustand/useApiStore";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useApiToken } from "../zustand/useApiToken";
@@ -30,8 +29,7 @@ export const Login = ({
     phone: "",
     password: "",
   });
-  console.log(getUserCarts, cartFuncs, "logincart");
-  const { allCartItems, config, clearCartApi, setAllCartItems } =
+  const { allCartItems, clearCartApi } =
     useCartStore();
   const { setUserInfo } = useUserStore();
   const [showSignUp, setShowSignUp] = useState(false);
@@ -220,7 +218,6 @@ export const Login = ({
 
   const openForgotPassword = (e) => {
     e.preventDefault();
-    console.log("hello");
     setForgotForm(true);
   };
 

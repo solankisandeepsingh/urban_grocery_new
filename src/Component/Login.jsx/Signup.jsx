@@ -1,24 +1,16 @@
 import React, { useState } from "react";
-import {
-  FaLocationArrow,
-  FaPassport,
-  FaPhoneAlt,
-  FaUserCircle,
-} from "react-icons/fa";
-import { API_TOKEN } from "../Token/Token";
+
 import axios from "axios";
 
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useLoaderState } from "../zustand/useLoaderState";
-import { useApiStore } from "../zustand/useApiStore";
 import {
   AiFillEye,
   AiFillEyeInvisible,
   AiOutlineCloseCircle,
 } from "react-icons/ai";
 import { useApiToken } from "../zustand/useApiToken";
-import { useNavigate } from "react-router-dom";
 
 
 export const Signup = ({
@@ -34,10 +26,8 @@ export const Signup = ({
   });
   const [closeSignup, setCloseSignUp] = useState(true);
   const { setisLoading } = useLoaderState();
-  const { jwt, setJwt } = useApiStore();
   const { apiToken } = useApiToken();
   const [signUpvisiblePassword, setSignUpVisiblePassword] = useState(false);
-  const navigate = useNavigate();
   const handleUserSignUp = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -54,7 +44,6 @@ export const Signup = ({
 
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };

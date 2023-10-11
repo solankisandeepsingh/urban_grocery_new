@@ -53,7 +53,6 @@ function FilterData({ data, setName, setData }) {
         bodyFormData,
         config
       )
-      .then(console.log(allCartItems, "[before some method]"))
       .then((res) => {
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
           let newArr = allCartItems.map((data) =>
