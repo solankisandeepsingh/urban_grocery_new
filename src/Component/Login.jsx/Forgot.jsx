@@ -421,7 +421,8 @@ export const Forgot = ({
               </form>
             )}
 
-            {otpVarify && (
+            {/* {otpVarify && ( */}
+            {true && (
               <>
                 <div>
                   <div className="relative">
@@ -497,7 +498,7 @@ export const Forgot = ({
                     <p className="text-red">Password does not Match</p>
                   )
                 ) : password !== "" || confirmPassword !== "" ? (
-                  ""
+                  <p className="text-red">Password does not Match</p>
                 ) : null}
 
                 <div className="mt-4">
