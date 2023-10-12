@@ -11,6 +11,7 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { useEffect } from "react";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
+import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 export const Forgot = ({
   phoneNumber,
@@ -299,6 +300,7 @@ export const Forgot = ({
       setLoginForm(true);
     }
   };
+
   return (
     <>
       <div className="fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
@@ -487,33 +489,29 @@ export const Forgot = ({
                       )}
                     </div>
                   </div>
-
-                  {/* {confirmPasswordError && (
-                    <p
-                      className={`text-sm mt-1 ${
-                        isMatch ? "text-lime" : "text-red"
-                      }`}
-                    >
-                      {confirmPasswordError}
-                    </p>
-                  )} */}
                 </div>
-                {password !== "" && isMatch ? (
-                  <p className="text-lime">Password Match</p>
-                ) : password === "" ? null : (
-                  <p className="text-red">Password does not Match</p>
-                )}
+                {password !== "" && confirmPassword !== "" ? (
+                  isMatch ? (
+                    <p className="text-lime">Password Match</p>
+                  ) : (
+                    <p className="text-red">Password does not Match</p>
+                  )
+                ) : password !== "" || confirmPassword !== "" ? (
+                  ""
+                ) : null}
 
                 <div className="mt-4">
                   <button
                     type="submit"
                     className={`w-full text-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 ${
-                      !isMatch
+                      password === "" || confirmPassword === "" || !isMatch
                         ? "opacity-50 cursor-not-allowed bg-gryColour"
                         : "cursor-pointer bg-lime"
                     }`}
                     onClick={handleClickSubmit}
-                    disabled={!isMatch}
+                    disabled={
+                      password === "" || confirmPassword === "" || !isMatch
+                    }
                   >
                     Reset Password
                   </button>
