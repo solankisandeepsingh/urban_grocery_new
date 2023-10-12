@@ -745,6 +745,7 @@ export const ProductDetails = ({}) => {
                             type="file"
                             multiple
                             onChange={(e) => imagesHandler(e)}
+                            className="hidden"
                           />
                         </label>
 
