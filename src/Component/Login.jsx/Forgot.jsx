@@ -421,8 +421,7 @@ export const Forgot = ({
               </form>
             )}
 
-            {/* {otpVarify && ( */}
-            {true && (
+            {otpVarify && (
               <>
                 <div>
                   <div className="relative">
