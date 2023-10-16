@@ -10,8 +10,9 @@ import { useUserStore } from "../zustand/useUserStore";
 import { useOrderDetails } from "../zustand/useOrderDetails";
 import { useNavigate } from "react-router-dom";
 import { useApiToken } from "../zustand/useApiToken";
+import axiosInstance from "../../api/axiosInstance";
 
-export const MyOrder = ({ addItem,setNavbarOpen }) => {
+export const MyOrder = ({ addItem, setNavbarOpen }) => {
   const [price, setPrice] = useState(0);
   // const [detailsOrder, setDetailsOrder] = useState(false);
   const {
@@ -19,18 +20,17 @@ export const MyOrder = ({ addItem,setNavbarOpen }) => {
   } = useUserStore();
   const navigate = useNavigate();
   const { orderId, setOrderId } = useOrderDetails();
+  console.log(orderId, "orderId");
 
-  // const [orderData, setOrderData] = useState("");
   const { allOrderDetails, setAllOrderDetails } = useOrderDetails();
-  // const [orderId, setOrderId] = useState("");
+  console.log(allOrderDetails, "allorderDetails");
   const { setisLoading } = useLoaderState();
-  const {apiToken} = useApiToken()
-  setNavbarOpen(true)
+  const { apiToken } = useApiToken();
+  setNavbarOpen(true);
 
   const handlemyOrder = () => {
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -39,7 +39,7 @@ export const MyOrder = ({ addItem,setNavbarOpen }) => {
     myOrderData.append("get_orders", "1");
     myOrderData.append("user_id", user_id);
     setisLoading(true);
-    axios
+    axiosInstance
       .post(
         `https://grocery.intelliatech.in/api-firebase/order-process.php`,
         myOrderData,
@@ -55,11 +55,6 @@ export const MyOrder = ({ addItem,setNavbarOpen }) => {
       });
   };
 
-  // useEffect(() => {
-  //   handlemyOrder();
-    
-  // }, []);
-
   useEffect(() => {
     if (apiToken) {
       handlemyOrder();
@@ -73,120 +68,103 @@ export const MyOrder = ({ addItem,setNavbarOpen }) => {
 
   return (
     <>
-      {/* <div className="flex flex-row justify-evenly"> */}
-      {/* <div className="flex flex-row justify-evenly mt-28">
-        <div className="w-[35%] h-full ">
-          <Aside />
-        </div> */}
-
-      <div className="flex flex-col mt-24  xs:justify-center xs:items-center  md:items-start sm:items-start md:flex-row md:justify-evenly sm:justify-evenly sm:flex sm:flex-row ">
-        <div className="xs:w-[85%] md:w-[35%] sm:w-[30%] xs:hidden md:block sm:block h-full">
+      <div className="flex  mt-24 md:ml-10  xs:justify-center xs:items-center sm:justify-evenly sm:flex sm:items-start sm:flex-row ">
+        <div className="xs:w-[85%] md:w-[30%] sm:w-[30%] xs:hidden md:block sm:block h-full">
           <Aside />
         </div>
 
-        <div className="md:w-[60%] sm:w-[60%] xs:w-[85%] overflow-y-scroll h-[90vh]">
-          {/* <div className="md:w-[60%] xs:w-full "> */}
-          <div className=" border border-light_gray p-4 rounded-md">
+        <div className="border-r border-r-light_gray  mt-[-40px]  w-4 h-[110vh]"></div>
+
+        <div className="md:w-full sm:w-[60%] xs:w-[85%] overflow-y-scroll h-[90vh]">
+          <div className="md:w-full p-6 rounded-lg ">
+            <h1 className="font-bold">My Orders</h1>
             {allOrderDetails?.length > 0 ? (
-              allOrderDetails.map((item) => {
+              allOrderDetails?.map((item) => {
                 return (
                   <div
+                    className=" border p-3 mt-3 flex flex-wrap  justify-between items-center rounded hover:bg-[#f8f4f4] cursor-pointer overflow-y-auto max-h-[240px]  border-[#e6e3e3] py-3 bg-[#fcfff3]"
                     onClick={() => handleOrderDetails(item.id)}
-                    className="bg border-b flex justify-between items-center cursor-pointer rounded hover:bg-[#f5f5f5]  border-[#e8e8e8] py-3"
                   >
-                    <div className="w-[95%]">
-                      <div className="flex ml-3 justify-between text-center">
-                        <div>
-                          <p className="font-bold text-gryColour">
+                    <div className="w-[95%] ">
+                      <div className="flex gap-8 justify-between text-end">
+                        <div className="flex text-center">
+                          <p className="font-bold text-lime">
                             Order ID : {item.id}
                           </p>
-                        </div>
-                        <div>
-                          <p className="text-lime font-bold">
-                            Total : ₹{item.total}
+
+                          <p className=" ml-3 font-bold break-all text-lime">
+                            Item Quantity : {item?.items?.length}
                           </p>
+                        </div>
+
+                        <div className="flex  mt-[-10px] ">
+                          <div
+                            className={`flex shadow-sm justify-center items-center  mb-4 m-2 p-1 rounded-lg w-32 text-[12px] ${
+                              item.active_status === "received"
+                                ? "bg-[#5779df] text-white"
+                                : item.active_status === "delivered"
+                                ? "bg-lime text-white"
+                                : item.active_status === "return"
+                                ? "bg-GreenColour text-white"
+                                : item.active_status === "awaiting_payment"
+                                ? "bg-yellowAwaiting text-black"
+                                : item.active_status === "processed"
+                                ? "bg-TWITTER_BLUE text-white"
+                                : item.active_status === "shipped"
+                                ? "bg-gmail_color text-black"
+                                : item.active_status === "cancelled"
+                                ? "bg-RedColour text-white"
+                                : item.active_status === "ready_to_pickup"
+                                ? "bg-green text-white"
+                                : "bg-skybluelight text-text-black"
+                            }`}
+                          >
+                            <p>{item.active_status.toLocaleUpperCase()}</p>
+                          </div>
+                          <div className="flex shadow-sm gap-2 mt-2 w-36 text-[12px] mb-4 border border-light_gray p-1 rounded-lg">
+                            <div className="text-[18px]">
+                              <GiScooter />
+                            </div>
+                            <div>
+                              <p>Door Step Delivery</p>
+                            </div>
+                          </div>
                         </div>
                       </div>
 
-                      <div className="flex justify-between text-center mt-3">
-                        <div>
-                          <p className=" ml-3  break-all">
-                            {item?.items?.length} Items
-                          </p>
-                        </div>
-                        <div>
-                          {item.delivery_time ? (
-                            <p className="text-gryColour">
-                              Place-Order : {item.delivery_time}
-                            </p>
-                          ) : (
-                            <></>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="flex justify-between mt-3">
-                        <div className="  break-all text-sm">
+                      <div className="flex justify-between">
+                        <div className="flex flex-col  ">
                           {item.items &&
                             item.items.map((data) => (
-                              <p className="ml-3 font-bold">{data.product_name}</p>
+                              <div
+                                key={data.id}
+                                className="flex items-center gap-4 mt-4"
+                              >
+                                <img
+                                  src={data.image}
+                                  alt=""
+                                  className="w-20 h-16 rounded-lg"
+                                />
+                                <p className="font-semi-bold text-[#aaa4a4] truncate ..">
+                                  {data.product_name}
+                                </p>
+                              </div>
+                            ))}
+                        </div>
+
+                        <div className="  flex flex-col flex-wrap justify-around ">
+                          {item.items &&
+                            item.items.map((data) => (
+                              <p key={data.id} className="font-bold text-lime">
+                                ₹{data.price}
+                              </p>
                             ))}
                         </div>
                       </div>
-
-                      <div className="flex justify-end ">
-                        {/* <div className="flex bg-skybluelight  shadow-sm justify-center items-center  border mb-4  m-2 border-light_gray p-1 rounded-lg w-32 text-[12px]">
-                          <p className="text-text-black">
-                            {item.active_status.toLocaleUpperCase()}
-                          </p>
-                        </div> */}
-
-                        <div
-                          className={`flex shadow-sm justify-center items-center  mb-4 m-2 p-1 rounded-lg w-32 text-[12px] ${
-                            item.active_status === "received"
-                              ? "bg-[#5779df] text-white"
-                              : item.active_status === "delivered"
-                              ? "bg-lime text-white"
-                              : item.active_status === "return"
-                              ? "bg-GreenColour text-white"
-                              : item.active_status === "awaiting_payment"
-                              ? "bg-yellowAwaiting text-black"
-                              : item.active_status === "processed"
-                              ? "bg-TWITTER_BLUE text-white"
-                              : item.active_status === "shipped"
-                              ? "bg-gmail_color text-black"
-                              : item.active_status === "cancelled"
-                              ? "bg-RedColour text-white"
-                              : item.active_status === "ready_to_pickup"
-                              ? "bg-green text-white"
-                              : "bg-skybluelight text-text-black"
-                          }`}
-                        >
-                          <p>{item.active_status.toLocaleUpperCase()}</p>
-                        </div>
-                        <div className="flex shadow-sm gap-2 mt-2 w-36 text-[12px] mb-4 border border-light_gray p-1 rounded-lg">
-                          <div className="text-[18px]">
-                            <GiScooter />
-                          </div>
-                          <div>
-                            <p>Door Step Delivery</p>
-                          </div>
-                        </div>
-                      </div>
                     </div>
-                    <div className=" cursor-pointer">
+                    <div className=" cursor-pointer mt-10 ">
                       <BsChevronRight />
                     </div>
-                    {/* <div className="flex shadow-lg gap-2 mt-2 justify-end ">
-                        <div className="flex">
-                        <div className=" text-[12px] mb-4 border border-light_gray p-1 rounded-lg">
-                        <GiScooter className="text-[20px] mt-1" />
-                        <p>Door Step Delivery</p>
-                        </div>
-                        </div>
-                      </div> */}
-
-                    {/* <hr className="mb-2 text-gryColour" /> */}
                   </div>
                 );
               })
@@ -197,13 +175,6 @@ export const MyOrder = ({ addItem,setNavbarOpen }) => {
             )}
           </div>
         </div>
-        {/* ) : (
-          <OrderDetails
-          // setAllOrderDetails={setAllOrderDetails}
-            orderId={orderId}
-            // orderData={orderData}
-          />
-        )} */}
       </div>
     </>
   );

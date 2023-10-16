@@ -12,6 +12,7 @@ import { useCartStore } from "../../zustand/useCartStore";
 import { useSearchStore } from "../../zustand/useSearchStore";
 import { useApiToken } from "../../zustand/useApiToken";
 import { ToastContainer, toast } from "react-toastify";
+import axiosInstance from "../../../api/axiosInstance";
 
 const Search = ({ setData, name, data }) => {
   const [searchData, setSearchData] = useState("");
@@ -45,7 +46,7 @@ const Search = ({ setData, name, data }) => {
     bodyFormData.append("search", debouncedSearchTerm);
 
     setisLoading(true);
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/products-search.php",
         bodyFormData,
@@ -110,7 +111,7 @@ const Search = ({ setData, name, data }) => {
       bodyFormData.append("search", searchInput);
       bodyFormData.append("offset", offset + 15);
 
-      let data = axios
+      let data = axiosInstance
         .post(
           "https://grocery.intelliatech.in/api-firebase/products-search.php",
           bodyFormData,
@@ -147,7 +148,7 @@ const Search = ({ setData, name, data }) => {
 
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
         bodyFormData,

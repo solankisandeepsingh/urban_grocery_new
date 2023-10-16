@@ -15,6 +15,7 @@ import { useDebounce } from "../utils/useDebounce";
 import { useApiToken } from "./zustand/useApiToken";
 import {  toast } from "react-toastify";
 import InfiniteLoader from "./Infinite-loader";
+import axiosInstance from "../api/axiosInstance";
 
 function FilterData({ data, setName, setData }) {
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
@@ -47,7 +48,7 @@ function FilterData({ data, setName, setData }) {
     bodyFormData.append("qty", 1);
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
         bodyFormData,
@@ -151,7 +152,7 @@ function FilterData({ data, setName, setData }) {
     bodyFormData.append("search", debouncedSearchTerm);
 
     setisLoading(true);
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/products-search.php",
         bodyFormData,
@@ -193,7 +194,7 @@ function FilterData({ data, setName, setData }) {
       bodyFormData.append("search", searchInput);
       bodyFormData.append("offset", offset + 15);
 
-      let data = axios
+      let data = axiosInstance
         .post(
           "https://grocery.intelliatech.in/api-firebase/products-search.php",
           bodyFormData,

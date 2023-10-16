@@ -11,6 +11,7 @@ import { useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useApiToken } from "../zustand/useApiToken";
 import { ToastContainer, toast } from "react-toastify";
+import axiosInstance from "../../api/axiosInstance";
 
 export const FavPage = () => {
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
@@ -45,7 +46,7 @@ export const FavPage = () => {
     favData.append("product_id", item.id);
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         `https://grocery.intelliatech.in/api-firebase/favorites.php`,
         favData,
@@ -113,7 +114,7 @@ export const FavPage = () => {
     bodyFormData.append("qty", 1);
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
         bodyFormData,

@@ -9,6 +9,7 @@ import { useUserStore } from "../zustand/useUserStore";
 import { currencyFormatter } from "../../utils/utils";
 import { useApiToken } from "../zustand/useApiToken";
 import { ToastContainer, toast } from "react-toastify";
+import axiosInstance from "../../api/axiosInstance";
 
 function Allproducts({ setNavbarOpen }) {
   const { allProducts, setAllProducts } = useProductsStore();
@@ -234,7 +235,7 @@ function Allproducts({ setNavbarOpen }) {
     bodyFormData.append("qty", 1);
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
         bodyFormData,

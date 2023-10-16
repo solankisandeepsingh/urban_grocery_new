@@ -8,6 +8,7 @@ import { useLoaderState } from "../zustand/useLoaderState";
 import { currencyFormatter } from "../../utils/utils";
 import { ToastContainer, toast } from "react-toastify";
 import { useApiToken } from "../zustand/useApiToken";
+import axiosInstance from "../../api/axiosInstance";
 
 export const FlashSales = () => {
   const [salesProducts, setSalesProducts] = useState([]);
@@ -31,7 +32,7 @@ export const FlashSales = () => {
     salesData.append("accesskey", "90336");
     salesData.append("get-all-flash-sales-products", 1);
 
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/flash-sales.php",
         salesData,
@@ -96,7 +97,7 @@ export const FlashSales = () => {
     bodyFormData.append("qty", 1);
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
         bodyFormData,

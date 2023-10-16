@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiStore } from "../zustand/useApiStore";
 import { useApiToken } from "../zustand/useApiToken";
+import axiosInstance from "../../api/axiosInstance";
 
 export const MyProfile = ({ setProfileView, setIsOpen }) => {
   // const [editBtn, setEditBtn] = useState(false);
@@ -69,7 +70,7 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
       formData.append("profile", file);
       setisLoading(true);
 
-      axios
+      axiosInstance
         .post(
           `https://grocery.intelliatech.in/api-firebase/user-registration.php`,
           formData,
@@ -103,7 +104,7 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
     updateProfileData.append("user_id", user_id);
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         `https://grocery.intelliatech.in/api-firebase/get-user-data.php`,
         updateProfileData,
@@ -160,7 +161,7 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
     });
 
 
-    axios
+    axiosInstance
       .post(
         `https://grocery.intelliatech.in/api-firebase/user-registration.php`,
         updateProfileData,

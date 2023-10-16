@@ -7,6 +7,7 @@ import axios from "axios";
 import { useLoaderState } from "./zustand/useLoaderState";
 import { FlashSales } from "./Flash_Sales/FlashSales";
 import { useApiToken } from "./zustand/useApiToken";
+import axiosInstance from "../api/axiosInstance";
 
 function Home({
   data,
@@ -56,7 +57,7 @@ function Home({
     imgData.append("accesskey", "90336");
     imgData.append("get-offer-images", "1");
     setisLoading(true);
-    axios
+    axiosInstance
       .post(
         `https://grocery.intelliatech.in/api-firebase/offer-images.php`,
         imgData,

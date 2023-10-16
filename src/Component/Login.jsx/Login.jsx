@@ -17,6 +17,7 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { useApiToken } from "../zustand/useApiToken";
 import { Forgot } from "./Forgot";
+import axiosInstance from "../../api/axiosInstance";
 
 export const Login = ({
   setNewUserLog,
@@ -136,7 +137,7 @@ export const Login = ({
         },
       };
 
-      axios
+      axiosInstance
         .post(
           "https://grocery.intelliatech.in/api-firebase/login.php",
           loginItem,
@@ -176,7 +177,7 @@ export const Login = ({
               bodyFormdata.append("qty", variantQty);
               setisLoading(true);
 
-              return axios
+              return axiosInstance
                 .post(
                   "https://grocery.intelliatech.in/api-firebase/cart.php",
                   bodyFormdata,

@@ -11,6 +11,7 @@ import CartQuantity from "../Button/CartQuantity";
 import Carousel from "react-multi-carousel";
 import { useApiToken } from "../zustand/useApiToken";
 import { ToastContainer, toast } from "react-toastify";
+import axiosInstance from "../../api/axiosInstance";
 
 export const SimilarProduct = ({ id }) => {
   const [similarProduct, setSimilarProduct] = useState([]);
@@ -66,7 +67,7 @@ export const SimilarProduct = ({ id }) => {
     bodyFormData.append("qty", 1);
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
         bodyFormData,
@@ -159,7 +160,7 @@ export const SimilarProduct = ({ id }) => {
 
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         `https://grocery.intelliatech.in/api-firebase/get-similar-products.php`,
         similarData,

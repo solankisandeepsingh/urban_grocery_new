@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { isDisabled } from "@testing-library/user-event/dist/utils";
+import axiosInstance from "../../api/axiosInstance";
 
 export const Forgot = ({
   phoneNumber,
@@ -81,13 +82,12 @@ export const Forgot = ({
     setConfirmPassword(newPassword);
     validateConfirmPassword(newPassword);
   };
-
+  let regex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,15}$/;
   const validatePassword = (newPassword) => {
-    const regex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!regex.test(newPassword)) {
       setPasswordError(
-        "Password must be 8 characters including one uppercase letter, one lowercase letter, one special character,number ."
+        "Password must be 8 characters, at least one uppercase letter, one lowercase letter,one special character and one number"
       );
       setIsMatch(false);
     } else {
@@ -113,7 +113,7 @@ export const Forgot = ({
     verifydata.append("mobile", "+91" + phoneNumber);
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/user-registration.php",
         verifydata,
@@ -139,7 +139,7 @@ export const Forgot = ({
     formData.append("type", "forgot-password-mobile");
     formData.append("mobile", "+91" + phoneNumber);
     setisLoading(true);
-    axios
+    axiosInstance
       .post(
         `https://grocery.intelliatech.in/api-firebase/user-registration.php`,
         formData,
@@ -265,7 +265,7 @@ export const Forgot = ({
     changePasswordData.append("id", id);
     changePasswordData.append("password", password);
 
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/user-registration.php",
         changePasswordData,
@@ -490,11 +490,16 @@ export const Forgot = ({
                     </div>
                   </div>
                 </div>
+
                 {password !== "" && confirmPassword !== "" ? (
-                  isMatch ? (
-                    <p className="text-lime">Password Match</p>
+                  regex.test(password) ? (
+                    isMatch ? (
+                      <p className="text-lime">Password Match</p>
+                    ) : (
+                      <p className="text-red">Password does not Match</p>
+                    )
                   ) : (
-                    <p className="text-red">Password does not Match</p>
+                    <p className="text-red">Password does not meet criteria</p>
                   )
                 ) : password !== "" || confirmPassword !== "" ? (
                   <p className="text-red">Password does not Match</p>
@@ -504,13 +509,19 @@ export const Forgot = ({
                   <button
                     type="submit"
                     className={`w-full text-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 ${
-                      password === "" || confirmPassword === "" || !isMatch
+                      password === "" ||
+                      confirmPassword === "" ||
+                      !isMatch ||
+                      !regex.test(password)
                         ? "opacity-50 cursor-not-allowed bg-gryColour"
                         : "cursor-pointer bg-lime"
                     }`}
                     onClick={handleClickSubmit}
                     disabled={
-                      password === "" || confirmPassword === "" || !isMatch
+                      password === "" ||
+                      confirmPassword === "" ||
+                      !isMatch ||
+                      !regex.test(password)
                     }
                   >
                     Reset Password

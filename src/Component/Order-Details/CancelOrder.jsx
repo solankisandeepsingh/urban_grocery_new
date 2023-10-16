@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import {  toast } from "react-toastify";
 import { useApiToken } from "../zustand/useApiToken";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import axiosInstance from "../../api/axiosInstance";
 
 export const CancelOrder = ({ setCancelModal, orderId }) => {
   let cancelRef = useRef(null);
@@ -40,7 +41,7 @@ export const CancelOrder = ({ setCancelModal, orderId }) => {
     cancelData.append("status", "cancelled");
 
 
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/order-process.php",
         cancelData,

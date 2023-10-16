@@ -3,6 +3,7 @@ import axios from "axios";
 import { Aside } from "../Aside/Aside";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiToken } from "../zustand/useApiToken";
+import axiosInstance from "../../api/axiosInstance";
 
 export const Faq = () => {
   const [faqData, setFaqData] = useState("");
@@ -20,7 +21,7 @@ export const Faq = () => {
     FaqData.append("get_faqs", "1");
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         `https://grocery.intelliatech.in/api-firebase/get-faqs.php`,
         FaqData,
@@ -41,14 +42,16 @@ export const Faq = () => {
   }, [apiToken]);
   return (
     <>
-      <div className="flex flex-col mt-24 xs:justify-center xs:items-center md:items-start sm:items-start md:flex-row md:justify-evenly sm:justify-evenly sm:flex sm:flex-row ">
-        <div className="xs:w-[85%] md:w-[35%] sm:w-[30%]  xs:hidden md:block sm:block h-full">
+      <div className="flex flex-col mt-24 md:ml-10  xs:justify-center xs:items-center md:items-start sm:items-start md:flex-row md:justify-evenly sm:justify-evenly sm:flex sm:flex-row ">
+        <div className="xs:w-[85%] md:w-[30%] sm:w-[30%] xs:hidden md:block sm:block h-full">
           <Aside />
         </div>
 
-        <div className="md:w-[60%] sm:w-[60%] xs:w-[85%] ">
+        <div className="border-r border-r-light_gray  mt-[-40px]  w-4 h-[110vh]"></div>
+
+        <div className="md:w-full sm:w-[60%] xs:w-[85%] overflow-y-scroll h-[90vh] ml-4">
           <div className="bg-white">
-            <p className="md:text-md  text-center justify-center items-center">
+            <p className="md:text-md font-bold  ">
               {faqData}
             </p>
           </div>

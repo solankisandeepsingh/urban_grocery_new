@@ -10,6 +10,7 @@ import CryptoJS, { HmacSHA256 } from "crypto-js";
 import { useApiStore } from "../zustand/useApiStore";
 import { useApiToken } from "../zustand/useApiToken";
 import { toast } from "react-toastify";
+import axiosInstance from "../../api/axiosInstance";
 
 // import {  SiRazorpay } from "../react-icons/si";
 
@@ -61,7 +62,7 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
     paymentMethod.append("settings", "1");
     paymentMethod.append("get_payment_methods", "1");
     setisLoading(true);
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/settings.php",
         paymentMethod,
@@ -114,7 +115,7 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
       },
     };
   
-    const result = await axios.post(
+    const result = await axiosInstance.post(
       "https://grocery.intelliatech.in/api-firebase/create-razorpay-order.php",
       createRazorpayId,
       config
@@ -209,7 +210,7 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
 
     setisLoading(true);
 
-    return axios.post(
+    return axiosInstance.post(
       "https://grocery.intelliatech.in/api-firebase/order-process.php",
       orderData,
       config

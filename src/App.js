@@ -27,6 +27,8 @@ import { Footer } from "./Component/Footer/Footer";
 import axios from "./api/axios";
 import { useApiToken } from "./Component/zustand/useApiToken";
 import { ToastContainer } from "react-toastify";
+import axiosInstance from "./api/axiosInstance";
+
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -49,7 +51,8 @@ function App() {
   useEffect(() => {
     const fetchToken = async () => {
       accessTokenApi("");
-      const generateTokenResponse = await axios.get(
+      // const generateTokenResponse = await axios.get(
+      const generateTokenResponse = await axiosInstance.get(
         "https://grocery.intelliatech.in/api-firebase/verify-token.php?generate_token",
         {
           params: {
@@ -60,7 +63,8 @@ function App() {
       const generatedToken = generateTokenResponse?.data;
       if (generatedToken) {
         accessTokenApi(generatedToken);
-        const verifyTokenResponse = await axios.post(
+        // const verifyTokenResponse = await axios.post(
+        const verifyTokenResponse = await axiosInstance.post(
           "https://grocery.intelliatech.in/api-firebase/verify-token.php?verify_token",
           {
             headers: {
@@ -81,9 +85,11 @@ function App() {
     localStorage.setItem("NavbarOpen", JSON.stringify(NavbarOpen));
   }, [NavbarOpen]);
 
+ 
+
   return (
     <>
-    <ToastContainer/>
+      <ToastContainer />
       <div className="flex flex-col h-screen justify-between">
         <Navbar
           setData={setData}
@@ -101,15 +107,7 @@ function App() {
         />
         <Loader />
         <Routes>
-          <Route
-            path="/login"
-            element={
-              <Login
-               
-                setUser_id={setUser_id}
-              />
-            }
-          />
+          <Route path="/login" element={<Login setUser_id={setUser_id} />} />
 
           <Route
             path="/"
@@ -179,8 +177,6 @@ function App() {
               />
             }
           />
-
-        
 
           <Route path="/wallet" element={<Wallet />} />
           <Route path="/privacy" element={<Privacy />} />

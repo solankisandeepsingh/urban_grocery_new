@@ -9,6 +9,7 @@ import { currencyFormatter } from "../../../utils/utils";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useApiToken } from "../../zustand/useApiToken";
+import axiosInstance from "../../../api/axiosInstance";
 
 export const SubCategory = ({ setAddItem, addItem, setNavbarOpen }) => {
   const [allproducts, setAllProducts] = useState([]);
@@ -38,7 +39,7 @@ export const SubCategory = ({ setAddItem, addItem, setNavbarOpen }) => {
     bodyFormData.append("qty", 1);
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
         bodyFormData,
@@ -143,7 +144,7 @@ export const SubCategory = ({ setAddItem, addItem, setNavbarOpen }) => {
 
   useEffect(() => {
     const fetchData = () => {
-      axios
+      axiosInstance
         .post(
           "https://grocery.intelliatech.in/api-firebase/get-products-by-category-id.php",
           bodyFormData,
@@ -184,7 +185,7 @@ export const SubCategory = ({ setAddItem, addItem, setNavbarOpen }) => {
 
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
         bodyFormData,

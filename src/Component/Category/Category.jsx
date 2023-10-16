@@ -4,6 +4,7 @@ import axios from "axios";
 import { useProductsStore } from "../zustand/useProductsStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiToken } from "../zustand/useApiToken";
+import axiosInstance from "../../api/axiosInstance";
 export const Category = () => {
   const { allCategories, setAllCategories } = useProductsStore();
   const { setisLoading } = useLoaderState();
@@ -20,7 +21,7 @@ export const Category = () => {
     formData.append("accesskey", "90336");
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         `https://grocery.intelliatech.in/api-firebase/get-categories.php`,
         formData,
