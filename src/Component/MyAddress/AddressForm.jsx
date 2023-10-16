@@ -4,6 +4,7 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { toast } from "react-toastify";
 import { useApiToken } from "../zustand/useApiToken";
+import axiosInstance from "../../api/axiosInstance";
 
 export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
   const [addressData, setAddressData] = useState({
@@ -77,7 +78,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
       data.append("state", "Gujrat");
       data.append("country", "India");
       setisLoading(true);
-      axios
+      axiosInstance
         .post(
           "https://grocery.intelliatech.in/api-firebase/user-addresses.php",
           data,
@@ -104,7 +105,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
   useEffect(() => {
     const cityData = new FormData();
     cityData.append("accesskey", "90336");
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/get-cities.php",
         cityData,
@@ -126,7 +127,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
       const areaData = new FormData();
       areaData.append("accesskey", "90336");
       areaData.append("city_id", `${cityDropdown}`);
-      axios
+      axiosInstance
         .post(
           "https://grocery.intelliatech.in/api-firebase/get-areas-by-city-id.php",
           areaData,

@@ -6,6 +6,7 @@ import axios from "axios";
 import { useSliderStore } from "../zustand/useSliderStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiToken } from "../zustand/useApiToken";
+import axiosInstance from "../../api/axiosInstance";
 
 function CarouselComponent() {
   const { allCarouselImg, setAllCarouselImg } = useSliderStore();
@@ -23,7 +24,7 @@ function CarouselComponent() {
     sliderData.append("get-slider-images", "1");
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         `https://grocery.intelliatech.in/api-firebase/slider-images.php`,
         sliderData,

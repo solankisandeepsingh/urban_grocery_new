@@ -15,6 +15,7 @@ import { useFavStore } from "../../zustand/useFavStore";
 import { currencyFormatter } from "../../../utils/utils";
 import { ToastContainer, toast } from "react-toastify";
 import { useApiToken } from "../../zustand/useApiToken";
+import axiosInstance from "../../../api/axiosInstance";
 // import { useNavigate } from "react-router-dom";
 
 export const ProductCarousel = ({}) => {
@@ -244,7 +245,7 @@ export const ProductCarousel = ({}) => {
     bodyFormdata.append("get_all_products", "1");
     bodyFormdata.append("limit", "37");
     setisLoading(true);
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/get-all-products.php",
         bodyFormdata,
@@ -341,7 +342,7 @@ export const ProductCarousel = ({}) => {
     bodyFormData.append("qty", 1);
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
         bodyFormData,

@@ -5,6 +5,7 @@ import { useUserStore } from "../zustand/useUserStore";
 import { useCartStore } from "../zustand/useCartStore";
 import { useApiToken } from "../zustand/useApiToken";
 import { toast } from "react-toastify";
+import axiosInstance from "../../api/axiosInstance";
 
 function CartQuantity({ item }) {
   const { allCartItems, setAllCartItems } = useCartStore();
@@ -33,7 +34,7 @@ function CartQuantity({ item }) {
     bodyFormData.append("qty", newQty);
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
         bodyFormData,
@@ -100,7 +101,7 @@ function CartQuantity({ item }) {
     }
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
         bodyFormData,

@@ -11,6 +11,7 @@ import {
   AiOutlineCloseCircle,
 } from "react-icons/ai";
 import { useApiToken } from "../zustand/useApiToken";
+import axiosInstance from "../../api/axiosInstance";
 
 
 export const Signup = ({
@@ -57,7 +58,7 @@ export const Signup = ({
 
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/user-registration.php",
         formData,

@@ -10,6 +10,7 @@ import "../../../src/index.css";
 import axios from "axios";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiToken } from "../zustand/useApiToken";
+import axiosInstance from "../../api/axiosInstance";
 
 export const SignUpwithOtp = ({
   setShowRegisterForm,
@@ -67,7 +68,7 @@ export const SignUpwithOtp = ({
     verifyData.append("type", "verify-user");
     verifyData.append("mobile", "+91" + phoneNumber);
     setisLoading(true);
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/user-registration.php",
         verifyData,

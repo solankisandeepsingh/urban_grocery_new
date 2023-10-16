@@ -22,10 +22,10 @@ export const Aside = () => {
   const location = useLocation();
   return (
     <>
-      <div className="max-w-[100%]">
-        <ul className="font-medium w-full">
+      <div className="max-w-[60%] ">
+        <ul className="font-medium w-full  ">
           <li
-            className={`border border-light_gray hover:scale-105 transition-all ease-in-out ${
+            className={`hover:scale-105 transition-all mx-2 ease-in-out ${
               location.pathname === "/address"
                 ? " bg-lime  "
                 : "text-light_gray hover:bg-[#dfdfdf]"
@@ -56,11 +56,11 @@ export const Aside = () => {
             </NavLink>
           </li>
           <li
-            className={`border border-light_gray hover:scale-105 transition-all ease-in-out ${
+            className={`hover:scale-105 transition-all ease-in-out ${
               location.pathname === "/myorder"
                 ? " bg-lime "
                 : "text-lightgray hover:bg-[#dfdfdf]"
-            } mb-2  rounded-xl shadow-md`}
+            } mb-2  rounded-xl shadow-sm`}
           >
             <NavLink to={"/myorder"}>
               <a
@@ -88,11 +88,11 @@ export const Aside = () => {
             </NavLink>
           </li>
           <li
-            className={`border border-light_gray hover:scale-105 transition-all ease-in-out  ${
+            className={`hover:scale-105 transition-all ease-in-out  ${
               location.pathname === "/about"
                 ? " bg-lime "
                 : "text-lightgray hover:bg-[#dfdfdf]"
-            } mb-2  rounded-xl shadow-md`}
+            } mb-2  rounded-xl shadow-sm`}
           >
             <NavLink to={"/about"}>
               <a
@@ -121,11 +121,11 @@ export const Aside = () => {
           </li>
 
           <li
-            className={`border border-light_gray  hover:scale-105 transition-all ease-in-out  ${
+            className={` hover:scale-105 transition-all ease-in-out  ${
               location.pathname === "/contact"
                 ? " bg-lime "
                 : "text-lightgray hover:bg-[#dfdfdf]"
-            } mb-2 rounded-xl shadow-md`}
+            } mb-2 rounded-xl shadow-sm`}
           >
             <NavLink to={"/contact"}>
               <a
@@ -153,11 +153,11 @@ export const Aside = () => {
           </li>
 
           <li
-            className={`border border-light_gray hover:scale-105 transition-all ease-in-out   ${
+            className={` hover:scale-105 transition-all ease-in-out   ${
               location.pathname === "/wallet"
                 ? " bg-lime "
                 : "text-lightgray hover:bg-[#dfdfdf]"
-            } mb-2 6] rounded-xl shadow-md`}
+            } mb-2 6] rounded-xl shadow-sm`}
           >
             <NavLink to={"/wallet"}>
               <a
@@ -184,11 +184,11 @@ export const Aside = () => {
             </NavLink>
           </li>
           <li
-            className={`border border-light_gray  hover:scale-105 transition-all ease-in-out  ${
+            className={` hover:scale-105 transition-all ease-in-out  ${
               location.pathname === "/privacy"
                 ? " bg-lime "
                 : "text-lightgray hover:bg-[#dfdfdf]"
-            } mb-2  rounded-xl shadow-md`}
+            } mb-2  rounded-xl shadow-sm`}
           >
             <NavLink to={"/privacy"}>
               <a
@@ -216,11 +216,11 @@ export const Aside = () => {
           </li>
 
           <li
-            className={`border border-light_gray hover:scale-105 transition-all ease-in-out ${
+            className={`hover:scale-105 transition-all ease-in-out ${
               location.pathname === "/conditons"
                 ? " bg-lime  "
                 : "text-lightgray hover:bg-[#dfdfdf]"
-            } mb-2  rounded-xl shadow-md`}
+            } mb-2  rounded-xl shadow-sm`}
           >
             <NavLink to={"/conditons"}>
               <a
@@ -241,18 +241,18 @@ export const Aside = () => {
                       : "text-light_gray"
                   }`}
                 >
-                  Term & Conditons
+                 Terms and Conditions
                 </span>
               </a>
             </NavLink>
           </li>
 
           <li
-            className={`border border-light_gray hover:scale-105 transition-all ease-in-out ${
+            className={` hover:scale-105 transition-all ease-in-out ${
               location.pathname === "/faq"
                 ? "bg-lime"
                 : "text-lightgray hover:bg-[#dfdfdf]"
-            } mb-2  rounded-xl shadow-md`}
+            } mb-2  rounded-xl shadow-sm`}
           >
             <NavLink to={"/faq"}>
               <a
@@ -279,6 +279,8 @@ export const Aside = () => {
             </NavLink>
           </li>
         </ul>
+
+       
       </div>
     </>
   );

@@ -9,6 +9,7 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import { BsChevronCompactRight } from "react-icons/bs";
 import { useApiStore } from "../../zustand/useApiStore";
 import { useApiToken } from "../../zustand/useApiToken";
+import axiosInstance from "../../../api/axiosInstance";
 
 function Form({ user_id, setReviewPage, setShowForm }) {
   const [formOpen, setFormOpen] = useState(false);
@@ -34,7 +35,7 @@ function Form({ user_id, setReviewPage, setShowForm }) {
     data.append("user_id", user_id);
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/user-addresses.php",
         data,

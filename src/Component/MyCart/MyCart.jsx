@@ -17,6 +17,7 @@ import { useApiStore } from "../zustand/useApiStore";
 import { useMediaQuery } from "react-responsive";
 import { useApiToken } from "../zustand/useApiToken";
 import { SignUpwithOtp } from "../Login.jsx/SignUpwithOtp";
+import axiosInstance from "../../api/axiosInstance";
 
 function MyCart({
   // allCartItems,
@@ -145,7 +146,7 @@ function MyCart({
     bodyFormdata.append("user_id", user_id);
     bodyFormdata.append("product_variant_id", `${item.product_variant_id}`);
     setisLoading(true);
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
         bodyFormdata,
@@ -216,7 +217,7 @@ function MyCart({
     bodyFormdata.append("user_id", user_id);
     setisLoading(true);
 
-    return axios
+    return axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
         bodyFormdata,
@@ -299,7 +300,7 @@ function MyCart({
           >
             <div className="relative ">
               <div className="h-[97vh] min-h-screen md:w-96 sm:w-screen xs:w-screen border-0 rounded-lg shadow-lg relative flex flex-col  bg-white outline-none focus:outline-none">
-                <div className="bg-white flex items-start justify-between p-3 m-0  border-b border-light_gray shadow-sm">
+                <div className="bg-white flex items-start justify-between p-3 m-0 md:mt-[-7px] border-b border-light_gray shadow-sm">
                   <div className="mt-3 bg-white">
                     {showForm ? (
                       <button className="back-button bg-white" onClick={back}>

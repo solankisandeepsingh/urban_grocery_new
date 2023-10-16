@@ -27,6 +27,7 @@ import { useRef } from "react";
 import { useFavStore } from "../../zustand/useFavStore";
 import { SimilarProduct } from "../../Similar-Products/SimilarProduct";
 import { useApiToken } from "../../zustand/useApiToken";
+import axiosInstance from "../../../api/axiosInstance";
 
 export const ProductDetails = ({}) => {
   const [productPageData, setProductPage] = useState([]);
@@ -80,7 +81,7 @@ export const ProductDetails = ({}) => {
     bodyFormData.append("qty", 1);
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/cart.php",
         bodyFormData,
@@ -198,7 +199,7 @@ export const ProductDetails = ({}) => {
 
       setisLoading(true);
 
-      axios
+      axiosInstance
         .post(
           "https://grocery.intelliatech.in/api-firebase/get-all-products.php",
           bodyFormData,
@@ -243,7 +244,7 @@ export const ProductDetails = ({}) => {
     bodyFormData.append("product_id", id);
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/get-all-products.php",
         bodyFormData,
@@ -280,7 +281,7 @@ export const ProductDetails = ({}) => {
     bodyFormData.append("product_id", id);
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         "https://grocery.intelliatech.in/api-firebase/get-product-by-id.php",
         bodyFormData,
@@ -326,7 +327,7 @@ export const ProductDetails = ({}) => {
     favData.append("product_id", item.id);
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         `https://grocery.intelliatech.in/api-firebase/favorites.php`,
 
@@ -362,7 +363,7 @@ export const ProductDetails = ({}) => {
     favData.append("product_id", item.id);
     setisLoading(true);
 
-    axios
+    axiosInstance
       .post(
         `https://grocery.intelliatech.in/api-firebase/favorites.php`,
 
