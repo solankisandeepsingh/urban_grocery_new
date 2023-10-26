@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { FaHome } from "react-icons/fa";
 import { HiOfficeBuilding } from "react-icons/hi";
 import { AddressForm } from "../../MyAddress/AddressForm";
@@ -7,7 +6,6 @@ import { useUserStore } from "../../zustand/useUserStore";
 import { useLoaderState } from "../../zustand/useLoaderState";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { BsChevronCompactRight } from "react-icons/bs";
-import { useApiStore } from "../../zustand/useApiStore";
 import { useApiToken } from "../../zustand/useApiToken";
 import axiosInstance from "../../../api/axiosInstance";
 
@@ -37,7 +35,7 @@ function Form({ user_id, setReviewPage, setShowForm }) {
 
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/user-addresses.php",
+        "/user-addresses.php",
         data,
         config
       )

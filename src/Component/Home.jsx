@@ -3,7 +3,6 @@ import { Category } from "./Category/Category";
 import CarouselComponent from "./Carousel/Carousel";
 import { ProductCarousel } from "./Products/Product-Carousel/ProductCarousel";
 import { useImgStore } from "./zustand/useImgStore";
-import axios from "axios";
 import { useLoaderState } from "./zustand/useLoaderState";
 import { FlashSales } from "./Flash_Sales/FlashSales";
 import { useApiToken } from "./zustand/useApiToken";
@@ -23,7 +22,7 @@ function Home({
   const { allImg, setAllImg } = useImgStore();
   const { setisLoading } = useLoaderState();
   const [visible, setVisible] = useState(false);
-  const {apiToken,accessTokenApi} = useApiToken()
+  const {apiToken,setApiToken} = useApiToken()
   setNavbarOpen(true)
 
   
@@ -49,7 +48,6 @@ function Home({
   const handleHomeImg = () => {
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -59,7 +57,7 @@ function Home({
     setisLoading(true);
     axiosInstance
       .post(
-        `https://grocery.intelliatech.in/api-firebase/offer-images.php`,
+        `/offer-images.php`,
         imgData,
         config
       )

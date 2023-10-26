@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import axios from "axios";
 import { useProductsStore } from "../zustand/useProductsStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiToken } from "../zustand/useApiToken";
@@ -23,7 +22,7 @@ export const Category = () => {
 
     axiosInstance
       .post(
-        `https://grocery.intelliatech.in/api-firebase/get-categories.php`,
+        `/get-categories.php`,
         formData,
         config
       )

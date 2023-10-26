@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import { currencyFormatter } from "../../utils/utils";
-import axios from "../../api/axios";
 import { useUserStore } from "../zustand/useUserStore";
-import { useApiStore } from "../zustand/useApiStore";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useCartStore } from "../zustand/useCartStore";
@@ -10,7 +8,7 @@ import { useLoaderState } from "../zustand/useLoaderState";
 import CartQuantity from "../Button/CartQuantity";
 import Carousel from "react-multi-carousel";
 import { useApiToken } from "../zustand/useApiToken";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import axiosInstance from "../../api/axiosInstance";
 
 export const SimilarProduct = ({ id }) => {
@@ -69,7 +67,7 @@ export const SimilarProduct = ({ id }) => {
 
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/cart.php",
+        "/cart.php",
         bodyFormData,
         config
       )
@@ -148,7 +146,6 @@ export const SimilarProduct = ({ id }) => {
   const handleSimilarProduct = () => {
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -162,7 +159,7 @@ export const SimilarProduct = ({ id }) => {
 
     axiosInstance
       .post(
-        `https://grocery.intelliatech.in/api-firebase/get-similar-products.php`,
+        `/get-similar-products.php`,
         similarData,
         config
       )
@@ -176,9 +173,7 @@ export const SimilarProduct = ({ id }) => {
       });
   };
 
-  // useEffect(() => {
-  //   handleSimilarProduct();
-  // }, []);
+  
 
   useEffect(() => {
     if (apiToken) handleSimilarProduct();
@@ -204,7 +199,6 @@ export const SimilarProduct = ({ id }) => {
                       }}
                     >
                       <img
-                        // className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-24 md:ml-[23px] md:w-28 md:mt-4 sm:w-48 sm:h-32 rounded-lg "
                         className="xs:w-32 xs:h-24  md:w-32 md:h-24 object-cover object-center  sm:w-36 sm:h-32 rounded-lg "
                         src={
                           item?.variants?.length == 1
@@ -248,12 +242,7 @@ export const SimilarProduct = ({ id }) => {
                                     <>
                                       <div
                                         className="mt-3"
-                                        onClick={(e) => {
-                                          console.log(
-                                            e,
-                                            "EVENT IN IMMEDIATE PARENT ELEMENT"
-                                          );
-                                        }}
+                                        
                                       >
                                         <CartQuantity
                                           item={item}

@@ -7,7 +7,6 @@ import { currencyFormatter } from "../utils/utils";
 import { useUserStore } from "./zustand/useUserStore";
 import { useApiStore } from "./zustand/useApiStore";
 import { useLoaderState } from "./zustand/useLoaderState";
-import axios from "../api/axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSearchStore } from "./zustand/useSearchStore";
@@ -50,7 +49,7 @@ function FilterData({ data, setName, setData }) {
 
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/cart.php",
+        "/cart.php",
         bodyFormData,
         config
       )
@@ -154,7 +153,7 @@ function FilterData({ data, setName, setData }) {
     setisLoading(true);
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/products-search.php",
+        "/products-search.php",
         bodyFormData,
         config
       )
@@ -196,7 +195,7 @@ function FilterData({ data, setName, setData }) {
 
       let data = axiosInstance
         .post(
-          "https://grocery.intelliatech.in/api-firebase/products-search.php",
+          "/products-search.php",
           bodyFormData,
           config
         )

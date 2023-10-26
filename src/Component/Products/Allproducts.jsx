@@ -1,14 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import CartQuantity from "../Button/CartQuantity";
-import axios from "axios";
 import { useProductsStore } from "../zustand/useProductsStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { currencyFormatter } from "../../utils/utils";
 import { useApiToken } from "../zustand/useApiToken";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import axiosInstance from "../../api/axiosInstance";
 
 function Allproducts({ setNavbarOpen }) {
@@ -237,7 +236,7 @@ function Allproducts({ setNavbarOpen }) {
 
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/cart.php",
+        "/cart.php",
         bodyFormData,
         config
       )

@@ -4,9 +4,8 @@ import OtpInput from "otp-input-react";
 import "react-phone-input-2/lib/style.css";
 import { auth } from "../Firebase/firebase.config";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaFacebookF, FaGoogle, FaPhoneAlt } from "react-icons/fa";
 import { ImSpinner2 } from "react-icons/im";
 import { BsFillShieldLockFill, BsTelephoneFill } from "react-icons/bs";
 
@@ -74,11 +73,8 @@ export const SignUpOtp = ({ setOpenLogin }) => {
   }
 
   const handleCloseSignUp = () => {
-    // setCloseSignUp(false);
     setCloseSignUp((prev) => !prev);
     setOpenLogin(false);
-    // setLoginFormModals(false);
-    // navigate("/");
   };
   return (
     <>

@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { FaArrowLeft, FaShoppingCart, FaTrash } from "react-icons/fa";
 import Form from "./Form/Form";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { QtyAmount } from "../Button/QtyAmount";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { Login } from "../Login.jsx/Login";
@@ -13,26 +12,17 @@ import { BsChevronCompactRight } from "react-icons/bs";
 import Review from "./Review/Review";
 import { currencyFormatter } from "../../utils/utils";
 import { usePaymentStore } from "../zustand/usePaymentStore";
-import { useApiStore } from "../zustand/useApiStore";
-import { useMediaQuery } from "react-responsive";
 import { useApiToken } from "../zustand/useApiToken";
-import { SignUpwithOtp } from "../Login.jsx/SignUpwithOtp";
 import axiosInstance from "../../api/axiosInstance";
 
 function MyCart({
-  // allCartItems,
   setAddItem,
   formData,
   setFormdata,
   setNavbarOpen,
-  dispatchLogin,
-  setLoggedIn,
-  // user_id,
   setUser_id,
-  loggedIn,
   setOpenLogin,
 }) {
-  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [setAmount] = useState();
   const [price, setPrice] = useState(0);
@@ -40,7 +30,6 @@ function MyCart({
   const [Payment, setPayment] = useState(false);
   const [reviewPage, setReviewPage] = useState(false);
   const [newUserLog, setNewUserLog] = useState(false);
-  const [newUserSignUpLog, setNewUserSignUpLog] = useState(false);
   const [totalItem, setTotalItem] = useState(0);
 
   const { allCartItems, setAllCartItems, setCartTotal } = useCartStore();
@@ -49,23 +38,17 @@ function MyCart({
     resetState,
   } = useUserStore();
   const { setisLoading } = useLoaderState();
-  const { jwt, setJwt } = useApiStore();
   const { apiToken } = useApiToken();
   const { setTotalPrice, setTotalMRPPrice, setTotalItems } = usePaymentStore();
   const [deleteProduct, setDeleteProduct] = useState(false);
   let mycartRef = useRef(null);
 
-  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 767px)" });
 
   let menuRef = useRef();
 
   const accesskey = "90336";
-  const showDeleteModalBox = () => {
-    setDeleteProduct(true);
-  };
-  const handleDeleteModal = () => {
-    setDeleteProduct(false);
-  };
+ 
+  
 
   const handleClickMycartOutside = (event) => {
     if (mycartRef.current && !mycartRef.current.contains(event.target)) {
@@ -148,7 +131,7 @@ function MyCart({
     setisLoading(true);
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/cart.php",
+        "/cart.php",
         bodyFormdata,
         config
       )
@@ -206,7 +189,6 @@ function MyCart({
   const getUserCarts = (user_id) => {
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -217,9 +199,9 @@ function MyCart({
     bodyFormdata.append("user_id", user_id);
     setisLoading(true);
 
-    return axiosInstance
+     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/cart.php",
+        "/cart.php",
         bodyFormdata,
         config
       )
@@ -228,7 +210,6 @@ function MyCart({
           ...data,
           amount: +data.qty,
         }));
-        // setAddItem(addQtyAmount);
 
         {
           addQtyAmount && setAllCartItems(addQtyAmount);

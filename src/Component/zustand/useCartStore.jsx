@@ -1,18 +1,17 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { API_TOKEN } from "../Token/Token";
-import axios from "axios";
 import { useUserStore } from "./useUserStore";
-import { useApiStore } from "./useApiStore";
+import axiosInstance from "../../api/axiosInstance";
+import { useApiToken } from "./useApiToken";
 
 export const useCartStore = create(
   persist(
     (set) => ({
       allCartItems: [],
-      variant:{0:0},
+      variant: { 0: 0 },
       config: {
         headers: {
-          Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1cm46ZXhhbXBsZTpjbGFpbSI6dHJ1ZSwiaXNzIjoiZUthcnQiLCJhdWQiOiJlS2FydCBBdXRoZW50aWNhdGlvbiJ9.YCHpGWKM5CCeEiG_Fr38aE67xhndtImMHu7XYam6pXY',
+          Authorization: `Bearer ${useApiToken.getState().apiToken}`,
         },
       },
       bearer: `${useUserStore.getState().userInfo.user_id}`,
@@ -27,8 +26,8 @@ export const useCartStore = create(
         );
         return bodyFormdata;
       },
-      setVariant: (data)=>{
-        set(()=>({variant: data}))
+      setVariant: (data) => {
+        set(() => ({ variant: data }));
       },
       setCartTotal: (data) => {
         set(() => ({ cartTotal: data }));
@@ -37,11 +36,10 @@ export const useCartStore = create(
         set(() => ({ allCartItems: data }));
       },
       clearCartApi: () => {
-        // set({ isLoading: true, error: null });
 
-        axios
+        axiosInstance
           .post(
-            "https://grocery.intelliatech.in/api-firebase/cart.php",
+            "/cart.php",
             useCartStore.getState().bodyFormData(),
             useCartStore.getState().config
           )

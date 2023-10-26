@@ -1,17 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useLoaderState } from "../../zustand/useLoaderState";
 import { useUserStore } from "../../zustand/useUserStore";
 import CartQuantity from "../../Button/ProductBtn";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDebounce } from "../../../utils/useDebounce";
-import { useApiStore } from "../../zustand/useApiStore";
 import { FaArrowCircleUp } from "react-icons/fa";
 import { useCartStore } from "../../zustand/useCartStore";
 import { useSearchStore } from "../../zustand/useSearchStore";
 import { useApiToken } from "../../zustand/useApiToken";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import axiosInstance from "../../../api/axiosInstance";
 
 const Search = ({ setData, name, data }) => {
@@ -48,7 +46,7 @@ const Search = ({ setData, name, data }) => {
     setisLoading(true);
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/products-search.php",
+        "/products-search.php",
         bodyFormData,
         config
       )
@@ -113,14 +111,13 @@ const Search = ({ setData, name, data }) => {
 
       let data = axiosInstance
         .post(
-          "https://grocery.intelliatech.in/api-firebase/products-search.php",
+          "/products-search.php",
           bodyFormData,
           config
         )
 
         .then((res) => {
           setSearchData(res?.data);
-          const tempArr = JSON.parse(JSON.stringify(arrayy));
           setArray([...arrayy, ...res?.data?.data]);
 
           setData([...arrayy, ...res?.data?.data]);
@@ -150,7 +147,7 @@ const Search = ({ setData, name, data }) => {
 
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/cart.php",
+        "/cart.php",
         bodyFormData,
         config
       )

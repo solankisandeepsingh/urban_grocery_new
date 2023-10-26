@@ -7,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 import OtpInput from "react-otp-input";
 import { Signup } from "./Signup";
 import "../../../src/index.css";
-import axios from "axios";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiToken } from "../zustand/useApiToken";
 import axiosInstance from "../../api/axiosInstance";
@@ -18,7 +17,6 @@ export const SignUpwithOtp = ({
   setPhoneNumber,
   phoneNumber,
   setLoginForm,
-  loginForm,
 }) => {
   const [closeSignup, setCloseSignUp] = useState(true);
   const [expandForm, setExpandForm] = useState(false);
@@ -70,7 +68,7 @@ export const SignUpwithOtp = ({
     setisLoading(true);
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/user-registration.php",
+        "/user-registration.php",
         verifyData,
         config
       )
@@ -84,7 +82,6 @@ export const SignUpwithOtp = ({
         } else {
           if (phoneNumber.length >= 10) {
             setExpandForm(true);
-            // genrateReCaptcha();
             if (!window.recaptchaVerifier) {
               genrateReCaptcha();
             }

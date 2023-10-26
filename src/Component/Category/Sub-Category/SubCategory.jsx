@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import CartQuantity from "../../Button/CartQuantity";
-import axios from "axios";
 import { useCartStore } from "../../zustand/useCartStore";
 import { useUserStore } from "../../zustand/useUserStore";
 import { useLoaderState } from "../../zustand/useLoaderState";
 import { currencyFormatter } from "../../../utils/utils";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useApiToken } from "../../zustand/useApiToken";
 import axiosInstance from "../../../api/axiosInstance";
 
-export const SubCategory = ({ setAddItem, addItem, setNavbarOpen }) => {
+export const SubCategory = ({  setNavbarOpen }) => {
   const [allproducts, setAllProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
@@ -41,12 +40,11 @@ export const SubCategory = ({ setAddItem, addItem, setNavbarOpen }) => {
 
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/cart.php",
+        "/cart.php",
         bodyFormData,
         config
       )
       .then((res) => {
-        // setisLoading(false);
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
           let newArr = allCartItems.map((data) =>
             data.product_id === item.id
@@ -146,7 +144,7 @@ export const SubCategory = ({ setAddItem, addItem, setNavbarOpen }) => {
     const fetchData = () => {
       axiosInstance
         .post(
-          "https://grocery.intelliatech.in/api-firebase/get-products-by-category-id.php",
+          "/get-products-by-category-id.php",
           bodyFormData,
           config
         )
@@ -164,9 +162,7 @@ export const SubCategory = ({ setAddItem, addItem, setNavbarOpen }) => {
 
   useEffect(() => {}, [allproducts, category_id]);
 
-  //  useEffect(() => {
-  //   if (apiToken);
-  // }, [apiToken,allproducts, category_id]);
+
 
   const allCartItemsHandler = (item, data) => {
     const config = {
@@ -187,7 +183,7 @@ export const SubCategory = ({ setAddItem, addItem, setNavbarOpen }) => {
 
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/cart.php",
+        "/cart.php",
         bodyFormData,
         config
       )

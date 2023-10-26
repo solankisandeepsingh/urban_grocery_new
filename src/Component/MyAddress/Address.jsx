@@ -4,7 +4,6 @@ import { FaHome, FaPlus } from "react-icons/fa";
 import { HiOfficeBuilding, HiLocationMarker } from "react-icons/hi";
 import { AiOutlineDelete } from "react-icons/ai";
 import { AddressForm } from "./AddressForm";
-import axios from "axios";
 import { Aside } from "../Aside/Aside";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useUserStore } from "../zustand/useUserStore";
@@ -37,7 +36,7 @@ export const Address = () => {
 
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/user-addresses.php",
+        "/user-addresses.php",
         data,
         config
       )
@@ -63,7 +62,7 @@ export const Address = () => {
 
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/user-addresses.php",
+        "/user-addresses.php",
         deleteData,
         config
       )

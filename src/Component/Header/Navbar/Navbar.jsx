@@ -25,7 +25,6 @@ export const Navbar = ({
   let menuRef = useRef(null);
   let deskRef = useRef(null);
   let mobRef = useRef(null);
-  const userButtonClicks = useRef(0);
   const [isOpen, setIsOpen] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);

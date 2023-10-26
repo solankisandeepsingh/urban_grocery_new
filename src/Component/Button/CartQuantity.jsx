@@ -1,4 +1,3 @@
-import axios from "axios";
 import React from "react";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
@@ -45,7 +44,7 @@ function CartQuantity({ item, variant }) {
 
         axiosInstance
           .post(
-            "https://grocery.intelliatech.in/api-firebase/cart.php",
+            "/cart.php",
             bodyFormData,
             config
           )
@@ -118,7 +117,7 @@ function CartQuantity({ item, variant }) {
 
         axiosInstance
           .post(
-            "https://grocery.intelliatech.in/api-firebase/cart.php",
+            "/cart.php",
             bodyFormData,
             config
           )

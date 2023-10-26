@@ -1,6 +1,5 @@
-import axios from "axios";
 import React, { useEffect, useRef } from "react";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useApiToken } from "../zustand/useApiToken";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import axiosInstance from "../../api/axiosInstance";
@@ -9,7 +8,6 @@ export const CancelOrder = ({ setCancelModal, orderId }) => {
   let cancelRef = useRef(null);
 
   const { apiToken } = useApiToken();
-
 
   const handleClickCancelModalOutside = (event) => {
     if (cancelRef.current && !cancelRef.current.contains(event.target)) {
@@ -40,13 +38,8 @@ export const CancelOrder = ({ setCancelModal, orderId }) => {
     cancelData.append("id", orderId);
     cancelData.append("status", "cancelled");
 
-
     axiosInstance
-      .post(
-        "https://grocery.intelliatech.in/api-firebase/order-process.php",
-        cancelData,
-        config
-      )
+      .post("/order-process.php", cancelData, config)
       .then((res) => {
         if (res.data && res.data.error) {
           toast.error(res.data.message, {

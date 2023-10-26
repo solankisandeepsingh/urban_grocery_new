@@ -1,19 +1,13 @@
 import React from "react";
 import {
-  AiFillContacts,
-  AiOutlineShoppingCart,
-  AiTwotoneBank,
   AiTwotoneSafetyCertificate,
   AiTwotoneWallet,
 } from "react-icons/ai";
 import { BsCart3, BsInfoCircleFill } from "react-icons/bs";
 import {
-  FaBell,
   FaBook,
-  FaFileContract,
   FaFoursquare,
   FaHome,
-  FaRegAddressBook,
 } from "react-icons/fa";
 import { RiContactsFill } from "react-icons/ri";
 import { NavLink } from "react-router-dom";

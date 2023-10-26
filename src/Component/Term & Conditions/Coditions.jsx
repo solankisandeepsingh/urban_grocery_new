@@ -10,13 +10,11 @@ import axiosInstance from "../../api/axiosInstance";
 export const Coditions = () => {
   const [conditons, setConditons] = useState("");
   const { setisLoading } = useLoaderState();
-  const { jwt, setJwt } = useApiStore();
   const { apiToken } = useApiToken();
 
   const handleConditons = () => {
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -28,7 +26,7 @@ export const Coditions = () => {
 
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/settings.php",
+        "/settings.php",
         conditonData,
         config
       )

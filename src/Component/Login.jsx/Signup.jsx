@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-import axios from "axios";
 
 import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,7 +22,6 @@ export const Signup = ({
   const [userRegistraion, setUserRegistration] = useState({
     name: "",
     password: "",
-    // phoneNumber: "",
   });
   const [closeSignup, setCloseSignUp] = useState(true);
   const { setisLoading } = useLoaderState();
@@ -60,7 +58,7 @@ export const Signup = ({
 
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/user-registration.php",
+        "/user-registration.php",
         formData,
         config
       )
@@ -89,11 +87,8 @@ export const Signup = ({
   };
 
   const handleCloseSignUp = () => {
-    // setCloseSignUp(false);
     setCloseSignUp((prev) => !prev);
     setOpenLogin(false);
-    // setLoginFormModals(false);
-    // navigate("/");
   };
 
   const handleSignUpShowVisivblePassword = () => {
@@ -222,7 +217,6 @@ export const Signup = ({
                             Sign Up
                           </button>
                         </div>
-                        {/* <p className="" onClick={(e)=>navigate("/conditons")}>Terms and conditions</p> */}
                       </form>
                     </div>
                   </div>

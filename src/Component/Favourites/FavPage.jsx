@@ -6,11 +6,10 @@ import { useLoaderState } from "../zustand/useLoaderState";
 import { useUserStore } from "../zustand/useUserStore";
 import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../zustand/useCartStore";
-import axios from "../../api/axios";
 import { useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useApiToken } from "../zustand/useApiToken";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import axiosInstance from "../../api/axiosInstance";
 
 export const FavPage = () => {
@@ -26,11 +25,7 @@ export const FavPage = () => {
   const { setisLoading } = useLoaderState();
   const { allFavItems, setAllFavItems } = useFavStore();
 
-  const handleVariantChange = (id, e) => {
-    let updatedvariant = { ...variant, [id]: e.target.value };
 
-    setVariant(updatedvariant);
-  };
 
   const handleRemoveFavorite = (item) => {
     let config = {
@@ -48,7 +43,7 @@ export const FavPage = () => {
 
     axiosInstance
       .post(
-        `https://grocery.intelliatech.in/api-firebase/favorites.php`,
+        `/favorites.php`,
         favData,
         config
       )
@@ -116,7 +111,7 @@ export const FavPage = () => {
 
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/cart.php",
+        "/cart.php",
         bodyFormData,
         config
       )
@@ -274,7 +269,6 @@ export const FavPage = () => {
         )}
         {!(allFavItems?.length > 0) && (
           <div className="mt-36 flex flex-col justify-center items-center text-center">
-            {/* <p className="mt-32 font-bold text-[24px] ml-[450px]"> */}
             <p className="text-[24px] font-semibold">
               YOUR FAVOURTIES LIST IS EMPTY
             </p>

@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import axios from "axios";
+import {  useNavigate } from "react-router-dom";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { currencyFormatter } from "../../utils/utils";
 import { usePaymentStore } from "../zustand/usePaymentStore";
-import CryptoJS, { HmacSHA256 } from "crypto-js";
-import { useApiStore } from "../zustand/useApiStore";
+import  { HmacSHA256 } from "crypto-js";
 import { useApiToken } from "../zustand/useApiToken";
 import { toast } from "react-toastify";
 import axiosInstance from "../../api/axiosInstance";
 
-// import {  SiRazorpay } from "../react-icons/si";
 
 function Payment({ setNavbarOpen, NavbarOpen }) {
   const { clearCartApi, setAllCartItems, allCartItems, cartTotal } =
@@ -42,9 +39,6 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
   let qtyArr = allCartItems.map((item) => {
     return `${item.amount}`;
   });
-  // useEffect(() => {
-  //   setNavbarOpen(false);
-  // }, [NavbarOpen]);
 
   useEffect(() => {
     if (apiToken) setNavbarOpen(false);
@@ -63,11 +57,7 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
     paymentMethod.append("get_payment_methods", "1");
     setisLoading(true);
     axiosInstance
-      .post(
-        "https://grocery.intelliatech.in/api-firebase/settings.php",
-        paymentMethod,
-        config
-      )
+      .post("/settings.php", paymentMethod, config)
       .then((res) => {
         setPaymentMethods(res?.data?.payment_methods);
         setisLoading(false);
@@ -107,22 +97,21 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
     let createRazorpayId = new FormData();
     createRazorpayId.append("accesskey", "90336");
     createRazorpayId.append("amount", `${totalPrice * 100}`);
-    setisLoading(true); 
+    setisLoading(true);
 
     let config = {
       headers: {
         Authorization: `Bearer ${apiToken}`,
       },
     };
-  
+
     const result = await axiosInstance.post(
-      "https://grocery.intelliatech.in/api-firebase/create-razorpay-order.php",
+      "/create-razorpay-order.php",
       createRazorpayId,
       config
     );
 
     if (!result) {
-      // alert("Server error. Are you online?");
       toast.error("Server error. Are you online? ", {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 800,
@@ -130,7 +119,6 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
       return;
     }
     setisLoading(false);
-
 
     const { amount, id: order_id, currency } = result.data;
 
@@ -210,11 +198,7 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
 
     setisLoading(true);
 
-    return axiosInstance.post(
-      "https://grocery.intelliatech.in/api-firebase/order-process.php",
-      orderData,
-      config
-    );
+    return axiosInstance.post("/order-process.php", orderData, config);
   };
 
   const handleConfirmOrder = () => {
@@ -293,9 +277,9 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
 
   return (
     <>
-      <div className="xs:flex h-[100vh] xs:flex-col xs:my-[60px] md:flex md:flex-row md:justify-between rounded-md border-light_gray md:items-center border md:text-center xs:mx-3 sm:m-20 bg-[#fafafa] px-5">
-        <div className="xs:w-full self-start h-auto min-h-[75vh] sm:w-[620px] md:w-[35%] ">
-          <div className="mt-5  rounded-lg shadow-2xl min-h-[75vh] h-auto">
+      <div className="xs:flex h-auto xs:flex-col xs:my-[60px] md:flex md:flex-row md:justify-between rounded-md border-light_gray md:items-center border md:text-center xs:mx-3 sm:m-20 bg-[#fafafa] px-5">
+        <div className="xs:w-full sm:w-full self-start h-auto min-h-[75vh] sm:min-h-[40vh] md:w-[35%] ">
+          <div className="mt-5  rounded-lg shadow-2xl min-h-[70vh] h-auto">
             <div className="bg-[#6ba9c5] py-2 rounded-t-lg">
               <h2 className="text-lg py-2 text-white font-bold text-center ">
                 Select Payment Method
@@ -319,7 +303,6 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
                         id={item.id}
                         checked={chosenPayment == item.code}
                       />
-                      {/* <BsCashStack /> */}
                       <label className="ml-2 font-bold" htmlFor={item.id}>
                         {item.label}
                       </label>
@@ -345,101 +328,110 @@ function Payment({ setNavbarOpen, NavbarOpen }) {
         </div>
         <div>
           <div>
-            {/* <div className="mt-28 border border-light_gray p-3 h-auto w-[350px]"> */}
-            <div className="xs:my-16 md:mt-[20px] border border-light_gray h-auto w-[350px] rounded-lg bg-white hidden md:block md:w-[300px]">
+            <div className="xs:my-16 md:mt-[20px] border border-light_gray h-auto min-h-[70vh] w-[350px] rounded-lg bg-white  md:block md:w-full xs:w-full ">
               <div className="w-full py-3 bg-[#64bd59] rounded-t-lg text-white ">
-                <h2 className=" font-bold sm:text-center">Order Summary</h2>
+                <h2 className=" font-bold sm:text-center xs:text-center">
+                  Order Summary
+                </h2>
               </div>
-              <div className="my-4 p-3">
-                <p className="text-[black] text-left font-bold">
-                  Delivery Address:{" "}
-                </p>
-                <div className="  flex  gap-1 rounded-md">
-                  <div className="flex gap-2 ">
-                    {/* <div className="w-[5%]">
-                      {type === "Home" ? (
-                        <FaHome className="inline ml-3 mb-1" />
-                      ) : (
-                        <HiOfficeBuilding className="inline ml-3 mb-1" />
-                      )}
-                    </div> */}
-                    <div className="w-[85%] flex flex-col">
-                      {/* <div className="font-medium text-left">
-                        {type === "Home" ? "Home" : "Work"}
-                      </div> */}
-                      <div className=" text-left font-light text-[#8d9191] ">
-                        <p className="gap-2 ">{name}, </p>
-                        <span className="">{address}, </span>
-                        <span className="">{area_name}, </span>
-                        <span className="">{city_name}, </span>
-                        <span className="">{pincode}, </span>
-                        <span className="">{country} </span>
-                      </div>
-                    </div>
-                    <div className="w-[10%] flex gap-4 items-center"></div>
-                  </div>
+
+              <div>
+                <div className="overflow-y-auto max-h-[160px]">
+                  {allCartItems &&
+                    allCartItems?.map((items) => {
+                      return (
+                        <div className="flex gap-4 mt-4 ml-4  ">
+                          <img
+                            src={items.image}
+                            alt=""
+                            className="w-16 h-16 rounded-lg"
+                          />
+                          <div className="flex flex-col items-start justify-center text-start  ">
+                            <p>{items.name}</p>
+                            <div className="flex gap-2">
+                              <span className="text-xs sm:text-xl xs:text-sm xs:ml-1 md:text-xs  bg-white sm:text-[21px] text-lime font-bold">
+                                ₹{items.discounted_price}.00{" "}
+                              </span>
+                              <p className="2xs:text-base xs:text-sm  sm:text-xl md:text-xs text-gryColour  font-medium inline line-through bg-white sm:text-[21px]">
+                                ₹{items.price}.00{" "}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
                 </div>
               </div>
 
-              <div className="border-b border-light_gray my-2 "></div>
+              <div className="border-b border-b-light_gray mt-4"></div>
 
-              <div className="flex flex-col p-3 list-none mt-2 mb-4 shadow-sm">
-                <h2 className="font-bold text-start">Payment Details</h2>
-
-                <li className="">
-                  <div className="flex justify-between mt-2">
-                    <p className="sm:text-lg md:text-sm">Items</p>
-                    <p className="sm:text-lg md:text-sm text-customGreen font-bold">
-                      {currencyFormatter(totalMRPPrice)}
-                    </p>
+              <div className="md:flex md:flex-row xs:flex xs:flex-col">
+                <div className="my-4 p-3">
+                  <p className="text-[black] text-left font-bold">
+                    Delivery Address:{" "}
+                  </p>
+                  <div className="  flex  gap-1 rounded-md">
+                    <div className="flex gap-2 ">
+                      <div className="w-[80%] flex flex-col">
+                        <div className=" text-left font-light text-[#8d9191] ">
+                          <p className="gap-2 ">{name}, </p>
+                          <span className="">{address}, </span>
+                          <span className="">{area_name}, </span>
+                          <span className="">{city_name}, </span>
+                          <span className="">{pincode}, </span>
+                          <span className="">{country} </span>
+                        </div>
+                      </div>
+                      <div className="w-[10%] flex gap-4 items-center"></div>
+                    </div>
                   </div>
-                </li>
-                <li className="">
-                  <div className="flex justify-between mt-2">
-                    <p className="sm:text-lg md:text-sm">Discount</p>
-                    <p className="sm:text-lg md:text-sm text-customGreen font-bold">
-                      - {currencyFormatter(totalMRPPrice - totalPrice)}
-                    </p>
-                  </div>
-                </li>
+                </div>
 
-                <li className="">
-                  <div className="flex justify-between mt-2">
-                    <p className="sm:text-lg md:text-sm">Delivery Charge</p>
-                    <p className="sm:text-lg md:text-sm text-customGreen font-bold">
-                      -
-                    </p>
-                  </div>
-                </li>
-
-                {/* FOR PROMO CODE */}
-
-                {/* <li className="">
-                  <div className="flex justify-between mt-2">
-                    <p className="sm:text-lg md:text-sm">Promo Code</p>
-                    <p className="sm:text-lg md:text-sm">
-                      {allCartItems[0].promo_code}
-                    </p>
-                  </div>
-                </li> */}
                 <div className="border-b border-light_gray my-2 "></div>
 
-                <li className="">
-                  <div className="flex justify-between mt-4">
-                    <p className="sm:text-lg md:text-xl font-bold">
-                      Order Total
-                    </p>
-                    <p className="sm:text-lg md:text-xl text-customGreen font-bold">
-                      ₹{totalPrice}
-                    </p>
-                  </div>
-                </li>
-              </div>
+                <div className="flex flex-col p-3 list-none mt-2 mb-4 shadow-sm md:w-[40%] xs:w-full">
+                  <h2 className="font-bold text-start">Payment Details</h2>
 
-              {/* <div className="flex justify-between font-bold text-[12px] mt-[-36px]">
-                <p className="text-[#8d9191] px-3">Final_Amount</p>
-                <p className="mr-4 text-customGreen ">₹{totalPrice}</p>
-              </div> */}
+                  <li className="">
+                    <div className="flex justify-between mt-2">
+                      <p className="sm:text-lg md:text-sm">Items</p>
+                      <p className="sm:text-lg md:text-sm text-customGreen font-bold">
+                        {currencyFormatter(totalMRPPrice)}
+                      </p>
+                    </div>
+                  </li>
+                  <li className="">
+                    <div className="flex justify-between mt-2">
+                      <p className="sm:text-lg md:text-sm">Discount</p>
+                      <p className="sm:text-lg md:text-sm text-customGreen font-bold">
+                        - {currencyFormatter(totalMRPPrice - totalPrice)}
+                      </p>
+                    </div>
+                  </li>
+
+                  <li className="">
+                    <div className="flex justify-between mt-2">
+                      <p className="sm:text-lg md:text-sm">Delivery Charge</p>
+                      <p className="sm:text-lg md:text-sm text-customGreen font-bold">
+                        -
+                      </p>
+                    </div>
+                  </li>
+
+                  <div className="border-b border-light_gray my-2 "></div>
+
+                  <li className="">
+                    <div className="flex justify-between mt-4">
+                      <p className="sm:text-lg md:text-xl font-bold">
+                        Order Total
+                      </p>
+                      <p className="sm:text-lg md:text-xl text-customGreen font-bold">
+                        ₹{totalPrice}
+                      </p>
+                    </div>
+                  </li>
+                </div>
+              </div>
             </div>
           </div>
         </div>

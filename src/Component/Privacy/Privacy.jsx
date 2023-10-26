@@ -10,13 +10,11 @@ import axiosInstance from "../../api/axiosInstance";
 export const Privacy = () => {
   const [privacy, setPrivacy] = useState("");
   const { setisLoading } = useLoaderState();
-  const { jwt, setJwt } = useApiStore();
   const { apiToken } = useApiToken();
 
   const handlePrivacy = () => {
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -29,7 +27,7 @@ export const Privacy = () => {
 
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/settings.php",
+        "/settings.php",
         privacyData,
         config
       )

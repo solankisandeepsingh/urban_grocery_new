@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Signup } from "./Signup";
-import axios from "axios";
 import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -139,7 +138,7 @@ export const Login = ({
 
       axiosInstance
         .post(
-          "https://grocery.intelliatech.in/api-firebase/login.php",
+          "/login.php",
           loginItem,
           config
         )
@@ -179,19 +178,17 @@ export const Login = ({
 
               return axiosInstance
                 .post(
-                  "https://grocery.intelliatech.in/api-firebase/cart.php",
+                  "/cart.php",
                   bodyFormdata,
                   config
                 )
                 .then((res) => {
                   setisLoading(false);
-                  // cartFuncs?.cartFuncs(newUserId)
                   getUserCarts(newUserId);
 
                   if (cartFuncs) {
                     cartFuncs(newUserId);
                   }
-                  console.log(cartFuncs, "cartt");
                 })
                 .catch((error) => {
                   console.log(error);

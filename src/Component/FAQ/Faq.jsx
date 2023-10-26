@@ -23,7 +23,7 @@ export const Faq = () => {
 
     axiosInstance
       .post(
-        `https://grocery.intelliatech.in/api-firebase/get-faqs.php`,
+        `/get-faqs.php`,
         FaqData,
         config
       )

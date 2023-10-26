@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import CartQuantity from "../Button/CartQuantity";
 import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../zustand/useCartStore";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { currencyFormatter } from "../../utils/utils";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useApiToken } from "../zustand/useApiToken";
 import axiosInstance from "../../api/axiosInstance";
 
@@ -33,11 +32,7 @@ export const FlashSales = () => {
     salesData.append("get-all-flash-sales-products", 1);
 
     axiosInstance
-      .post(
-        "https://grocery.intelliatech.in/api-firebase/flash-sales.php",
-        salesData,
-        config
-      )
+      .post("/flash-sales.php", salesData, config)
       .then((res) => {
         setSalesProducts(res?.data?.data);
       })
@@ -98,11 +93,7 @@ export const FlashSales = () => {
     setisLoading(true);
 
     axiosInstance
-      .post(
-        "https://grocery.intelliatech.in/api-firebase/cart.php",
-        bodyFormData,
-        config
-      )
+      .post("/cart.php", bodyFormData, config)
       .then((res) => {
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
           let newArr = allCartItems.map((data) =>
@@ -153,7 +144,7 @@ export const FlashSales = () => {
 
     setVariant(updatedvariant);
   };
- 
+
   return (
     <>
       <div className="md:mt-7  shadow-sm border border-[#e8e8e8] rounded-md p-2 bg-[#fcfff3]">

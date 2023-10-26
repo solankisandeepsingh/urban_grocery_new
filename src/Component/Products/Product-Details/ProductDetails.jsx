@@ -9,11 +9,6 @@ import {
 import { useParams } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import Rating from "../../StarRating/Rating";
-import axios from "axios";
-import { API_TOKEN } from "../../Token/Token";
-import { useApiStore } from "../../zustand/useApiStore";
-import ProductBtn from "../../Button/ProductBtn";
 import { useLoaderState } from "../../zustand/useLoaderState";
 import { useCartStore } from "../../zustand/useCartStore";
 import { useUserStore } from "../../zustand/useUserStore";
@@ -21,7 +16,7 @@ import CartQuantity from "../../Button/CartQuantity";
 import { Rating as MUIRating } from "@mui/material/";
 import { FaUserCircle } from "react-icons/fa";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRef } from "react";
 import { useFavStore } from "../../zustand/useFavStore";
@@ -83,7 +78,7 @@ export const ProductDetails = ({}) => {
 
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/cart.php",
+        "/cart.php",
         bodyFormData,
         config
       )
@@ -201,7 +196,7 @@ export const ProductDetails = ({}) => {
 
       axiosInstance
         .post(
-          "https://grocery.intelliatech.in/api-firebase/get-all-products.php",
+          "/get-all-products.php",
           bodyFormData,
           config
         )
@@ -246,7 +241,7 @@ export const ProductDetails = ({}) => {
 
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/get-all-products.php",
+        "/get-all-products.php",
         bodyFormData,
         config
       )
@@ -283,7 +278,7 @@ export const ProductDetails = ({}) => {
 
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/get-product-by-id.php",
+        "/get-product-by-id.php",
         bodyFormData,
         config
       )
@@ -316,7 +311,7 @@ export const ProductDetails = ({}) => {
   const handleRemoveFavorite = (item) => {
     let config = {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${apiToken}`,
       },
     };
 
@@ -329,7 +324,7 @@ export const ProductDetails = ({}) => {
 
     axiosInstance
       .post(
-        `https://grocery.intelliatech.in/api-firebase/favorites.php`,
+        `/favorites.php`,
 
         favData,
         config
@@ -365,7 +360,7 @@ export const ProductDetails = ({}) => {
 
     axiosInstance
       .post(
-        `https://grocery.intelliatech.in/api-firebase/favorites.php`,
+        `/favorites.php`,
 
         favData,
         config

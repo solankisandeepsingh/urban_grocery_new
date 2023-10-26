@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { API_TOKEN } from "../Token/Token";
 import { Aside } from "../Aside/Aside";
-import { OrderDetails } from "../Order-Details/OrderDetails";
 import { GiScooter } from "react-icons/gi";
 import { BsChevronRight } from "react-icons/bs";
 import { useLoaderState } from "../zustand/useLoaderState";
@@ -12,18 +9,14 @@ import { useNavigate } from "react-router-dom";
 import { useApiToken } from "../zustand/useApiToken";
 import axiosInstance from "../../api/axiosInstance";
 
-export const MyOrder = ({ addItem, setNavbarOpen }) => {
-  const [price, setPrice] = useState(0);
-  // const [detailsOrder, setDetailsOrder] = useState(false);
+export const MyOrder = ({  setNavbarOpen }) => {
   const {
     userInfo: { user_id },
   } = useUserStore();
   const navigate = useNavigate();
   const { orderId, setOrderId } = useOrderDetails();
-  console.log(orderId, "orderId");
 
   const { allOrderDetails, setAllOrderDetails } = useOrderDetails();
-  console.log(allOrderDetails, "allorderDetails");
   const { setisLoading } = useLoaderState();
   const { apiToken } = useApiToken();
   setNavbarOpen(true);
@@ -41,7 +34,7 @@ export const MyOrder = ({ addItem, setNavbarOpen }) => {
     setisLoading(true);
     axiosInstance
       .post(
-        `https://grocery.intelliatech.in/api-firebase/order-process.php`,
+        `/order-process.php`,
         myOrderData,
         config
       )

@@ -1,6 +1,4 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-
 import { Aside } from "../Aside/Aside";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiToken } from "../zustand/useApiToken";
@@ -23,10 +21,9 @@ export const About = () => {
     conditonData.append("get_about_us", "1");
     setisLoading(true);
 
-    // axios
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/settings.php",
+        "/settings.php",
         conditonData,
         config
       )

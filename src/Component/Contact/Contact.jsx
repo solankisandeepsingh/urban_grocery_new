@@ -24,7 +24,7 @@ export const Contact = () => {
 
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/settings.php",
+        "/settings.php",
         contactData,
         config
       )

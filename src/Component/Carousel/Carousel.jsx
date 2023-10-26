@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-import axios from "axios";
 import { useSliderStore } from "../zustand/useSliderStore";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiToken } from "../zustand/useApiToken";
@@ -26,7 +25,7 @@ function CarouselComponent() {
 
     axiosInstance
       .post(
-        `https://grocery.intelliatech.in/api-firebase/slider-images.php`,
+        `/slider-images.php`,
         sliderData,
         config
       )

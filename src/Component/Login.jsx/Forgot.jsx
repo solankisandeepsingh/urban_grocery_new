@@ -3,7 +3,6 @@ import { useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useApiToken } from "../zustand/useApiToken";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { FaArrowLeft, FaMobileAlt } from "react-icons/fa";
 import OtpInput from "react-otp-input";
 import { auth } from "../Firebase/firebase.config";
@@ -11,7 +10,6 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { useEffect } from "react";
 import { useUserStore } from "../zustand/useUserStore";
 import { useLoaderState } from "../zustand/useLoaderState";
-import { isDisabled } from "@testing-library/user-event/dist/utils";
 import axiosInstance from "../../api/axiosInstance";
 
 export const Forgot = ({
@@ -87,7 +85,7 @@ export const Forgot = ({
   const validatePassword = (newPassword) => {
     if (!regex.test(newPassword)) {
       setPasswordError(
-        "Password must be 8 characters, at least one uppercase letter, one lowercase letter,one special character and one number"
+        "Password must be 8 characters, at least one uppercase letter, one lowercase letter, one special character and one number."
       );
       setIsMatch(false);
     } else {
@@ -115,7 +113,7 @@ export const Forgot = ({
 
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/user-registration.php",
+        "/user-registration.php",
         verifydata,
         config
       )
@@ -141,7 +139,7 @@ export const Forgot = ({
     setisLoading(true);
     axiosInstance
       .post(
-        `https://grocery.intelliatech.in/api-firebase/user-registration.php`,
+        `/user-registration.php`,
         formData,
         config
       )
@@ -155,7 +153,6 @@ export const Forgot = ({
         } else {
           if (phoneNumber.length >= 10) {
             setExpandForm(true);
-            // genrateReCaptcha();
             if (!window.recaptchaVerifier) {
               genrateReCaptcha();
             }
@@ -267,7 +264,7 @@ export const Forgot = ({
 
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/user-registration.php",
+        "/user-registration.php",
         changePasswordData,
         config
       )
@@ -284,10 +281,7 @@ export const Forgot = ({
         console.error(err);
       });
   };
-  // const handleForgotShow = () => {
-  //   setForgotForm(false);
-  //   setLoginForm(true);
-  // };
+  
 
   const handleForgotShow = () => {
     if (expandForm) {
@@ -393,7 +387,6 @@ export const Forgot = ({
                         : "bg-lava_grey text-white"
                     } rounded-full xs:rounded-lg xs:text-xs w-[74%] ml-8 h-10 md:text-base md:font-medium inline-block font-medium`}
                     onClick={handleForgotSubmit}
-                    // disabled={!isPhoneNumberValid(phoneNumber)}
                     disabled={!isPhoneNumberValid(phoneNumber) || resendBtn}
                   >
                     Next

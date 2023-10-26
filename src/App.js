@@ -24,11 +24,9 @@ import { MyProfile } from "./Component/Profile/MyProfile";
 import { OrderDetailsPage } from "./Component/Order-Details/OrderDetailsPage";
 import { FavPage } from "./Component/Favourites/FavPage";
 import { Footer } from "./Component/Footer/Footer";
-import axios from "./api/axios";
 import { useApiToken } from "./Component/zustand/useApiToken";
 import { ToastContainer } from "react-toastify";
 import axiosInstance from "./api/axiosInstance";
-
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -46,46 +44,52 @@ function App() {
   const [price, setPrice] = useState(0);
   const [user_id, setUser_id] = useState("14");
   const [NavbarOpen, setNavbarOpen] = useState(true);
-  const { apiToken, accessTokenApi } = useApiToken();
+  const { apiToken, setApiToken } = useApiToken();
 
   useEffect(() => {
     const fetchToken = async () => {
-      accessTokenApi("");
-      // const generateTokenResponse = await axios.get(
-      const generateTokenResponse = await axiosInstance.get(
-        "https://grocery.intelliatech.in/api-firebase/verify-token.php?generate_token",
-        {
-          params: {
-            key: "generate_token",
-          },
-        }
-      );
-      const generatedToken = generateTokenResponse?.data;
-      if (generatedToken) {
-        accessTokenApi(generatedToken);
-        // const verifyTokenResponse = await axios.post(
-        const verifyTokenResponse = await axiosInstance.post(
-          "https://grocery.intelliatech.in/api-firebase/verify-token.php?verify_token",
+      setApiToken("");
+      try {
+        const generateTokenResponse = await axiosInstance.get(
+          "/verify-token.php?generate_token",
           {
-            headers: {
-              Authorization: `Bearer ${generatedToken}`,
+            params: {
+              key: "generate_token",
             },
           }
         );
 
-        console.log("Verify Token Response:", verifyTokenResponse.data);
-      } else {
-        console.log("Token is not valid.");
+        const generatedToken = generateTokenResponse?.data;
+    
+
+        if (generatedToken) {
+          setApiToken(generatedToken);
+
+          const verifyTokenResponse = await axiosInstance.post(
+            "/verify-token.php?verify_token",
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${generatedToken}`,
+              },
+            }
+          );
+
+          console.log("Verify Token Response:", verifyTokenResponse.data);
+        } else {
+          console.log("Token is not valid.");
+        }
+      } catch (error) {
+        console.error("Error fetching token:", error);
       }
     };
+
     fetchToken();
-  }, []);
+  }, [setApiToken]);
 
   useEffect(() => {
     localStorage.setItem("NavbarOpen", JSON.stringify(NavbarOpen));
   }, [NavbarOpen]);
-
- 
 
   return (
     <>

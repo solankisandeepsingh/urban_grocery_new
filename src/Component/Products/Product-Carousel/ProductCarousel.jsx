@@ -1,41 +1,28 @@
-import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import {useNavigate } from "react-router-dom";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import CartQuantity from "../../Button/CartQuantity";
-import axios from "axios";
-import { API_TOKEN } from "../../Token/Token";
 import { useCartStore } from "../../zustand/useCartStore";
 import { useUserStore } from "../../zustand/useUserStore";
 import { useLoaderState } from "../../zustand/useLoaderState";
 import { useProductsStore } from "../../zustand/useProductsStore";
-import { useApiStore } from "../../zustand/useApiStore";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { useFavStore } from "../../zustand/useFavStore";
 import { currencyFormatter } from "../../../utils/utils";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import { useApiToken } from "../../zustand/useApiToken";
 import axiosInstance from "../../../api/axiosInstance";
-// import { useNavigate } from "react-router-dom";
 
 export const ProductCarousel = ({}) => {
   const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
   const { allProducts, setAllProducts } = useProductsStore();
 
-  // const [variant, setVariant] = useState({ 0: 0 });
-  // const [favPos, setFavPos] = useState(false);
-  const [favPos, setFavPos] = useState(true);
   const navigate = useNavigate();
-  const { jwt, setJwt } = useApiStore();
   const { apiToken } = useApiToken();
 
   const {
     userInfo: { user_id },
   } = useUserStore();
   const { setisLoading } = useLoaderState();
-  const { allFavItems, setAllFavItems } = useFavStore();
-  const [fav, setFav] = useState();
-  const [visible, setVisible] = useState(false);
 
   const handleVariantChange = (id, e) => {
     let updatedvariant = { ...variant, [id]: e.target.value };
@@ -236,7 +223,6 @@ export const ProductCarousel = ({}) => {
   const getAllProducts = () => {
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -246,11 +232,7 @@ export const ProductCarousel = ({}) => {
     bodyFormdata.append("limit", "37");
     setisLoading(true);
     axiosInstance
-      .post(
-        "https://grocery.intelliatech.in/api-firebase/get-all-products.php",
-        bodyFormdata,
-        config
-      )
+      .post("/get-all-products.php", bodyFormdata, config)
       .then((res) => {
         setisLoading(false);
         setAllProducts(res.data.data);
@@ -261,9 +243,7 @@ export const ProductCarousel = ({}) => {
       });
   };
 
-  // useEffect(() => {
-  //   getAllProducts();
-  // }, [user_id]);
+  
 
   useEffect(() => {
     if (apiToken) {
@@ -290,8 +270,6 @@ export const ProductCarousel = ({}) => {
       items: 2,
     },
   };
-
-  
 
   const addItemUI = (mainItem) => {
     let newArr = [];
@@ -329,7 +307,6 @@ export const ProductCarousel = ({}) => {
   const addItemHandler = (item, data) => {
     const config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -343,13 +320,8 @@ export const ProductCarousel = ({}) => {
     setisLoading(true);
 
     axiosInstance
-      .post(
-        "https://grocery.intelliatech.in/api-firebase/cart.php",
-        bodyFormData,
-        config
-      )
+      .post("/cart.php", bodyFormData, config)
       .then((res) => {
-        // setisLoading(false);
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
           let newArr = allCartItems.map((data) =>
             data.product_id === item.id
@@ -454,7 +426,6 @@ export const ProductCarousel = ({}) => {
                           item.variants.map((data) => {
                             return (
                               <div className="flex p-1 md:px-3 flex-col xs:justify-center xs:items-center xs:text-center md:justify-evenly sm:ml-0   ">
-                               
                                 <div className="  w-full md:px-3 ">
                                   <p className="2xs:text-base xs:text-sm t sm:text-xl  md:text-sm font-light  px-1 py-1 flex md:flex-row  justify-between items-center">
                                     <span className=" font-bold text-xs">
@@ -513,42 +484,18 @@ export const ProductCarousel = ({}) => {
                           })}
                         {item?.variants?.length > 1 && (
                           <div className=" md:flex md:flex-col px-3 md:justify-evenly  sm:flex xs:flex xs:justify-between ">
-                            {/* ADD TO FAVOURITES  */}
-                            {/* {user_id != 14 &&
-                          (allFavItems.find((fav) => {
-                            return fav.id === item.id;
-                          }) ? (
-                            <FaHeart
-                              className="text-red absolute top-2 text-xl animate-hbeat hover:scale-125 transition-all  right-2 "
-                              onClick={(e) => {
-                                setFavPos((prev)=> !prev)
-                                e.stopPropagation();
-                                handleRemoveFavorite(item);
-                              }}
-                            />
-                          ) : (
-                            <FaRegHeart
-                              className={`text-[light_gray] group-hover:top-2 group-active:top-2 absolute ${!favPos ? '-top-5' : 'top-2'} text-xl hover:scale-125  transition-all right-2`}
-                              onClick={(e) => {
-                                setFavPos((prev)=> !prev)
-                                e.stopPropagation();
-                                handleAddFavorite(item);
-                              }}
-                            />
-                          ))} */}
+                           
 
                             <div
                               className=""
                               onClick={(e) => e.stopPropagation()}
                             >
                               <select
-                                // value={"selectedVariant"}
                                 onChange={(e) => {
                                   handleVariantChange(item.id, e);
                                 }}
                                 className="block w-full py-2 px-1 items-center border border-gray-300  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs text-center font-bold"
                               >
-                                {/* <option value="">City</option> */}
                                 {item.variants.map((variant, index) => (
                                   <option
                                     key={variant.id}
@@ -567,11 +514,7 @@ export const ProductCarousel = ({}) => {
                               </select>
                             </div>
 
-                            {/* <div className=" xs:text-left  sm:mt-2 md:mt-[15px] md:mx-4 xs:mx-4 sm:mx-4 md:text-left ">
-                          <p className="2xs:text-base  xs:text-sm t sm:text-xl  xs:mt-4 md:mt-[-3px] sm:mt-[12px] md:text-sm text-gryColour font-light bg-white">
-                            ₹{item.variants[0].price}{" "}
-                          </p>
-                        </div> */}
+                           
 
                             <div>
                               {item.variants.some(
@@ -584,14 +527,10 @@ export const ProductCarousel = ({}) => {
                                       ?.id
                                 ) ? (
                                   <>
-                                    <div
-                                      className="mt-3"
-                                     
-                                    >
+                                    <div className="mt-3">
                                       <CartQuantity
                                         item={item}
                                         variant={variant}
-                                       
                                       />
                                     </div>
                                   </>

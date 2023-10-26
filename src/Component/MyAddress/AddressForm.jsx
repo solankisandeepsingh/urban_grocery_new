@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { toast } from "react-toastify";
@@ -80,7 +79,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
       setisLoading(true);
       axiosInstance
         .post(
-          "https://grocery.intelliatech.in/api-firebase/user-addresses.php",
+          "/user-addresses.php",
           data,
           config
         )
@@ -107,7 +106,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
     cityData.append("accesskey", "90336");
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/get-cities.php",
+        "/get-cities.php",
         cityData,
         config
       )
@@ -129,7 +128,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
       areaData.append("city_id", `${cityDropdown}`);
       axiosInstance
         .post(
-          "https://grocery.intelliatech.in/api-firebase/get-areas-by-city-id.php",
+          "/get-areas-by-city-id.php",
           areaData,
           config
         )
@@ -182,19 +181,7 @@ export const AddressForm = ({ getAddress, setFormOpen, user_id }) => {
                       value={addressData.pincode}
                       onChange={handleInputChange}
                     />
-                    {/* {addressData.pincode.length !== 6 && (
-                      <p className="text-red text-xs mt-1 ml-1">
-                        Pincode must be exactly 6 digits
-                      </p>
-                    )} */}
-
-                    {/* {!regex.test(addressData.pincode) && (
-  <p className="text-red text-xs mt-1 ml-1">
-    {addressData.pincode.length <= 6
-      ? ""
-      : "Pincode cannot exceed 6 digits"}
-  </p>
-)} */}
+                    
 
                     {!regex.test(addressData.pincode) && (
                       <>

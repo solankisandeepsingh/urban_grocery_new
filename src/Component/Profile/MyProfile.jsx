@@ -1,36 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
-import { API_TOKEN } from "../Token/Token";
 import { useUserStore } from "../zustand/useUserStore";
-import axios from "axios";
 import { FaUserCircle } from "react-icons/fa";
 import { AiFillEdit, AiOutlineCloseCircle } from "react-icons/ai";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import { useLoaderState } from "../zustand/useLoaderState";
 import { useApiStore } from "../zustand/useApiStore";
 import { useApiToken } from "../zustand/useApiToken";
 import axiosInstance from "../../api/axiosInstance";
 
-export const MyProfile = ({ setProfileView, setIsOpen }) => {
-  // const [editBtn, setEditBtn] = useState(false);
+export const MyProfile = ({ setProfileView }) => {
   const inputRef = useRef(null);
   const {
-    userInfo: { user_id, name, email, password, profile },
+    userInfo: { user_id,  profile },
     setUserInfo,
     userInfo,
   } = useUserStore();
   const [isValidImg, setisValidImg] = useState(false);
   const { setisLoading } = useLoaderState();
-  const { jwt, setJwt } = useApiStore();
   const profileRef = useRef(null);
-  const {apiToken} = useApiToken()
-
+  const { apiToken } = useApiToken();
 
   const [updateUser, setUpdateUser] = useState({
     name: userInfo.name,
     email: userInfo.email,
     profile: userInfo.profile,
   });
-
 
   const handleInputChange = (event) => {
     const { value, name } = event.target;
@@ -49,7 +43,7 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
     document.addEventListener("mousedown", handleClickMyProfileOutside);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickMyProfileOutside); 
+      document.removeEventListener("mousedown", handleClickMyProfileOutside);
     };
   }, []);
   const handleImageUpload = (event) => {
@@ -57,7 +51,6 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
     if (file) {
       let config = {
         headers: {
-          // Authorization: `Bearer ${jwt}`,
           Authorization: `Bearer ${apiToken}`,
         },
       };
@@ -66,18 +59,12 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
       formData.append("accesskey", "90336");
       formData.append("type", "upload_profile");
       formData.append("user_id", user_id);
-      // formData.append("profile", `${updateUser.profile}`);
       formData.append("profile", file);
       setisLoading(true);
 
       axiosInstance
-        .post(
-          `https://grocery.intelliatech.in/api-firebase/user-registration.php`,
-          formData,
-          config
-        )
+        .post(`/user-registration.php`, formData, config)
         .then((res) => {
-
           getUserData();
           toast.success("Profile successfully uploaded!", {
             position: toast.POSITION.TOP_CENTER,
@@ -93,7 +80,6 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
   const getUserData = () => {
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -105,35 +91,19 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
     setisLoading(true);
 
     axiosInstance
-      .post(
-        `https://grocery.intelliatech.in/api-firebase/get-user-data.php`,
-        updateProfileData,
-        config
-      )
+      .post(`/get-user-data.php`, updateProfileData, config)
       .then((res) => {
-        // toast.success('Profile successfully uploaded!', {
-        //   position: toast.POSITION.TOP_CENTER
-        // });
-
         setUserInfo(res.data);
         setisLoading(false);
-        // setUserInfo(res.data)
       })
       .catch((err) => {
         console.log(err);
-        // toast.error('Failed to upload profile image.', {
-        //   position: toast.POSITION.TOP_RIGHT,
-        // });
       });
   };
 
   const handleUpdateProfile = () => {
-    // e.preventDefault();
-    // setEditBtn((prev) => !prev);
-
     let config = {
       headers: {
-        // Authorization: `Bearer ${jwt}`,
         Authorization: `Bearer ${apiToken}`,
       },
     };
@@ -143,8 +113,7 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
     updateProfileData.append("id", user_id);
     updateProfileData.append("name", `${updateUser.name}`);
     updateProfileData.append("email", `${updateUser.email}`);
-    // updateProfileData.append("profile", `${updateUser.profile}`);
-    // updateProfileData.append("password", `${updateUser.password}`);
+
     updateProfileData.append("city_id", "1");
     updateProfileData.append("area_id", "1");
     updateProfileData.append("street", "bhuj");
@@ -153,22 +122,15 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
     updateProfileData.append("latitude", "44.968046");
     updateProfileData.append("longitude", "94.420307");
 
-
     const object = {};
     updateProfileData.forEach((value, key) => {
       object[key] = value;
       object.user_id = user_id;
     });
 
-
     axiosInstance
-      .post(
-        `https://grocery.intelliatech.in/api-firebase/user-registration.php`,
-        updateProfileData,
-        config
-      )
+      .post(`/user-registration.php`, updateProfileData, config)
       .then((res) => {
-        console.log(res, "res data will update user");
         toast.success("Profile successfully uploaded!", {
           position: toast.POSITION.TOP_CENTER,
         });
@@ -203,7 +165,6 @@ export const MyProfile = ({ setProfileView, setIsOpen }) => {
 
   return (
     <div className="justify-center items-center text-center mt-24">
-
       <div className="fixed  z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-75">
         <div className="bg-white rounded top-[5%] left-[5%]" ref={profileRef}>
           <div className="flex justify-center items-center relative">

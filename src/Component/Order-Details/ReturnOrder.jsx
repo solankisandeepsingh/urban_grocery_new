@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useRef } from "react";
 import { useApiToken } from "../zustand/useApiToken";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import axiosInstance from "../../api/axiosInstance";
 
@@ -44,7 +43,7 @@ export const ReturnOrder = ({ setReturnModal, orderId }) => {
 
     axiosInstance
       .post(
-        "https://grocery.intelliatech.in/api-firebase/order-process.php",
+        "/order-process.php",
         cancelData,
         config
       )
