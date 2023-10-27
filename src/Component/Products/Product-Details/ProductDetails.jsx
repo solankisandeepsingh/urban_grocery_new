@@ -292,10 +292,6 @@ export const ProductDetails = ({}) => {
       });
   };
 
-  // useEffect(() => {
-  //   productDetail();
-  //   productReviews();
-  // }, [id]);
 
   useEffect(() => {
     if (apiToken) {

@@ -251,12 +251,7 @@ const Search = ({ setData, name, data }) => {
           dataLength={data?.length || 0}
           next={nextData}
           hasMore={!(data?.length >= searchData.total)}
-          // loader={<div>Loading...</div>}
-          // endMessage={
-          //   <p style={{ textAlign: "center" }}>
-          //     <b>Yay! You have seen it all</b>
-          //   </p>
-          // }
+          
         >
           {newItemsArray.map((item, index) => (
             <div

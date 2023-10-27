@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
 import Search from "./Header/Search/Search";
 import CartQuantity from "./Button/CartQuantity";
 import { useCartStore } from "./zustand/useCartStore";
 import { currencyFormatter } from "../utils/utils";
 import { useUserStore } from "./zustand/useUserStore";
-import { useApiStore } from "./zustand/useApiStore";
 import { useLoaderState } from "./zustand/useLoaderState";
 import { useNavigate, useLocation } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -13,7 +11,6 @@ import { useSearchStore } from "./zustand/useSearchStore";
 import { useDebounce } from "../utils/useDebounce";
 import { useApiToken } from "./zustand/useApiToken";
 import {  toast } from "react-toastify";
-import InfiniteLoader from "./Infinite-loader";
 import axiosInstance from "../api/axiosInstance";
 
 function FilterData({ data, setName, setData }) {
@@ -222,12 +219,7 @@ function FilterData({ data, setName, setData }) {
           dataLength={data?.length || 0}
           next={nextData}
           hasMore={!(data?.length >= searchData.total)}
-          // loader={<InfiniteLoader/>}
-          // endMessage={
-          //   <p style={{ textAlign: "center" }}>
-          //     <b>Yay! You have seen it all</b>
-          //   </p>
-          // }
+          
         >
           <div className=" xs:grid xs:grid-cols-2 md:grid md:grid-cols-7 sm:grid-cols-4 flex flex-wrap md:ml-5 xs:ml-7 xs:mt-14 sm:ml-4 md:mt-10">
             {data && data?.length > 0 ? (
@@ -320,13 +312,11 @@ function FilterData({ data, setName, setData }) {
                             onClick={(e) => e.stopPropagation()}
                           >
                             <select
-                              // value={"selectedVariant"}
                               onChange={(e) => {
                                 handleVariantChange(item.id, e);
                               }}
                               className="block w-full py-2 px-1 items-center border border-gray-300  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs text-center font-bold"
                             >
-                              {/* <option value="">City</option> */}
                               {item.variants.map((variant, index) => (
                                 <option
                                   key={variant.id}
@@ -345,11 +335,7 @@ function FilterData({ data, setName, setData }) {
                             </select>
                           </div>
 
-                          {/* <div className=" xs:text-left  sm:mt-2 md:mt-[15px] md:mx-4 xs:mx-4 sm:mx-4 md:text-left ">
-                          <p className="2xs:text-base  xs:text-sm t sm:text-xl  xs:mt-4 md:mt-[-3px] sm:mt-[12px] md:text-sm text-gryColour font-light bg-white">
-                            ₹{item.variants[0].price}{" "}
-                          </p>
-                        </div> */}
+                         
 
                           <div>
                             {item.variants.some(

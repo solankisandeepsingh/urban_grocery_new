@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Aside } from "../Aside/Aside";
 import { GiScooter } from "react-icons/gi";
 import { BsChevronRight } from "react-icons/bs";

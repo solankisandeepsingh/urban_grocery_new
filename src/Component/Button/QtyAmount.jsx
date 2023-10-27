@@ -122,7 +122,6 @@ export const QtyAmount = ({ item }) => {
       bodyFormData.append("qty", newQty);
       setisLoading(true);
 
-      // axios
       axiosInstance
         .post(
           "/cart.php",

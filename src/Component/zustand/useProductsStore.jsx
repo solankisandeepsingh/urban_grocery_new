@@ -38,8 +38,4 @@ export const useProductsStore =  create(
 
 
 
-create((set) => ({
-  allProducts: [],
-  allCategories : [],
-  
-}));
+

@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {} from "../Token/Token";
-import axios from "axios";
 import { Aside } from "../Aside/Aside";
 import { useLoaderState } from "../zustand/useLoaderState";
-import { useApiStore } from "../zustand/useApiStore";
 import { useApiToken } from "../zustand/useApiToken";
 import axiosInstance from "../../api/axiosInstance";
 
@@ -115,7 +112,6 @@ export const Privacy = () => {
 
         <div className="md:w-full sm:w-[60%] xs:w-[85%] overflow-y-scroll h-[90vh] ml-4">
           <div dangerouslySetInnerHTML={{ __html: updatedPrivacy }}>
-            {/* {JSON.parse(item.description)} */}
           </div>
         </div>
       </div>

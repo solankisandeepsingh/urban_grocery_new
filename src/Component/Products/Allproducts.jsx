@@ -241,7 +241,6 @@ function Allproducts({ setNavbarOpen }) {
         config
       )
       .then((res) => {
-        // setisLoading(false);
         if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
           let newArr = allCartItems.map((data) =>
             data.product_id === item.id

@@ -13,7 +13,7 @@ import {  toast } from "react-toastify";
 import axiosInstance from "../../api/axiosInstance";
 
 export const FavPage = () => {
-  const { allCartItems, setAllCartItems, variant, setVariant } = useCartStore();
+  const { allCartItems, setAllCartItems, variant } = useCartStore();
 
   const [removeFavPos, setRemoveFavPos] = useState(true);
   const navigate = useNavigate();

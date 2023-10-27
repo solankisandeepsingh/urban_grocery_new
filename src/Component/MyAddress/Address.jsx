@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import { FaHome, FaPlus } from "react-icons/fa";
 import { HiOfficeBuilding, HiLocationMarker } from "react-icons/hi";
 import { AiOutlineDelete } from "react-icons/ai";

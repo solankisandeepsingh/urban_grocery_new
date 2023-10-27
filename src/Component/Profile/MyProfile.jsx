@@ -4,7 +4,6 @@ import { FaUserCircle } from "react-icons/fa";
 import { AiFillEdit, AiOutlineCloseCircle } from "react-icons/ai";
 import {  toast } from "react-toastify";
 import { useLoaderState } from "../zustand/useLoaderState";
-import { useApiStore } from "../zustand/useApiStore";
 import { useApiToken } from "../zustand/useApiToken";
 import axiosInstance from "../../api/axiosInstance";
 
@@ -227,7 +226,6 @@ export const MyProfile = ({ setProfileView }) => {
                           type="text"
                           onChange={handleInputChange}
                           value={updateUser.name}
-                          // disabled={!editBtn}
                           className="block w-full py-2 px-3 border border-light_gray bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         />
                       </div>
@@ -242,7 +240,6 @@ export const MyProfile = ({ setProfileView }) => {
                           type="text"
                           onChange={handleInputChange}
                           value={updateUser.email}
-                          // disabled={!editBtn}
                           className="block w-full py-2 px-3 border border-light_gray bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         />
                       </div>

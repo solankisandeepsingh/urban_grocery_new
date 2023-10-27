@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaArrowLeft, FaShoppingCart, FaTrash } from "react-icons/fa";
 import Form from "./Form/Form";
-import { useNavigate } from "react-router-dom";
 import { QtyAmount } from "../Button/QtyAmount";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { Login } from "../Login.jsx/Login";

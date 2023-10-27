@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { API_TOKEN } from "../Token/Token";
-import axios from "axios";
 import { Aside } from "../Aside/Aside";
 import { useLoaderState } from "../zustand/useLoaderState";
-import { useApiStore } from "../zustand/useApiStore";
 import { useApiToken } from "../zustand/useApiToken";
 import axiosInstance from "../../api/axiosInstance";
 
@@ -39,9 +36,7 @@ export const Coditions = () => {
         setisLoading(false);
       });
   };
-  // useEffect(() => {
-  //   handleConditons();
-  // }, []);
+  
 
   useEffect(() => {
     if (apiToken) {

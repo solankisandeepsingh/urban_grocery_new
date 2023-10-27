@@ -207,7 +207,6 @@ function CartQuantity({ item, variant }) {
 
   const findItemNumber = () => {
     let index = allCartItems.findIndex((i) => {
-      // return true
       return (
         (i.product_variant_id ?? i.id) ==
         +item.variants[variant?.[item.id] || 0].id

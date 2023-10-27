@@ -9,10 +9,8 @@ import { useApiToken } from "./zustand/useApiToken";
 import axiosInstance from "../api/axiosInstance";
 
 function Home({
-  data,
   SubCategory,
   productDetails,
-  setData,
   addItem,
   setAddItem,
   isOpen,
@@ -22,7 +20,7 @@ function Home({
   const { allImg, setAllImg } = useImgStore();
   const { setisLoading } = useLoaderState();
   const [visible, setVisible] = useState(false);
-  const {apiToken,setApiToken} = useApiToken()
+  const {apiToken} = useApiToken()
   setNavbarOpen(true)
 
   
@@ -68,7 +66,6 @@ function Home({
         });
         setAllImg(imgObj);
         setisLoading(false);
-        // setHomeImg(res.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -85,15 +82,7 @@ function Home({
   return (
     <div className=" md:mt-0.5 xs:mt-14">
       <>
-        {/* <div className="md:invisible xs:visible">
-          <Search
-            setData={setData}
-            data={data}
-            addItem={addItem}
-            setAddItem={setAddItem}
-            user_id={user_id}
-          />
-        </div> */}
+       
         <div className="flex justify-center md:mt-16 items-center mx-auto xs:py-4 ">
           <div className="container w-full items-center">
             <div
@@ -110,7 +99,6 @@ function Home({
                   <img
                     src={allImg["30"]}
                     alt=""
-                    // className="rounded-xl xs:h-[145px] md:w-full md:h-auto xs:w-full sm:h-[232px]"
                     className="rounded-xl xs:h-[145px] md:w-full md:h-[250px] xs:w-full sm:h-[232px]"
                   />
                 </div>
@@ -119,7 +107,6 @@ function Home({
                   <img
                     src={allImg["32"]}
                     alt=""
-                    // className="rounded-xl xs:h-[145px] md:w-full md:h-auto xs:w-full sm:h-[232px]"
                     className="rounded-xl xs:h-[145px] md:w-full md:h-[250px] xs:w-full sm:h-[232px]"
                   />
                 </div>
@@ -139,7 +126,6 @@ function Home({
                 />
               </div>
 
-              {/* <FoodDelivery /> */}
               <div className="">
                 <ProductCarousel
                   addItem={addItem}
@@ -148,7 +134,6 @@ function Home({
                 />
               </div>
 
-              {/* <LocallySourced /> */}
               <div className="md:w-auto md:p-2 md:mt-4 xs:py-2">
                 <img
                   src={allImg["37"]}

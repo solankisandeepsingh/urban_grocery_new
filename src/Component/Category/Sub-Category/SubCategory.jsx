@@ -164,77 +164,7 @@ export const SubCategory = ({  setNavbarOpen }) => {
 
 
 
-  const allCartItemsHandler = (item, data) => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${apiToken}`,
-      },
-    };
-    const bodyFormData = new FormData();
-    bodyFormData.append("accesskey", "90336");
-    bodyFormData.append("add_to_cart", "1");
-    bodyFormData.append("user_id", user_id);
-    bodyFormData.append("product_id", `${data.id}`);
-    bodyFormData.append("product_variant_id", `${item.id}`);
-
-    bodyFormData.append("qty", 1);
-
-    setisLoading(true);
-
-    axiosInstance
-      .post(
-        "/cart.php",
-        bodyFormData,
-        config
-      )
-      .then((res) => {
-        setisLoading(false);
-
-        if (allCartItems.some((cartItem) => cartItem.product_id === item.id)) {
-          let newArr = allCartItems.map((data) =>
-            data.product_id === item.id
-              ? {
-                  ...data,
-                  amount: data.amount + 1,
-                }
-              : data
-          );
-          setAllCartItems(newArr);
-
-          return;
-        }
-
-        let item1 = {
-          amount: 1,
-          discounted_price: item.discounted_price,
-          id: item.id,
-          image: data.image,
-          images: [
-            "http://grocery.intelliatech.in/upload/variant_images/1676618514.4521-883.png",
-          ],
-          price: item.price,
-          product_id: item.product_id,
-          product_variant_id: item.id,
-          qty: 1,
-          save_for_later: "0",
-          serve_for: "Available",
-          slug: "butterscotch-flavorsome-cake",
-          stock: "29",
-
-          type: "packet",
-          unit: "gm",
-          user_id: user_id,
-        };
-
-        let newArr = [...allCartItems, { ...item1, amount: 1 }];
-        setAllCartItems(newArr);
-        setisLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setisLoading(false);
-      });
-  };
+ 
 
   return (
     <>
@@ -254,7 +184,6 @@ export const SubCategory = ({  setNavbarOpen }) => {
                   }}
                 >
                   <img
-                    // className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-24 md:ml-[23px] md:w-28 md:mt-4 sm:w-48 sm:h-32 rounded-lg "
                     className="w-full h-56 xs:w-48 xs:h-28 object-cover object-center  md:h-28 md:w-40 sm:w-48 sm:h-32 rounded-lg "
                     src={
                       item?.variants?.length == 1
